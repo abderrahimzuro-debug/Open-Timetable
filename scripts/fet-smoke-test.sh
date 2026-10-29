@@ -7,7 +7,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BIN="${1:-$ROOT/build/fet-cl}"
 SAMPLES_DIR="$ROOT/engine/samples"
-RUNS_DIR="$ROOT/.fet-runs"
+RUNS_DIR="$ROOT/fet-runs"
 TIME_LIMIT="${TIME_LIMIT:-60}"
 
 [[ -x "$BIN" ]] || { echo "خطأ: المحرّك غير موجود أو غير قابل للتنفيذ: $BIN" >&2; exit 1; }

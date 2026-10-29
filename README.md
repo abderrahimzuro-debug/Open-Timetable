@@ -42,7 +42,7 @@ Open-Timetable/
 
 # بديل بلا Qt على جهازك: البناء في حاوية
 docker build -f docker/engine.Dockerfile -t open-timetable-engine .
-docker run --rm -v "$PWD/engine/samples:/in:ro" -v "$PWD/.fet-runs:/out" \
+docker run --rm -v "$PWD/engine/samples:/in:ro" -v "$PWD/fet-runs:/out" \
   open-timetable-engine fet-cl --inputfile=/in/small-test.fet --outputdir=/out --timelimitseconds=60
 ```
 

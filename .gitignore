@@ -9,7 +9,7 @@ tmp/
 fet-src/
 
 # مخرجات تشغيل المحرّك
-.fet-runs/
+fet-runs/
 timetables/
 
 # ملفات FET المولّدة

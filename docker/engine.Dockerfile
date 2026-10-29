@@ -1,7 +1,7 @@
 # بناء محرّك FET (fet-cl) في حاوية — لا يحتاج Qt على جهازك.
 #
 #   docker build -f docker/engine.Dockerfile -t open-timetable-engine .
-#   docker run --rm -v "$PWD/engine/samples:/in:ro" -v "$PWD/.fet-runs:/out" \
+#   docker run --rm -v "$PWD/engine/samples:/in:ro" -v "$PWD/fet-runs:/out" \
 #     open-timetable-engine fet-cl --inputfile=/in/small-test.fet --outputdir=/out --timelimitseconds=60
 #
 # ملاحظة: نستخدم qmake + Qt 5.15 (متوفرة في مستودعات Ubuntu 22.04) لأن مسار CMake في FET 7.12

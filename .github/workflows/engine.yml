@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: smoke-test-output
-          path: .fet-runs
+          path: fet-runs
           retention-days: 7
 
   build-gui-probe:
@@ -87,12 +87,14 @@ jobs:
       - run: ./scripts/fet-extract.sh
       - name: Build FET GUI via qmake (Qt5)
         run: |
+          set -o pipefail
           mkdir -p build/gui-build && cd build/gui-build
           qmake ../../.fet-src/fet-7.12.0/fet.pro CONFIG+=release
-          make -j"$(nproc)" || echo "GUI build failed with Qt5 — expected, since CMake path requires Qt 6.10+"
+          make -j"$(nproc)" 2>&1 | tee gui-build.log
+          ls -l ../fet ../fet-cl 2>/dev/null || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: gui-build-log
-          path: build/gui-build
+          path: build/gui-build/gui-build.log
           retention-days: 7
