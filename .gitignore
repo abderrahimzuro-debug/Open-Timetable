@@ -1,0 +1,43 @@
+# مجلدات بناء وتشغيل (لا تُحفظ في Git)
+build/
+dist/
+out/
+tmp/
+
+# مصدر FET المفكوك (يُفكّ من الأرشيف عند الحاجة)
+.fet-src/
+fet-src/
+
+# مخرجات تشغيل المحرّك
+.fet-runs/
+timetables/
+
+# ملفات FET المولّدة
+*.qm
+*.o
+*.obj
+moc_*
+qrc_*
+Makefile
+*.pro.user
+
+# بيئة تطوير الويب
+node_modules/
+.pnpm-store/
+.next/
+.vite/
+coverage/
+
+# أسرار وبيئة محلية
+.env
+.env.local
+.env.*.local
+
+# نظام التشغيل والمحرّرات
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log

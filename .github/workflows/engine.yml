@@ -1,0 +1,98 @@
+name: FET engine (build + smoke test)
+
+# يتحقق هذا السير من أن مصدر FET المحفوظ في المستودع:
+#   1) سليم (بصمة SHA-256 مطابقة)،
+#   2) يُبنى فعليًا،
+#   3) يولّد جداول صحيحة على ملفات نموذجية حقيقية.
+# السير يعمل على GitHub Actions لأن بيئة التطوير قد لا تحتوي Qt.
+
+on:
+  push:
+    paths:
+      - 'vendor/fet/**'
+      - 'engine/**'
+      - 'scripts/**'
+      - 'docker/**'
+      - '.github/workflows/engine.yml'
+  pull_request:
+    paths:
+      - 'vendor/fet/**'
+      - 'engine/**'
+      - 'scripts/**'
+      - '.github/workflows/engine.yml'
+  workflow_dispatch:
+
+jobs:
+  build-fet-cl:
+    name: build fet-cl (Linux x86_64)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt5 + toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential qtbase5-dev ca-certificates
+          qmake --version
+
+      - name: Verify archive integrity (SHA-256)
+        run: ./scripts/fet-verify.sh
+
+      - name: Extract FET source
+        run: ./scripts/fet-extract.sh
+
+      - name: Build fet-cl
+        run: ./scripts/fet-build-cl.sh --qmake
+
+      - name: Smoke test (generate timetables from samples)
+        env:
+          TIME_LIMIT: 120
+        run: ./scripts/fet-smoke-test.sh build/fet-cl
+
+      - name: Upload fet-cl binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: fet-cl-7.12.0-linux-x86_64
+          path: build/fet-cl
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload smoke test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test-output
+          path: .fet-runs
+          retention-days: 7
+
+  build-gui-probe:
+    name: probe GUI build (non-blocking)
+    runs-on: ubuntu-22.04
+    continue-on-error: true
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Qt5 (widgets, printsupport) + toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential qtbase5-dev qtbase5-dev-tools qttools5-dev-tools
+      - uses: actions/cache@v4
+        with:
+          path: .fet-src
+          key: fet-src-7.12.0
+      - run: ./scripts/fet-extract.sh
+      - name: Build FET GUI via qmake (Qt5)
+        run: |
+          mkdir -p build/gui-build && cd build/gui-build
+          qmake ../../.fet-src/fet-7.12.0/fet.pro CONFIG+=release
+          make -j"$(nproc)" || echo "GUI build failed with Qt5 — expected, since CMake path requires Qt 6.10+"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gui-build-log
+          path: build/gui-build
+          retention-days: 7
