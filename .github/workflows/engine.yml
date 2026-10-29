@@ -98,6 +98,24 @@ jobs:
           cp "$BIN_CL" ../fet-cl
           ls -l ../fet ../fet-cl
 
+      - name: Report compile errors
+        if: failure()
+        run: |
+          LOG=build/gui/build.log
+          if [ -f "$LOG" ]; then
+            {
+              echo '### Compile errors'
+              echo '```'
+              grep -n -m 40 -E 'error:|Error [0-9]|\*\*\*' "$LOG" || tail -40 "$LOG"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            grep -m 20 -E 'error:|Error [0-9]' "$LOG" | while IFS= read -r line; do
+              echo "::error::$line"
+            done
+          else
+            echo "::error::build.log not found"
+          fi
+
       - name: Build Arabic translation (fet_ar.qm)
         run: ./scripts/fet-build-translations.sh ar
 
@@ -130,6 +148,7 @@ jobs:
   # ------------------------------------------------------------------
   build-windows-probe:
     name: our GUI on Windows (Qt6) [non-blocking]
+    if: github.event_name == 'workflow_dispatch'
     runs-on: windows-latest
     continue-on-error: true
     timeout-minutes: 60
