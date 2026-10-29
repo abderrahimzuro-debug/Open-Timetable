@@ -1,0 +1,4 @@
+# FET archivé (binaire) — pas de diff textuel
+vendor/fet/*.tar.xz binary
+vendor/fet/*.tar.bz2 binary
+vendor/fet/*.asc text
