@@ -1,5 +1,7 @@
 # Open-Timetable
 
+[![FET engine (build + smoke test)](https://github.com/abderrahimzuro-debug/Open-Timetable/actions/workflows/engine.yml/badge.svg?branch=arena%2Ff9075371-open-timetable)](https://github.com/abderrahimzuro-debug/Open-Timetable/actions/workflows/engine.yml)
+
 مشروع مفتوح المصدر لإنشاء وإدارة الجداول الدراسية، بواجهة عربية حديثة، مبني على محرّك
 [FET](https://lalescu.ro/liviu/fet/) المعروف بقوة نتائجه.
 
@@ -45,6 +47,11 @@ docker build -f docker/engine.Dockerfile -t open-timetable-engine .
 docker run --rm -v "$PWD/engine/samples:/in:ro" -v "$PWD/fet-runs:/out" \
   open-timetable-engine fet-cl --inputfile=/in/small-test.fet --outputdir=/out --timelimitseconds=60
 ```
+
+## ما تم التحقق منه فعليًا
+
+سير CI يبني محرّك FET من الأرشيف المحفوظ (Qt 5.15 + qmake)، ويشغّله على 3 ملفات `.fet` حقيقية،
+ويتحقق من إنتاج الجداول — وكل ذلك ينجح. كما يتحقق أن الواجهة الرسومية الأصلية تُبنى أيضًا بـ Qt5.
 
 ## الرخصة
 
