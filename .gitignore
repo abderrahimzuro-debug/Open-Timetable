@@ -14,7 +14,6 @@ timetables/
 
 # ملفات FET المولّدة
 *.qm
-ui_*.h
 *.moc
 *.o
 *.obj
