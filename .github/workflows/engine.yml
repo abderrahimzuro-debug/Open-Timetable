@@ -1,14 +1,15 @@
-name: FET engine (build + smoke test)
+name: FET build (engine + GUI) & smoke test
 
-# يتحقق هذا السير من أن مصدر FET المحفوظ في المستودع:
-#   1) سليم (بصمة SHA-256 مطابقة)،
-#   2) يُبنى فعليًا،
-#   3) يولّد جداول صحيحة على ملفات نموذجية حقيقية.
-# السير يعمل على GitHub Actions لأن بيئة التطوير قد لا تحتوي Qt.
+# يتحقق هذا السير من:
+#   1) سلامة أرشيف FET المحفوظ (بصمة SHA-256)،
+#   2) بناء محرّك fet-cl من المصدر الأصلي وتوليد جداول حقيقية،
+#   3) بناء واجهتنا المعدّلة (fet/) — أي أن تعديلاتنا على C++ تُصرَّف فعليًا،
+#   4) بناء ملف الترجمة العربية (fet_ar.qm) الذي تعتمد عليه الواجهة.
 
 on:
   push:
     paths:
+      - 'fet/**'
       - 'vendor/fet/**'
       - 'engine/**'
       - 'scripts/**'
@@ -16,6 +17,7 @@ on:
       - '.github/workflows/engine.yml'
   pull_request:
     paths:
+      - 'fet/**'
       - 'vendor/fet/**'
       - 'engine/**'
       - 'scripts/**'
@@ -23,8 +25,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-fet-cl:
-    name: build fet-cl (Linux x86_64)
+  # ------------------------------------------------------------------
+  # 1) المحرّك الأصلي كما هو (تحقق من الأصالة والأداء الوظيفي)
+  # ------------------------------------------------------------------
+  build-engine-upstream:
+    name: engine from pristine archive (Linux, Qt5)
     runs-on: ubuntu-22.04
     timeout-minutes: 45
 
@@ -55,46 +60,105 @@ jobs:
       - name: Upload fet-cl binary
         uses: actions/upload-artifact@v4
         with:
-          name: fet-cl-7.12.0-linux-x86_64
+          name: fet-cl-7.12.0-upstream-linux-x86_64
           path: build/fet-cl
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload smoke test output
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: smoke-test-output
-          path: fet-runs
-          retention-days: 7
-
-  build-gui-probe:
-    name: probe GUI build (non-blocking)
+  # ------------------------------------------------------------------
+  # 2) واجهتنا المعدّلة (fet/) — الاختبار الأساسي لتعديلاتنا
+  # ------------------------------------------------------------------
+  build-our-gui:
+    name: our GUI from fet/ (Linux, Qt5)
     runs-on: ubuntu-22.04
-    continue-on-error: true
-    timeout-minutes: 45
+    timeout-minutes: 60
+
     steps:
       - uses: actions/checkout@v4
-      - name: Install Qt5 (widgets, printsupport) + toolchain
+
+      - name: Install Qt5 (widgets, printsupport, linguist) + toolchain
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            build-essential qtbase5-dev qtbase5-dev-tools qttools5-dev-tools
-      - uses: actions/cache@v4
-        with:
-          path: .fet-src
-          key: fet-src-7.12.0
-      - run: ./scripts/fet-extract.sh
-      - name: Build FET GUI via qmake (Qt5)
+            build-essential qtbase5-dev qtbase5-dev-tools qttools5-dev-tools ca-certificates
+          qmake --version
+
+      - name: Build FET GUI + fet-cl from fet/
         run: |
           set -o pipefail
-          mkdir -p build/gui-build && cd build/gui-build
-          qmake ../../.fet-src/fet-7.12.0/fet.pro CONFIG+=release
-          make -j"$(nproc)" 2>&1 | tee gui-build.log
-          ls -l ../fet ../fet-cl 2>/dev/null || true
-      - uses: actions/upload-artifact@v4
-        if: always()
+          mkdir -p build/gui && cd build/gui
+          qmake ../../fet/fet.pro CONFIG+=release
+          make -j"$(nproc)" 2>&1 | tee build.log
+          echo "--- binaries found ---"
+          find . -maxdepth 3 -type f \( -name 'fet' -o -name 'fet-cl' \) -print
+          BIN_GUI="$(find . -maxdepth 3 -type f -name 'fet' | head -1)"
+          BIN_CL="$(find . -maxdepth 3 -type f -name 'fet-cl' | head -1)"
+          mkdir -p ../out
+          cp "$BIN_GUI" ../fet
+          cp "$BIN_CL" ../fet-cl
+          ls -l ../fet ../fet-cl
+
+      - name: Build Arabic translation (fet_ar.qm)
+        run: ./scripts/fet-build-translations.sh ar
+
+      - name: Smoke test our fet-cl
+        env:
+          TIME_LIMIT: 120
+        run: ./scripts/fet-smoke-test.sh build/fet-cl
+
+      - name: Upload our binaries + translations
+        uses: actions/upload-artifact@v4
         with:
-          name: gui-build-log
-          path: build/gui-build/gui-build.log
+          name: open-timetable-gui-linux-x86_64
+          path: |
+            build/fet
+            build/fet-cl
+            build/translations
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload GUI build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gui-build-log-ours
+          path: build/gui/build.log
+          retention-days: 7
+
+  # ------------------------------------------------------------------
+  # 3) ويندوز (بيئة التشغيل المستهدفة: جهاز في المؤسسة) — غير معطِّل مؤقتًا
+  # ------------------------------------------------------------------
+  build-windows-probe:
+    name: our GUI on Windows (Qt6) [non-blocking]
+    runs-on: windows-latest
+    continue-on-error: true
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt 6.10 (MSVC 2022 x64)
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.10.0'
+          arch: 'win64_msvc2022_64'
+          cache: true
+
+      - name: Configure MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Build (qmake + nmake)
+        shell: cmd
+        run: |
+          mkdir build\win
+          cd build\win
+          qmake ..\..\fet\fet.pro CONFIG+=release
+          nmake
+
+      - name: Upload Windows build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build-log
+          path: build/win
           retention-days: 7
