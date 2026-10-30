@@ -182,8 +182,9 @@ jobs:
   # 3) ويندوز (بيئة التشغيل المستهدفة: جهاز في المؤسسة) — غير معطِّل مؤقتًا
   # ------------------------------------------------------------------
   build-windows-probe:
-    name: our GUI on Windows (Qt6) [non-blocking]
-    if: github.event_name == 'workflow_dispatch'
+    name: our GUI on Windows (Qt6) + portable ZIP
+    # يعمل مع كل تعديل يمسّ الواجهة كي تبقى حزمة ويندوز الجاهزة متوفّرة دائمًا
+    # (لا يفشل السير كله عند تعثّر ويندوز: continue-on-error).
     runs-on: windows-latest
     continue-on-error: true
     timeout-minutes: 60
