@@ -208,7 +208,7 @@ void install(QMainWindow* window)
 			 });
 
 	// ---------- الحفظ والاستعادة ----------
-	const int savedIndex = settings.value(QStringLiteral("nav-index"), PAGE_HOME).toInt();
+	const int savedIndex = settings.value(QStringLiteral("OpenTimetable/shell/nav-index"), PAGE_HOME).toInt();
 	if (savedIndex >= 0 && savedIndex < nav->count()) {
 		// نستعيد الصفحة فقط (لا الإجراءات، حتى لا تُفتح نوافذ عند بدء التشغيل)
 		nav->setCurrentRow(savedIndex);
@@ -221,22 +221,25 @@ void install(QMainWindow* window)
 		nav->setCurrentRow(0);
 	}
 
-	const int savedWidth = settings.value(QStringLiteral("sidebar-width"), 220).toInt();
+	const int savedWidth = settings.value(QStringLiteral("OpenTimetable/shell/sidebar-width"), 220).toInt();
 	QList<int> sizes;
 	sizes << qBound(196, savedWidth, 320) << 1000;
 	splitter->setSizes(sizes);
 
-	QObject::connect(splitter, &QSplitter::splitterMoved, window, [splitter, settings](int pos, int index) mutable {
+	QObject::connect(splitter, &QSplitter::splitterMoved, window, [splitter](int pos, int index) {
 		Q_UNUSED(index);
-		// في RTL قد يكون الموضع من اليمين؛ نعتمد عرض الشريط الفعلي
 		Q_UNUSED(pos);
 		QList<int> current = splitter->sizes();
-		if (!current.isEmpty())
-			settings.setValue(QStringLiteral("sidebar-width"), current.first());
+		if (current.isEmpty())
+			return;
+		// QSettings غير قابل للنسخ، لذا ننشئه هنا (عملية نادرة ورخيصة)
+		QSettings s(QStringLiteral("fet"), QStringLiteral("fettimetabling"));
+		s.setValue(QStringLiteral("OpenTimetable/shell/sidebar-width"), current.first());
 	});
 
-	QObject::connect(nav, &QListWidget::currentRowChanged, window, [nav, settings](int row) mutable {
-		settings.setValue(QStringLiteral("nav-index"), row);
+	QObject::connect(nav, &QListWidget::currentRowChanged, window, [](int row) {
+		QSettings s(QStringLiteral("fet"), QStringLiteral("fettimetabling"));
+		s.setValue(QStringLiteral("OpenTimetable/shell/nav-index"), row);
 	});
 }
 
