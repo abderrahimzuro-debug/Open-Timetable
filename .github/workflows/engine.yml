@@ -203,12 +203,24 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Build (qmake + nmake)
-        shell: cmd
+        shell: pwsh
         run: |
-          mkdir build\win
-          cd build\win
+          New-Item -ItemType Directory -Force -Path build\win | Out-Null
+          Set-Location build\win
           qmake ..\..\fet\fet.pro CONFIG+=release
-          nmake
+          if ($LASTEXITCODE -ne 0) {
+            throw "qmake failed with exit code $LASTEXITCODE"
+          }
+          nmake /NOLOGO 2>&1 | Tee-Object -FilePath nmake.log
+          $code = $LASTEXITCODE
+          if ($code -ne 0) {
+            Write-Host "=== build errors ==="
+            Get-Content nmake.log |
+              Select-String -Pattern 'error|fatal|Error' |
+              Select-Object -First 40 |
+              ForEach-Object { Write-Host "::error::$($_.Line)" }
+            throw "nmake failed with exit code $code"
+          }
 
       - name: Build Arabic translation
         shell: bash
