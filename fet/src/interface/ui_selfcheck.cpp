@@ -14,6 +14,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include "ui_dashboard.h"
 #include "ui_shell.h"
 
+#include <QAction>
 #include <QApplication>
 #include <QListWidget>
 #include <QMainWindow>
