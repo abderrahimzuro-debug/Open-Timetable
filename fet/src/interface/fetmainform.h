@@ -543,6 +543,11 @@ private:
 	bool fileSave();
 	bool fileSaveAs();
 	
+signals:
+	// Open-Timetable: تُطلَق بعد تبديل لغة الواجهة، لتحديث الشاشات التي لا
+	// يعرفها FET الأصلي (لوحة التوليد وغيرها).
+	void languageChanged();
+
 public:
 	FetMainForm();
 	~FetMainForm();

@@ -63,6 +63,9 @@ public:
 	TimetableGenerateForm(QWidget* parent);
 	~TimetableGenerateForm();
 
+	// يضبط نصوص لوحة التوليد حسب لغة الواجهة الحالية.
+	void otApplyLanguage();
+
 public Q_SLOTS:
 	void start();
 	void stop();

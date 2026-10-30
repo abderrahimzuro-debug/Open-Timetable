@@ -18,11 +18,12 @@
 | `src/interface/ui_theme.h` | **جديد** — واجهة نظام المظهر الحديث. |
 | `src/interface/ui_theme.cpp` | **جديد** — نمط Fusion + خط عربي + ورقة أنماط (QSS) فاتحة وداكنة. |
 | `src/interface/ui_shell.h` | **جديد** — واجهة الشريط الجانبي/الصفحات. |
-| `src/interface/ui_shell.cpp` | **جديد** — الشريط الجانبي + QStackedWidget + الإبقاء على الواجهة الكلاسيكية. |
+| `src/interface/ui_shell.cpp` | **جديد** — الشريط الجانبي + QStackedWidget + الإبقاء على الواجهة الكلاسيكية. `retranslate()` يعيد بناء كل نصوصه بلغة الواجهة. |
 | `src/interface/ui_dashboard.h` | **جديد** — واجهة لوحة البداية. |
-| `src/interface/ui_dashboard.cpp` | **جديد** — البطاقات الإحصائية والأزرار السريعة. |
+| `src/interface/ui_dashboard.cpp` | **جديد** — البطاقات الإحصائية والأزرار السريعة. `retranslate()` يترجمها. |
+| `src/interface/ui_i18n.h` | **جديد** — `UiI18n::T(en, ar)` تختار نص واجهتنا حسب `FET_LANGUAGE`. |
 | `src/interface/ui_publish.h` | **جديد** — واجهة ميزة «نشر الجداول إلى مجلد مشترك». |
-| `src/interface/ui_publish.cpp` | **جديد** — توليد كل الملفات + مجلد مؤرّخ + صفحة بداية عربية + README. |
+| `src/interface/ui_publish.cpp` | **جديد** — توليد كل الملفات + مجلد مؤرّخ + صفحة بداية عربية + README. رسائله ثنائية اللغة. |
 | `src/interface/fetmainform_template.ui` | إضافة إجراء `filePublishToShareAction` داخل قائمة Export. |
 | `src/interface/fetmainform.cpp` | ربط إجراء النشر، واستدعاء `UiShell::install(this)` بعد `setupUi`. |
 | `src/interface/timetablegenerateform_template.ui` | إضافة «لوحة التوليد» أعلى نافذة التوليد (تقدّم/حدّ زمني/نشر تلقائي). |
@@ -55,9 +56,9 @@ qmake ../../fet/fet.pro CONFIG+=release
 make -j"$(nproc)"
 # الناتج: fet (الواجهة) و fet-cl (سطر الأوامر)
 
-# ترجمة عربية
-cd ../.. && scripts/fet-build-translations.sh ar   # → build/translations/fet_ar.qm
-# ضع fet_ar.qm بجانب تنفيذي fet (أو في مجلد translations بجانبه)
+# كل الترجمات (37 لغة) — لازمة لعمل تبديل اللغة
+cd ../.. && scripts/fet-build-translations.sh --all   # → build/translations/fet_*.qm
+# ضع ملفات .qm في مجلد translations بجانب تنفيذي fet
 ```
 
 ملاحظة: مسار CMake في FET يشترط Qt 6.10+، أما مسار qmake فيعمل مع Qt 5.15 (وهو ما نستخدمه

@@ -26,6 +26,7 @@
 #include "rules.h"
 
 #include "utilities.h"
+#include "ui_i18n.h"
 #include "ui_publish.h"
 #include "fetmainform.h" // COMPANY / PROGRAM
 
@@ -123,6 +124,9 @@ void runSingle()
 TimetableGenerateForm::TimetableGenerateForm(QWidget* parent): QDialog(parent)
 {
 	setupUi(this);
+
+	// نصوص لوحة التوليد تتبع لغة الواجهة الحالية
+	otApplyLanguage();
 
 	QFont font(pausedLabel->font());
 	font.setBold(true);
@@ -242,6 +246,18 @@ void TimetableGenerateForm::otSaveSettings()
 	settings.setValue(QStringLiteral("OpenTimetable/generation/auto-publish"), otAutoPublishCheckBox->isChecked());
 }
 
+// يضبط نصوص لوحة التوليد حسب لغة الواجهة (تُحدَّث عند تغيير اللغة أيضًا).
+void TimetableGenerateForm::otApplyLanguage()
+{
+	otGenPanel->setTitle(UiI18n::T("Generation panel","لوحة التوليد"));
+	otTimeLimitCheckBox->setText(UiI18n::T("Time limit:","حدّ زمني:"));
+	otTimeLimitSpinBox->setSuffix(UiI18n::T(" min"," دقيقة"));
+	otAutoPublishCheckBox->setText(UiI18n::T("Publish timetables automatically when generation finishes",
+						 "نشر الجداول تلقائيًا بعد اكتمال التوليد"));
+	if(!generation_running && otProgressBar->value()==0)
+		otProgressLabel->setText(UiI18n::T("Generation has not started yet","لم يبدأ التوليد بعد"));
+}
+
 // يحدّث شريط التقدّم والتسميات (يُستدعى عند كل نشاط يُوضع، وعند كل ثانية).
 void TimetableGenerateForm::otUpdatePanel(int na)
 {
@@ -264,36 +280,36 @@ void TimetableGenerateForm::otUpdatePanel(int na)
 	{
 		const int h=elapsed/3600, m=(elapsed%3600)/60, sec=elapsed%60;
 		if(h>0)
-			elapsedText=QStringLiteral("%1 س %2 د").arg(h).arg(m);
+			elapsedText=UiI18n::T("%1 h %2 min","%1 س %2 د").arg(h).arg(m);
 		else if(m>0)
-			elapsedText=QStringLiteral("%1 د %2 ث").arg(m).arg(sec);
+			elapsedText=UiI18n::T("%1 min %2 s","%1 د %2 ث").arg(m).arg(sec);
 		else
-			elapsedText=QStringLiteral("%1 ث").arg(sec);
+			elapsedText=UiI18n::T("%1 s","%1 ث").arg(sec);
 	}
 
-	otProgressLabel->setText(QStringLiteral("%1 من %2 نشاطًا — %3%").arg(na).arg(total).arg(percent));
+	otProgressLabel->setText(UiI18n::T("%1 of %2 activities — %3%","%1 من %2 نشاطًا — %3%").arg(na).arg(total).arg(percent));
 
 	// تقدير الوقت المتبقي اعتمادًا على معدّل الإنجاز
 	QString eta;
 	if(na>0 && elapsed>2 && na<total){
 		const double rate=double(na)/double(elapsed);
 		const int remaining=int((total-na)/rate);
-		eta=QStringLiteral("الزمن المنقضي: %1 — المتوقّع المتبقي: ≈ %2")
+		eta=UiI18n::T("Elapsed: %1 — estimated remaining: ≈ %2","الزمن المنقضي: %1 — المتوقّع المتبقي: ≈ %2")
 			.arg(elapsedText)
-			.arg(remaining>=60 ? QStringLiteral("%1 د").arg(remaining/60)
-					   : QStringLiteral("%1 ث").arg(remaining));
+			.arg(remaining>=60 ? UiI18n::T("%1 min","%1 د").arg(remaining/60)
+					   : UiI18n::T("%1 s","%1 ث").arg(remaining));
 	}
 	else if(na<total){
-		eta=QStringLiteral("الزمن المنقضي: %1").arg(elapsedText);
+		eta=UiI18n::T("Elapsed: %1","الزمن المنقضي: %1").arg(elapsedText);
 	}
 	else{
-		eta=QStringLiteral("الزمن المنقضي: %1 — اكتمل").arg(elapsedText);
+		eta=UiI18n::T("Elapsed: %1 — finished","الزمن المنقضي: %1 — اكتمل").arg(elapsedText);
 	}
 
 	if(otLimitSeconds>0 && !otTimeLimitFired && na<total){
 		const int left=otLimitSeconds-elapsed;
 		if(left>0)
-			eta+=QStringLiteral(" — تبقّى من الحدّ: %1 د %2 ث").arg(left/60).arg(left%60);
+			eta+=UiI18n::T(" — time limit left: %1 min %2 s"," — تبقّى من الحدّ: %1 د %2 ث").arg(left/60).arg(left%60);
 	}
 
 	otEtaLabel->setText(eta);
@@ -310,7 +326,7 @@ void TimetableGenerateForm::otCheckTimeLimit(int elapsedSeconds, int na)
 		return;
 
 	otTimeLimitFired=true;
-	otProgressLabel->setText(QStringLiteral("توقّف التوليد تلقائيًا: بلغ الحدّ الزمني (%1 دقيقة). يمكنك عرض أفضل جدول وصل إليه البرنامج.")
+	otProgressLabel->setText(UiI18n::T("Generation stopped automatically: the time limit (%1 minutes) was reached. You can view the best timetable reached so far.","توقّف التوليد تلقائيًا: بلغ الحدّ الزمني (%1 دقيقة). يمكنك عرض أفضل جدول وصل إليه البرنامج.")
 				 .arg(otTimeLimitSpinBox->value()));
 	otTicker->stop();
 	stop();
@@ -363,9 +379,9 @@ void TimetableGenerateForm::start(){
 	otAutoPublishCheckBox->setEnabled(false);
 	otProgressBar->setValue(0);
 	if(otLimitSeconds>0)
-		otProgressLabel->setText(QStringLiteral("بدأ التوليد — الحدّ الزمني: %1 دقيقة").arg(otTimeLimitSpinBox->value()));
+		otProgressLabel->setText(UiI18n::T("Generation started — time limit: %1 minutes","بدأ التوليد — الحدّ الزمني: %1 دقيقة").arg(otTimeLimitSpinBox->value()));
 	else
-		otProgressLabel->setText(QStringLiteral("بدأ التوليد — بلا حدّ زمني"));
+		otProgressLabel->setText(UiI18n::T("Generation started — no time limit","بدأ التوليد — بلا حدّ زمني"));
 	otEtaLabel->setText(QString());
 	otTicker->start();
 

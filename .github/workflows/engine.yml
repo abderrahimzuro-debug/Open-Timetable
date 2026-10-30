@@ -138,6 +138,8 @@ jobs:
           # نُظهر سطور التقرير كتعليقات (annotations) لتبقى قابلة للقراءة عبر API
           grep -E '\[ok\]|\[FAIL\]|SELFCHECK|Qt:|platform:|style:' selfcheck.log | \
             while IFS= read -r line; do echo "::notice::${line}"; done
+          # التقرير الكامل في ملخّص التشغيل (تعليقات GitHub محدودة بعشرة أسطر)
+          { echo '### GUI self-check (Linux)'; echo '```'; cat selfcheck.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           grep -q "SELFCHECK OK" selfcheck.log
 
       - name: Smoke test our fet-cl
@@ -150,6 +152,7 @@ jobs:
           set -e
           PKG=build/package/open-timetable-linux-x86_64
           mkdir -p "$PKG/translations"
+          # FET يبحث عن الترجمات في مجلد translations بجانب التنفيذي
           cp build/fet "$PKG/open-timetable"
           cp build/fet-cl "$PKG/fet-cl"
           cp build/translations/*.qm "$PKG/translations/" 2>/dev/null || true
@@ -369,6 +372,11 @@ jobs:
             Get-Content selfcheck-windows.log |
               Select-String -Pattern '\[ok\]|\[FAIL\]|SELFCHECK|Qt:|platform:' |
               ForEach-Object { Write-Host "::notice::$($_.Line)" }
+            # التقرير الكامل في ملخّص التشغيل (تعليقات GitHub محدودة بعشرة أسطر)
+            "### GUI self-check (Windows)" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
+            "``````" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
+            Get-Content selfcheck-windows.log | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
+            "``````" | Out-File -Append -Encoding utf8 $env:GITHUB_STEP_SUMMARY
           }
 
       - name: Upload Windows self-check report

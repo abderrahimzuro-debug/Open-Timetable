@@ -16965,6 +16965,18 @@ void FetMainForm::languageAction_triggered()
 	updateActionsList();
 	updateSearchMenu();
 
+	// Open-Timetable: نحفظ اللغة فورًا حتى تبقى بعد إعادة التشغيل حتى لو أُغلق
+	// البرنامج بغير الطريق العادي (كانت تُحفظ فقط عند الخروج السليم).
+	{
+		QSettings settings(COMPANY, PROGRAM);
+		settings.setValue("language", FET_LANGUAGE);
+		settings.sync();
+	}
+
+	// FET يطلق هذه الإشارة بعد تبديل اللغة؛ نستخدمها لتحديث باقي شاشاتنا
+	// (لوحة التوليد وغيرها) بدل حصر الترجمة في النافذة الرئيسية.
+	emit languageChanged();
+
 	//QMessageBox::information(this, tr("FET information"), tr("Language %1 selected").arg( FET_LANGUAGE+" ("+languagesMap.value(FET_LANGUAGE)+")" )+"\n\n"+
 	// tr("Please exit and restart FET to activate language change"));
 }

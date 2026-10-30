@@ -33,6 +33,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QMainWindow>
+#include <QPushButton>
 #include <QSettings>
 #include <QSplitter>
 #include <QStackedWidget>
@@ -61,7 +62,7 @@ QListWidgetItem* addSection(QListWidget* nav, const QString& title)
 	font.setPointSizeF(qMax(8.0, font.pointSizeF() - 0.5));
 	item->setFont(font);
 	item->setForeground(QColor(QStringLiteral("#8a94a3")));
-	item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	item->setTextAlignment((UiI18n::isArabic() ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
 	return item;
 }
 
@@ -71,7 +72,7 @@ QListWidgetItem* addNavItem(QListWidget* nav, const QString& text,
 			    const QString& tooltip = QString())
 {
 	QListWidgetItem* item = new QListWidgetItem(text, nav);
-	item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	item->setTextAlignment((UiI18n::isArabic() ? Qt::AlignRight : Qt::AlignLeft) | Qt::AlignVCenter);
 	if (!actionName.isEmpty())
 		item->setData(RoleActionName, actionName);
 	if (pageIndex >= 0)

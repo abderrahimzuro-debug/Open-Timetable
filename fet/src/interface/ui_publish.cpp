@@ -15,6 +15,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 الأوامر fet-cl)، فلا يوجد أي منطق مكرّر ولا تعديل على المحرّك.
 */
 
+#include "ui_i18n.h"
 #include "ui_publish.h"
 
 #include "fet.h"
@@ -386,14 +387,14 @@ bool runAutomatic(QWidget* parent, QString* targetPath)
 void run(QWidget* parent)
 {
 	if (!gt.rules.initialized) {
-		QMessageBox::information(parent, QStringLiteral("نشر الجداول"),
-					 QStringLiteral("ابدأ ملفًا جديدًا أو افتح ملفًا موجودًا قبل النشر."));
+		QMessageBox::information(parent, UiI18n::T("Publish timetables","نشر الجداول"),
+					 UiI18n::T("Start a new file or open an existing one before publishing.","ابدأ ملفًا جديدًا أو افتح ملفًا موجودًا قبل النشر."));
 		return;
 	}
 
 	if (!canPublish()) {
-		QMessageBox::information(parent, QStringLiteral("نشر الجداول"),
-					 QStringLiteral("يجب توليد الجدول أولًا. اضغط على «توليد» ثم أعد المحاولة."));
+		QMessageBox::information(parent, UiI18n::T("Publish timetables","نشر الجداول"),
+					 UiI18n::T("You must generate the timetable first. Press \"Generate\" and try again.","يجب توليد الجدول أولًا. اضغط على «توليد» ثم أعد المحاولة."));
 		return;
 	}
 
@@ -403,7 +404,7 @@ void run(QWidget* parent)
 
 	const QString chosen = QFileDialog::getExistingDirectory(
 		parent,
-		QStringLiteral("اختر مجلد المشاركة (مثلًا مجلد على شبكة المؤسسة)"),
+		UiI18n::T("Choose the sharing folder (for example a folder on the school network)","اختر مجلد المشاركة (مثلًا مجلد على شبكة المؤسسة)"),
 		lastDir,
 		QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
@@ -413,8 +414,8 @@ void run(QWidget* parent)
 	// مجلد جديد مؤرّخ داخل المجلد المختار (بدون الكتابة فوق نشر سابق)
 	QString targetPath;
 	if (!publishCore(parent, chosen, &targetPath)) {
-		QMessageBox::critical(parent, QStringLiteral("نشر الجداول"),
-				      QStringLiteral("تعذّر النشر في:\n%1\n\nتأكّد من صلاحيات الكتابة.")
+		QMessageBox::critical(parent, UiI18n::T("Publish timetables","نشر الجداول"),
+				      UiI18n::T("Could not publish to:\n%1\n\nCheck the write permissions.","تعذّر النشر في:\n%1\n\nتأكّد من صلاحيات الكتابة.")
 					      .arg(QDir::toNativeSeparators(chosen)));
 		return;
 	}
@@ -426,17 +427,20 @@ void run(QWidget* parent)
 	const int htmlCount = targetDir.entryInfoList(QStringList() << QStringLiteral("*.html"), QDir::Files).count();
 
 	QMessageBox box(parent);
-	box.setWindowTitle(QStringLiteral("نشر الجداول"));
+	box.setWindowTitle(UiI18n::T("Publish timetables","نشر الجداول"));
 	box.setIcon(QMessageBox::Information);
-	box.setText(QStringLiteral("تم نشر الجداول بنجاح."));
+	box.setText(UiI18n::T("The timetables were published successfully.","تم نشر الجداول بنجاح."));
 	box.setInformativeText(
-		QStringLiteral("المجلد:\n%1\n\nعدد صفحات الجداول: %2\n\n"
+		UiI18n::T("Folder:\n%1\n\nTimetable pages: %2\n\n"
+			       "Share this folder with teachers and students (school network or a USB copy). "
+			       "Always start from index.html.",
+			       "المجلد:\n%1\n\nعدد صفحات الجداول: %2\n\n"
 			       "شارك هذا المجلد مع الأساتذة والتلاميذ (شبكة المؤسسة أو نسخة على USB). "
 			       "نقطة البداية دائمًا هو الملف index.html.")
 			.arg(QDir::toNativeSeparators(targetPath))
 			.arg(htmlCount));
-	QPushButton* openButton = box.addButton(QStringLiteral("فتح المجلد"), QMessageBox::AcceptRole);
-	box.addButton(QStringLiteral("إغلاق"), QMessageBox::RejectRole);
+	QPushButton* openButton = box.addButton(UiI18n::T("Open folder","فتح المجلد"), QMessageBox::AcceptRole);
+	box.addButton(UiI18n::T("Close","إغلاق"), QMessageBox::RejectRole);
 	box.exec();
 
 	if (box.clickedButton() == openButton)

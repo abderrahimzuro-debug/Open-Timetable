@@ -9,6 +9,7 @@ equals(QT_MAJOR_VERSION, 5) {
 }
 
 SOURCES += \
+	interface/ui_i18n.h \
 	interface/ui_theme.cpp \
 	interface/ui_publish.cpp \
 	interface/ui_shell.cpp \

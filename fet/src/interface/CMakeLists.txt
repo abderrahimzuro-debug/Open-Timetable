@@ -15,6 +15,7 @@ set(app_icon_macos "${CMAKE_SOURCE_DIR}/icons/fet.icns")
 set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 
 qt_add_executable(fet WIN32 MACOSX_BUNDLE
+    ui_i18n.h
     ui_theme.cpp ui_theme.h
     ui_publish.cpp ui_publish.h
     ui_shell.cpp ui_shell.h
