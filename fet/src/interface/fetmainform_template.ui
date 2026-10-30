@@ -926,6 +926,7 @@
       <string>Export</string>
      </property>
      <addaction name="fileExportCSVAction"/>
+     <addaction name="filePublishToShareAction"/>
     </widget>
     <widget class="QMenu" name="menuImport">
      <property name="title">
@@ -1597,6 +1598,14 @@
   <action name="fileExportCSVAction">
    <property name="text">
     <string>Export comma separated values (text)</string>
+   </property>
+  </action>
+  <action name="filePublishToShareAction">
+   <property name="text">
+    <string>نشر الجداول إلى مجلد مشترك (شبكة المؤسسة)…</string>
+   </property>
+   <property name="toolTip">
+    <string>يولّد جداول الأساتذة والأفواج والقاعات وينسخها إلى مجلد تختاره، مع صفحة بداية عربية للتصفح والطباعة</string>
    </property>
   </action>
   <action name="fileImportCSVActivitiesAction">

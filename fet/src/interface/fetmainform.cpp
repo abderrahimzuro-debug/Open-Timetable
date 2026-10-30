@@ -56,6 +56,7 @@
 #include "statisticsprintform.h"
 
 #include "exportinterface.h"
+#include "ui_publish.h"
 #include "importinterface.h"
 
 #include "humanreadabledataform.h"
@@ -1657,6 +1658,11 @@ FetMainForm::FetMainForm()
 	connect(fileImportCSVTeachersAction, &QAction::triggered, this, &FetMainForm::fileImportCSVTeachersAction_triggered);
 	connect(fileImportCSVYearsGroupsSubgroupsAction, &QAction::triggered, this, &FetMainForm::fileImportCSVYearsGroupsSubgroupsAction_triggered);
 	connect(fileExportCSVAction, &QAction::triggered, this, &FetMainForm::fileExportCSVAction_triggered);
+
+	// Open-Timetable: نشر الجداول إلى مجلد مشترك (شبكة المؤسسة) — الخيار (أ) للأدوار الثلاثة.
+	connect(filePublishToShareAction, &QAction::triggered, this, [this](){
+		UiPublish::run(this);
+	});
 	connect(fileImportCSVTeacherNotAvailableAction, &QAction::triggered, this, &FetMainForm::fileImportCSVTeacherNotAvailableAction_triggered);
 	
 	connect(dataInstitutionNameAction, &QAction::triggered, this, &FetMainForm::dataInstitutionNameAction_triggered);
