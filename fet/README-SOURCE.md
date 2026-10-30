@@ -17,10 +17,14 @@
 | --- | --- |
 | `src/interface/ui_theme.h` | **جديد** — واجهة نظام المظهر الحديث. |
 | `src/interface/ui_theme.cpp` | **جديد** — نمط Fusion + خط عربي + ورقة أنماط (QSS) فاتحة وداكنة. |
+| `src/interface/ui_shell.h` | **جديد** — واجهة الشريط الجانبي/الصفحات. |
+| `src/interface/ui_shell.cpp` | **جديد** — الشريط الجانبي + QStackedWidget + الإبقاء على الواجهة الكلاسيكية. |
+| `src/interface/ui_dashboard.h` | **جديد** — واجهة لوحة البداية. |
+| `src/interface/ui_dashboard.cpp` | **جديد** — البطاقات الإحصائية والأزرار السريعة. |
 | `src/interface/ui_publish.h` | **جديد** — واجهة ميزة «نشر الجداول إلى مجلد مشترك». |
 | `src/interface/ui_publish.cpp` | **جديد** — توليد كل الملفات + مجلد مؤرّخ + صفحة بداية عربية + README. |
 | `src/interface/fetmainform_template.ui` | إضافة إجراء `filePublishToShareAction` داخل قائمة Export. |
-| `src/interface/fetmainform.cpp` | ربط الإجراء الجديد بدالة النشر (lambda، دون تعديل صنف النافذة). |
+| `src/interface/fetmainform.cpp` | ربط إجراء النشر، واستدعاء `UiShell::install(this)` بعد `setupUi`. |
 | `src/interface/fet.cpp` | استدعاء `UiTheme::apply()` بعد إنشاء `QApplication`، وجعل اللغة الافتراضية `ar`. |
 | `src/src.pro` | إضافة الملفات الجديدة إلى `SOURCES` و`HEADERS`، وإضافة `/utf-8` لـ MSVC. |
 | `src/interface/CMakeLists.txt` | إضافة الملفات الجديدة، وإضافة `/utf-8` لـ MSVC. |
