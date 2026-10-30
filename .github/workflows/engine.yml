@@ -106,14 +106,16 @@ jobs:
             {
               echo '### Compile errors'
               echo '```'
-              grep -n -m 40 -E 'error:|Error [0-9]|\*\*\*' "$LOG" || tail -40 "$LOG"
+              tail -60 "$LOG"
               echo '```'
             } >> "$GITHUB_STEP_SUMMARY"
-            grep -m 20 -E 'error:|Error [0-9]' "$LOG" | while IFS= read -r line; do
-              echo "::error::$line"
+            # نُخرج آخر السطور كتعليقات (annotations) حتى تظهر عبر API
+            tail -40 "$LOG" | while IFS= read -r line; do
+              [ -n "$line" ] && echo "::error::${line//$'\r'/}"
             done
           else
             echo "::error::build.log not found"
+            find build -maxdepth 3 -name '*.log' -o -name 'Makefile' | head -20
           fi
 
       - name: Build Arabic translation (fet_ar.qm)
