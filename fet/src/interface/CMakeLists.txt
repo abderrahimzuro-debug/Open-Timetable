@@ -17,6 +17,8 @@ set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION
 qt_add_executable(fet WIN32 MACOSX_BUNDLE
     ui_theme.cpp ui_theme.h
     ui_publish.cpp ui_publish.h
+    ui_shell.cpp ui_shell.h
+    ui_dashboard.cpp ui_dashboard.h
     ${app_icon_resource_windows}
     ${app_icon_macos}
     activitiesform.cpp activitiesform.h

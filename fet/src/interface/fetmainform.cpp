@@ -57,6 +57,7 @@
 
 #include "exportinterface.h"
 #include "ui_publish.h"
+#include "ui_shell.h"
 #include "importinterface.h"
 
 #include "humanreadabledataform.h"
@@ -1219,6 +1220,10 @@ bool FetMainForm::saveHistory()
 FetMainForm::FetMainForm()
 {
 	setupUi(this);
+
+	// Open-Timetable: الشريط الجانبي + لوحة البداية.
+	// الواجهة الكلاسيكية الأصلية تنتقل كما هي إلى صفحة مستقلة، بلا حذف أي وظيفة.
+	UiShell::install(this);
 
 	QSettings settings(COMPANY, PROGRAM);
 	

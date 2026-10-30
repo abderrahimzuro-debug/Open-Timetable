@@ -339,6 +339,85 @@ QSplitter::handle:horizontal {
 QSplitter::handle:vertical {
 	height: 4px;
 }
+
+/* ===== Open-Timetable: الشريط الجانبي ولوحة البداية ===== */
+QWidget#otSidebar {
+	background-color: #ffffff;
+	border: none;
+	border-right: 1px solid #e3e7ed;
+}
+
+QLabel#otBrand {
+	font-size: 13pt;
+	font-weight: 700;
+	color: #0f172a;
+}
+
+QLabel#otBrandSub {
+	color: #7a869a;
+	font-size: 9pt;
+}
+
+QListWidget#otNav {
+	background: transparent;
+	border: none;
+	padding: 4px 6px;
+}
+
+QListWidget#otNav::item {
+	padding: 9px 12px;
+	border-radius: 8px;
+	margin: 1px 2px;
+	color: #344054;
+}
+
+QListWidget#otNav::item:selected {
+	background-color: #e8efff;
+	color: #1d4ed8;
+	font-weight: 600;
+}
+
+QListWidget#otNav::item:hover:!selected {
+	background-color: #f1f4f8;
+}
+
+QListWidget#otNav::item:disabled {
+	color: #98a2b3;
+	background: transparent;
+}
+
+QLabel#otDashTitle {
+	font-size: 20pt;
+	font-weight: 700;
+	color: #0f172a;
+}
+
+QLabel#otDashSubtitle {
+	color: #475467;
+	font-size: 11pt;
+}
+
+QLabel#otDashFile {
+	color: #7a869a;
+	font-size: 9.5pt;
+}
+
+QLabel#otSectionTitle {
+	font-weight: 600;
+	color: #344054;
+	font-size: 11pt;
+}
+
+QFrame#otCard {
+	background-color: #ffffff;
+	border: 1px solid #e3e7ed;
+	border-radius: 12px;
+}
+
+QFrame#otCard QLabel {
+	background: transparent;
+	border: none;
+}
 )QSS";
 
 const char* const DARK_QSS = R"QSS(
@@ -506,6 +585,85 @@ QToolTip {
 	border: none;
 	border-radius: 6px;
 	padding: 6px 8px;
+}
+
+/* ===== Open-Timetable: الشريط الجانبي ولوحة البداية (داكن) ===== */
+QWidget#otSidebar {
+	background-color: #151b25;
+	border: none;
+	border-right: 1px solid #262f3f;
+}
+
+QLabel#otBrand {
+	font-size: 13pt;
+	font-weight: 700;
+	color: #e6eaf0;
+}
+
+QLabel#otBrandSub {
+	color: #7f8b9c;
+	font-size: 9pt;
+}
+
+QListWidget#otNav {
+	background: transparent;
+	border: none;
+	padding: 4px 6px;
+}
+
+QListWidget#otNav::item {
+	padding: 9px 12px;
+	border-radius: 8px;
+	margin: 1px 2px;
+	color: #b6c0cf;
+}
+
+QListWidget#otNav::item:selected {
+	background-color: #1e3a8a;
+	color: #ffffff;
+	font-weight: 600;
+}
+
+QListWidget#otNav::item:hover:!selected {
+	background-color: #1f2836;
+}
+
+QListWidget#otNav::item:disabled {
+	color: #5d6878;
+	background: transparent;
+}
+
+QLabel#otDashTitle {
+	font-size: 20pt;
+	font-weight: 700;
+	color: #f1f5f9;
+}
+
+QLabel#otDashSubtitle {
+	color: #b6c0cf;
+	font-size: 11pt;
+}
+
+QLabel#otDashFile {
+	color: #7f8b9c;
+	font-size: 9.5pt;
+}
+
+QLabel#otSectionTitle {
+	font-weight: 600;
+	color: #cbd5e1;
+	font-size: 11pt;
+}
+
+QFrame#otCard {
+	background-color: #171d27;
+	border: 1px solid #262f3f;
+	border-radius: 12px;
+}
+
+QFrame#otCard QLabel {
+	background: transparent;
+	border: none;
 }
 )QSS";
 
