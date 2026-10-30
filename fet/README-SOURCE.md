@@ -17,9 +17,13 @@
 | --- | --- |
 | `src/interface/ui_theme.h` | **جديد** — واجهة نظام المظهر الحديث. |
 | `src/interface/ui_theme.cpp` | **جديد** — نمط Fusion + خط عربي + ورقة أنماط (QSS) فاتحة وداكنة. |
+| `src/interface/ui_publish.h` | **جديد** — واجهة ميزة «نشر الجداول إلى مجلد مشترك». |
+| `src/interface/ui_publish.cpp` | **جديد** — توليد كل الملفات + مجلد مؤرّخ + صفحة بداية عربية + README. |
+| `src/interface/fetmainform_template.ui` | إضافة إجراء `filePublishToShareAction` داخل قائمة Export. |
+| `src/interface/fetmainform.cpp` | ربط الإجراء الجديد بدالة النشر (lambda، دون تعديل صنف النافذة). |
 | `src/interface/fet.cpp` | استدعاء `UiTheme::apply()` بعد إنشاء `QApplication`، وجعل اللغة الافتراضية `ar`. |
-| `src/src.pro` | إضافة ملفي المظهر إلى `SOURCES` و`HEADERS`. |
-| `src/interface/CMakeLists.txt` | إضافة ملفي المظهر إلى قائمة المصادر. |
+| `src/src.pro` | إضافة الملفات الجديدة إلى `SOURCES` و`HEADERS`، وإضافة `/utf-8` لـ MSVC. |
+| `src/interface/CMakeLists.txt` | إضافة الملفات الجديدة، وإضافة `/utf-8` لـ MSVC. |
 
 قاعدة العمل: **لا نعدّل منطق المحرّك** (`src/engine`, `src/cl`). التعديلات محصورة في الواجهة
 (`src/interface`) وفي ملفات البناء.
