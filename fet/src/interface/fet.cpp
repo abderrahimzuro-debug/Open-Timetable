@@ -27,6 +27,7 @@ File fet.cpp - this is where FET starts
 #include "rules.h"
 
 #include <QMessageBox>
+#include <QTimer>
 
 #include <QWidget>
 
@@ -57,6 +58,7 @@ extern Generate gen;
 
 #include "fetmainform.h"
 #include "ui_theme.h"
+#include "ui_selfcheck.h"
 
 #include "helpblockplanningform.h"
 #include "helptermsform.h"
@@ -2373,6 +2375,15 @@ int main(int argc, char **argv)
 	
 	QStringList _args=QCoreApplication::arguments();
 
+	// Open-Timetable: فحص ذاتي للواجهة (يعمل بلا شاشة عبر QT_QPA_PLATFORM=offscreen).
+	bool otSelfCheck=false;
+	for(int i=_args.count()-1; i>=1; --i){
+		if(_args.at(i)==QStringLiteral("--ot-selfcheck")){
+			otSelfCheck=true;
+			_args.removeAt(i);
+		}
+	}
+
 	if(_args.count()<=2){
 		fetSettings.readGenerationParameters(qapplication);
 		
@@ -2416,6 +2427,13 @@ int main(int argc, char **argv)
 		fetMainForm.show();
 		
 		QObject::connect(&qapplication, &QApplication::aboutToQuit, &fetSettings, &FetSettings::writeGenerationParameters);
+
+		if(otSelfCheck){
+			QTimer::singleShot(700, &qapplication, [&fetMainForm, &qapplication](){
+				const int failures=UiSelfCheck::run(&fetMainForm);
+				qapplication.exit(failures==0 ? 0 : 1);
+			});
+		}
 		
 		if(_args.count()==2){ //Trying to open a fet file given as argument.
 			QString fileName=QDir::fromNativeSeparators(_args.at(1));

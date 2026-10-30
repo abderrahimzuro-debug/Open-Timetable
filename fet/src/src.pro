@@ -13,6 +13,7 @@ SOURCES += \
 	interface/ui_publish.cpp \
 	interface/ui_shell.cpp \
 	interface/ui_dashboard.cpp \
+	interface/ui_selfcheck.cpp \
 	engine/activity.cpp      engine/lockunlock.cpp       engine/studentsset.cpp     engine/timetable_defs.cpp \
 	engine/activitytag.cpp   engine/room.cpp             engine/subject.cpp         engine/timetableexport.cpp \
 	engine/building.cpp      engine/rules.cpp            engine/teacher.cpp \
@@ -143,6 +144,7 @@ HEADERS += \
 	interface/ui_publish.h \
 	interface/ui_shell.h \
 	interface/ui_dashboard.h \
+	interface/ui_selfcheck.h \
 	engine/activity.h      engine/lockunlock.h    engine/solution.h         engine/timeconstraint.h \
 	engine/activitytag.h   engine/matrix.h        engine/spaceconstraint.h  engine/timetable_defs.h \
 	engine/building.h      engine/messageboxes.h  engine/studentsset.h      engine/timetableexport.h \

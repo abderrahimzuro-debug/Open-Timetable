@@ -119,10 +119,37 @@ jobs:
       - name: Build Arabic translation (fet_ar.qm)
         run: ./scripts/fet-build-translations.sh ar
 
+      - name: GUI self-check (headless, offscreen)
+        # يتحقق فعليًا أن الواجهة تُقلع وأن الشريط الجانبي ولوحة البداية والمظهر تعمل،
+        # دون الحاجة إلى شاشة (يُستعمل نفس الفحص عند تشخيص مشاكل التثبيت).
+        run: |
+          set -o pipefail
+          QT_QPA_PLATFORM=offscreen ./build/fet --ot-selfcheck 2>&1 | tee selfcheck.log
+          grep -q "SELFCHECK OK" selfcheck.log
+
       - name: Smoke test our fet-cl
         env:
           TIME_LIMIT: 120
         run: ./scripts/fet-smoke-test.sh build/fet-cl
+
+      - name: Package Linux portable bundle
+        run: |
+          set -e
+          PKG=build/package/open-timetable-linux-x86_64
+          mkdir -p "$PKG/translations"
+          cp build/fet "$PKG/open-timetable"
+          cp build/fet-cl "$PKG/fet-cl"
+          cp build/translations/*.qm "$PKG/translations/" 2>/dev/null || true
+          cp fet/LICENSE "$PKG/LICENSE"
+          cp docs/INSTALL.md "$PKG/INSTALL.md"
+          cat > "$PKG/run.sh" <<'EOF'
+          #!/usr/bin/env bash
+          # تشغيل Open-Timetable (يتطلب Qt5 مثبّتًا على النظام).
+          cd "$(dirname "$0")" && exec ./open-timetable "$@"
+          EOF
+          chmod +x "$PKG/run.sh" "$PKG/open-timetable" "$PKG/fet-cl"
+          tar -czf build/package/open-timetable-linux-x86_64.tar.gz -C build/package open-timetable-linux-x86_64
+          ls -lh build/package/open-timetable-linux-x86_64.tar.gz
 
       - name: Upload our binaries + translations
         uses: actions/upload-artifact@v4
@@ -132,15 +159,18 @@ jobs:
             build/fet
             build/fet-cl
             build/translations
+            build/package/open-timetable-linux-x86_64.tar.gz
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload GUI build log
+      - name: Upload GUI build log + self-check report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: gui-build-log-ours
-          path: build/gui/build.log
+          path: |
+            build/gui/build.log
+            selfcheck.log
           retention-days: 7
 
   # ------------------------------------------------------------------
@@ -173,6 +203,57 @@ jobs:
           cd build\win
           qmake ..\..\fet\fet.pro CONFIG+=release
           nmake
+
+      - name: Build Arabic translation
+        shell: bash
+        run: ./scripts/fet-build-translations.sh ar
+
+      - name: Package Windows portable bundle (windeployqt)
+        shell: pwsh
+        run: |
+          $gui = Get-ChildItem -Path build\win -Recurse -Filter fet.exe | Select-Object -First 1
+          $cli = Get-ChildItem -Path build\win -Recurse -Filter fet-cl.exe | Select-Object -First 1
+          if (-not $gui) { throw "fet.exe not found in build/win" }
+          if (-not $cli) { throw "fet-cl.exe not found in build/win" }
+
+          New-Item -ItemType Directory -Force -Path build\package\translations | Out-Null
+          Copy-Item $gui.FullName build\package\Open-Timetable.exe -Force
+          Copy-Item $cli.FullName build\package\fet-cl.exe -Force
+
+          windeployqt --release --no-translations --no-opengl-sw build\package\Open-Timetable.exe
+          windeployqt --release --no-translations --no-opengl-sw build\package\fet-cl.exe
+
+          if (Test-Path build\translations) {
+            Copy-Item build\translations\*.qm build\package\translations\ -Force
+          }
+          Copy-Item fet\LICENSE build\package\LICENSE -Force
+          Copy-Item docs\INSTALL.md build\package\INSTALL.md -Force
+
+          Compress-Archive -Path build\package\* -DestinationPath build\open-timetable-windows-x86_64.zip -Force
+          Get-Item build\open-timetable-windows-x86_64.zip | Format-List Name, Length
+
+      - name: Self-check on Windows (headless)
+        shell: pwsh
+        run: |
+          $env:QT_QPA_PLATFORM = "offscreen"
+          & build\package\Open-Timetable.exe --ot-selfcheck 2>&1 | Tee-Object -FilePath selfcheck-windows.log
+          if ($LASTEXITCODE -ne 0) { throw "Windows self-check failed (exit $LASTEXITCODE)" }
+
+      - name: Upload Windows self-check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-selfcheck
+          path: selfcheck-windows.log
+          retention-days: 7
+
+      - name: Upload Windows portable package
+        uses: actions/upload-artifact@v4
+        with:
+          name: open-timetable-windows-x86_64
+          path: build/open-timetable-windows-x86_64.zip
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Upload Windows build log
         if: always()
