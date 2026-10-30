@@ -192,17 +192,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Qt 6.10 (MSVC 2022 x64)
+      # FET's own Windows builds use MinGW (not MSVC): MSVC hits
+      # "fatal error C1061: compiler limit: blocks nested too deeply" in
+      # engine/rules.cpp, while MinGW compiles it fine.
+      - name: Install Qt 6.10 (MinGW 13.1 x64) + MinGW toolchain
         uses: jurplel/install-qt-action@v4
         with:
           version: '6.10.0'
-          arch: 'win64_msvc2022_64'
+          arch: 'win64_mingw'
+          tools: 'tools_mingw1310'
           cache: true
 
-      - name: Configure MSVC environment
-        uses: ilammy/msvc-dev-cmd@v1
-
-      - name: Build (qmake + nmake)
+      - name: Build (qmake + mingw32-make)
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path build\win | Out-Null
@@ -211,20 +212,17 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             throw "qmake failed with exit code $LASTEXITCODE"
           }
-          nmake /NOLOGO 2>&1 | Tee-Object -FilePath nmake.log
+          mingw32-make -j"$env:NUMBER_OF_PROCESSORS" 2>&1 | Tee-Object -FilePath make.log
           $code = $LASTEXITCODE
           if ($code -ne 0) {
             Write-Host "=== build errors ==="
-            Get-Content nmake.log |
+            Get-Content make.log |
               Select-String -Pattern 'error|fatal|Error' |
               Select-Object -First 40 |
               ForEach-Object { Write-Host "::error::$($_.Line)" }
-            throw "nmake failed with exit code $code"
+            throw "mingw32-make failed with exit code $code"
           }
-
-      - name: Build Arabic translation
-        shell: bash
-        run: ./scripts/fet-build-translations.sh ar
+          Get-ChildItem -Recurse -Filter *.exe | Select-Object FullName, Length
 
       - name: Package Windows portable bundle (windeployqt)
         shell: pwsh
@@ -238,8 +236,8 @@ jobs:
           Copy-Item $gui.FullName build\package\Open-Timetable.exe -Force
           Copy-Item $cli.FullName build\package\fet-cl.exe -Force
 
-          windeployqt --release --no-translations --no-opengl-sw build\package\Open-Timetable.exe
-          windeployqt --release --no-translations --no-opengl-sw build\package\fet-cl.exe
+          windeployqt --release --no-translations --no-opengl-sw --compiler-runtime build\package\Open-Timetable.exe
+          windeployqt --release --no-translations --no-opengl-sw --compiler-runtime build\package\fet-cl.exe
 
           if (Test-Path build\translations) {
             Copy-Item build\translations\*.qm build\package\translations\ -Force
