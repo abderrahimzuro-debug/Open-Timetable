@@ -4,6 +4,7 @@
 # الاستخدام:
 #   scripts/fet-build-translations.sh            # العربية فقط
 #   scripts/fet-build-translations.sh ar en_GB   # لغات محدّدة
+#   scripts/fet-build-translations.sh --all      # كل لغات FET (نحو 40 لغة)
 #
 # الناتج: build/translations/fet_<lang>.qm
 # ضع الملفات بجانب تنفيذي fet (أو في مجلّد translations بجانبه) ليحمّلها البرنامج.
@@ -18,6 +19,12 @@ OUT="$ROOT/build/translations"
 LANGS=("$@")
 if [[ ${#LANGS[@]} -eq 0 ]]; then
   LANGS=(ar)
+fi
+
+ALL=false
+if [[ "${LANGS[0]}" == "--all" ]]; then
+  ALL=true
+  LANGS=()
 fi
 
 [[ -f "$ARCHIVE" ]] || { echo "خطأ: الأرشيف غير موجود: $ARCHIVE" >&2; exit 1; }
@@ -35,6 +42,21 @@ if [[ -z "$LRELEASE" ]]; then
 fi
 
 mkdir -p "$WORK" "$OUT"
+
+if [[ "$ALL" == true ]]; then
+  echo "== استخراج قائمة اللغات من الأرشيف =="
+  mapfile -t LANGS < <(tar -tJf "$ARCHIVE" \
+    | grep -oE 'translations/fet_[A-Za-z_]+\.ts$' \
+    | sed -E 's#translations/fet_(.*)\.ts#\1#' \
+    | grep -v '^untranslated$' \
+    | sort -u)
+  echo "عدد اللغات: ${#LANGS[@]}"
+fi
+
+if [[ ${#LANGS[@]} -eq 0 ]]; then
+  echo "خطأ: لم تُحدَّد أي لغة." >&2
+  exit 1
+fi
 
 for lang in "${LANGS[@]}"; do
   ts="fet-${VERSION}/translations/fet_${lang}.ts"

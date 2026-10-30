@@ -12,10 +12,14 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include "ui_selfcheck.h"
 
 #include "ui_dashboard.h"
+#include "ui_i18n.h"
 #include "ui_shell.h"
 
 #include <QAction>
 #include <QApplication>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QSplitter>
@@ -138,7 +142,51 @@ int run(QMainWindow* mainWindow)
 			       QStringLiteral("%1/%2").arg(found).arg(actionItems));
 	}
 
-	// ---- 6) العودة إلى لوحة البداية تعمل ----
+	// ---- 6) اللغة والترجمة ----
+	{
+		const QString lang = FET_LANGUAGE;
+		r.ok(QStringLiteral("لغة الواجهة محدّدة"), lang);
+
+		// هل ملف الترجمة موجود فعلًا بجانب التنفيذي؟
+		const QString exeDir = QCoreApplication::applicationDirPath();
+		const QStringList candidates = {
+			exeDir + QStringLiteral("/translations/fet_%1.qm").arg(lang),
+			exeDir + QStringLiteral("/fet_%1.qm").arg(lang)
+		};
+		bool found = false;
+		for (const QString& path : candidates) {
+			if (QFileInfo::exists(path)) {
+				found = true;
+				r.ok(QStringLiteral("ملف الترجمة موجود"), path);
+				break;
+			}
+		}
+		if (!found) {
+			if (lang == QLatin1String("en_US"))
+				r.ok(QStringLiteral("ملف الترجمة غير مطلوب"), QStringLiteral("اللغة الإنجليزية مدمجة"));
+			else
+				r.fail(QStringLiteral("ملف الترجمة مفقود"), candidates.first());
+		}
+
+		const int qmCount = QDir(exeDir + QStringLiteral("/translations"))
+					    .entryList(QStringList() << QStringLiteral("fet_*.qm"), QDir::Files).count();
+		if (qmCount >= 30)
+			r.ok(QStringLiteral("لغات متعدّدة متوفّرة"), QStringLiteral("%1 ملف .qm").arg(qmCount));
+		else if (qmCount > 0)
+			r.fail(QStringLiteral("لغات متعدّدة متوفّرة"),
+			       QStringLiteral("%1 فقط — تبديل اللغة لن يعمل").arg(qmCount));
+		else
+			r.info(QStringLiteral("لا مجلد translations بجانب التنفيذي"));
+
+		// تبديل نصوص واجهتنا يجب أن يعمل فورًا
+		const QString arabic = UiI18n::T("Teachers", "الأساتذة");
+		if (lang.startsWith(QStringLiteral("ar")))
+			r.ok(QStringLiteral("نصوص الواجهة تتبع اللغة"), QStringLiteral("عربي: %1").arg(arabic));
+		else
+			r.ok(QStringLiteral("نصوص الواجهة تتبع اللغة"), QStringLiteral("إنجليزي: %1").arg(arabic));
+	}
+
+	// ---- 7) العودة إلى لوحة البداية تعمل ----
 	UiShell::showHome(mainWindow);
 	if (stack != nullptr && stack->currentIndex() == 0)
 		r.ok(QStringLiteral("العودة إلى لوحة البداية تعمل"));

@@ -59,6 +59,7 @@ extern Generate gen;
 #include "fetmainform.h"
 #include "ui_theme.h"
 #include "ui_selfcheck.h"
+#include "ui_shell.h"
 
 #include "helpblockplanningform.h"
 #include "helptermsform.h"
@@ -2062,6 +2063,17 @@ void setLanguage(QApplication& qapplication, QWidget* parent)
 		// Open-Timetable: كان هذا تحذيرًا معطِّلًا (مربّع حوار) عند كل إقلاع إذا غاب ملف
 		// الترجمة — وهو ما يحدث عند توزيع البرنامج دون مجلد translations. صار الآن
 		// رسالة غير معطِّلة (سجل + شريط الحالة)، ويُكمَل العمل بالإنجليزية.
+		{
+			// Open-Timetable: رسالة واضحة (غير معطِّلة) تشرح ما حدث وكيف يُصلح
+			const QString msg=QStringLiteral(
+			 "Language '%1' could not be loaded: the translation file '%2' is missing.\n"
+			 "Put the file in the 'translations' folder next to the program, then choose the language again.")
+			 .arg(FET_LANGUAGE)
+			 .arg("fet_"+FET_LANGUAGE+".qm");
+			qWarning().noquote() << msg;
+			if(parent!=nullptr)
+				QMessageBox::information(parent, QStringLiteral("Open-Timetable — language"), msg);
+		}
 		qWarning().noquote() << QString("FET: translation file %1 not found in %2, %3 or %4 - using en_US (US English)")
 			.arg("fet_"+FET_LANGUAGE+".qm")
 			.arg(QDir::toNativeSeparators(s1))
@@ -2120,6 +2132,8 @@ void setLanguage(QApplication& qapplication, QWidget* parent)
 				mainform->retranslateUi(mainform);
 				mainform->retranslateConstraints();
 				mainform->retranslateMode();
+				// Open-Timetable: ترجمة الشريط الجانبي ولوحة البداية فورًا
+				UiShell::retranslate(mainform);
 				continue;
 			}
 

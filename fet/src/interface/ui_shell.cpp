@@ -15,18 +15,20 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 
 لا نحذف أي عنصر من الواجهة الأصلية: هي فقط تنتقل إلى القائمة الجانبية
 كصفحة «الواجهة الكلاسيكية»، وكل أزرارها وقوائمها تعمل كما كانت.
+
+كل النصوص تمرّ عبر UiI18n::T() حتى تتبدّل فور تغيير اللغة (عربي/إنجليزي).
 */
 
 #include "ui_shell.h"
 
 #include "ui_dashboard.h"
+#include "ui_i18n.h"
 
 #include <QAction>
 #include <QApplication>
 #include <QColor>
 #include <QFont>
 #include <QFrame>
-#include <QIcon>
 #include <QLabel>
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -41,7 +43,6 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 namespace {
 
 const char* const PROP_INSTALLED = "ot_shell_installed";
-const char* const SETTINGS_GROUP = "OpenTimetable/shell";
 
 enum SidebarRole {
 	RoleActionName = Qt::UserRole + 1, // QString: اسم إجراء FET
@@ -78,6 +79,84 @@ QListWidgetItem* addNavItem(QListWidget* nav, const QString& text,
 	if (!tooltip.isEmpty())
 		item->setToolTip(tooltip);
 	return item;
+}
+
+// يُعيد بناء عناصر الشريط الجانبي باللغة الحالية، ويُبقي التحديد على نفس العنصر.
+void buildNavItems(QListWidget* nav)
+{
+	// نحفظ العنصر المحدّد (بمفتاحه: إجراء أو صفحة) لاستعادته بعد إعادة البناء
+	QString selAction;
+	int selPage = -1;
+	const QListWidgetItem* currentItem = nav->currentItem();
+	if (currentItem != nullptr) {
+		selAction = currentItem->data(RoleActionName).toString();
+		if (currentItem->data(RolePageIndex).isValid())
+			selPage = currentItem->data(RolePageIndex).toInt();
+	}
+
+	nav->clear();
+
+	addNavItem(nav, UiI18n::T("Home dashboard", "لوحة البداية"), QString(), PAGE_HOME,
+		   UiI18n::T("Project summary and quick actions",
+			     "ملخّص المشروع والإجراءات السريعة"));
+	addNavItem(nav, UiI18n::T("Classic interface", "الواجهة الكلاسيكية"), QString(), PAGE_CLASSIC,
+		   UiI18n::T("Original FET buttons (file, data, constraints, timetable)",
+			     "أزرار FET الأصلية (الملف، البيانات، القيود، الجدول)"));
+
+	addSection(nav, UiI18n::T("Data", "البيانات"));
+	addNavItem(nav, UiI18n::T("Teachers", "الأساتذة"), QStringLiteral("dataTeachersAction"));
+	addNavItem(nav, UiI18n::T("Subjects", "المواد"), QStringLiteral("dataSubjectsAction"));
+	addNavItem(nav, UiI18n::T("Years and groups", "الأقسام والأفواج"), QStringLiteral("dataYearsAction"));
+	addNavItem(nav, UiI18n::T("Subgroups", "الفرق الفرعية"), QStringLiteral("dataSubgroupsAction"));
+	addNavItem(nav, UiI18n::T("Rooms", "القاعات"), QStringLiteral("dataRoomsAction"));
+	addNavItem(nav, UiI18n::T("Buildings", "المباني"), QStringLiteral("dataBuildingsAction"));
+	addNavItem(nav, UiI18n::T("Activities", "الأنشطة"), QStringLiteral("dataActivitiesAction"));
+
+	addSection(nav, UiI18n::T("Constraints", "القيود"));
+	addNavItem(nav, UiI18n::T("All time constraints", "كل القيود الزمنية"),
+		   QStringLiteral("dataAllTimeConstraintsAction"));
+	addNavItem(nav, UiI18n::T("All space constraints", "كل القيود المكانية"),
+		   QStringLiteral("dataAllSpaceConstraintsAction"));
+
+	addSection(nav, UiI18n::T("Generation and timetables", "التوليد والجداول"));
+	addNavItem(nav, UiI18n::T("Generate timetable", "توليد الجدول"),
+		   QStringLiteral("timetableGenerateAction"));
+	addNavItem(nav, UiI18n::T("Teachers' timetables", "جداول الأساتذة"),
+		   QStringLiteral("timetableViewTeachersTimeHorizontalAction"));
+	addNavItem(nav, UiI18n::T("Students' timetables", "جداول الأقسام"),
+		   QStringLiteral("timetableViewStudentsTimeHorizontalAction"));
+	addNavItem(nav, UiI18n::T("Rooms' timetables", "جداول القاعات"),
+		   QStringLiteral("timetableViewRoomsTimeHorizontalAction"));
+	addNavItem(nav, UiI18n::T("Conflicts", "التعارضات"),
+		   QStringLiteral("timetableShowConflictsAction"));
+
+	addSection(nav, UiI18n::T("Publish", "النشر"));
+	addNavItem(nav, UiI18n::T("Publish timetables…", "نشر الجداول…"),
+		   QStringLiteral("filePublishToShareAction"), -1,
+		   UiI18n::T("Copy the timetables to a shared folder on the school network",
+			     "نسخ الجداول إلى مجلد مشترك على شبكة المؤسسة"));
+
+	// استعادة التحديد
+	int rowToSelect = 0;
+	for (int i = 0; i < nav->count(); ++i) {
+		QListWidgetItem* item = nav->item(i);
+		if (!selAction.isEmpty() && item->data(RoleActionName).toString() == selAction) {
+			rowToSelect = i;
+			break;
+		}
+		if (selPage >= 0 && item->data(RolePageIndex).isValid()
+		    && item->data(RolePageIndex).toInt() == selPage) {
+			rowToSelect = i;
+			break;
+		}
+	}
+	nav->setCurrentRow(rowToSelect);
+}
+
+void saveNavIndex(int row)
+{
+	QSettings s(QStringLiteral("fet"), QStringLiteral("fettimetabling"));
+	s.setValue(QStringLiteral("OpenTimetable/shell/nav-index"), row);
 }
 
 } // namespace
@@ -117,9 +196,10 @@ void install(QMainWindow* window)
 	brand->setObjectName(QStringLiteral("otBrand"));
 	brand->setContentsMargins(16, 16, 16, 2);
 
-	QLabel* brandSub = new QLabel(QStringLiteral("جداول دراسية بمعايير FET"), sidebar);
+	QLabel* brandSub = new QLabel(sidebar);
 	brandSub->setObjectName(QStringLiteral("otBrandSub"));
 	brandSub->setContentsMargins(16, 0, 16, 12);
+	brandSub->setText(UiI18n::T("Timetables powered by FET", "جداول دراسية بمعايير FET"));
 
 	QListWidget* nav = new QListWidget(sidebar);
 	nav->setObjectName(QStringLiteral("otNav"));
@@ -133,35 +213,7 @@ void install(QMainWindow* window)
 	sideLayout->addWidget(brandSub);
 	sideLayout->addWidget(nav, 1);
 
-	// عناصر التنقّل: نبدأ بالصفحتين، ثم اختصارات تُشغّل إجراءات FET مباشرة.
-	addNavItem(nav, QStringLiteral("لوحة البداية"), QString(), PAGE_HOME,
-		   QStringLiteral("ملخّص المشروع والإجراءات السريعة"));
-	addNavItem(nav, QStringLiteral("الواجهة الكلاسيكية"), QString(), PAGE_CLASSIC,
-		   QStringLiteral("أزرار FET الأصلية (الملف، البيانات، القيود، الجدول)"));
-
-	addSection(nav, QStringLiteral("البيانات"));
-	addNavItem(nav, QStringLiteral("الأساتذة"), QStringLiteral("dataTeachersAction"));
-	addNavItem(nav, QStringLiteral("المواد"), QStringLiteral("dataSubjectsAction"));
-	addNavItem(nav, QStringLiteral("الأقسام والأفواج"), QStringLiteral("dataYearsAction"));
-	addNavItem(nav, QStringLiteral("الفرق الفرعية"), QStringLiteral("dataSubgroupsAction"));
-	addNavItem(nav, QStringLiteral("القاعات"), QStringLiteral("dataRoomsAction"));
-	addNavItem(nav, QStringLiteral("المباني"), QStringLiteral("dataBuildingsAction"));
-	addNavItem(nav, QStringLiteral("الأنشطة"), QStringLiteral("dataActivitiesAction"));
-
-	addSection(nav, QStringLiteral("القيود"));
-	addNavItem(nav, QStringLiteral("كل القيود الزمنية"), QStringLiteral("dataAllTimeConstraintsAction"));
-	addNavItem(nav, QStringLiteral("كل القيود المكانية"), QStringLiteral("dataAllSpaceConstraintsAction"));
-
-	addSection(nav, QStringLiteral("التوليد والجداول"));
-	addNavItem(nav, QStringLiteral("توليد الجدول"), QStringLiteral("timetableGenerateAction"));
-	addNavItem(nav, QStringLiteral("جداول الأساتذة"), QStringLiteral("timetableViewTeachersTimeHorizontalAction"));
-	addNavItem(nav, QStringLiteral("جداول الأقسام"), QStringLiteral("timetableViewStudentsTimeHorizontalAction"));
-	addNavItem(nav, QStringLiteral("جداول القاعات"), QStringLiteral("timetableViewRoomsTimeHorizontalAction"));
-	addNavItem(nav, QStringLiteral("التعارضات"), QStringLiteral("timetableShowConflictsAction"));
-
-	addSection(nav, QStringLiteral("النشر"));
-	addNavItem(nav, QStringLiteral("نشر الجداول…"), QStringLiteral("filePublishToShareAction"),
-		   -1, QStringLiteral("نسخ الجداول إلى مجلد مشترك على شبكة المؤسسة"));
+	buildNavItems(nav);
 
 	// ---------- التجميع ----------
 	QSplitter* splitter = new QSplitter(Qt::Horizontal, window);
@@ -177,7 +229,6 @@ void install(QMainWindow* window)
 	window->setProperty(PROP_INSTALLED, true);
 
 	// ---------- السلوك ----------
-	// النقر المفرد يُنفّذ أيضًا (مريح أكثر من النقر المزدوج في شريط تنقّل)
 	QObject::connect(nav, &QListWidget::itemClicked, window, [window, stack](QListWidgetItem* item) {
 		if (item == nullptr)
 			return;
@@ -210,7 +261,6 @@ void install(QMainWindow* window)
 	// ---------- الحفظ والاستعادة ----------
 	const int savedIndex = settings.value(QStringLiteral("OpenTimetable/shell/nav-index"), PAGE_HOME).toInt();
 	if (savedIndex >= 0 && savedIndex < nav->count()) {
-		// نستعيد الصفحة فقط (لا الإجراءات، حتى لا تُفتح نوافذ عند بدء التشغيل)
 		nav->setCurrentRow(savedIndex);
 		const QVariant page = nav->item(savedIndex)->data(RolePageIndex);
 		if (page.isValid())
@@ -238,8 +288,7 @@ void install(QMainWindow* window)
 	});
 
 	QObject::connect(nav, &QListWidget::currentRowChanged, window, [](int row) {
-		QSettings s(QStringLiteral("fet"), QStringLiteral("fettimetabling"));
-		s.setValue(QStringLiteral("OpenTimetable/shell/nav-index"), row);
+		saveNavIndex(row);
 	});
 }
 
@@ -259,6 +308,31 @@ void showHome(QMainWindow* window)
 	QListWidget* nav = splitter->findChild<QListWidget*>(QStringLiteral("otNav"));
 	if (nav != nullptr && nav->count() > 0)
 		nav->setCurrentRow(0);
+}
+
+void retranslate(QMainWindow* window)
+{
+	if (window == nullptr || !window->property(PROP_INSTALLED).toBool())
+		return;
+
+	QSplitter* splitter = window->findChild<QSplitter*>(QStringLiteral("otShellSplitter"));
+	if (splitter == nullptr)
+		return;
+
+	// نصوص الشريط الجانبي
+	QListWidget* nav = splitter->findChild<QListWidget*>(QStringLiteral("otNav"));
+	if (nav != nullptr)
+		buildNavItems(nav);
+
+	// النص الفرعي للعلامة
+	const QList<QLabel*> labels = splitter->findChildren<QLabel*>(QStringLiteral("otBrandSub"));
+	for (QLabel* label : labels)
+		label->setText(UiI18n::T("Timetables powered by FET", "جداول دراسية بمعايير FET"));
+
+	// لوحة البداية
+	UiDashboard* dashboard = splitter->findChild<UiDashboard*>();
+	if (dashboard != nullptr)
+		dashboard->retranslate();
 }
 
 } // namespace UiShell

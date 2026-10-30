@@ -122,8 +122,12 @@ jobs:
             find build -maxdepth 3 -name '*.log' -o -name 'Makefile' | head -20
           fi
 
-      - name: Build Arabic translation (fet_ar.qm)
-        run: ./scripts/fet-build-translations.sh ar
+      - name: Build all translations (fet_<lang>.qm)
+        # كل لغات FET (نحو 40) حتى يعمل تبديل اللغة من قائمة Settings دون أي نقص
+        run: |
+          ./scripts/fet-build-translations.sh --all
+          ls build/translations | wc -l
+          du -sh build/translations
 
       - name: GUI self-check (headless, offscreen)
         # يتحقق فعليًا أن الواجهة تُقلع وأن الشريط الجانبي ولوحة البداية والمظهر تعمل،
@@ -157,6 +161,12 @@ jobs:
           cd "$(dirname "$0")" && exec ./open-timetable "$@"
           EOF
           chmod +x "$PKG/run.sh" "$PKG/open-timetable" "$PKG/fet-cl"
+          count=$(ls build/package/open-timetable-linux-x86_64/translations/*.qm 2>/dev/null | wc -l)
+          echo "translations in bundle: $count"
+          if [ "$count" -lt 30 ]; then
+            echo "::error::Linux bundle contains only $count translations - language switching would fail"
+            exit 1
+          fi
           tar -czf build/package/open-timetable-linux-x86_64.tar.gz -C build/package open-timetable-linux-x86_64
           ls -lh build/package/open-timetable-linux-x86_64.tar.gz
 
@@ -228,6 +238,15 @@ jobs:
           }
           Get-ChildItem -Recurse -Filter *.exe | Select-Object FullName, Length
 
+      - name: Build all translations (Windows package)
+        shell: bash
+        run: |
+          # كانت هذه الخطوة ساقطة من مهمة ويندوز، فخرجت الحزمة بلا أي ملف .qm
+          # (كانت القائمة تبقى إنجليزية مع شريط جانبي عربي).
+          ./scripts/fet-build-translations.sh --all
+          ls build/translations | wc -l
+          du -sh build/translations
+
       - name: Place translations next to the Windows build output
         shell: pwsh
         run: |
@@ -269,6 +288,14 @@ jobs:
           if (-not (Test-Path build\package\platforms\qwindows.dll)) {
             throw "package is missing platforms/qwindows.dll"
           }
+          $qms = @(Get-ChildItem build\package\translations -Filter *.qm -ErrorAction SilentlyContinue)
+          if ($qms.Count -lt 30) {
+            throw "package contains only $($qms.Count) .qm files - language switching would fail"
+          }
+          if (-not (Test-Path build\package\translations\fet_ar.qm)) {
+            throw "package is missing translations/fet_ar.qm"
+          }
+          Write-Host "translations in package: $($qms.Count)"
           $files = Get-ChildItem build\package -Recurse -File
           Write-Host ("package files: {0}, total {1:N1} MB" -f $files.Count, (($files | Measure-Object Length -Sum).Sum / 1MB))
           Copy-Item fet\LICENSE build\package\LICENSE -Force

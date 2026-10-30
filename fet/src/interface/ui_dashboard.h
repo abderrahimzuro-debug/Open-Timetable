@@ -19,6 +19,7 @@ version 3. See the LICENSE file in the root of this repository.
 
 class QMainWindow;
 class QLabel;
+class QAction;
 class QTimer;
 class QGridLayout;
 class QShowEvent;
@@ -36,6 +37,9 @@ public Q_SLOTS:
 	// يعيد قراءة البيانات من المحرّك ويحدّث البطاقات (آمن للنداء في أي وقت).
 	void refresh();
 
+	// يُحدّث كل النصوص الثابتة حسب لغة الواجهة الحالية (عربي/إنجليزي).
+	void retranslate();
+
 protected:
 	void showEvent(QShowEvent* event) override;
 	void hideEvent(QHideEvent* event) override;
@@ -50,6 +54,9 @@ private:
 	// بطاقة إحصاء واحدة، ويعيد مؤشّر قيمة تُحدّثها refresh()
 	QLabel* addStatCard(QGridLayout* grid, int row, int column,
 			    const QString& label, const QString& accentColor);
+
+	// نصّ زر سريع حسب لغة الواجهة (يعتمد على اسم إجراء FET)
+	static QString quickButtonText(const QString& actionName);
 
 	// زر سريع مرتبط بإجراء FET بالاسم (يعود nullptr إذا لم يوجد الإجراء)
 	QWidget* addQuickButton(QGridLayout* grid, int row, int column,
@@ -80,6 +87,9 @@ private:
 	StatLabels stats_;
 
 	QList<QWidget*> quickButtons_;
+	QList<QLabel*> cardCaptions_;      // نصوص بطاقات الإحصاء
+	QList<QLabel*> sectionTitles_;     // عناوين الأقسام
+	QList<QAction*> quickActions_;     // إجراءات الأزرار السريعة (لبناء النص)
 	QTimer* refreshTimer_;
 };
 
