@@ -20,6 +20,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QTranslator>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QSplitter>
@@ -177,6 +178,33 @@ int run(QMainWindow* mainWindow)
 			       QStringLiteral("%1 فقط — تبديل اللغة لن يعمل").arg(qmCount));
 		else
 			r.info(QStringLiteral("لا مجلد translations بجانب التنفيذي"));
+
+		// هل ملفات .qm صالحة فعلًا (لا مجرّد موجودة)؟ نحمّلها ونترجم نصًا معروفًا.
+		if (QFileInfo::exists(exeDir + QStringLiteral("/translations"))) {
+			const QString dir = exeDir + QStringLiteral("/translations");
+			QStringList badLangs;
+			QString sample;
+			const QStringList testLangs = { QStringLiteral("ar"), QStringLiteral("fr"),
+							QStringLiteral("en_GB") };
+			for (const QString& l : testLangs) {
+				QTranslator t;
+				if (!t.load(QStringLiteral("fet_") + l, dir) || t.isEmpty())
+					badLangs << l;
+				else if (l == QLatin1String("fr"))
+					sample = t.translate("FetMainForm", "Explanation:");
+			}
+			if (badLangs.isEmpty())
+				r.ok(QStringLiteral("ملفات الترجمة صالحة"),
+				     QStringLiteral("ar/fr/en_GB — مثال: %1").arg(sample));
+			else
+				r.fail(QStringLiteral("ملفات الترجمة صالحة"),
+				       QStringLiteral("تالفة أو ناقصة: %1").arg(badLangs.join(QStringLiteral(", "))));
+
+			if (sample == QLatin1String("Explication:"))
+				r.ok(QStringLiteral("الترجمة تُنتج نصًا فعلًا"), QStringLiteral("fr: Explication:"));
+			else if (!sample.isEmpty())
+				r.info(QStringLiteral("نص الترجمة الفرنسية: ") + sample);
+		}
 
 		// تبديل نصوص واجهتنا يجب أن يعمل فورًا
 		const QString arabic = UiI18n::T("Teachers", "الأساتذة");
