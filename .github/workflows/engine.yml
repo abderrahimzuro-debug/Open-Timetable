@@ -127,6 +127,9 @@ jobs:
         run: |
           set -o pipefail
           QT_QPA_PLATFORM=offscreen ./build/fet --ot-selfcheck 2>&1 | tee selfcheck.log
+          # نُظهر سطور التقرير كتعليقات (annotations) لتبقى قابلة للقراءة عبر API
+          grep -E '\[ok\]|\[FAIL\]|SELFCHECK|Qt:|platform:|style:' selfcheck.log | \
+            while IFS= read -r line; do echo "::notice::${line}"; done
           grep -q "SELFCHECK OK" selfcheck.log
 
       - name: Smoke test our fet-cl
