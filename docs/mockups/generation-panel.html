@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>معاينة: لوحة التوليد — Open-Timetable</title>
+<!--
+  معاينة تصميمية لنافذة التوليد الجديدة (المرحلة 5).
+  الصفحة للعرض فقط؛ النافذة الحقيقية Qt وتستعمل نفس الألوان والأنماط.
+-->
+<style>
+  :root{--bg:#f7f8fa;--card:#fff;--text:#17202a;--muted:#5b6675;--line:#e3e7ed;--accent:#2563eb}
+  *{box-sizing:border-box}
+  body{margin:0;background:#e9ecf1;color:var(--text);line-height:1.6;
+       font-family:'Cairo','Noto Sans Arabic','Segoe UI',Tahoma,sans-serif;font-size:15px;
+       display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+  .dlg{width:min(860px,100%);background:var(--bg);border:1px solid var(--line);border-radius:12px;
+       box-shadow:0 18px 50px rgba(16,24,40,.16);overflow:hidden}
+  .titlebar{background:#fff;border-bottom:1px solid var(--line);padding:10px 16px;font-weight:600;font-size:14px;color:#344054}
+  .body{padding:16px 18px 18px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+  .panel h3{margin:0 0 10px;font-size:14px;color:#344054;font-weight:600}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .status{font-size:14px;color:var(--text)}
+  .bar{height:18px;background:#f1f3f6;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:10px 0 8px}
+  .bar>i{display:block;height:100%;width:64%;background:linear-gradient(90deg,#2563eb,#3b82f6);
+         border-radius:5px 0 0 5px}
+  .bar-wrap{position:relative}
+  .bar-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+           font-size:12px;font-weight:600;color:#0f172a;pointer-events:none}
+  .muted{color:var(--muted);font-size:13px}
+  label.chk{display:inline-flex;align-items:center;gap:7px;font-size:14px}
+  input[type=number]{width:86px;padding:5px 8px;border:1px solid #d5dae2;border-radius:6px;font-family:inherit}
+  .suffix{color:var(--muted);font-size:13px}
+  .log{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+       font-size:13px;color:#344054;white-space:pre-line;line-height:1.8}
+  .buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  button{font-family:inherit;font-size:14px;background:#fff;border:1px solid #d5dae2;border-radius:6px;
+         color:#17202a;padding:7px 16px;cursor:pointer}
+  button:hover{background:#f1f4f8}
+  button.primary{background:var(--accent);border-color:#1d4ed8;color:#fff;font-weight:600}
+  button:disabled{color:#9aa4b2;background:#f4f5f7;cursor:default}
+  .note{margin:14px 2px 0;color:#7a869a;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="dlg">
+  <div class="titlebar">توليد الجدول — Open-Timetable</div>
+  <div class="body">
+
+    <div class="panel">
+      <h3>لوحة التوليد</h3>
+
+      <div class="status">163 من 486 نشاطًا — 34%</div>
+      <div class="bar-wrap">
+        <div class="bar"><i></i></div>
+        <div class="bar-pct">34%</div>
+      </div>
+
+      <div class="muted">الزمن المنقضي: 4 د 12 ث — المتوقّع المتبقي: ≈ 9 د — تبقّى من الحدّ: 5 د 48 ث</div>
+
+      <div class="row" style="margin-top:12px">
+        <label class="chk"><input type="checkbox" checked> حدّ زمني:</label>
+        <input type="number" value="15" min="1" max="600"> <span class="suffix">دقيقة</span>
+        <span style="flex:1"></span>
+        <label class="chk"><input type="checkbox"> نشر الجداول تلقائيًا بعد اكتمال التوليد</label>
+      </div>
+    </div>
+
+    <div class="log">المرحلة الحالية: التحسين (optimisation)
+163 من 486 نشاطًا
+أفضل مرحلة: 421/486
+التعارضات الحالية: 0 (القيود الصعبة)
+
+[نشر تلقائي] نُشرت الجداول في: \\SERVER\Timetables\ثانوية-الأمير-عبد-القادر-2026-10-30_1412</div>
+
+    <div class="buttons">
+      <button class="primary">ابدأ</button>
+      <button>إيقاف وعرض الجدول الحالي</button>
+      <button>إيقاف عند أعلى مرحلة</button>
+      <button disabled>إيقاف مؤقّت</button>
+      <span style="flex:1"></span>
+      <button>مساعدة</button>
+      <button>إغلاق</button>
+    </div>
+
+    <p class="note">
+      معاينة تصميمية: القيم أعلاه توضيحية. في البرنامج تُحدَّث تلقائيًا كل نشاط يُوضع، وعند بلوغ
+      الحدّ الزمني يتوقّف التوليد ويُعرض أفضل جدول وصل إليه — دون أي تعديل على محرّك FET.
+    </p>
+  </div>
+</div>
+</body>
+</html>
