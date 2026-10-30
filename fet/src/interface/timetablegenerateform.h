@@ -27,6 +27,8 @@
 //#include <QProcess>
 #include <QList>
 
+class QTimer;
+
 /*class GenerateThread: public QThread{
 	Q_OBJECT
 
@@ -45,6 +47,17 @@ class TimetableGenerateForm : public QDialog, Ui::TimetableGenerateForm_template
 
 private:
 	QString initialOutputDirectory;
+
+	// Open-Timetable: لوحة التوليد (تقدّم، وقت متبقٍ، حدّ زمني، نشر تلقائي)
+	QTimer* otTicker;
+	bool otTimeLimitFired;
+	int otLimitSeconds;
+	int otStartElapsed;
+
+	void otUpdatePanel(int na);
+	void otCheckTimeLimit(int elapsedSeconds, int na);
+	void otLoadSettings();
+	void otSaveSettings();
 
 public:
 	TimetableGenerateForm(QWidget* parent);

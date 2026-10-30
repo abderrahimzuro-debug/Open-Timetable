@@ -22,6 +22,10 @@ namespace UiPublish {
 	// داخل مجلد جديد مؤرّخ، وينشئ index.html عربيًا + README.txt.
 	void run(QWidget* parent);
 
+	// نشر تلقائي بلا أي حوار: يستعمل آخر مجلد نشر محفوظ.
+	// يعيد true عند النجاح، ويضع مسار مجلد النشر في targetPath إن طُلب.
+	bool runAutomatic(QWidget* parent, QString* targetPath = nullptr);
+
 	// هل البيانات جاهزة للنشر؟ (يُستخدم لتفعيل/تعطيل الزر أو للاختبار)
 	bool canPublish();
 

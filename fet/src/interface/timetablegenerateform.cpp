@@ -26,11 +26,19 @@
 #include "rules.h"
 
 #include "utilities.h"
+#include "ui_publish.h"
+#include "fetmainform.h" // COMPANY / PROGRAM
 
 #include <QString>
 #include <QStringList>
 
 #include <QTextEdit>
+#include <QCheckBox>
+#include <QProgressBar>
+#include <QSpinBox>
+#include <QTimer>
+#include <QSettings>
+#include <QDateTime>
 
 //#include <QDateTime>
 //#include <QLocale>
@@ -155,6 +163,41 @@ TimetableGenerateForm::TimetableGenerateForm(QWidget* parent): QDialog(parent)
 	seeImpossiblePushButton->setDisabled(true);
 	seeInitialOrderPushButton->setDisabled(true);
 
+	// ---------- Open-Timetable: لوحة التوليد ----------
+	otTimeLimitFired=false;
+	otLimitSeconds=0;
+	otStartElapsed=0;
+
+	otLoadSettings();
+
+	otTicker=new QTimer(this);
+	otTicker->setInterval(1000);
+	connect(otTicker, &QTimer::timeout, this, [this](){
+		if(!generation_running)
+			return;
+		gen.myMutex.lock();
+		const int elapsed=gen.searchTime;
+		const int placed=gen.maxActivitiesPlaced;
+		gen.myMutex.unlock();
+		otCheckTimeLimit(elapsed, placed);
+		otUpdatePanel(placed);
+	});
+
+	connect(otTimeLimitCheckBox, &QCheckBox::toggled, this, [this](bool checked){
+		otTimeLimitSpinBox->setEnabled(checked);
+		otSaveSettings();
+	});
+	connect(otTimeLimitSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){
+		otSaveSettings();
+	});
+	connect(otAutoPublishCheckBox, &QCheckBox::toggled, this, [this](bool){
+		otSaveSettings();
+	});
+
+	otProgressBar->setValue(0);
+	otProgressBar->setFormat(QStringLiteral("%p%"));
+	otTimeLimitSpinBox->setEnabled(otTimeLimitCheckBox->isChecked());
+
 	connect(&gen, &Generate::activityPlaced, this, &TimetableGenerateForm::activityPlaced);
 	connect(&gen, &Generate::generationFinished, this, &TimetableGenerateForm::generationFinished);
 	connect(&gen, &Generate::impossibleToSolve, this, &TimetableGenerateForm::impossibleToSolve);
@@ -172,6 +215,105 @@ TimetableGenerateForm::~TimetableGenerateForm()
 	
 	/*generateThread.quit();
 	generateThread.wait();*/
+}
+
+
+// ================= Open-Timetable: لوحة التوليد =================
+
+void TimetableGenerateForm::otLoadSettings()
+{
+	QSettings settings(COMPANY, PROGRAM);
+
+	const bool limitEnabled=settings.value(QStringLiteral("OpenTimetable/generation/time-limit-enabled"), true).toBool();
+	const int minutes=settings.value(QStringLiteral("OpenTimetable/generation/time-limit-minutes"), 10).toInt();
+	const bool autoPublish=settings.value(QStringLiteral("OpenTimetable/generation/auto-publish"), false).toBool();
+
+	otTimeLimitCheckBox->setChecked(limitEnabled);
+	otTimeLimitSpinBox->setValue(qBound(1, minutes, 600));
+	otAutoPublishCheckBox->setChecked(autoPublish);
+	otTimeLimitSpinBox->setEnabled(limitEnabled);
+}
+
+void TimetableGenerateForm::otSaveSettings()
+{
+	QSettings settings(COMPANY, PROGRAM);
+	settings.setValue(QStringLiteral("OpenTimetable/generation/time-limit-enabled"), otTimeLimitCheckBox->isChecked());
+	settings.setValue(QStringLiteral("OpenTimetable/generation/time-limit-minutes"), otTimeLimitSpinBox->value());
+	settings.setValue(QStringLiteral("OpenTimetable/generation/auto-publish"), otAutoPublishCheckBox->isChecked());
+}
+
+// يحدّث شريط التقدّم والتسميات (يُستدعى عند كل نشاط يُوضع، وعند كل ثانية).
+void TimetableGenerateForm::otUpdatePanel(int na)
+{
+	const int total=gt.rules.nInternalActivities;
+	if(total<=0)
+		return;
+
+	if(na>total)
+		na=total;
+
+	const int percent=int((100.0*na)/total);
+	if(percent!=otProgressBar->value())
+		otProgressBar->setValue(percent);
+
+	gen.myMutex.lock();
+	const int elapsed=gen.searchTime;
+	gen.myMutex.unlock();
+
+	QString elapsedText;
+	{
+		const int h=elapsed/3600, m=(elapsed%3600)/60, sec=elapsed%60;
+		if(h>0)
+			elapsedText=QStringLiteral("%1 س %2 د").arg(h).arg(m);
+		else if(m>0)
+			elapsedText=QStringLiteral("%1 د %2 ث").arg(m).arg(sec);
+		else
+			elapsedText=QStringLiteral("%1 ث").arg(sec);
+	}
+
+	otProgressLabel->setText(QStringLiteral("%1 من %2 نشاطًا — %3%").arg(na).arg(total).arg(percent));
+
+	// تقدير الوقت المتبقي اعتمادًا على معدّل الإنجاز
+	QString eta;
+	if(na>0 && elapsed>2 && na<total){
+		const double rate=double(na)/double(elapsed);
+		const int remaining=int((total-na)/rate);
+		eta=QStringLiteral("الزمن المنقضي: %1 — المتوقّع المتبقي: ≈ %2")
+			.arg(elapsedText)
+			.arg(remaining>=60 ? QStringLiteral("%1 د").arg(remaining/60)
+					   : QStringLiteral("%1 ث").arg(remaining));
+	}
+	else if(na<total){
+		eta=QStringLiteral("الزمن المنقضي: %1").arg(elapsedText);
+	}
+	else{
+		eta=QStringLiteral("الزمن المنقضي: %1 — اكتمل").arg(elapsedText);
+	}
+
+	if(otLimitSeconds>0 && !otTimeLimitFired && na<total){
+		const int left=otLimitSeconds-elapsed;
+		if(left>0)
+			eta+=QStringLiteral(" — تبقّى من الحدّ: %1 د %2 ث").arg(left/60).arg(left%60);
+	}
+
+	otEtaLabel->setText(eta);
+}
+
+// يوقف التوليد تلقائيًا عند بلوغ الحدّ الزمني (بلا أي تعديل على المحرّك).
+void TimetableGenerateForm::otCheckTimeLimit(int elapsedSeconds, int na)
+{
+	if(otLimitSeconds<=0 || otTimeLimitFired || !generation_running)
+		return;
+	if(elapsedSeconds<otLimitSeconds)
+		return;
+	if(na>=gt.rules.nInternalActivities)
+		return;
+
+	otTimeLimitFired=true;
+	otProgressLabel->setText(QStringLiteral("توقّف التوليد تلقائيًا: بلغ الحدّ الزمني (%1 دقيقة). يمكنك عرض أفضل جدول وصل إليه البرنامج.")
+				 .arg(otTimeLimitSpinBox->value()));
+	otTicker->stop();
+	stop();
 }
 
 void TimetableGenerateForm::start(){
@@ -211,6 +353,21 @@ void TimetableGenerateForm::start(){
 	}
 
 	pausedLabel->setVisible(false);
+
+	// Open-Timetable: تصفير لوحة التوليد وتشغيل المؤقّت والحدّ الزمني
+	otTimeLimitFired=false;
+	otLimitSeconds=otTimeLimitCheckBox->isChecked() ? otTimeLimitSpinBox->value()*60 : 0;
+	otStartElapsed=0;
+	otTimeLimitCheckBox->setEnabled(false);
+	otTimeLimitSpinBox->setEnabled(false);
+	otAutoPublishCheckBox->setEnabled(false);
+	otProgressBar->setValue(0);
+	if(otLimitSeconds>0)
+		otProgressLabel->setText(QStringLiteral("بدأ التوليد — الحدّ الزمني: %1 دقيقة").arg(otTimeLimitSpinBox->value()));
+	else
+		otProgressLabel->setText(QStringLiteral("بدأ التوليد — بلا حدّ زمني"));
+	otEtaLabel->setText(QString());
+	otTicker->start();
 
 	currentResultsTextEdit->setEnabled(true);
 
@@ -274,6 +431,9 @@ void TimetableGenerateForm::stop()
 	}
 
 	generation_running=false;
+
+	if(otTicker!=nullptr)
+		otTicker->stop();
 
 	//gen.myMutex.lock();
 	gen.abortOptimization=true;
@@ -448,6 +608,31 @@ void TimetableGenerateForm::stop()
 	saveFETDialogGeometry(&dialog, settingsName);
 
 	pausedLabel->setVisible(false);
+
+	// Open-Timetable: النشر التلقائي بعد اكتمال التوليد (بلا حوارات)
+	if(otAutoPublishCheckBox->isChecked()){
+		QString target;
+		if(UiPublish::runAutomatic(this, &target)){
+			currentResultsTextEdit->append(QStringLiteral("\n[نشر تلقائي] نُشرت الجداول في: %1")
+						       .arg(QDir::toNativeSeparators(target)));
+		}
+		else{
+			currentResultsTextEdit->append(QStringLiteral("\n[نشر تلقائي] لم يتم النشر: لم يُحدَّد مجلد نشر سابق. "
+								      "استخدم «ملف ▸ تصدير ▸ نشر الجداول إلى مجلد مشترك» مرة واحدة."));
+		}
+	}
+
+	// Open-Timetable: إنهاء لوحة التوليد + النشر التلقائي عند الطلب
+	if(otTicker!=nullptr)
+		otTicker->stop();
+	otTimeLimitCheckBox->setEnabled(true);
+	otTimeLimitSpinBox->setEnabled(otTimeLimitCheckBox->isChecked());
+	otAutoPublishCheckBox->setEnabled(true);
+	otUpdatePanel(gt.rules.nInternalActivities);
+	otProgressBar->setValue(100);
+	otProgressLabel->setText(QStringLiteral("اكتمل التوليد: %1 من %2 نشاطًا ✔")
+					 .arg(gt.rules.nInternalActivities)
+					 .arg(gt.rules.nInternalActivities));
 
 	currentResultsTextEdit->setEnabled(true);
 
@@ -1002,6 +1187,10 @@ void TimetableGenerateForm::activityPlaced(int nThread, int na){
 
 	gen.semaphorePlacedActivity.release();
 
+	// Open-Timetable: تحديث لوحة التوليد والتحقق من الحدّ الزمني
+	otUpdatePanel(na);
+	otCheckTimeLimit(t, na);
+
 	//gen.cvForPlacedActivity.notify_one();
 
 	//write to the Qt interface
@@ -1259,9 +1448,11 @@ void TimetableGenerateForm::closePressed()
 	//	singleThread.join();
 	//if(!generateThread.isRunning())
 
-	if(!generation_running)
-	//if(!singleThread.joinable())
+	if(!generation_running){
+		if(otTicker!=nullptr)
+			otTicker->stop();
 		this->close();
+	}
 }
 
 void TimetableGenerateForm::seeImpossible()

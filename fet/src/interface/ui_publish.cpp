@@ -310,6 +310,79 @@ QString suggestedFolderName()
 	return base;
 }
 
+namespace {
+
+// نواة النشر: تُنشئ مجلدًا مؤرّخًا داخل baseDir، تولّد كل الملفات، وتكتب بوابة عربية.
+// (بلا أي حوار — يستدعيها الزر اليدوي والنشر التلقائي بعد التوليد.)
+bool publishCore(QWidget* parent, const QString& baseDir, QString* targetPathOut)
+{
+	if (!gt.rules.initialized || !canPublish())
+		return false;
+
+	const QString folderName = suggestedFolderName();
+	QString targetPath = baseDir + QLatin1Char('/') + folderName;
+	int counter = 2;
+	while (QDir(targetPath).exists() && counter < 100) {
+		targetPath = baseDir + QLatin1Char('/') + folderName + QStringLiteral("-%1").arg(counter);
+		++counter;
+	}
+
+	QDir dir;
+	if (!dir.mkpath(targetPath))
+		return false;
+
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+
+	TimetableExport::writeGenerationResultsCommandLine(parent, targetPath + QLatin1Char('/'));
+
+	QString sourceFetName;
+	if (!INPUT_FILENAME_XML.isEmpty()) {
+		const QFileInfo srcInfo(INPUT_FILENAME_XML);
+		if (srcInfo.exists()) {
+			sourceFetName = QStringLiteral("source.fet");
+			const QString destFile = targetPath + QLatin1Char('/') + sourceFetName;
+			if (!QFile::copy(INPUT_FILENAME_XML, destFile))
+				sourceFetName.clear();
+		}
+	}
+
+	const QString fetIndex = targetPath + QLatin1Char('/') + QStringLiteral("index.html");
+	const QString fetIndexBackup = targetPath + QLatin1Char('/') + QStringLiteral("fet-index.html");
+	if (QFileInfo::exists(fetIndex))
+		QFile::rename(fetIndex, fetIndexBackup);
+
+	QDir targetDir(targetPath);
+	const QFileInfoList htmlFiles = targetDir.entryInfoList(QStringList() << QStringLiteral("*.html"),
+								QDir::Files, QDir::Name);
+	const QString institution = gt.rules.institutionName.trimmed();
+	writeUtf8File(fetIndex, buildLandingPage(targetPath, htmlFiles, sourceFetName));
+	writeUtf8File(targetPath + QLatin1Char('/') + QStringLiteral("README.txt"),
+		      buildReadme(targetDir.dirName(), institution));
+
+	QApplication::restoreOverrideCursor();
+
+	if (targetPathOut != nullptr)
+		*targetPathOut = targetPath;
+
+	return true;
+}
+
+} // namespace
+
+bool runAutomatic(QWidget* parent, QString* targetPath)
+{
+	QSettings settings(COMPANY, PROGRAM);
+	const QString dir = settings.value(QStringLiteral("publish-directory")).toString();
+	if (dir.isEmpty() || !QDir(dir).exists())
+		return false;
+
+	QString target;
+	const bool ok = publishCore(parent, dir, &target);
+	if (ok && targetPath != nullptr)
+		*targetPath = target;
+	return ok;
+}
+
 void run(QWidget* parent)
 {
 	if (!gt.rules.initialized) {
@@ -338,59 +411,15 @@ void run(QWidget* parent)
 		return;
 
 	// مجلد جديد مؤرّخ داخل المجلد المختار (بدون الكتابة فوق نشر سابق)
-	const QString folderName = suggestedFolderName();
-	QString targetPath = chosen + QLatin1Char('/') + folderName;
-	int counter = 2;
-	while (QDir(targetPath).exists() && counter < 100) {
-		targetPath = chosen + QLatin1Char('/') + folderName + QStringLiteral("-%1").arg(counter);
-		++counter;
-	}
-
-	QDir dir;
-	if (!dir.mkpath(targetPath)) {
+	QString targetPath;
+	if (!publishCore(parent, chosen, &targetPath)) {
 		QMessageBox::critical(parent, QStringLiteral("نشر الجداول"),
-				      QStringLiteral("تعذّر إنشاء المجلد:\n%1\n\nتأكّد من صلاحيات الكتابة.")
-					      .arg(QDir::toNativeSeparators(targetPath)));
+				      QStringLiteral("تعذّر النشر في:\n%1\n\nتأكّد من صلاحيات الكتابة.")
+					      .arg(QDir::toNativeSeparators(chosen)));
 		return;
 	}
 
-	QApplication::setOverrideCursor(Qt::WaitCursor);
-
-	// 1) توليد كل ملفات الجداول داخل المجلد الهدف
-	TimetableExport::writeGenerationResultsCommandLine(parent, targetPath + QLatin1Char('/'));
-
-	// 2) ملف البيانات الأصلي (لأرشيف/إعادة الفتح)
-	QString sourceFetName;
-	if (!INPUT_FILENAME_XML.isEmpty()) {
-		const QFileInfo srcInfo(INPUT_FILENAME_XML);
-		if (srcInfo.exists()) {
-			sourceFetName = QStringLiteral("source.fet");
-			const QString destFile = targetPath + QLatin1Char('/') + sourceFetName;
-			if (!QFile::copy(INPUT_FILENAME_XML, destFile))
-				sourceFetName.clear();
-		}
-	}
-
-	// 3) إبعاد صفحة FET الأصلية حتى تكون صفحتنا هي نقطة البداية
-	const QString fetIndex = targetPath + QLatin1Char('/') + QStringLiteral("index.html");
-	const QString fetIndexBackup = targetPath + QLatin1Char('/') + QStringLiteral("fet-index.html");
-	if (QFileInfo::exists(fetIndex))
-		QFile::rename(fetIndex, fetIndexBackup);
-
-	// 4) صفحة البداية العربية
 	QDir targetDir(targetPath);
-	const QFileInfoList htmlFiles = targetDir.entryInfoList(QStringList() << QStringLiteral("*.html"),
-								QDir::Files, QDir::Name);
-	const QString institution = gt.rules.institutionName.trimmed();
-	const QString landing = buildLandingPage(targetPath, htmlFiles, sourceFetName);
-	writeUtf8File(fetIndex, landing);
-
-	// 5) ملف تعليمات
-	writeUtf8File(targetPath + QLatin1Char('/') + QStringLiteral("README.txt"),
-		      buildReadme(targetDir.dirName(), institution));
-
-	QApplication::restoreOverrideCursor();
-
 	settings.setValue(QStringLiteral("publish-directory"), chosen);
 
 	// 6) رسالة نجاح + فتح المجلد
