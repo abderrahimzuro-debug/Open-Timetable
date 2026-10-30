@@ -228,6 +228,17 @@ jobs:
           }
           Get-ChildItem -Recurse -Filter *.exe | Select-Object FullName, Length
 
+      - name: Place translations next to the Windows build output
+        shell: pwsh
+        run: |
+          # البرنامج يبحث عن translations/ بجانب التنفيذي؛ نضعها هنا حتى يقلع بالعربية
+          # وحتى يمرّ الفحص الذاتي دون تحذير ترجمة.
+          New-Item -ItemType Directory -Force -Path build\win\translations | Out-Null
+          if (Test-Path build\translations) {
+            Copy-Item build\translations\*.qm build\win\translations\ -Force
+          }
+          Get-ChildItem build\win\translations | Select-Object Name, Length
+
       - name: Package Windows portable bundle (windeployqt)
         shell: pwsh
         run: |

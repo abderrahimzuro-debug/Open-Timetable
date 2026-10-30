@@ -2059,16 +2059,20 @@ void setLanguage(QApplication& qapplication, QWidget* parent)
 	}
 	
 	if(!translation_loaded){
-		FetMessage::warning(parent, QString("FET warning"),
-		 QString("Translation for specified language not loaded - maybe the translation file is missing - setting the language to en_US (US English)")
-		 +"\n\n"+
-		 QString("FET searched for the translation file %1 in the directory %2, then in the directory %3, and "
-		 "then in the directory %4, but could not find it.")
-		 .arg("fet_"+FET_LANGUAGE+".qm")
-		 .arg(QDir::toNativeSeparators(s1))
-		 .arg(QDir::toNativeSeparators(s2))
-		 .arg(QDir::toNativeSeparators(s3))
-		 );
+		// Open-Timetable: كان هذا تحذيرًا معطِّلًا (مربّع حوار) عند كل إقلاع إذا غاب ملف
+		// الترجمة — وهو ما يحدث عند توزيع البرنامج دون مجلد translations. صار الآن
+		// رسالة غير معطِّلة (سجل + شريط الحالة)، ويُكمَل العمل بالإنجليزية.
+		qWarning().noquote() << QString("FET: translation file %1 not found in %2, %3 or %4 - using en_US (US English)")
+			.arg("fet_"+FET_LANGUAGE+".qm")
+			.arg(QDir::toNativeSeparators(s1))
+			.arg(QDir::toNativeSeparators(s2))
+			.arg(QDir::toNativeSeparators(s3));
+
+		if(parent!=nullptr && pFetMainForm!=nullptr)
+			pFetMainForm->statusBar()->showMessage(
+			 QString("Translation for language '%1' is missing - using English. See the translations folder next to the program.")
+			 .arg(FET_LANGUAGE), 10000);
+
 		FET_LANGUAGE="en_US";
 	}
 	
