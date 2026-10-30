@@ -6,6 +6,10 @@ name: FET build (engine + GUI) & smoke test
 #   3) بناء واجهتنا المعدّلة (fet/) — أي أن تعديلاتنا على C++ تُصرَّف فعليًا،
 #   4) بناء ملف الترجمة العربية (fet_ar.qm) الذي تعتمد عليه الواجهة.
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     paths:
@@ -242,6 +246,20 @@ jobs:
           if (Test-Path build\translations) {
             Copy-Item build\translations\*.qm build\package\translations\ -Force
           }
+
+          # إضافة إضافة المنصّة offscreen (للفحص الذاتي من الحزمة نفسها)
+          $offscreen = Join-Path $env:QT_ROOT_DIR 'plugins\platforms\qoffscreen.dll'
+          if (Test-Path $offscreen) {
+            Copy-Item $offscreen build\package\platforms\ -Force
+            Write-Host "copied qoffscreen.dll"
+          }
+
+          # تحقق سريع من محتوى الحزمة
+          if (-not (Test-Path build\package\platforms\qwindows.dll)) {
+            throw "package is missing platforms/qwindows.dll"
+          }
+          $files = Get-ChildItem build\package -Recurse -File
+          Write-Host ("package files: {0}, total {1:N1} MB" -f $files.Count, (($files | Measure-Object Length -Sum).Sum / 1MB))
           Copy-Item fet\LICENSE build\package\LICENSE -Force
           Copy-Item docs\INSTALL.md build\package\INSTALL.md -Force
 
@@ -251,9 +269,39 @@ jobs:
       - name: Self-check on Windows (headless)
         shell: pwsh
         run: |
+          # نستعمل ملف البناء (بيئة Qt كاملة) لأن إضافة offscreen مضمونة هناك،
+          # مع مؤقّت إيقاف حتى لا يتعلّق السير إذا ظهر مربّع خطأ.
+          $exe = Get-ChildItem -Path build\win -Recurse -Filter fet.exe | Select-Object -First 1
+          if (-not $exe) { throw "fet.exe not found" }
+
           $env:QT_QPA_PLATFORM = "offscreen"
-          & build\package\Open-Timetable.exe --ot-selfcheck 2>&1 | Tee-Object -FilePath selfcheck-windows.log
-          if ($LASTEXITCODE -ne 0) { throw "Windows self-check failed (exit $LASTEXITCODE)" }
+          $out = Join-Path $PWD "selfcheck-windows.log"
+          $err = Join-Path $PWD "selfcheck-windows.err.log"
+          $p = Start-Process -FilePath $exe.FullName -ArgumentList "--ot-selfcheck" `
+                 -NoNewWindow -PassThru -RedirectStandardOutput $out -RedirectStandardError $err
+
+          if (-not $p.WaitForExit(90000)) {
+            $p.Kill()
+            throw "self-check did not finish within 90s (a modal dialog is probably blocking)"
+          }
+
+          Get-Content $out | ForEach-Object { Write-Host $_ }
+          if (Test-Path $err) { Get-Content $err | Select-Object -First 20 | ForEach-Object { Write-Host $_ } }
+
+          if ($p.ExitCode -ne 0) { throw "Windows self-check failed (exit $($p.ExitCode))" }
+          if (-not (Select-String -Path $out -Pattern "SELFCHECK OK" -Quiet)) {
+            throw "SELFCHECK OK not found in the report"
+          }
+
+      - name: Publish Windows self-check annotations
+        if: always()
+        shell: pwsh
+        run: |
+          if (Test-Path selfcheck-windows.log) {
+            Get-Content selfcheck-windows.log |
+              Select-String -Pattern '\[ok\]|\[FAIL\]|SELFCHECK|Qt:|platform:' |
+              ForEach-Object { Write-Host "::notice::$($_.Line)" }
+          }
 
       - name: Upload Windows self-check report
         if: always()
