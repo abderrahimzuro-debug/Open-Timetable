@@ -25,7 +25,9 @@
 | `src/interface/ui_publish.cpp` | **جديد** — توليد كل الملفات + مجلد مؤرّخ + صفحة بداية عربية + README. |
 | `src/interface/fetmainform_template.ui` | إضافة إجراء `filePublishToShareAction` داخل قائمة Export. |
 | `src/interface/fetmainform.cpp` | ربط إجراء النشر، واستدعاء `UiShell::install(this)` بعد `setupUi`. |
-| `src/interface/fet.cpp` | استدعاء `UiTheme::apply()` بعد إنشاء `QApplication`، وجعل اللغة الافتراضية `ar`. |
+| `src/interface/timetablegenerateform_template.ui` | إضافة «لوحة التوليد» أعلى نافذة التوليد (تقدّم/حدّ زمني/نشر تلقائي). |
+| `src/interface/timetablegenerateform.{h,cpp}` | مؤقّت التقدّم وتقدير الوقت، الإيقاف الآلي عند الحدّ الزمني، النشر التلقائي، حفظ التفضيلات. |
+| `src/interface/fet.cpp` | استدعاء `UiTheme::apply()` بعد إنشاء `QApplication`، وجعل اللغة الافتراضية `ar`، وخيار `--ot-selfcheck`، وجعل تحذير الترجمة غير معطِّل. |
 | `src/src.pro` | إضافة الملفات الجديدة إلى `SOURCES` و`HEADERS`، وإضافة `/utf-8` لـ MSVC. |
 | `src/interface/CMakeLists.txt` | إضافة الملفات الجديدة، وإضافة `/utf-8` لـ MSVC. |
 
