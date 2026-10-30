@@ -13,6 +13,8 @@ version 3. See the LICENSE file in the root of this repository.
 الأساتذة والطلاب جداولهم في صفحة بداية عربية جاهزة للتصفح والطباعة.
 */
 
+#include <QString>
+
 class QWidget;
 
 namespace UiPublish {
