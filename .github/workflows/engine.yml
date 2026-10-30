@@ -269,28 +269,58 @@ jobs:
       - name: Self-check on Windows (headless)
         shell: pwsh
         run: |
-          # نستعمل ملف البناء (بيئة Qt كاملة) لأن إضافة offscreen مضمونة هناك،
-          # مع مؤقّت إيقاف حتى لا يتعلّق السير إذا ظهر مربّع خطأ.
-          $exe = Get-ChildItem -Path build\win -Recurse -Filter fet.exe | Select-Object -First 1
-          if (-not $exe) { throw "fet.exe not found" }
+          # كل شيء داخل try/catch، وكل معلومة تُكتب كـ annotation حتى تكون مرئية
+          # عبر الـ API (تنزيل سجلات Actions محجوب في بعض البيئات).
+          try {
+            $exe = Get-ChildItem -Path build\win -Recurse -Filter fet.exe | Select-Object -First 1
+            if (-not $exe) { throw "fet.exe not found under build\win" }
+            Write-Host "::notice::exe: $($exe.FullName)"
 
-          $env:QT_QPA_PLATFORM = "offscreen"
-          $out = Join-Path $PWD "selfcheck-windows.log"
-          $err = Join-Path $PWD "selfcheck-windows.err.log"
-          $p = Start-Process -FilePath $exe.FullName -ArgumentList "--ot-selfcheck" `
-                 -NoNewWindow -PassThru -RedirectStandardOutput $out -RedirectStandardError $err
+            $env:QT_QPA_PLATFORM = "offscreen"
+            $out  = Join-Path $PWD "selfcheck-windows.log"
+            $err  = Join-Path $PWD "selfcheck-windows.err.log"
 
-          if (-not $p.WaitForExit(90000)) {
-            $p.Kill()
-            throw "self-check did not finish within 90s (a modal dialog is probably blocking)"
+            $psi = New-Object System.Diagnostics.ProcessStartInfo
+            $psi.FileName = $exe.FullName
+            $psi.Arguments = "--ot-selfcheck"
+            $psi.UseShellExecute = $false
+            $psi.RedirectStandardOutput = $true
+            $psi.RedirectStandardError = $true
+            $psi.WorkingDirectory = $exe.DirectoryName
+            $proc = [System.Diagnostics.Process]::Start($psi)
+            $stdout = $proc.StandardOutput.ReadToEndAsync()
+            $stderr = $proc.StandardError.ReadToEndAsync()
+
+            if (-not $proc.WaitForExit(45000)) {
+              try { $proc.Kill() } catch {}
+              Write-Host "::error::self-check timed out after 45s (a modal dialog is likely blocking)"
+            }
+
+            $o = $stdout.Result; $e = $stderr.Result
+            Set-Content -Path $out -Value $o -Encoding utf8
+            Set-Content -Path $err -Value $e -Encoding utf8
+
+            $o -split "`n" | Where-Object { $_.Trim() } | ForEach-Object { Write-Host $_ }
+            if ($e.Trim()) {
+              Write-Host "--- stderr ---"
+              $e -split "`n" | Select-Object -First 10 | ForEach-Object { Write-Host $_ }
+            }
+            Write-Host "::notice::exit code: $($proc.ExitCode)"
+
+            if ($proc.ExitCode -ne 0) { throw "self-check exit code $($proc.ExitCode)" }
+            if ($o -notmatch "SELFCHECK OK") { throw "SELFCHECK OK not found in output" }
           }
-
-          Get-Content $out | ForEach-Object { Write-Host $_ }
-          if (Test-Path $err) { Get-Content $err | Select-Object -First 20 | ForEach-Object { Write-Host $_ } }
-
-          if ($p.ExitCode -ne 0) { throw "Windows self-check failed (exit $($p.ExitCode))" }
-          if (-not (Select-String -Path $out -Pattern "SELFCHECK OK" -Quiet)) {
-            throw "SELFCHECK OK not found in the report"
+          catch {
+            Write-Host "::error::$($_.Exception.Message)"
+            if (Test-Path selfcheck-windows.log) {
+              Get-Content selfcheck-windows.log | Select-Object -Last 25 |
+                ForEach-Object { Write-Host "::error::log: $_" }
+            }
+            if (Test-Path selfcheck-windows.err.log) {
+              Get-Content selfcheck-windows.err.log | Select-Object -First 25 |
+                ForEach-Object { Write-Host "::error::err: $_" }
+            }
+            throw
           }
 
       - name: Publish Windows self-check annotations
