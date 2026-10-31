@@ -59,7 +59,8 @@ const char* const PROP_INSTALLED = "ot_shell_installed";
 enum SidebarRole {
 	RoleActionName = Qt::UserRole + 1, // QString: اسم إجراء
 	RolePageIndex,                     // int: صفحة في QStackedWidget
-	RoleLabel                          // QString: الاسم الكامل (للتلميح عند الطي)
+	RoleLabel,                         // QString: الاسم الكامل (للتلميح عند الطي)
+	RoleTip                            // QString: التلميح الأصلي (يُستعاد عند الفتح)
 };
 
 const int PAGE_HOME = 0;
@@ -99,7 +100,9 @@ void addNavItem(QListWidget* nav, const QString& text, const QString& iconName,
 		item->setData(RolePageIndex, pageIndex);
 	if (!iconName.isEmpty())
 		item->setIcon(UiIcons::icon(iconName, 20));
-	item->setToolTip(tooltip.isEmpty() ? text : tooltip);
+	const QString tip = tooltip.isEmpty() ? text : tooltip;
+	item->setData(RoleTip, tip);
+	item->setToolTip(tip);
 }
 
 // يُعيد بناء عناصر الشريط الجانبي باللغة الحالية، ويُبقي التحديد.
@@ -216,8 +219,9 @@ void applyCompact(QListWidget* nav, bool compact)
 		QListWidgetItem* item = nav->item(i);
 		const QString label = item->data(RoleLabel).toString();
 		item->setText(compact ? QString() : label);
-		// في الوضع المطوي يظهر الاسم كتلميح فقط
-		item->setToolTip(label);
+		// في الوضع المطوي يظهر الاسم كتلميح، وعند الفتح يعود التلميح الأصلي
+		const QString tip = item->data(RoleTip).toString();
+		item->setToolTip((compact || tip.isEmpty()) ? label : tip);
 	}
 	nav->setUpdatesEnabled(true);
 	nav->update();
