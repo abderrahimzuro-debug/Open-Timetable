@@ -137,7 +137,9 @@ jobs:
           set -o pipefail
           QT_QPA_PLATFORM=offscreen ./build/fet --ot-selfcheck 2>&1 | tee selfcheck.log
           # نُظهر سطور التقرير كتعليقات (annotations) لتبقى قابلة للقراءة عبر API
-          grep -E '\[ok\]|\[FAIL\]|SELFCHECK|Qt:|platform:|style:' selfcheck.log | \
+          # نطبع بالعكس: GitHub يسمح بعشرة تعليقات فقط، فنُظهر أحدث الفحوص (اللغات
+          # والقوالب) بدل أن تُقطع، والتقرير الكامل يُوضع في الملخّص أدناه.
+          tac selfcheck.log | grep -E '\[ok\]|\[FAIL\]|SELFCHECK|Qt:|platform:|style:' | \
             while IFS= read -r line; do echo "::notice::${line}"; done
           # التقرير الكامل في ملخّص التشغيل (تعليقات GitHub محدودة بعشرة أسطر)
           { echo '### GUI self-check (Linux)'; echo '```'; cat selfcheck.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
