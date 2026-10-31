@@ -40,6 +40,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include "room.h"
 #include "subject.h"
 #include "activitytag.h"
+#include "activity.h"
 #include "utilities.h"
 #include "fetmainform.h"
 
@@ -55,6 +56,8 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include <QHeaderView>
 #include <QLabel>
 #include <QLineEdit>
+#include <QSet>
+#include <QStringList>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QMessageBox>
@@ -71,7 +74,8 @@ namespace {
 
 enum Section {
 	SEC_ESSENTIALS = 0, // الأساسيات
-	SEC_NECESSITIES     // الضروريات
+	SEC_NECESSITIES,    // الضروريات
+	SEC_ACTIVITIES      // الأنشطة (قسم ثالث)
 };
 
 enum TemplateId {
@@ -106,6 +110,13 @@ enum TemplateId {
 	T_SUBJECT_PREFERRED_ROOM,
 	T_ACTIVITY_TAG_PREFERRED_ROOM,
 	T_SUBJECT_PREFERRED_ROOMS,
+	// ---------- القسم الثالث: الأنشطة ----------
+	T_ACTIVITIES_NOT_OVERLAPPING,
+	T_ACTIVITIES_SAME_STARTING_TIME,
+	T_ACTIVITIES_SAME_STARTING_DAY,
+	T_MIN_DAYS_BETWEEN_ACTIVITIES,
+	T_ACTIVITY_PREFERRED_ROOM,
+	T_ACTIVITY_PREFERRED_ROOMS,
 	T_COUNT
 };
 
@@ -123,15 +134,26 @@ struct TemplateSpec {
 	bool needsTimes;
 	bool needsAllowEmptyDays;
 	bool needsExceptCheck;
+	bool needsActivities;
+	bool singleActivity;
+	bool needsConsecutiveCheck;
+	bool needsPermanentCheck;
 	int valueDefault;
 	QList<int> fetTypes; // أنواع FET لعرض «القيود الموجودة» من النوع نفسه
 };
 
 QString sectionTitle(int section)
 {
-	return section == SEC_ESSENTIALS
-		       ? UiI18n::T("Essentials", "الأساسيات")
-		       : UiI18n::T("Necessities (fine tuning)", "الضروريات (ضبط دقيق)");
+	switch (section) {
+	case SEC_ESSENTIALS:
+		return UiI18n::T("Essentials", "الأساسيات");
+	case SEC_NECESSITIES:
+		return UiI18n::T("Necessities (fine tuning)", "الضروريات (ضبط دقيق)");
+	case SEC_ACTIVITIES:
+		return UiI18n::T("Activities (pick specific lessons)", "الأنشطة (اختيار حصص بعينها)");
+	default:
+		return QString();
+	}
 }
 
 QString templateTitle(int id)
@@ -199,6 +221,21 @@ QString templateTitle(int id)
 		return UiI18n::T("Preferred room for an activity tag", "قاعة مفضّلة لوسم نشاط");
 	case T_SUBJECT_PREFERRED_ROOMS:
 		return UiI18n::T("Allowed rooms for a subject (several)", "قاعات مادة (عدة قاعات مسموحة)");
+
+	// ---------- الأنشطة ----------
+	case T_ACTIVITIES_NOT_OVERLAPPING:
+		return UiI18n::T("Activities must not overlap", "أنشطة لا تتزامن");
+	case T_ACTIVITIES_SAME_STARTING_TIME:
+		return UiI18n::T("Activities start at the same time", "أنشطة في نفس وقت البدء");
+	case T_ACTIVITIES_SAME_STARTING_DAY:
+		return UiI18n::T("Activities in the same day", "أنشطة في نفس اليوم");
+	case T_MIN_DAYS_BETWEEN_ACTIVITIES:
+		return UiI18n::T("Min days between activities", "أدنى أيام بين الأنشطة");
+	case T_ACTIVITY_PREFERRED_ROOM:
+		return UiI18n::T("Preferred room for one activity", "قاعة لنشاط واحد");
+	case T_ACTIVITY_PREFERRED_ROOMS:
+		return UiI18n::T("Allowed rooms for one activity (several)",
+				 "قاعات نشاط واحد (عدة قاعات مسموحة)");
 	default:
 		return QString();
 	}
@@ -296,6 +333,26 @@ QString templateHint(int id)
 	case T_SUBJECT_PREFERRED_ROOMS:
 		return UiI18n::T("Tick the rooms this subject may use; the generator picks among them.",
 				 "حدّد القاعات التي يُسمح للمادة باستعمالها؛ يختار البرنامج من بينها.");
+
+	// ---------- الأنشطة ----------
+	case T_ACTIVITIES_NOT_OVERLAPPING:
+		return UiI18n::T("The picked lessons are never placed at the same time (e.g. a teacher's two classes).",
+				 "الحصص المختارة لا تُوضع في نفس الوقت أبدًا (مثلًا حصتان لأستاذ واحد).");
+	case T_ACTIVITIES_SAME_STARTING_TIME:
+		return UiI18n::T("The picked lessons begin at the same hour and day.",
+				 "الحصص المختارة تبدأ في نفس اليوم والساعة.");
+	case T_ACTIVITIES_SAME_STARTING_DAY:
+		return UiI18n::T("The picked lessons fall on the same day (hours may differ).",
+				 "الحصص المختارة تقع في نفس اليوم (قد تختلف الساعة).");
+	case T_MIN_DAYS_BETWEEN_ACTIVITIES:
+		return UiI18n::T("Spreads the picked lessons over the week (e.g. two maths lessons, 1 day apart).",
+				 "توزّع الحصص المختارة على الأسبوع (مثلًا حصتا رياضيات بفارق يوم واحد).");
+	case T_ACTIVITY_PREFERRED_ROOM:
+		return UiI18n::T("One lesson goes to a specific room (tick ONE activity).",
+				 "حصة واحدة تُوضع في قاعة محدّدة (علّم نشاطًا واحدًا).");
+	case T_ACTIVITY_PREFERRED_ROOMS:
+		return UiI18n::T("One lesson may use only the ticked rooms (tick ONE activity).",
+				 "حصة واحدة تستعمل القاعات المعلّمة فقط (علّم نشاطًا واحدًا).");
 	default:
 		return QString();
 	}
@@ -305,7 +362,12 @@ TemplateSpec specFor(int id)
 {
 	TemplateSpec s;
 	s.id = id;
-	s.section = (id <= T_STUDENTS_SET_HOME_ROOM) ? SEC_ESSENTIALS : SEC_NECESSITIES;
+	if (id <= T_STUDENTS_SET_HOME_ROOM)
+		s.section = SEC_ESSENTIALS;
+	else if (id <= T_SUBJECT_PREFERRED_ROOMS)
+		s.section = SEC_NECESSITIES;
+	else
+		s.section = SEC_ACTIVITIES;
 	s.needsTeacher = false;
 	s.needsStudents = false;
 	s.needsSubject = false;
@@ -316,6 +378,10 @@ TemplateSpec specFor(int id)
 	s.needsTimes = false;
 	s.needsAllowEmptyDays = false;
 	s.needsExceptCheck = false;
+	s.needsActivities = false;
+	s.singleActivity = false;
+	s.needsConsecutiveCheck = false;
+	s.needsPermanentCheck = false;
 	s.valueDefault = 6;
 
 	switch (id) {
@@ -462,6 +528,44 @@ TemplateSpec specFor(int id)
 		s.needsValue = false;
 		s.fetTypes << CONSTRAINT_SUBJECT_PREFERRED_ROOMS;
 		break;
+
+	// ---------- الأنشطة ----------
+	case T_ACTIVITIES_NOT_OVERLAPPING:
+		s.needsActivities = true;
+		s.needsValue = false;
+		s.fetTypes << CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING;
+		break;
+	case T_ACTIVITIES_SAME_STARTING_TIME:
+		s.needsActivities = true;
+		s.needsValue = false;
+		s.fetTypes << CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME;
+		break;
+	case T_ACTIVITIES_SAME_STARTING_DAY:
+		s.needsActivities = true;
+		s.needsValue = false;
+		s.fetTypes << CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY;
+		break;
+	case T_MIN_DAYS_BETWEEN_ACTIVITIES:
+		s.needsActivities = true;
+		s.needsConsecutiveCheck = true;
+		s.valueDefault = 1;
+		s.fetTypes << CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES;
+		break;
+	case T_ACTIVITY_PREFERRED_ROOM:
+		s.needsActivities = true;
+		s.singleActivity = true;
+		s.needsRoom = true;
+		s.needsValue = false;
+		s.needsPermanentCheck = true;
+		s.fetTypes << CONSTRAINT_ACTIVITY_PREFERRED_ROOM;
+		break;
+	case T_ACTIVITY_PREFERRED_ROOMS:
+		s.needsActivities = true;
+		s.singleActivity = true;
+		s.needsRoomList = true;
+		s.needsValue = false;
+		s.fetTypes << CONSTRAINT_ACTIVITY_PREFERRED_ROOMS;
+		break;
 	default:
 		break;
 	}
@@ -502,6 +606,8 @@ QString valueCaption(int id)
 	case T_STUDENTS_EARLY_MAX_BEGINNINGS:
 	case T_STUDENTS_SET_EARLY_MAX_BEGINNINGS:
 		return UiI18n::T("Max early beginnings:", "أقصى عدد للبدايات المبكرة:");
+	case T_MIN_DAYS_BETWEEN_ACTIVITIES:
+		return UiI18n::T("Min days between them:", "أدنى أيام بينها:");
 	default:
 		return UiI18n::T("Value:", "القيمة:");
 	}
@@ -530,6 +636,7 @@ int valueMaximum(int id)
 	case T_TEACHER_MIN_DAYS_PER_WEEK:
 	case T_STUDENTS_EARLY_MAX_BEGINNINGS:
 	case T_STUDENTS_SET_EARLY_MAX_BEGINNINGS:
+	case T_MIN_DAYS_BETWEEN_ACTIVITIES:
 		return qMax(1, gt.rules.nDaysPerWeek);
 	default:
 		return qMax(1, gt.rules.nHoursPerDay);
@@ -656,6 +763,21 @@ private:
 	QPushButton* selectAllButton;
 	QPushButton* clearAllButton;
 
+	// منتقي الأنشطة (القسم الثالث)
+	QWidget* activityRow;
+	QComboBox* activityTeacherFilter;
+	QComboBox* activityStudentsFilter;
+	QComboBox* activitySubjectFilter;
+	QLineEdit* activitySearch;
+	QListWidget* activityList;
+	QLabel* activityCountLabel;
+	QSet<int> checkedActivityIds;
+
+	QWidget* consecutiveRow;
+	QCheckBox* consecutiveCheckBox;
+	QWidget* permanentRow;
+	QCheckBox* permanentCheckBox;
+
 	QPushButton* addButton;
 
 	QListWidget* existingList;
@@ -668,6 +790,10 @@ private:
 	void reloadActivityTags();
 	void reloadRooms();
 	void reloadRoomChecks();
+	void reloadActivityFilters();
+	void rebuildActivityList();
+	QList<int> selectedActivityIds() const;
+	void updateActivityCount();
 	void rebuildTimesGrid();
 	void updateRows();
 	void refreshExisting();
@@ -853,6 +979,9 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 	paramsLayout->addWidget(allowEmptyRow);
 	paramsLayout->addWidget(exceptRow);
 	paramsLayout->addWidget(weightRow);
+	paramsLayout->addWidget(activityRow, 1);
+	paramsLayout->addWidget(consecutiveRow);
+	paramsLayout->addWidget(permanentRow);
 	paramsLayout->addWidget(timesRow, 1);
 	paramsLayout->addStretch(0);
 
@@ -909,6 +1038,24 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 		QTableWidgetItem* item = timesTable->item(row, column);
 		setSlotSelected(item, !isSlotSelected(item));
 	});
+	connect(activityTeacherFilter, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+		[this](int) { rebuildActivityList(); });
+	connect(activityStudentsFilter, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+		[this](int) { rebuildActivityList(); });
+	connect(activitySubjectFilter, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+		[this](int) { rebuildActivityList(); });
+	connect(activitySearch, &QLineEdit::textChanged, this,
+		[this](const QString&) { rebuildActivityList(); });
+	connect(activityList, &QListWidget::itemChanged, this, [this](QListWidgetItem* item) {
+		if (item == nullptr)
+			return;
+		const int id = item->data(Qt::UserRole).toInt();
+		if (item->checkState() == Qt::Checked)
+			checkedActivityIds.insert(id);
+		else
+			checkedActivityIds.remove(id);
+		updateActivityCount();
+	});
 	connect(selectAllButton, &QPushButton::clicked, this, [this]() { markAllTimes(true); });
 	connect(clearAllButton, &QPushButton::clicked, this, [this]() { markAllTimes(false); });
 
@@ -918,6 +1065,7 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 	reloadActivityTags();
 	reloadRooms();
 	reloadRoomChecks();
+	reloadActivityFilters();
 	populateTemplateList(QString());
 	updateRows();
 	refreshExisting();
@@ -943,7 +1091,7 @@ void TemplateDialog::populateTemplateList(const QString& filter)
 
 	templateList->clear();
 
-	for (int section = SEC_ESSENTIALS; section <= SEC_NECESSITIES; ++section) {
+	for (int section = SEC_ESSENTIALS; section <= SEC_ACTIVITIES; ++section) {
 		QList<int> matches;
 		for (int id = 0; id < T_COUNT; ++id) {
 			if (specFor(id).section != section)
@@ -1063,6 +1211,108 @@ void TemplateDialog::reloadRoomChecks()
 	}
 }
 
+void TemplateDialog::reloadActivityFilters()
+{
+	// الأستاذ
+	activityTeacherFilter->clear();
+	activityTeacherFilter->addItem(UiI18n::T("All teachers", "كل الأساتذة"), QString());
+	for (Teacher* t : std::as_const(gt.rules.teachersList))
+		activityTeacherFilter->addItem(t->name, t->name);
+
+	// القسم (يستعمل دالة FET الأصلية، مع عنصر فارغ = الكل)
+	activityStudentsFilter->clear();
+	activityStudentsFilter->addItem(UiI18n::T("All classes", "كل الأقسام"), QString());
+	populateStudentsComboBox(activityStudentsFilter, QString(), false);
+	for (int i = activityStudentsFilter->count() - 1; i >= 0; --i)
+		if (activityStudentsFilter->itemText(i).isEmpty())
+			activityStudentsFilter->removeItem(i);
+	activityStudentsFilter->insertItem(0, UiI18n::T("All classes", "كل الأقسام"), QString());
+
+	// المادة
+	activitySubjectFilter->clear();
+	activitySubjectFilter->addItem(UiI18n::T("All subjects", "كل المواد"), QString());
+	for (Subject* subj : std::as_const(gt.rules.subjectsList))
+		activitySubjectFilter->addItem(subj->name, subj->name);
+
+	rebuildActivityList();
+}
+
+void TemplateDialog::rebuildActivityList()
+{
+	const QString teacher = activityTeacherFilter->currentData().toString();
+	const QString students = activityStudentsFilter->currentData().toString();
+	const QString subject = activitySubjectFilter->currentData().toString();
+	const QString needle = activitySearch->text().trimmed();
+
+	activityList->clear();
+
+	const int limit = 600;
+	int shown = 0;
+	for (Activity* act : std::as_const(gt.rules.activitiesList)) {
+		if (!act->active)
+			continue;
+		if (!teacher.isEmpty() && !act->teachersNames.contains(teacher))
+			continue;
+		if (!students.isEmpty() && !act->studentsNames.contains(students))
+			continue;
+		if (!subject.isEmpty() && act->subjectName != subject)
+			continue;
+
+		const QString description = act->getDescription(gt.rules);
+		if (!needle.isEmpty() && !description.contains(needle, Qt::CaseInsensitive))
+			continue;
+
+		if (shown >= limit)
+			break;
+
+		QListWidgetItem* item = new QListWidgetItem(description, activityList);
+		item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+		item->setData(Qt::UserRole, act->id);
+		item->setCheckState(checkedActivityIds.contains(act->id) ? Qt::Checked
+									  : Qt::Unchecked);
+		item->setTextAlignment((UiI18n::isArabic() ? Qt::AlignRight : Qt::AlignLeft)
+				       | Qt::AlignVCenter);
+		++shown;
+	}
+
+	if (gt.rules.activitiesList.count() > limit && shown >= limit) {
+		activityCountLabel->setText(
+			UiI18n::T("Showing the first %1 lessons — narrow the filters to see others.",
+				  "تُعرض أول %1 حصة — ضيّق الترشيح لرؤية غيرها.").arg(limit));
+	}
+	updateActivityCount();
+}
+
+QList<int> TemplateDialog::selectedActivityIds() const
+{
+	QList<int> ids;
+	// نحافظ على ترتيب النشاطات في الملف (مهم لبعض القيود)
+	for (Activity* act : std::as_const(gt.rules.activitiesList))
+		if (checkedActivityIds.contains(act->id))
+			ids.append(act->id);
+	return ids;
+}
+
+void TemplateDialog::updateActivityCount()
+{
+	const int selected = int(checkedActivityIds.count());
+	const bool single = currentId() >= 0 && specFor(currentId()).singleActivity;
+
+	if (selected == 0)
+		activityCountLabel->setText(
+			single ? UiI18n::T("Tick exactly one lesson in the list.",
+					   "علّم حصة واحدة فقط في القائمة.")
+			       : UiI18n::T("No lesson selected yet — tick at least two.",
+					   "لم تُحدَّد أي حصة بعد — علّم حصتين على الأقل."));
+	else if (single && selected > 1)
+		activityCountLabel->setText(
+			UiI18n::T("%1 lessons selected — this template needs exactly one.",
+				  "الحصص المحدّدة: %1 — هذا القالب يحتاج حصة واحدة فقط.").arg(selected));
+	else
+		activityCountLabel->setText(UiI18n::T("%1 lesson(s) selected.",
+						      "الحصص المحدّدة: %1.").arg(selected));
+}
+
 void TemplateDialog::rebuildTimesGrid()
 {
 	const int rows = gridRows();
@@ -1121,6 +1371,16 @@ void TemplateDialog::updateRows()
 	allowEmptyRow->setVisible(spec.needsAllowEmptyDays);
 	exceptRow->setVisible(spec.needsExceptCheck);
 	timesRow->setVisible(spec.needsTimes);
+	activityRow->setVisible(spec.needsActivities);
+	consecutiveRow->setVisible(spec.needsConsecutiveCheck);
+	permanentRow->setVisible(spec.needsPermanentCheck);
+
+	if (spec.needsActivities) {
+		activityList->setSelectionMode(spec.singleActivity
+						       ? QAbstractItemView::SingleSelection
+						       : QAbstractItemView::NoSelection);
+		updateActivityCount();
+	}
 
 	valueLabel->setText(valueCaption(id));
 	valueSpin->setRange(valueMinimum(id), valueMaximum(id));
@@ -1252,6 +1512,23 @@ void TemplateDialog::addConstraint()
 		}
 	}
 
+	QList<int> activityIds;
+	if (spec.needsActivities) {
+		activityIds = selectedActivityIds();
+		if (spec.singleActivity && activityIds.count() != 1) {
+			QMessageBox::warning(this, dialogTitle,
+					     UiI18n::T("Tick exactly one lesson in the list.",
+						       "علّم حصة واحدة فقط في القائمة."));
+			return;
+		}
+		if (!spec.singleActivity && activityIds.count() < 2) {
+			QMessageBox::warning(this, dialogTitle,
+					     UiI18n::T("Tick at least two lessons in the list.",
+						       "علّم حصتين على الأقل في القائمة."));
+			return;
+		}
+	}
+
 	QList<int> days;
 	QList<int> hours;
 	if (spec.needsTimes) {
@@ -1361,6 +1638,28 @@ void TemplateDialog::addConstraint()
 	case T_SUBJECT_PREFERRED_ROOMS:
 		sc = new ConstraintSubjectPreferredRooms(weight, subject, checkedRooms);
 		break;
+
+	// ---------- الأنشطة ----------
+	case T_ACTIVITIES_NOT_OVERLAPPING:
+		tc = new ConstraintActivitiesNotOverlapping(weight, activityIds.count(), activityIds);
+		break;
+	case T_ACTIVITIES_SAME_STARTING_TIME:
+		tc = new ConstraintActivitiesSameStartingTime(weight, activityIds.count(), activityIds);
+		break;
+	case T_ACTIVITIES_SAME_STARTING_DAY:
+		tc = new ConstraintActivitiesSameStartingDay(weight, activityIds.count(), activityIds);
+		break;
+	case T_MIN_DAYS_BETWEEN_ACTIVITIES:
+		tc = new ConstraintMinDaysBetweenActivities(weight, consecutiveCheckBox->isChecked(),
+							    activityIds.count(), activityIds, value);
+		break;
+	case T_ACTIVITY_PREFERRED_ROOM:
+		sc = new ConstraintActivityPreferredRoom(weight, activityIds.first(), room, QStringList(),
+							 permanentCheckBox->isChecked());
+		break;
+	case T_ACTIVITY_PREFERRED_ROOMS:
+		sc = new ConstraintActivityPreferredRooms(weight, activityIds.first(), checkedRooms);
+		break;
 	default:
 		break;
 	}
@@ -1403,6 +1702,12 @@ void TemplateDialog::addConstraint()
 
 	refreshExisting();
 	markAllTimes(false);
+
+	// بعد الإضافة: نُفرّغ اختيار الأنشطة حتى لا يُضاف القيد نفسه مرتين بالخطأ
+	if (spec.needsActivities) {
+		checkedActivityIds.clear();
+		rebuildActivityList();
+	}
 }
 
 } // namespace

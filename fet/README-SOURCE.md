@@ -23,7 +23,7 @@
 | `src/interface/ui_dashboard.cpp` | **جديد** — البطاقات الإحصائية والأزرار السريعة. `retranslate()` يترجمها. |
 | `src/interface/ui_i18n.h` | **جديد** — `UiI18n::T(en, ar)` تختار نص واجهتنا حسب `FET_LANGUAGE`. |
 | `src/interface/ui_constraints.h` | **جديد** — واجهة محرّر القيود بالقوالب (المرحلة 4 / القسم الأول). |
-| `src/interface/ui_constraints.cpp` | **جديد** — 29 قالب قيد (15 أساسيات + 14 ضروريات) مع بحث؛ يبني كائنات FET الأصلية ويضيفها بـ addTimeConstraint/addSpaceConstraint. |
+| `src/interface/ui_constraints.cpp` | **جديد** — 35 قالب قيد (15 أساسيات + 14 ضروريات + 6 أنشطة) مع بحث ومنتقي أنشطة؛ يبني كائنات FET الأصلية ويضيفها بـ addTimeConstraint/addSpaceConstraint. |
 | `src/interface/ui_publish.h` | **جديد** — واجهة ميزة «نشر الجداول إلى مجلد مشترك». |
 | `src/interface/ui_publish.cpp` | **جديد** — توليد كل الملفات + مجلد مؤرّخ + صفحة بداية عربية + README. رسائله ثنائية اللغة. |
 | `src/interface/fetmainform_template.ui` | إضافة إجراء `filePublishToShareAction` داخل قائمة Export. |

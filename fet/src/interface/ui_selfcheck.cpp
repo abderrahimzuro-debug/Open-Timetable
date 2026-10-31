@@ -153,11 +153,11 @@ int run(QMainWindow* mainWindow)
 			r.fail(QStringLiteral("إجراء «القيود بالقوالب» موجود"), QStringLiteral("otConstraintTemplatesAction مفقود"));
 
 		const int templates = UiConstraints::templateCount();
-		if (templates >= 29)
-			r.ok(QStringLiteral("قوالب القيود (أساسيات + ضروريات)"),
+		if (templates >= 35)
+			r.ok(QStringLiteral("قوالب القيود (أساسيات + ضروريات + أنشطة)"),
 			     QStringLiteral("%1 قالبًا").arg(templates));
 		else
-			r.fail(QStringLiteral("قوالب القيود (أساسيات + ضروريات)"),
+			r.fail(QStringLiteral("قوالب القيود (أساسيات + ضروريات + أنشطة)"),
 			       QStringLiteral("%1 فقط").arg(templates));
 	}
 

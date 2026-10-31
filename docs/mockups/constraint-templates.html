@@ -94,7 +94,7 @@
 <div class="note">
   <strong>معاينة ساكنة</strong> (ليست البرنامج) لمحرّر القيود بالقوالب بعد القسم الثاني.
   يُفتح من: الشريط الجانبي ▸ <strong>القيود ▸ القيود بالقوالب…</strong> أو قائمة <strong>البيانات</strong>
-  أو <strong>Ctrl+Shift+T</strong>. فيه الآن <strong>29 قالبًا</strong> في قسمين مع بحث فوري.
+  أو <strong>Ctrl+Shift+T</strong>. فيه الآن <strong>35 قالبًا</strong> في ثلاثة أقسام مع بحث فوري ومنتقي أنشطة.
 </div>
 
 <div class="dialog">
@@ -128,7 +128,7 @@
           <li class="section">الضروريات (ضبط دقيق) (14)</li>
           <li class="item">أدنى ساعات يومية — لأستاذ</li>
           <li class="item">أدنى أيام أسبوعيًا — لأستاذ</li>
-          <li class="item active">أقصى ساعات متواصلة — لأستاذ</li>
+          <li class="item">أقصى ساعات متواصلة — لأستاذ</li>
           <li class="item">أقصى امتداد يومي — لأستاذ</li>
           <li class="item">أقصى ساعات متواصلة — لقسم</li>
           <li class="item">أقصى ساعات متواصلة — لكل الأقسام</li>
@@ -140,8 +140,16 @@
           <li class="item">قاعة مفضّلة لمادة</li>
           <li class="item">قاعة مفضّلة لوسم نشاط</li>
           <li class="item">قاعات مادة (عدة قاعات مسموحة)</li>
+
+          <li class="section">الأنشطة (اختيار حصص بعينها) (6)</li>
+          <li class="item">أنشطة لا تتزامن</li>
+          <li class="item">أنشطة في نفس وقت البدء</li>
+          <li class="item">أنشطة في نفس اليوم</li>
+          <li class="item active">أدنى أيام بين الأنشطة</li>
+          <li class="item">قاعة لنشاط واحد</li>
+          <li class="item">قاعات نشاط واحد (عدة قاعات مسموحة)</li>
         </ul>
-        <div class="hint">لا يزيد عدد الحصص المتتالية عن المحدّد دون راحة.</div>
+        <div class="hint">توزّع الحصص المختارة على الأسبوع (مثلًا حصتا رياضيات بفارق يوم واحد).</div>
       </div>
 
       <!-- التفاصيل -->
@@ -170,49 +178,39 @@
           100 % = قيد صارم (يجب احترامه). القيم الأقل تسمح للبرنامج بالتضحية به مقابل جدول أفضل عمومًا.
         </div>
 
-        <div class="row"><label>قسم/فوج:</label><select><option>2 ثانوي — فوج 1</option></select></div>
-        <div class="row"><label>المادة:</label><select><option>الرياضيات</option></select></div>
-        <div class="row"><label>وسم النشاط:</label><select><option>مخبر</option></select></div>
+        <div class="row">
+          <label>أدنى أيام بينها:</label>
+          <input class="spin" value="1">
+        </div>
 
-        <div class="check"><input type="checkbox" checked> السماح بيوم واحد بزيادة ساعة (استثناء)</div>
+        <div class="check"><input type="checkbox" checked> إذا وقعت في نفس اليوم، اجعلها متتالية</div>
 
         <div style="margin-top:14px">
-          <div class="hint" style="margin:0 0 6px">القاعات المسموحة (علّم واحدة أو أكثر):</div>
-          <div class="rooms">
-            <span>✓ قاعة 1</span><span>✓ قاعة 2</span><span>مخبر الفيزياء</span><span>ورشة</span>
+          <div class="hint" style="margin:0 0 6px">منتقي الأنشطة — رشّح ثم علّم الحصص:</div>
+          <div class="row" style="gap:6px">
+            <select><option>كل الأساتذة</option><option>بن علي محمد</option></select>
+            <select><option>كل الأقسام</option><option>2 ثانوي — فوج 1</option></select>
+            <select><option>كل المواد</option><option>الرياضيات</option></select>
           </div>
+          <input class="search" style="margin:6px 0" placeholder="ابحث في الحصص…">
+          <ul class="templates" style="max-height:130px;border:1px solid var(--line);border-radius:8px;padding:6px">
+            <li class="item">☑ 2 ثانوي فوج 1 — الرياضيات — بن علي محمد (2 ساعات)</li>
+            <li class="item">☑ 2 ثانوي فوج 2 — الرياضيات — بن علي محمد (2 ساعات)</li>
+            <li class="item">☐ 1 ثانوي فوج 1 — الرياضيات — حمداني سعاد (2 ساعات)</li>
+            <li class="item">☐ 2 ثانوي فوج 1 — الفيزياء — زروقي أمين (2 ساعات)</li>
+          </ul>
+          <div class="hint" style="margin-top:6px">الحصص المحدّدة: 2.</div>
         </div>
 
-        <div style="margin-top:16px">
-          <div class="hint" style="margin:0 0 6px">اضغط على خانة لتحديدها، ثم اضغط «إضافة القيد».</div>
-          <div class="grid-wrap">
-            <table>
-              <thead>
-                <tr><th></th><th>الأحد</th><th>الإثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th></tr>
-              </thead>
-              <tbody>
-                <tr><th>08:00</th><td class="slot"></td><td class="slot"></td><td class="slot"></td><td class="slot"></td><td class="slot on">✓</td></tr>
-                <tr><th>09:00</th><td class="slot"></td><td class="slot on">✓</td><td class="slot on">✓</td><td class="slot"></td><td class="slot on">✓</td></tr>
-                <tr><th>10:00</th><td class="slot"></td><td class="slot on">✓</td><td class="slot"></td><td class="slot"></td><td class="slot on">✓</td></tr>
-                <tr><th>11:00</th><td class="slot"></td><td class="slot"></td><td class="slot on">✓</td><td class="slot"></td><td class="slot on">✓</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="toolbar">
-            <button class="btn">تحديد الكل</button>
-            <button class="btn">مسح التحديد</button>
-          </div>
-        </div>
       </div>
 
     </div>
 
     <div class="box existing">
-      <h3>القيود الموجودة من هذا النوع <span class="badge">3</span></h3>
+      <h3>القيود الموجودة من هذا النوع <span class="badge">2</span></h3>
       <ul>
-        <li>Teacher max hours continuously — WP:100% — T:حمداني سعاد — MCH:2</li>
-        <li>Teacher max hours continuously — WP:100% — T:بن علي محمد — MCH:3</li>
-        <li>Teacher max hours continuously — WP:100% — T:زروقي أمين — MCH:4</li>
+        <li>Min days between activities — WP:100% — MD:1 — CISD:yes — 2 activities</li>
+        <li>Min days between activities — WP:100% — MD:2 — CISD:yes — 3 activities</li>
       </ul>
     </div>
   </div>
