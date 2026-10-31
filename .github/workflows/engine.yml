@@ -158,6 +158,7 @@ jobs:
       - name: Smoke test our fet-cl
         env:
           TIME_LIMIT: 120
+          REQUIRE_HTML_FONT: 1
         run: ./scripts/fet-smoke-test.sh build/fet-cl
 
       - name: Package Linux portable bundle

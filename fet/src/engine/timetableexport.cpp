@@ -77,6 +77,14 @@ extern bool TIMETABLE_ADD_CSS_IN_HEAD;
 //maybe TODO: make cssString local only?
 static QString cssString;
 
+// Open-Timetable: خط صريح للجداول المصدَّرة.
+// السبب: الملف المصدَّر لم يكن يحدّد أي خط، فيختار المتصفّح/المحرّر خطًّا بديلًا
+// حسب إعدادات الجهاز. في بعض أجهزة ويندوز يقع الاختيار على خط Symbol الذي يعرض
+// الحروف اللاتينية رموزًا يونانية (Exp2Fet تُعرض "Εξπ2Φετ") رغم أن النص نفسه
+// سليم (ويتّضح ذلك عند النسخ). تحديد الخط صراحةً يمنع هذا كليًا.
+// (الكتلة نفسها معرّفة في timetable_defs.cpp باسم htmlExportFontFamily())
+
+
 static const bool removeOldFiles=false;
 
 //Represents the current status of the generation - running or stopped.
@@ -2746,6 +2754,9 @@ void TimetableExport::getCssString(){
 		"Please keep fields in quotes as they are, untranslated."))+" */\n";
 	cssString+="/* "+protect3(TimetableExport::tr("To hide an element just write the following phrase into the element: %1 (without quotes).",
 		"%1 is a short phrase beginning and ending with quotes, and we want the user to be able to add it, but without quotes").arg("\"display: none;\""))+" */\n\n";
+	// خط صريح لكل عناصر الجدول (يُغطّي حالة ملف الأنماط الخارجي)
+	cssString+=QString("html, body, table, thead, tbody, tfoot, tr, th, td, caption, div, span, p {\n  font-family: ")
+		+htmlExportFontFamily()+QString(";\n}\n\n");
 	cssString+="p.back {\n  margin-top: 4ex;\n  margin-bottom: 5ex;\n}\n\n";
 	cssString+="table {\n  text-align: center;\n  page-break-inside: avoid;\n}\n\n";
 	cssString+="table.odd_table {\n  page-break-before: always;\n}\n\n";
@@ -6811,7 +6822,10 @@ QString TimetableExport::writeHead(bool java, int placedActivities, bool printIn
 		}
 	}
 	tmp+="  </head>\n";
-	tmp+="  <body id=\"top\">\n";
+	// خط صريح داخل الوسم نفسه: يعمل حتى لو لم يُحمَّل ملف الأنماط (نسخة منقولة
+	// من HTML وحده دون stylesheet.css).
+	tmp+=QString("  <body id=\"top\" style=\"font-family: ")
+		+htmlExportFontFamily()+QString("\">\n");
 	if(placedActivities!=gt.rules.nInternalActivities)
 		tmp+="    <h1>"+protect2(TimetableExport::tr("Warning! Only %1 out of %2 activities placed!").arg(placedActivities).arg(gt.rules.nInternalActivities))+"</h1>\n";
 	if(printInstitution){

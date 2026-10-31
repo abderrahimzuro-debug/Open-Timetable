@@ -1023,6 +1023,13 @@ A function used in CSS saving
 */
 QString protect3(const QString& str);
 
+/**
+Open-Timetable: كتلة الخطوط التي تُكتب في كل ملف HTML نُصدّره.
+بدونها يختار المتصفّح خطًّا بديلًا حسب إعدادات الجهاز، وقد يقع على خط Symbol
+الذي يعرض الحروف اللاتينية رموزًا يونانية (Exp2Fet ← Εξπ2Φετ) رغم سلامة النص.
+*/
+QString htmlExportFontFamily();
+
 //Used in the interface rich text format
 QString protect4(const QString& str);
 

@@ -192,7 +192,7 @@ void HumanReadableDataForm::filterChanged()
 	begin+="    <title>"+protect4(QFileInfo(INPUT_FILENAME_XML).completeBaseName())+"</title>\n";
 	begin+="    <meta charset=\"utf-8\">\n";
 	begin+="  </head>\n";
-	begin+="  <body>\n";
+	begin+=QString("  <body style=\"font-family: ")+htmlExportFontFamily()+QString("\">\n");
 	begin+="    <p>\n";
 
 	//HTML 4 head
@@ -209,7 +209,7 @@ void HumanReadableDataForm::filterChanged()
 	begin+="    <title>"+protect4(QFileInfo(INPUT_FILENAME_XML).completeBaseName())+"</title>\n";
 	begin+="    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n";
 	begin+="  </head>\n";
-	begin+="  <body>\n";
+	begin+=QString("  <body style=\"font-family: ")+htmlExportFontFamily()+QString("\">\n");
 	begin+="    <p>\n";*/
 
 	QString s1;

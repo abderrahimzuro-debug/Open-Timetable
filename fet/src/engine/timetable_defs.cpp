@@ -227,6 +227,13 @@ QString protect4(const QString& str) //used for interface rich text format
 	return p;
 }
 
+QString htmlExportFontFamily()
+{
+	// خطوط متوفّرة على ويندوز ولينكس وتدعم العربية واللاتينية معًا، ثم خط عام.
+	return QString::fromUtf8("'Segoe UI', Tahoma, 'Noto Naskh Arabic', 'Noto Sans Arabic', "
+				 "'DejaVu Sans', Arial, sans-serif");
+}
+
 QString translatedComma()
 {
 	return QCoreApplication::translate("PunctuationMarks", ",", "Comma");

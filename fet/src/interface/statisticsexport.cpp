@@ -621,7 +621,7 @@ bool StatisticsExport::exportStatisticsIndex(QWidget* parent, const QString& sav
 	}
 	tos<<"  </head>\n";
 
-	tos<<"  <body>\n";
+	tos<<QString("  <body style=\"font-family: ")+htmlExportFontFamily()+QString("\">\n");
 
 	tos<<"    <table>\n      <tr align=\"left\" valign=\"top\">\n        <th>"+protect2(tr("Institution name"))+":</th>\n        <td>"+protect2(gt.rules.institutionName).replace(QString("\n"), QString("<br />\n"))+"</td>\n      </tr>\n    </table>\n";
 	tos<<"    <table>\n      <tr align=\"left\" valign=\"top\">\n        <th>"+protect2(tr("Comments"))+":</th>\n        <td>"+protect2(gt.rules.comments).replace(QString("\n"), QString("<br />\n"))+"</td>\n      </tr>\n    </table>\n";
@@ -749,7 +749,7 @@ bool StatisticsExport::exportStatisticsTeachersSubjects(QWidget* parent, const Q
 	}
 	tos<<"  </head>\n";
 
-	tos<<"  <body>\n";
+	tos<<QString("  <body style=\"font-family: ")+htmlExportFontFamily()+QString("\">\n");
 	QSet<int> tmpSet;
 	tos<<exportStatisticsTeachersSubjectsHtml(parent, saveTime, statisticValues, htmlLevel, TIMETABLE_HTML_PRINT_ACTIVITY_TAGS, statisticValues.allTeachersNames.count(), &tmpSet);
 	tos<<"  </body>\n</html>\n";
@@ -1094,7 +1094,7 @@ bool StatisticsExport::exportStatisticsSubjectsTeachers(QWidget* parent, const Q
 	}
 	tos<<"  </head>\n";
 
-	tos<<"  <body>\n";
+	tos<<QString("  <body style=\"font-family: ")+htmlExportFontFamily()+QString("\">\n");
 	QSet<int> tmpSet;
 	tos<<StatisticsExport::exportStatisticsSubjectsTeachersHtml(parent, saveTime, statisticValues, htmlLevel, TIMETABLE_HTML_PRINT_ACTIVITY_TAGS, statisticValues.allSubjectsNames.count(), &tmpSet);
 	tos<<"  </body>\n</html>\n";
@@ -1437,7 +1437,7 @@ bool StatisticsExport::exportStatisticsTeachersStudents(QWidget* parent, const Q
 	}
 	tos<<"  </head>\n";
 
-	tos<<"  <body>\n";
+	tos<<QString("  <body style=\"font-family: ")+htmlExportFontFamily()+QString("\">\n");
 	QSet<int> tmpSet;
 	tos<<StatisticsExport::exportStatisticsTeachersStudentsHtml(parent, saveTime, statisticValues, htmlLevel, TIMETABLE_HTML_PRINT_ACTIVITY_TAGS, statisticValues.allTeachersNames.count(), &tmpSet);
 	tos<<"  </body>\n</html>\n";
@@ -1782,7 +1782,7 @@ bool StatisticsExport::exportStatisticsStudentsTeachers(QWidget* parent, const Q
 	}
 	tos<<"  </head>\n";
 
-	tos<<"  <body>\n";
+	tos<<QString("  <body style=\"font-family: ")+htmlExportFontFamily()+QString("\">\n");
 	QSet<int> tmpSet;
 	tos<<StatisticsExport::exportStatisticsStudentsTeachersHtml(parent, saveTime, statisticValues, htmlLevel, TIMETABLE_HTML_PRINT_ACTIVITY_TAGS, statisticValues.allStudentsNames.count(), &tmpSet);
 	tos<<"  </body>\n</html>\n";
@@ -2127,7 +2127,7 @@ bool StatisticsExport::exportStatisticsSubjectsStudents(QWidget* parent, const Q
 	}
 	tos<<"  </head>\n";
 
-	tos<<"  <body>\n";
+	tos<<QString("  <body style=\"font-family: ")+htmlExportFontFamily()+QString("\">\n");
 	QSet<int> tmpSet;
 	tos<<StatisticsExport::exportStatisticsSubjectsStudentsHtml(parent, saveTime, statisticValues, htmlLevel, TIMETABLE_HTML_PRINT_ACTIVITY_TAGS, statisticValues.allSubjectsNames.count(), &tmpSet);
 	tos<<"  </body>\n</html>\n";
@@ -2470,7 +2470,7 @@ bool StatisticsExport::exportStatisticsStudentsSubjects(QWidget* parent, const Q
 	}
 	tos<<"  </head>\n";
 
-	tos<<"  <body>\n";
+	tos<<QString("  <body style=\"font-family: ")+htmlExportFontFamily()+QString("\">\n");
 	QSet<int> tmpSet;
 	tos<<StatisticsExport::exportStatisticsStudentsSubjectsHtml(parent, saveTime, statisticValues, htmlLevel, TIMETABLE_HTML_PRINT_ACTIVITY_TAGS, statisticValues.allStudentsNames.count(), &tmpSet);
 	tos<<"  </body>\n</html>\n";
