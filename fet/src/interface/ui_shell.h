@@ -27,6 +27,9 @@ namespace UiShell {
 	// يعيد اللوحة إلى الصفحة الرئيسية (لوحة البداية) إن كانت مثبّتة.
 	void showHome(QMainWindow* window);
 
+	// يُحدّث بطاقات لوحة البداية (بعد إضافة قيود أو تغيير البيانات مثلًا).
+	void refreshDashboard(QMainWindow* window);
+
 	// يُعيد بناء نصوص الشريط الجانبي واللوحة حسب لغة الواجهة الحالية.
 	// يُستدعى تلقائيًا عند تغيير اللغة (انظر fet.cpp).
 	void retranslate(QMainWindow* window);

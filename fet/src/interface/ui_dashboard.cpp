@@ -255,21 +255,24 @@ QWidget* UiDashboard::buildQuickActionsSection(QWidget* host)
 		"dataActivitiesAction", "dataAllTimeConstraintsAction", "dataAllSpaceConstraintsAction",
 		"timetableGenerateAction",
 		"timetableViewTeachersTimeHorizontalAction", "timetableViewStudentsTimeHorizontalAction",
-		"timetableViewRoomsTimeHorizontalAction", "filePublishToShareAction"
+		"timetableViewRoomsTimeHorizontalAction", "filePublishToShareAction",
+		"otConstraintTemplatesAction"
 	};
 	const char* const tooltipsEn[] = {
 		"Add or edit teachers", "Add or edit subjects", "Manage years, groups and subgroups",
 		"Manage rooms and buildings", "Manage teaching activities", "All time constraints",
 		"All room constraints", "Start timetable generation", "View teachers' timetables",
 		"View students' timetables", "View rooms' timetables",
-		"Copy the timetables to a shared folder on the school network"
+		"Copy the timetables to a shared folder on the school network",
+		"Add the everyday constraints through a simple form"
 	};
 	const char* const tooltipsAr[] = {
 		"إضافة/تعديل قائمة الأساتذة", "إضافة/تعديل المواد", "إدارة السنوات والأفواج والفرق",
 		"إدارة القاعات والمباني", "إدارة أنشطة التدريس", "كل القيود الزمنية",
 		"كل قيود القاعات", "بدء توليد الجدول الزمني", "عرض جداول الأساتذة بعد التوليد",
 		"عرض جداول الأقسام بعد التوليد", "عرض جداول القاعات بعد التوليد",
-		"نسخ الجداول إلى مجلد مشترك على شبكة المؤسسة"
+		"نسخ الجداول إلى مجلد مشترك على شبكة المؤسسة",
+		"إضافة القيود اليومية عبر نموذج مبسّط"
 	};
 
 	const int count = int(sizeof(actionNames) / sizeof(actionNames[0]));
@@ -315,6 +318,8 @@ QString UiDashboard::quickButtonText(const QString& actionName)
 		return UiI18n::T("Rooms' timetables", "جداول القاعات");
 	if (actionName == QLatin1String("filePublishToShareAction"))
 		return UiI18n::T("Publish timetables", "نشر الجداول");
+	if (actionName == QLatin1String("otConstraintTemplatesAction"))
+		return UiI18n::T("Constraint templates", "القيود بالقوالب");
 	return actionName;
 }
 

@@ -21,10 +21,13 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 
 #include "ui_shell.h"
 
+#include "ui_constraints.h"
 #include "ui_dashboard.h"
 #include "ui_i18n.h"
 
 #include <QAction>
+#include <QKeySequence>
+#include <QMenu>
 #include <QApplication>
 #include <QColor>
 #include <QFont>
@@ -114,6 +117,10 @@ void buildNavItems(QListWidget* nav)
 	addNavItem(nav, UiI18n::T("Activities", "الأنشطة"), QStringLiteral("dataActivitiesAction"));
 
 	addSection(nav, UiI18n::T("Constraints", "القيود"));
+	addNavItem(nav, UiI18n::T("Constraint templates…", "القيود بالقوالب…"),
+		   QStringLiteral("otConstraintTemplatesAction"), -1,
+		   UiI18n::T("Add the everyday constraints through a simple form",
+			     "إضافة القيود اليومية عبر نموذج مبسّط"));
 	addNavItem(nav, UiI18n::T("All time constraints", "كل القيود الزمنية"),
 		   QStringLiteral("dataAllTimeConstraintsAction"));
 	addNavItem(nav, UiI18n::T("All space constraints", "كل القيود المكانية"),
@@ -176,6 +183,25 @@ void install(QMainWindow* window)
 		return;
 
 	QSettings settings(QStringLiteral("fet"), QStringLiteral("fettimetabling"));
+
+	// ---------- إجراء «القيود بالقوالب» (المرحلة 4) ----------
+	// نُنشئه كإجراء حقيقي على النافذة حتى يعمل مع آلية الشريط الجانبي نفسها،
+	// ويظهر أيضًا في قائمة «البيانات» الأصلية.
+	if (window->findChild<QAction*>(QStringLiteral("otConstraintTemplatesAction")) == nullptr) {
+		QAction* templatesAction = new QAction(window);
+		templatesAction->setObjectName(QStringLiteral("otConstraintTemplatesAction"));
+		templatesAction->setText(UiI18n::T("Constraint templates…", "القيود بالقوالب…"));
+		templatesAction->setToolTip(UiI18n::T("Add the everyday constraints through a simple form",
+						       "إضافة القيود اليومية عبر نموذج مبسّط"));
+		templatesAction->setShortcut(QKeySequence(QStringLiteral("Ctrl+Shift+T")));
+		QObject::connect(templatesAction, &QAction::triggered, window,
+				 [window]() { UiConstraints::run(window); });
+		window->addAction(templatesAction);
+
+		QMenu* dataMenu = window->findChild<QMenu*>(QStringLiteral("dataMenu"));
+		if (dataMenu != nullptr)
+			dataMenu->insertAction(dataMenu->actions().value(0), templatesAction);
+	}
 
 	// ---------- الصفحات ----------
 	UiDashboard* dashboard = new UiDashboard(window);
@@ -291,6 +317,18 @@ void install(QMainWindow* window)
 	QObject::connect(nav, &QListWidget::currentRowChanged, window, [](int row) {
 		saveNavIndex(row);
 	});
+}
+
+void refreshDashboard(QMainWindow* window)
+{
+	if (window == nullptr)
+		return;
+	QSplitter* splitter = window->findChild<QSplitter*>(QStringLiteral("otShellSplitter"));
+	if (splitter == nullptr)
+		return;
+	UiDashboard* dashboard = splitter->findChild<UiDashboard*>();
+	if (dashboard != nullptr)
+		dashboard->refresh();
 }
 
 void showHome(QMainWindow* window)

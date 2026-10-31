@@ -12,6 +12,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include "ui_selfcheck.h"
 
 #include "ui_dashboard.h"
+#include "ui_constraints.h"
 #include "ui_i18n.h"
 #include "ui_shell.h"
 
@@ -141,6 +142,21 @@ int run(QMainWindow* mainWindow)
 		else
 			r.fail(QStringLiteral("كل إجراءات الشريط الجانبي مرتبطة"),
 			       QStringLiteral("%1/%2").arg(found).arg(actionItems));
+	}
+
+	// ---- 5.5) محرّر القيود بالقوالب (المرحلة 4 — الأساسيات) ----
+	{
+		QAction* templatesAction = mainWindow->findChild<QAction*>(QStringLiteral("otConstraintTemplatesAction"));
+		if (templatesAction != nullptr)
+			r.ok(QStringLiteral("إجراء «القيود بالقوالب» موجود"), templatesAction->shortcut().toString());
+		else
+			r.fail(QStringLiteral("إجراء «القيود بالقوالب» موجود"), QStringLiteral("otConstraintTemplatesAction مفقود"));
+
+		const int templates = UiConstraints::templateCount();
+		if (templates >= 15)
+			r.ok(QStringLiteral("قوالب القيود الأساسية"), QStringLiteral("%1 قالبًا").arg(templates));
+		else
+			r.fail(QStringLiteral("قوالب القيود الأساسية"), QStringLiteral("%1 فقط").arg(templates));
 	}
 
 	// ---- 6) اللغة والترجمة ----

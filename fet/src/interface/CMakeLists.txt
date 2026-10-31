@@ -20,6 +20,7 @@ qt_add_executable(fet WIN32 MACOSX_BUNDLE
     ui_publish.cpp ui_publish.h
     ui_shell.cpp ui_shell.h
     ui_dashboard.cpp ui_dashboard.h
+    ui_constraints.cpp ui_constraints.h
     ui_selfcheck.cpp ui_selfcheck.h
     ${app_icon_resource_windows}
     ${app_icon_macos}
