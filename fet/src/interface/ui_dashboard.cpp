@@ -316,6 +316,10 @@ QWidget* UiDashboard::buildQuickActionsSection(QWidget* host)
 	};
 
 	const int count = int(sizeof(actionNames) / sizeof(actionNames[0]));
+	// أعمدة متساوية العرض: بدونها يظهر زر واحد عريض في آخر صف (كان عيبًا ظاهرًا)
+	for (int column = 0; column < 4; ++column)
+		grid->setColumnStretch(column, 1);
+
 	for (int i = 0; i < count; ++i) {
 		const QString actionName = QString::fromLatin1(actionNames[i]);
 		addQuickButton(grid, i / 4, i % 4, actionName,

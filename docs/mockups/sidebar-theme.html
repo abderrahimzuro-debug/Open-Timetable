@@ -16,6 +16,9 @@
     --accent-soft: #e8efff;
     --stroke: #334155;
     --card: #ffffff;
+    --a-blue: #1d4ed8; --a-teal: #0f766e; --a-violet: #6d28d9;
+    --a-purple: #9333ea; --a-orange: #c2410c; --a-sky: #0369a1;
+    --a-amber: #b45309; --a-rose: #be123c; --a-olive: #4d7c0f;
   }
   body.dark {
     --bg: #141a22;
@@ -27,7 +30,10 @@
     --accent: #3b82f6;
     --accent-soft: #1e3a8a;
     --stroke: #e2e8f0;
-    --card: #1b232e;
+    --card: #171d27;
+    --a-blue: #3b82f6; --a-teal: #2dd4bf; --a-violet: #a78bfa;
+    --a-purple: #c084fc; --a-orange: #fb923c; --a-sky: #38bdf8;
+    --a-amber: #fbbf24; --a-rose: #fb7185; --a-olive: #a3e635;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
@@ -121,15 +127,25 @@
   .content { flex: 1 1 auto; padding: 26px 30px; overflow: auto; }
   .title { font-size: 26px; font-weight: 700; margin: 0 0 6px; }
   .subtitle { color: var(--muted); margin: 0 0 22px; font-size: 13.5px; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .cards { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 10px; }
+  @media (max-width: 1100px) { .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   .card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 14px 16px;
+    padding: 9px 12px;
   }
-  .card .k { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
-  .card .v { font-size: 22px; font-weight: 700; }
+  .card .v { font-size: 19px; font-weight: 700; }
+  .card .k { color: var(--muted); font-size: 11px; margin-top: 2px; }
+  .card[data-accent="blue"] .v { color: var(--a-blue); }
+  .card[data-accent="teal"] .v { color: var(--a-teal); }
+  .card[data-accent="violet"] .v { color: var(--a-violet); }
+  .card[data-accent="purple"] .v { color: var(--a-purple); }
+  .card[data-accent="orange"] .v { color: var(--a-orange); }
+  .card[data-accent="sky"] .v { color: var(--a-sky); }
+  .card[data-accent="amber"] .v { color: var(--a-amber); }
+  .card[data-accent="rose"] .v { color: var(--a-rose); }
+  .card[data-accent="olive"] .v { color: var(--a-olive); }
   .quick { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 26px; }
   .quick .btn {
     display: flex; align-items: center; gap: 9px;
@@ -151,24 +167,22 @@
   <aside class="sidebar" id="sidebar">
     <div class="head">
       <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
-        <rect x="2" y="2" width="60" height="60" rx="14" fill="#2563eb"></rect>
-        <g stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".85">
-          <line x1="14" y1="22" x2="50" y2="22"></line>
-          <line x1="24" y1="14" x2="24" y2="20"></line>
-          <line x1="40" y1="14" x2="40" y2="20"></line>
-          <line x1="14" y1="34" x2="50" y2="34"></line>
-        </g>
-        <g stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none">
-          <line x1="20" y1="46" x2="28" y2="54"></line>
-          <line x1="28" y1="54" x2="44" y2="38"></line>
-        </g>
+        <defs>
+          <linearGradient id="otLogoGradient" x1="2" y1="2" x2="62" y2="62" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#4f46e5"></stop>
+            <stop offset="1" stop-color="#2563eb"></stop>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="60" height="60" rx="15" fill="url(#otLogoGradient)"></rect>
+        <rect x="14" y="14" width="11" height="11" rx="2.5" fill="#ffffff"></rect>
+        <rect x="28" y="14" width="22" height="11" rx="2.5" fill="#ffffff"></rect>
+        <rect x="14" y="28" width="11" height="22" rx="2.5" fill="#ffffff"></rect>
+        <rect x="28" y="28" width="22" height="22" rx="3" fill="#c7d2fe"></rect>
       </svg>
       <span class="brand-text">Open-Timetable</span>
       <button class="icon-btn" id="themeBtn" title="تبديل المظهر الفاتح/الداكن" aria-label="تبديل المظهر">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-             stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
-          <circle cx="12" cy="12" r="6.5"></circle>
-        </svg>
+             stroke-linecap="round" stroke-linejoin="round" id="themeIcon"></svg>
       </button>
       <button class="icon-btn" id="collapseBtn" title="طي/فتح الشريط الجانبي" aria-label="طي الشريط">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
@@ -190,12 +204,15 @@
     <p class="subtitle">ملخّص المشروع والإجراءات السريعة — أيقونات احترافية، بلا رموز تعبيرية.</p>
 
     <div class="cards">
-      <div class="card"><div class="k">الأساتذة</div><div class="v">24</div></div>
-      <div class="card"><div class="k">المواد</div><div class="v">18</div></div>
-      <div class="card"><div class="k">الأقسام</div><div class="v">12</div></div>
-      <div class="card"><div class="k">القاعات</div><div class="v">9</div></div>
-      <div class="card"><div class="k">الأنشطة</div><div class="v">316</div></div>
-      <div class="card"><div class="k">القيود</div><div class="v">58</div></div>
+      <div class="card" data-accent="blue"><div class="v">35</div><div class="k">الأساتذة</div></div>
+      <div class="card" data-accent="teal"><div class="v">24</div><div class="k">المواد</div></div>
+      <div class="card" data-accent="violet"><div class="v">4</div><div class="k">الأقسام</div></div>
+      <div class="card" data-accent="purple"><div class="v">18</div><div class="k">الأفواج</div></div>
+      <div class="card" data-accent="orange"><div class="v">36</div><div class="k">الفرق</div></div>
+      <div class="card" data-accent="sky"><div class="v">21</div><div class="k">القاعات</div></div>
+      <div class="card" data-accent="amber"><div class="v">543</div><div class="k">الأنشطة</div></div>
+      <div class="card" data-accent="rose"><div class="v">852</div><div class="k">قيود زمنية</div></div>
+      <div class="card" data-accent="olive"><div class="v">584</div><div class="k">قيود مكانية</div></div>
     </div>
 
     <div class="quick" id="quick"></div>
@@ -221,7 +238,9 @@ const items = [
   ["generate", "توليد الجدول"], ["view-teachers", "جداول الأساتذة"],
   ["view-students", "جداول الأقسام"], ["view-rooms", "جداول القاعات"], ["conflicts", "التعارضات"],
   ["section", "النشر"],
-  ["publish", "نشر الجداول"]
+  ["publish", "نشر الجداول"],
+  ["section", "أدوات"],
+  ["commands", "كل الأدوات…"]
 ];
 
 // نفس مسارات أيقونات ui_icons.cpp (شبكة 24×24، سماكة 1.7)
@@ -243,7 +262,7 @@ const paths = {
   "view-rooms": '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="8" cy="14.5" r="1.2"/><circle cx="12" cy="14.5" r="1.2"/><circle cx="16" cy="14.5" r="1.2"/>',
   conflicts: '<path d="M12 3.5 21 20H3zM12 9.5V14"/><circle cx="12" cy="16.6" r="1.15"/>',
   publish: '<path d="M12 15.5v-12M7 8.5 12 3.5l5 5M4.5 14v6.5h15V14"/>',
-  moon: '<circle cx="12" cy="12" r="6.5"/>',
+  moon: '<path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.6V5M12 19v2.4M2.6 12H5M19 12h2.4M5.2 5.2 7 7M17 17l1.8 1.8M18.8 5.2 17 7M7 17l-1.8 1.8"/>'
 };
 
@@ -269,7 +288,8 @@ items.forEach(([icon, text]) => {
 const quick = document.getElementById("quick");
 [["templates", "القيود بالقوالب"], ["activities", "إضافة حصة"],
  ["generate", "توليد الجدول"], ["view-teachers", "جداول الأساتذة"],
- ["view-students", "جداول الأقسام"], ["publish", "نشر الجداول"]].forEach(([icon, text]) => {
+ ["view-students", "جداول الأقسام"], ["publish", "نشر الجداول"],
+ ["commands", "كل الأدوات"]].forEach(([icon, text]) => {
   const b = document.createElement("button");
   b.className = "btn";
   b.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round"
