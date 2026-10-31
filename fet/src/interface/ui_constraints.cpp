@@ -1,24 +1,29 @@
 /*
-File ui_constraints.cpp — Open-Timetable addition (المرحلة 4 — القسم الأول)
+File ui_constraints.cpp — Open-Timetable addition (المرحلة 4)
 
 This file is part of Open-Timetable, a modernised user interface for FET.
 FET is free software; you can redistribute it and/or modify it under the terms
 of the GNU Affero General Public License version 3 (see LICENSE).
 
-محرّر القيود بالقوالب — «الأساسيات» (15 قالبًا):
+محرّر القيود بالقوالب — قسمان:
 
-  1  أستاذ غير متاح في أوقات          9  أقصى فراغات يومية لكل الأساتذة
-  2  قسم/فوج غير متاح في أوقات       10  أقصى فراغات يومية لأستاذ
-  3  أقصى ساعات يومية لأستاذ         11  أقصى فراغات يومية لقسم
-  4  أقصى ساعات يومية لكل الأساتذة   12  أقصى فراغات يومية لكل الأقسام
-  5  أقصى ساعات يومية لقسم           13  أقصى أيام أسبوعيًا لأستاذ
-  6  أقصى ساعات يومية لكل الأقسام    14  أقصى أيام أسبوعيًا لكل الأساتذة
-  7  أدنى ساعات يومية لقسم           15  قاعة القسم الثابتة (قيد مكاني)
-  8  أدنى ساعات يومية لكل الأقسام
+القسم الأول — الأساسيات (15 قالبًا): ما تستخدمه المؤسسة كل يوم
+  أستاذ/قسم غير متاح • أقصى وأدنى ساعات يومية • فراغات يومية • أقصى أيام
+  أسبوعيًا • قاعة القسم الثابتة.
+
+القسم الثاني — الضروريات (14 قالبًا): الضبط الدقيق الذي تحتاجه المؤسسة أحيانًا
+  أدنى ساعات/أيام الأستاذ • أقصى ساعات متواصلة • أقصى امتداد يومي (span)
+  • بدايات مبكرة في الحصة الثانية • قاعة غير متاحة • قاعة مفضّلة لمادة/وسم
+  • قاعات المادة المتعدّدة.
 
 الطريقة: نُنشئ كائنات FET الأصلية ونضيفها بـ addTimeConstraint/addSpaceConstraint،
 ثم addUndoPoint — أي أن القيود تظهر في «كل القيود الزمنية/المكانية» وتُصدَّر في
 ملف .fet كأي قيد أُضيف يدويًا. لا تعديل على المحرّك.
+
+النافذة فيها:
+  - بحث فوري في القوالب (29 قالبًا)،
+  - قائمة مقسّمة إلى «الأساسيات» و«الضروريات»،
+  - قائمة حيّة بالقيود الموجودة من نوع القالب المختار.
 */
 
 #include "ui_constraints.h"
@@ -33,22 +38,23 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include "teacher.h"
 #include "studentsset.h"
 #include "room.h"
+#include "subject.h"
+#include "activitytag.h"
 #include "utilities.h"
 #include "fetmainform.h"
 
 #include <QAction>
-#include <QCheckBox>
-#include <QComboBox>
 #include <QBrush>
+#include <QCheckBox>
 #include <QColor>
+#include <QComboBox>
 #include <QDialog>
-#include <QDialogButtonBox>
-#include <QFormLayout>
-#include <QGridLayout>
+#include <QFont>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLabel>
+#include <QLineEdit>
 #include <QListWidget>
 #include <QMainWindow>
 #include <QMessageBox>
@@ -57,12 +63,19 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QVBoxLayout>
+#include <QVariant>
 
 #include <utility>
 
 namespace {
 
+enum Section {
+	SEC_ESSENTIALS = 0, // الأساسيات
+	SEC_NECESSITIES     // الضروريات
+};
+
 enum TemplateId {
+	// ---------- القسم الأول: الأساسيات ----------
 	T_TEACHER_NOT_AVAILABLE = 0,
 	T_STUDENTS_NOT_AVAILABLE,
 	T_TEACHER_MAX_HOURS_DAILY,
@@ -78,70 +91,114 @@ enum TemplateId {
 	T_TEACHER_MAX_DAYS_PER_WEEK,
 	T_TEACHERS_MAX_DAYS_PER_WEEK,
 	T_STUDENTS_SET_HOME_ROOM,
+	// ---------- القسم الثاني: الضروريات ----------
+	T_TEACHER_MIN_HOURS_DAILY,
+	T_TEACHER_MIN_DAYS_PER_WEEK,
+	T_TEACHER_MAX_HOURS_CONTINUOUSLY,
+	T_TEACHER_MAX_SPAN_PER_DAY,
+	T_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY,
+	T_STUDENTS_MAX_HOURS_CONTINUOUSLY,
+	T_STUDENTS_SET_MAX_SPAN_PER_DAY,
+	T_STUDENTS_MAX_SPAN_PER_DAY,
+	T_STUDENTS_EARLY_MAX_BEGINNINGS,
+	T_STUDENTS_SET_EARLY_MAX_BEGINNINGS,
+	T_ROOM_NOT_AVAILABLE,
+	T_SUBJECT_PREFERRED_ROOM,
+	T_ACTIVITY_TAG_PREFERRED_ROOM,
+	T_SUBJECT_PREFERRED_ROOMS,
 	T_COUNT
 };
 
-// كل قالب: ما يحتاجه من حقول + حدود القيمة الافتراضية
+// ما يحتاجه كل قالب من حقول
 struct TemplateSpec {
 	int id;
+	int section;
 	bool needsTeacher;
 	bool needsStudents;
+	bool needsSubject;
+	bool needsActivityTag;
+	bool needsRoom;
+	bool needsRoomList;
 	bool needsValue;
 	bool needsTimes;
-	bool needsRoom;
 	bool needsAllowEmptyDays;
+	bool needsExceptCheck;
 	int valueDefault;
 	QList<int> fetTypes; // أنواع FET لعرض «القيود الموجودة» من النوع نفسه
 };
 
-QString templateTitle(int id, bool ar)
+QString sectionTitle(int section)
+{
+	return section == SEC_ESSENTIALS
+		       ? UiI18n::T("Essentials", "الأساسيات")
+		       : UiI18n::T("Necessities (fine tuning)", "الضروريات (ضبط دقيق)");
+}
+
+QString templateTitle(int id)
 {
 	switch (id) {
 	case T_TEACHER_NOT_AVAILABLE:
-		return ar ? QString::fromUtf8("أستاذ غير متاح في أوقات")
-			  : QStringLiteral("Teacher not available at times");
+		return UiI18n::T("Teacher not available at times", "أستاذ غير متاح في أوقات");
 	case T_STUDENTS_NOT_AVAILABLE:
-		return ar ? QString::fromUtf8("قسم أو فوج غير متاح في أوقات")
-			  : QStringLiteral("Students set not available at times");
+		return UiI18n::T("Class or group not available at times", "قسم أو فوج غير متاح في أوقات");
 	case T_TEACHER_MAX_HOURS_DAILY:
-		return ar ? QString::fromUtf8("أقصى ساعات يومية — لأستاذ")
-			  : QStringLiteral("Max hours daily — one teacher");
+		return UiI18n::T("Max hours daily — one teacher", "أقصى ساعات يومية — لأستاذ");
 	case T_TEACHERS_MAX_HOURS_DAILY:
-		return ar ? QString::fromUtf8("أقصى ساعات يومية — لكل الأساتذة")
-			  : QStringLiteral("Max hours daily — all teachers");
+		return UiI18n::T("Max hours daily — all teachers", "أقصى ساعات يومية — لكل الأساتذة");
 	case T_STUDENTS_SET_MAX_HOURS_DAILY:
-		return ar ? QString::fromUtf8("أقصى ساعات يومية — لقسم")
-			  : QStringLiteral("Max hours daily — one students set");
+		return UiI18n::T("Max hours daily — one class", "أقصى ساعات يومية — لقسم");
 	case T_STUDENTS_MAX_HOURS_DAILY:
-		return ar ? QString::fromUtf8("أقصى ساعات يومية — لكل الأقسام")
-			  : QStringLiteral("Max hours daily — all students");
+		return UiI18n::T("Max hours daily — all classes", "أقصى ساعات يومية — لكل الأقسام");
 	case T_STUDENTS_SET_MIN_HOURS_DAILY:
-		return ar ? QString::fromUtf8("أدنى ساعات يومية — لقسم")
-			  : QStringLiteral("Min hours daily — one students set");
+		return UiI18n::T("Min hours daily — one class", "أدنى ساعات يومية — لقسم");
 	case T_STUDENTS_MIN_HOURS_DAILY:
-		return ar ? QString::fromUtf8("أدنى ساعات يومية — لكل الأقسام")
-			  : QStringLiteral("Min hours daily — all students");
+		return UiI18n::T("Min hours daily — all classes", "أدنى ساعات يومية — لكل الأقسام");
 	case T_TEACHERS_MAX_GAPS_PER_DAY:
-		return ar ? QString::fromUtf8("أقصى فراغات يومية — لكل الأساتذة")
-			  : QStringLiteral("Max gaps daily — all teachers");
+		return UiI18n::T("Max gaps daily — all teachers", "أقصى فراغات يومية — لكل الأساتذة");
 	case T_TEACHER_MAX_GAPS_PER_DAY:
-		return ar ? QString::fromUtf8("أقصى فراغات يومية — لأستاذ")
-			  : QStringLiteral("Max gaps daily — one teacher");
+		return UiI18n::T("Max gaps daily — one teacher", "أقصى فراغات يومية — لأستاذ");
 	case T_STUDENTS_SET_MAX_GAPS_PER_DAY:
-		return ar ? QString::fromUtf8("أقصى فراغات يومية — لقسم")
-			  : QStringLiteral("Max gaps daily — one students set");
+		return UiI18n::T("Max gaps daily — one class", "أقصى فراغات يومية — لقسم");
 	case T_STUDENTS_MAX_GAPS_PER_DAY:
-		return ar ? QString::fromUtf8("أقصى فراغات يومية — لكل الأقسام")
-			  : QStringLiteral("Max gaps daily — all students");
+		return UiI18n::T("Max gaps daily — all classes", "أقصى فراغات يومية — لكل الأقسام");
 	case T_TEACHER_MAX_DAYS_PER_WEEK:
-		return ar ? QString::fromUtf8("أقصى أيام أسبوعيًا — لأستاذ")
-			  : QStringLiteral("Max days per week — one teacher");
+		return UiI18n::T("Max days per week — one teacher", "أقصى أيام أسبوعيًا — لأستاذ");
 	case T_TEACHERS_MAX_DAYS_PER_WEEK:
-		return ar ? QString::fromUtf8("أقصى أيام أسبوعيًا — لكل الأساتذة")
-			  : QStringLiteral("Max days per week — all teachers");
+		return UiI18n::T("Max days per week — all teachers", "أقصى أيام أسبوعيًا — لكل الأساتذة");
 	case T_STUDENTS_SET_HOME_ROOM:
-		return ar ? QString::fromUtf8("قاعة القسم الثابتة")
-			  : QStringLiteral("Home room for a students set");
+		return UiI18n::T("Home room for a class", "قاعة القسم الثابتة");
+
+	// ---------- الضروريات ----------
+	case T_TEACHER_MIN_HOURS_DAILY:
+		return UiI18n::T("Min hours daily — one teacher", "أدنى ساعات يومية — لأستاذ");
+	case T_TEACHER_MIN_DAYS_PER_WEEK:
+		return UiI18n::T("Min days per week — one teacher", "أدنى أيام أسبوعيًا — لأستاذ");
+	case T_TEACHER_MAX_HOURS_CONTINUOUSLY:
+		return UiI18n::T("Max continuous hours — one teacher", "أقصى ساعات متواصلة — لأستاذ");
+	case T_TEACHER_MAX_SPAN_PER_DAY:
+		return UiI18n::T("Max span per day — one teacher", "أقصى امتداد يومي — لأستاذ");
+	case T_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY:
+		return UiI18n::T("Max continuous hours — one class", "أقصى ساعات متواصلة — لقسم");
+	case T_STUDENTS_MAX_HOURS_CONTINUOUSLY:
+		return UiI18n::T("Max continuous hours — all classes", "أقصى ساعات متواصلة — لكل الأقسام");
+	case T_STUDENTS_SET_MAX_SPAN_PER_DAY:
+		return UiI18n::T("Max span per day — one class", "أقصى امتداد يومي — لقسم");
+	case T_STUDENTS_MAX_SPAN_PER_DAY:
+		return UiI18n::T("Max span per day — all classes", "أقصى امتداد يومي — لكل الأقسام");
+	case T_STUDENTS_EARLY_MAX_BEGINNINGS:
+		return UiI18n::T("Early beginnings at second hour — all classes",
+				 "أقصى بدايات في الحصة الثانية — لكل الأقسام");
+	case T_STUDENTS_SET_EARLY_MAX_BEGINNINGS:
+		return UiI18n::T("Early beginnings at second hour — one class",
+				 "أقصى بدايات في الحصة الثانية — لقسم");
+	case T_ROOM_NOT_AVAILABLE:
+		return UiI18n::T("Room not available at times", "قاعة غير متاحة في أوقات");
+	case T_SUBJECT_PREFERRED_ROOM:
+		return UiI18n::T("Preferred room for a subject", "قاعة مفضّلة لمادة");
+	case T_ACTIVITY_TAG_PREFERRED_ROOM:
+		return UiI18n::T("Preferred room for an activity tag", "قاعة مفضّلة لوسم نشاط");
+	case T_SUBJECT_PREFERRED_ROOMS:
+		return UiI18n::T("Allowed rooms for a subject (several)", "قاعات مادة (عدة قاعات مسموحة)");
 	default:
 		return QString();
 	}
@@ -151,8 +208,8 @@ QString templateHint(int id)
 {
 	switch (id) {
 	case T_TEACHER_NOT_AVAILABLE:
-		return UiI18n::T("Mark the slots when the teacher cannot teach (red X = unavailable).",
-				 "حدّد الأوقات التي لا يستطيع الأستاذ التدريس فيها (علّامات الأوقات الممنوعة).");
+		return UiI18n::T("Mark the slots when the teacher cannot teach.",
+				 "حدّد الأوقات التي لا يستطيع الأستاذ التدريس فيها.");
 	case T_STUDENTS_NOT_AVAILABLE:
 		return UiI18n::T("Mark the slots when this class/group is unavailable (for example Friday afternoon).",
 				 "حدّد الأوقات التي لا يكون فيها القسم متاحًا (مثلًا مساء الجمعة).");
@@ -195,6 +252,50 @@ QString templateHint(int id)
 	case T_STUDENTS_SET_HOME_ROOM:
 		return UiI18n::T("The class stays in its own room (laboratory, workshop…).",
 				 "يبقى القسم في قاعته (مخبر، ورشة…).");
+
+	// ---------- الضروريات ----------
+	case T_TEACHER_MIN_HOURS_DAILY:
+		return UiI18n::T("Full-time teachers get at least this many lessons a day (avoids one-hour days).",
+				 "ضمان حدّ أدنى من الحصص في اليوم للأستاذ المتفرّغ (يمنع أيامًا بساعة واحدة).");
+	case T_TEACHER_MIN_DAYS_PER_WEEK:
+		return UiI18n::T("The teacher comes at least on this many days.",
+				 "يضمن حضور الأستاذ في عدد أيام لا يقل عن المحدّد.");
+	case T_TEACHER_MAX_HOURS_CONTINUOUSLY:
+		return UiI18n::T("No more than N lessons in a row without a break.",
+				 "لا يزيد عدد الحصص المتتالية عن المحدّد دون راحة.");
+	case T_TEACHER_MAX_SPAN_PER_DAY:
+		return UiI18n::T("Span = from the first to the last lesson of the day, including gaps.",
+				 "الامتداد = من أول حصة إلى آخر حصة في اليوم، بما في ذلك الفراغات.");
+	case T_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY:
+		return UiI18n::T("Splits long blocks of lessons for this class.",
+				 "يمنع بقاء القسم في حصص متتالية طويلة.");
+	case T_STUDENTS_MAX_HOURS_CONTINUOUSLY:
+		return UiI18n::T("The same limit for every class.",
+				 "الحدّ نفسه لكل الأقسام.");
+	case T_STUDENTS_SET_MAX_SPAN_PER_DAY:
+		return UiI18n::T("From first to last lesson (gaps included) for this class.",
+				 "من أول حصة إلى آخر حصة (مع الفراغات) لهذا القسم.");
+	case T_STUDENTS_MAX_SPAN_PER_DAY:
+		return UiI18n::T("The same limit for every class.",
+				 "الحدّ نفسه لكل الأقسام.");
+	case T_STUDENTS_EARLY_MAX_BEGINNINGS:
+		return UiI18n::T("Limits how often classes start their day at the second hour (common in Algeria).",
+				 "يحدّد عدد المرات التي يبدأ فيها القسم يومه من الحصة الثانية (شائع في الجزائر).");
+	case T_STUDENTS_SET_EARLY_MAX_BEGINNINGS:
+		return UiI18n::T("Same limit, for one class only.",
+				 "الحدّ نفسه، لقسم واحد فقط.");
+	case T_ROOM_NOT_AVAILABLE:
+		return UiI18n::T("Mark the slots when the room cannot be used (workshop, lab maintenance…).",
+				 "حدّد الأوقات التي لا يمكن استعمال القاعة فيها (ورشة، صيانة مخبر…).");
+	case T_SUBJECT_PREFERRED_ROOM:
+		return UiI18n::T("Every lesson of this subject goes to this room (100 % = always).",
+				 "كل حصص هذه المادة في هذه القاعة (100 % = دائمًا).");
+	case T_ACTIVITY_TAG_PREFERRED_ROOM:
+		return UiI18n::T("Every activity carrying this tag goes to this room (e.g. 'Lab', 'Sport').",
+				 "كل نشاط يحمل هذا الوسم يُوضع في هذه القاعة (مثل «مخبر»، «رياضة»).");
+	case T_SUBJECT_PREFERRED_ROOMS:
+		return UiI18n::T("Tick the rooms this subject may use; the generator picks among them.",
+				 "حدّد القاعات التي يُسمح للمادة باستعمالها؛ يختار البرنامج من بينها.");
 	default:
 		return QString();
 	}
@@ -204,12 +305,17 @@ TemplateSpec specFor(int id)
 {
 	TemplateSpec s;
 	s.id = id;
+	s.section = (id <= T_STUDENTS_SET_HOME_ROOM) ? SEC_ESSENTIALS : SEC_NECESSITIES;
 	s.needsTeacher = false;
 	s.needsStudents = false;
+	s.needsSubject = false;
+	s.needsActivityTag = false;
+	s.needsRoom = false;
+	s.needsRoomList = false;
 	s.needsValue = true;
 	s.needsTimes = false;
-	s.needsRoom = false;
 	s.needsAllowEmptyDays = false;
+	s.needsExceptCheck = false;
 	s.valueDefault = 6;
 
 	switch (id) {
@@ -281,6 +387,81 @@ TemplateSpec specFor(int id)
 		s.needsValue = false;
 		s.fetTypes << CONSTRAINT_STUDENTS_SET_HOME_ROOM;
 		break;
+
+	// ---------- الضروريات ----------
+	case T_TEACHER_MIN_HOURS_DAILY:
+		s.needsTeacher = true;
+		s.needsAllowEmptyDays = true;
+		s.valueDefault = 4;
+		s.fetTypes << CONSTRAINT_TEACHER_MIN_HOURS_DAILY;
+		break;
+	case T_TEACHER_MIN_DAYS_PER_WEEK:
+		s.needsTeacher = true;
+		s.valueDefault = 5;
+		s.fetTypes << CONSTRAINT_TEACHER_MIN_DAYS_PER_WEEK;
+		break;
+	case T_TEACHER_MAX_HOURS_CONTINUOUSLY:
+		s.needsTeacher = true;
+		s.valueDefault = 3;
+		s.fetTypes << CONSTRAINT_TEACHER_MAX_HOURS_CONTINUOUSLY;
+		break;
+	case T_TEACHER_MAX_SPAN_PER_DAY:
+		s.needsTeacher = true;
+		s.needsExceptCheck = true;
+		s.valueDefault = 8;
+		s.fetTypes << CONSTRAINT_TEACHER_MAX_SPAN_PER_DAY;
+		break;
+	case T_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY:
+		s.needsStudents = true;
+		s.valueDefault = 6;
+		s.fetTypes << CONSTRAINT_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY;
+		break;
+	case T_STUDENTS_MAX_HOURS_CONTINUOUSLY:
+		s.valueDefault = 6;
+		s.fetTypes << CONSTRAINT_STUDENTS_MAX_HOURS_CONTINUOUSLY;
+		break;
+	case T_STUDENTS_SET_MAX_SPAN_PER_DAY:
+		s.needsStudents = true;
+		s.valueDefault = 8;
+		s.fetTypes << CONSTRAINT_STUDENTS_SET_MAX_SPAN_PER_DAY;
+		break;
+	case T_STUDENTS_MAX_SPAN_PER_DAY:
+		s.valueDefault = 8;
+		s.fetTypes << CONSTRAINT_STUDENTS_MAX_SPAN_PER_DAY;
+		break;
+	case T_STUDENTS_EARLY_MAX_BEGINNINGS:
+		s.valueDefault = 4;
+		s.fetTypes << CONSTRAINT_STUDENTS_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR;
+		break;
+	case T_STUDENTS_SET_EARLY_MAX_BEGINNINGS:
+		s.needsStudents = true;
+		s.valueDefault = 4;
+		s.fetTypes << CONSTRAINT_STUDENTS_SET_EARLY_MAX_BEGINNINGS_AT_SECOND_HOUR;
+		break;
+	case T_ROOM_NOT_AVAILABLE:
+		s.needsRoom = true;
+		s.needsValue = false;
+		s.needsTimes = true;
+		s.fetTypes << CONSTRAINT_ROOM_NOT_AVAILABLE_TIMES;
+		break;
+	case T_SUBJECT_PREFERRED_ROOM:
+		s.needsSubject = true;
+		s.needsRoom = true;
+		s.needsValue = false;
+		s.fetTypes << CONSTRAINT_SUBJECT_PREFERRED_ROOM;
+		break;
+	case T_ACTIVITY_TAG_PREFERRED_ROOM:
+		s.needsActivityTag = true;
+		s.needsRoom = true;
+		s.needsValue = false;
+		s.fetTypes << CONSTRAINT_ACTIVITY_TAG_PREFERRED_ROOM;
+		break;
+	case T_SUBJECT_PREFERRED_ROOMS:
+		s.needsSubject = true;
+		s.needsRoomList = true;
+		s.needsValue = false;
+		s.fetTypes << CONSTRAINT_SUBJECT_PREFERRED_ROOMS;
+		break;
 	default:
 		break;
 	}
@@ -296,9 +477,18 @@ QString valueCaption(int id)
 	case T_STUDENTS_SET_MAX_HOURS_DAILY:
 	case T_STUDENTS_MAX_HOURS_DAILY:
 		return UiI18n::T("Max hours per day:", "أقصى ساعات في اليوم:");
+	case T_TEACHER_MIN_HOURS_DAILY:
 	case T_STUDENTS_SET_MIN_HOURS_DAILY:
 	case T_STUDENTS_MIN_HOURS_DAILY:
 		return UiI18n::T("Min hours per day:", "أدنى ساعات في اليوم:");
+	case T_TEACHER_MAX_HOURS_CONTINUOUSLY:
+	case T_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY:
+	case T_STUDENTS_MAX_HOURS_CONTINUOUSLY:
+		return UiI18n::T("Max hours in a row:", "أقصى ساعات متتالية:");
+	case T_TEACHER_MAX_SPAN_PER_DAY:
+	case T_STUDENTS_SET_MAX_SPAN_PER_DAY:
+	case T_STUDENTS_MAX_SPAN_PER_DAY:
+		return UiI18n::T("Max span per day:", "أقصى امتداد في اليوم:");
 	case T_TEACHERS_MAX_GAPS_PER_DAY:
 	case T_TEACHER_MAX_GAPS_PER_DAY:
 	case T_STUDENTS_SET_MAX_GAPS_PER_DAY:
@@ -307,6 +497,11 @@ QString valueCaption(int id)
 	case T_TEACHER_MAX_DAYS_PER_WEEK:
 	case T_TEACHERS_MAX_DAYS_PER_WEEK:
 		return UiI18n::T("Max days per week:", "أقصى أيام في الأسبوع:");
+	case T_TEACHER_MIN_DAYS_PER_WEEK:
+		return UiI18n::T("Min days per week:", "أدنى أيام في الأسبوع:");
+	case T_STUDENTS_EARLY_MAX_BEGINNINGS:
+	case T_STUDENTS_SET_EARLY_MAX_BEGINNINGS:
+		return UiI18n::T("Max early beginnings:", "أقصى عدد للبدايات المبكرة:");
 	default:
 		return UiI18n::T("Value:", "القيمة:");
 	}
@@ -319,6 +514,8 @@ int valueMinimum(int id)
 	case T_TEACHER_MAX_GAPS_PER_DAY:
 	case T_STUDENTS_SET_MAX_GAPS_PER_DAY:
 	case T_STUDENTS_MAX_GAPS_PER_DAY:
+	case T_STUDENTS_EARLY_MAX_BEGINNINGS:
+	case T_STUDENTS_SET_EARLY_MAX_BEGINNINGS:
 		return 0;
 	default:
 		return 1;
@@ -330,6 +527,9 @@ int valueMaximum(int id)
 	switch (id) {
 	case T_TEACHER_MAX_DAYS_PER_WEEK:
 	case T_TEACHERS_MAX_DAYS_PER_WEEK:
+	case T_TEACHER_MIN_DAYS_PER_WEEK:
+	case T_STUDENTS_EARLY_MAX_BEGINNINGS:
+	case T_STUDENTS_SET_EARLY_MAX_BEGINNINGS:
 		return qMax(1, gt.rules.nDaysPerWeek);
 	default:
 		return qMax(1, gt.rules.nHoursPerDay);
@@ -415,7 +615,8 @@ public:
 	int addedCount;
 
 private:
-	QComboBox* templateCombo;
+	QLineEdit* searchEdit;
+	QListWidget* templateList;
 	QLabel* hintLabel;
 	QLabel* statusLabel;
 
@@ -424,6 +625,18 @@ private:
 
 	QWidget* studentsRow;
 	QComboBox* studentsCombo;
+
+	QWidget* subjectRow;
+	QComboBox* subjectCombo;
+
+	QWidget* tagRow;
+	QComboBox* tagCombo;
+
+	QWidget* roomRow;
+	QComboBox* roomCombo;
+
+	QWidget* roomListRow;
+	QListWidget* roomListWidget;
 
 	QWidget* valueRow;
 	QLabel* valueLabel;
@@ -435,28 +648,32 @@ private:
 	QWidget* allowEmptyRow;
 	QCheckBox* allowEmptyCheckBox;
 
+	QWidget* exceptRow;
+	QCheckBox* exceptCheckBox;
+
 	QWidget* timesRow;
 	QTableWidget* timesTable;
 	QPushButton* selectAllButton;
 	QPushButton* clearAllButton;
 
-	QWidget* roomRow;
-	QComboBox* roomCombo;
+	QPushButton* addButton;
 
 	QListWidget* existingList;
 	QLabel* existingCountLabel;
 
-	int currentId() const { return templateCombo->currentData().toInt(); }
-
-	TemplateSpec currentSpec() const { return specFor(currentId()); }
-
+	void populateTemplateList(const QString& filter);
 	void reloadTeachers();
 	void reloadStudents();
+	void reloadSubjects();
+	void reloadActivityTags();
 	void reloadRooms();
+	void reloadRoomChecks();
 	void rebuildTimesGrid();
 	void updateRows();
 	void refreshExisting();
 	void markAllTimes(bool checked);
+
+	int currentId() const;
 	void addConstraint();
 };
 
@@ -465,24 +682,32 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 {
 	addedCount = 0;
 
-	setWindowTitle(UiI18n::T("Constraint templates — essentials", "محرّر القيود بالقوالب — الأساسيات"));
-	setMinimumWidth(760);
+	setWindowTitle(UiI18n::T("Constraint templates", "محرّر القيود بالقوالب"));
+	setMinimumWidth(980);
+	resize(1020, 720);
 
-	// ---------- اختيار القالب ----------
-	templateCombo = new QComboBox(this);
-	templateCombo->setObjectName(QStringLiteral("otTemplateCombo"));
-	for (int id = 0; id < T_COUNT; ++id) {
-		templateCombo->addItem(templateTitle(id, UiI18n::isArabic()), id);
-	}
+	// ---------- البحث والقوالب ----------
+	searchEdit = new QLineEdit(this);
+	searchEdit->setObjectName(QStringLiteral("otTemplateSearch"));
+	searchEdit->setPlaceholderText(UiI18n::T("Search templates…", "ابحث في القوالب…"));
+	searchEdit->setClearButtonEnabled(true);
+
+	templateList = new QListWidget(this);
+	templateList->setObjectName(QStringLiteral("otTemplateList"));
+	templateList->setMinimumWidth(300);
+	templateList->setWordWrap(true);
 
 	hintLabel = new QLabel(this);
 	hintLabel->setWordWrap(true);
 	hintLabel->setStyleSheet(QStringLiteral("color:#4b5563;"));
+	hintLabel->setMinimumHeight(40);
+	hintLabel->setAlignment(Qt::AlignTop | Qt::AlignRight);
 
-	QGroupBox* templateBox = new QGroupBox(UiI18n::T("Choose a template", "اختر القالب"), this);
-	QVBoxLayout* templateLayout = new QVBoxLayout(templateBox);
-	templateLayout->addWidget(templateCombo);
-	templateLayout->addWidget(hintLabel);
+	QGroupBox* templatesBox = new QGroupBox(UiI18n::T("Templates", "القوالب"), this);
+	QVBoxLayout* templatesLayout = new QVBoxLayout(templatesBox);
+	templatesLayout->addWidget(searchEdit);
+	templatesLayout->addWidget(templateList, 1);
+	templatesLayout->addWidget(hintLabel);
 
 	// ---------- الحقول ----------
 	teacherCombo = new QComboBox(this);
@@ -503,6 +728,49 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 		l->setContentsMargins(0, 0, 0, 0);
 		l->addWidget(new QLabel(UiI18n::T("Class / group:", "القسم / الفوج:"), studentsRow));
 		l->addWidget(studentsCombo, 1);
+	}
+
+	subjectCombo = new QComboBox(this);
+	subjectCombo->setObjectName(QStringLiteral("otTemplateSubjectCombo"));
+	subjectRow = new QWidget(this);
+	{
+		QHBoxLayout* l = new QHBoxLayout(subjectRow);
+		l->setContentsMargins(0, 0, 0, 0);
+		l->addWidget(new QLabel(UiI18n::T("Subject:", "المادة:"), subjectRow));
+		l->addWidget(subjectCombo, 1);
+	}
+
+	tagCombo = new QComboBox(this);
+	tagCombo->setObjectName(QStringLiteral("otTemplateTagCombo"));
+	tagRow = new QWidget(this);
+	{
+		QHBoxLayout* l = new QHBoxLayout(tagRow);
+		l->setContentsMargins(0, 0, 0, 0);
+		l->addWidget(new QLabel(UiI18n::T("Activity tag:", "وسم النشاط:"), tagRow));
+		l->addWidget(tagCombo, 1);
+	}
+
+	roomCombo = new QComboBox(this);
+	roomCombo->setObjectName(QStringLiteral("otTemplateRoomCombo"));
+	roomRow = new QWidget(this);
+	{
+		QHBoxLayout* l = new QHBoxLayout(roomRow);
+		l->setContentsMargins(0, 0, 0, 0);
+		l->addWidget(new QLabel(UiI18n::T("Room:", "القاعة:"), roomRow));
+		l->addWidget(roomCombo, 1);
+	}
+
+	roomListWidget = new QListWidget(this);
+	roomListWidget->setObjectName(QStringLiteral("otTemplateRoomList"));
+	roomListWidget->setMaximumHeight(130);
+	roomListWidget->setSelectionMode(QAbstractItemView::NoSelection);
+	roomListRow = new QWidget(this);
+	{
+		QVBoxLayout* l = new QVBoxLayout(roomListRow);
+		l->setContentsMargins(0, 0, 0, 0);
+		l->addWidget(new QLabel(UiI18n::T("Allowed rooms (tick one or more):",
+						   "القاعات المسموحة (علّم واحدة أو أكثر):"), roomListRow));
+		l->addWidget(roomListWidget, 1);
 	}
 
 	valueLabel = new QLabel(this);
@@ -527,13 +795,23 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 		l->addStretch(1);
 	}
 
+	exceptCheckBox = new QCheckBox(
+		UiI18n::T("Allow one day with +1 hour (exception)",
+			  "السماح بيوم واحد بزيادة ساعة (استثناء)"),
+		this);
+	exceptRow = new QWidget(this);
+	{
+		QHBoxLayout* l = new QHBoxLayout(exceptRow);
+		l->setContentsMargins(0, 0, 0, 0);
+		l->addWidget(exceptCheckBox);
+		l->addStretch(1);
+	}
+
 	weightSpin = new QSpinBox(this);
 	weightSpin->setObjectName(QStringLiteral("otTemplateWeightSpin"));
 	weightSpin->setRange(0, 100);
 	weightSpin->setValue(100);
 	weightSpin->setSuffix(QStringLiteral(" %"));
-	weightSpin->setToolTip(UiI18n::T("100 % = a hard constraint (must be respected). Lower values let the generator trade it for a better overall timetable.",
-					 "100 % = قيد صارم (يجب احترامه). القيم الأقل تسمح للبرنامج بالتضحية به مقابل جدول أفضل عمومًا."));
 	weightRow = new QWidget(this);
 	{
 		QHBoxLayout* l = new QHBoxLayout(weightRow);
@@ -541,16 +819,6 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 		l->addWidget(new QLabel(UiI18n::T("Weight:", "الوزن:"), weightRow));
 		l->addWidget(weightSpin);
 		l->addStretch(1);
-	}
-
-	roomCombo = new QComboBox(this);
-	roomCombo->setObjectName(QStringLiteral("otTemplateRoomCombo"));
-	roomRow = new QWidget(this);
-	{
-		QHBoxLayout* l = new QHBoxLayout(roomRow);
-		l->setContentsMargins(0, 0, 0, 0);
-		l->addWidget(new QLabel(UiI18n::T("Room:", "القاعة:"), roomRow));
-		l->addWidget(roomCombo, 1);
 	}
 
 	timesTable = new QTableWidget(this);
@@ -573,19 +841,23 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 		l->addLayout(buttons);
 	}
 
-	QWidget* paramsWidget = new QWidget(this);
-	QVBoxLayout* paramsLayout = new QVBoxLayout(paramsWidget);
-	paramsLayout->setContentsMargins(0, 0, 0, 0);
+	QGroupBox* paramsBox = new QGroupBox(UiI18n::T("Constraint details", "تفاصيل القيد"), this);
+	QVBoxLayout* paramsLayout = new QVBoxLayout(paramsBox);
 	paramsLayout->addWidget(teacherRow);
 	paramsLayout->addWidget(studentsRow);
+	paramsLayout->addWidget(subjectRow);
+	paramsLayout->addWidget(tagRow);
+	paramsLayout->addWidget(roomRow);
+	paramsLayout->addWidget(roomListRow);
 	paramsLayout->addWidget(valueRow);
 	paramsLayout->addWidget(allowEmptyRow);
-	paramsLayout->addWidget(roomRow);
+	paramsLayout->addWidget(exceptRow);
 	paramsLayout->addWidget(weightRow);
 	paramsLayout->addWidget(timesRow, 1);
+	paramsLayout->addStretch(0);
 
 	// ---------- الأزرار ----------
-	QPushButton* addButton = new QPushButton(UiI18n::T("Add constraint", "إضافة القيد"), this);
+	addButton = new QPushButton(UiI18n::T("Add constraint", "إضافة القيد"), this);
 	addButton->setObjectName(QStringLiteral("otTemplateAddButton"));
 	addButton->setDefault(true);
 	QPushButton* closeButton = new QPushButton(UiI18n::T("Close", "إغلاق"), this);
@@ -603,23 +875,20 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 	// ---------- القيود الموجودة ----------
 	existingList = new QListWidget(this);
 	existingList->setObjectName(QStringLiteral("otTemplateExistingList"));
-	existingList->setMaximumHeight(120);
+	existingList->setMaximumHeight(110);
 	existingCountLabel = new QLabel(this);
 	existingCountLabel->setStyleSheet(QStringLiteral("color:#4b5563;"));
 
-	QGroupBox* existingBox = new QGroupBox(UiI18n::T("Existing constraints of this type", "القيود الموجودة من هذا النوع"), this);
+	QGroupBox* existingBox = new QGroupBox(
+		UiI18n::T("Existing constraints of this type", "القيود الموجودة من هذا النوع"), this);
 	QVBoxLayout* existingLayout = new QVBoxLayout(existingBox);
 	existingLayout->addWidget(existingList, 1);
 	existingLayout->addWidget(existingCountLabel);
 
 	// ---------- التركيب ----------
 	QHBoxLayout* topLayout = new QHBoxLayout();
-	topLayout->addWidget(templateBox, 1);
-	QWidget* paramsHost = new QWidget(this);
-	QVBoxLayout* paramsHostLayout = new QVBoxLayout(paramsHost);
-	paramsHostLayout->setContentsMargins(0, 0, 0, 0);
-	paramsHostLayout->addWidget(paramsWidget, 1);
-	topLayout->addWidget(paramsHost, 1);
+	topLayout->addWidget(templatesBox, 0);
+	topLayout->addWidget(paramsBox, 1);
 
 	QVBoxLayout* mainLayout = new QVBoxLayout(this);
 	mainLayout->addLayout(topLayout, 1);
@@ -627,8 +896,13 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 	mainLayout->addLayout(buttonRow);
 
 	// ---------- الوصل ----------
-	connect(templateCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
-		[this](int) { updateRows(); refreshExisting(); });
+	connect(searchEdit, &QLineEdit::textChanged, this,
+		[this](const QString& text) { populateTemplateList(text); });
+	connect(templateList, &QListWidget::currentItemChanged, this,
+		[this](QListWidgetItem*, QListWidgetItem*) {
+			updateRows();
+			refreshExisting();
+		});
 	connect(addButton, &QPushButton::clicked, this, [this]() { addConstraint(); });
 	connect(closeButton, &QPushButton::clicked, this, [this]() { accept(); });
 	connect(timesTable, &QTableWidget::cellClicked, this, [this](int row, int column) {
@@ -640,9 +914,88 @@ TemplateDialog::TemplateDialog(QWidget* parent)
 
 	reloadTeachers();
 	reloadStudents();
+	reloadSubjects();
+	reloadActivityTags();
 	reloadRooms();
+	reloadRoomChecks();
+	populateTemplateList(QString());
 	updateRows();
 	refreshExisting();
+}
+
+int TemplateDialog::currentId() const
+{
+	QListWidgetItem* item = templateList->currentItem();
+	if (item == nullptr)
+		return -1;
+	const QVariant data = item->data(Qt::UserRole);
+	if (!data.isValid())
+		return -1; // عنوان قسم
+	return data.toInt();
+}
+
+void TemplateDialog::populateTemplateList(const QString& filter)
+{
+	const QString needle = filter.trimmed();
+
+	// نحفظ القالب المختار لاستعادته بعد الفلترة
+	const int previousId = currentId();
+
+	templateList->clear();
+
+	for (int section = SEC_ESSENTIALS; section <= SEC_NECESSITIES; ++section) {
+		QList<int> matches;
+		for (int id = 0; id < T_COUNT; ++id) {
+			if (specFor(id).section != section)
+				continue;
+			if (needle.isEmpty()
+			    || templateTitle(id).contains(needle, Qt::CaseInsensitive)
+			    || templateHint(id).contains(needle, Qt::CaseInsensitive))
+				matches.append(id);
+		}
+		if (matches.isEmpty())
+			continue;
+
+		QListWidgetItem* header = new QListWidgetItem(
+			QStringLiteral("%1 (%2)").arg(sectionTitle(section)).arg(matches.count()),
+			templateList);
+		header->setFlags(Qt::NoItemFlags);
+		QFont headerFont = header->font();
+		headerFont.setBold(true);
+		header->setFont(headerFont);
+		header->setForeground(QColor(QStringLiteral("#1d4ed8")));
+		header->setBackground(QColor(QStringLiteral("#eef2ff")));
+		header->setTextAlignment((UiI18n::isArabic() ? Qt::AlignRight : Qt::AlignLeft)
+					 | Qt::AlignVCenter);
+
+		for (int id : std::as_const(matches)) {
+			QListWidgetItem* item = new QListWidgetItem(templateTitle(id), templateList);
+			item->setData(Qt::UserRole, id);
+			item->setTextAlignment((UiI18n::isArabic() ? Qt::AlignRight : Qt::AlignLeft)
+					       | Qt::AlignVCenter);
+		}
+	}
+
+	// استعادة الاختيار أو اختيار أول قالب
+	int rowToSelect = -1;
+	for (int i = 0; i < templateList->count(); ++i) {
+		QListWidgetItem* item = templateList->item(i);
+		if (!item->data(Qt::UserRole).isValid())
+			continue;
+		if (rowToSelect < 0)
+			rowToSelect = i;
+		if (item->data(Qt::UserRole).toInt() == previousId) {
+			rowToSelect = i;
+			break;
+		}
+	}
+	if (rowToSelect >= 0)
+		templateList->setCurrentRow(rowToSelect);
+	else {
+		hintLabel->setText(UiI18n::T("No template matches this search.",
+					     "لا يوجد قالب يطابق هذا البحث."));
+		addButton->setEnabled(false);
+	}
 }
 
 void TemplateDialog::reloadTeachers()
@@ -663,6 +1016,30 @@ void TemplateDialog::reloadStudents()
 	populateStudentsComboBox(studentsCombo, studentsCombo->currentText(), false);
 }
 
+void TemplateDialog::reloadSubjects()
+{
+	const QString previous = subjectCombo->currentText();
+	subjectCombo->clear();
+	const QList<Subject*>& subjects = gt.rules.subjectsList;
+	for (Subject* s : subjects)
+		subjectCombo->addItem(s->name);
+	const int idx = subjectCombo->findText(previous);
+	if (idx >= 0)
+		subjectCombo->setCurrentIndex(idx);
+}
+
+void TemplateDialog::reloadActivityTags()
+{
+	const QString previous = tagCombo->currentText();
+	tagCombo->clear();
+	const QList<ActivityTag*>& tags = gt.rules.activityTagsList;
+	for (ActivityTag* t : tags)
+		tagCombo->addItem(t->name);
+	const int idx = tagCombo->findText(previous);
+	if (idx >= 0)
+		tagCombo->setCurrentIndex(idx);
+}
+
 void TemplateDialog::reloadRooms()
 {
 	const QString previous = roomCombo->currentText();
@@ -673,6 +1050,17 @@ void TemplateDialog::reloadRooms()
 	const int idx = roomCombo->findText(previous);
 	if (idx >= 0)
 		roomCombo->setCurrentIndex(idx);
+}
+
+void TemplateDialog::reloadRoomChecks()
+{
+	roomListWidget->clear();
+	const QList<Room*>& rooms = gt.rules.roomsList;
+	for (Room* r : rooms) {
+		QListWidgetItem* item = new QListWidgetItem(r->name, roomListWidget);
+		item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+		item->setCheckState(Qt::Unchecked);
+	}
 }
 
 void TemplateDialog::rebuildTimesGrid()
@@ -715,19 +1103,27 @@ void TemplateDialog::markAllTimes(bool checked)
 
 void TemplateDialog::updateRows()
 {
-	const TemplateSpec spec = currentSpec();
+	const int id = currentId();
+	if (id < 0)
+		return;
 
-	hintLabel->setText(templateHint(currentId()));
+	const TemplateSpec spec = specFor(id);
+
+	hintLabel->setText(templateHint(id));
 
 	teacherRow->setVisible(spec.needsTeacher);
 	studentsRow->setVisible(spec.needsStudents);
+	subjectRow->setVisible(spec.needsSubject);
+	tagRow->setVisible(spec.needsActivityTag);
 	roomRow->setVisible(spec.needsRoom);
+	roomListRow->setVisible(spec.needsRoomList);
 	valueRow->setVisible(spec.needsValue);
 	allowEmptyRow->setVisible(spec.needsAllowEmptyDays);
+	exceptRow->setVisible(spec.needsExceptCheck);
 	timesRow->setVisible(spec.needsTimes);
 
-	valueLabel->setText(valueCaption(currentId()));
-	valueSpin->setRange(valueMinimum(currentId()), valueMaximum(currentId()));
+	valueLabel->setText(valueCaption(id));
+	valueSpin->setRange(valueMinimum(id), valueMaximum(id));
 	valueSpin->setValue(qBound(valueSpin->minimum(), spec.valueDefault, valueSpin->maximum()));
 
 	if (spec.needsTimes) {
@@ -737,37 +1133,38 @@ void TemplateDialog::updateRows()
 			rebuildTimesGrid();
 	}
 
-	if (teacherCombo->count() == 0)
-		teacherCombo->setEnabled(false);
-	else
-		teacherCombo->setEnabled(true);
+	teacherCombo->setEnabled(teacherCombo->count() > 0);
+	studentsCombo->setEnabled(studentsCombo->count() > 0);
+	subjectCombo->setEnabled(subjectCombo->count() > 0);
+	tagCombo->setEnabled(tagCombo->count() > 0);
+	roomCombo->setEnabled(roomCombo->count() > 0);
+	roomListWidget->setEnabled(roomListWidget->count() > 0);
 
-	if (studentsCombo->count() == 0)
-		studentsCombo->setEnabled(false);
-	else
-		studentsCombo->setEnabled(true);
+	addButton->setEnabled(true);
+	statusLabel->clear();
 
-	if (roomCombo->count() == 0)
-		roomCombo->setEnabled(false);
-	else
-		roomCombo->setEnabled(true);
-
-	// «الوزن» لا معنى له مع قيد «غير متاح» (صارم دائمًا في FET) — نُبقيه ظاهرًا
-	// لأنه يظل مقبولًا، لكن نشرح ذلك.
 	if (spec.needsTimes)
 		weightSpin->setToolTip(UiI18n::T("Weights are accepted, but 'not available' is normally a hard constraint.",
 						"الوزن مقبول، لكن «غير متاح» عادةً قيد صارم."));
+	else if (spec.needsRoomList || spec.needsRoom)
+		weightSpin->setToolTip(UiI18n::T("100 % = the room is mandatory. Lower values let the generator use other rooms if needed.",
+						"100 % = القاعة إلزامية. القيم الأقل تسمح للبرنامج باستعمال قاعات أخرى عند الحاجة."));
 	else
 		weightSpin->setToolTip(UiI18n::T("100 % = a hard constraint (must be respected). Lower values let the generator trade it for a better overall timetable.",
 						"100 % = قيد صارم (يجب احترامه). القيم الأقل تسمح للبرنامج بالتضحية به مقابل جدول أفضل عمومًا."));
-
-	statusLabel->clear();
 }
 
 void TemplateDialog::refreshExisting()
 {
 	existingList->clear();
-	const QList<int> types = currentSpec().fetTypes;
+
+	const int id = currentId();
+	if (id < 0) {
+		existingCountLabel->clear();
+		return;
+	}
+
+	const QList<int> types = specFor(id).fetTypes;
 	int total = 0;
 
 	for (TimeConstraint* c : std::as_const(gt.rules.timeConstraintsList))
@@ -784,42 +1181,75 @@ void TemplateDialog::refreshExisting()
 		}
 
 	if (total == 0)
-		existingCountLabel->setText(UiI18n::T("None yet for this template.", "لا يوجد أي قيد من هذا القالب بعد."));
+		existingCountLabel->setText(UiI18n::T("None yet for this template.",
+						      "لا يوجد أي قيد من هذا القالب بعد."));
 	else
-		existingCountLabel->setText(UiI18n::T("%1 constraint(s) already use this template.", "عدد القيود الموجودة من هذا القالب: %1.").arg(total));
+		existingCountLabel->setText(UiI18n::T("%1 constraint(s) already use this template.",
+						      "عدد القيود الموجودة من هذا القالب: %1.").arg(total));
 
 	existingList->setVisible(total > 0);
 }
 
 void TemplateDialog::addConstraint()
 {
+	const int id = currentId();
+	if (id < 0)
+		return;
+
 	if (!gt.rules.initialized) {
 		QMessageBox::information(this, UiI18n::T("Constraint templates", "القيود بالقوالب"),
 					 UiI18n::T("Open or create a file first.", "افتح ملفًا أو أنشئ ملفًا جديدًا أولًا."));
 		return;
 	}
 
-	const int id = currentId();
-	const TemplateSpec spec = currentSpec();
+	const TemplateSpec spec = specFor(id);
 	const double weight = double(weightSpin->value());
 	const QString teacher = teacherCombo->currentText().trimmed();
 	const QString students = studentsCombo->currentText().trimmed();
+	const QString subject = subjectCombo->currentText().trimmed();
+	const QString activityTag = tagCombo->currentText().trimmed();
 	const QString room = roomCombo->currentText().trimmed();
 
+	const QString dialogTitle = UiI18n::T("Constraint templates", "القيود بالقوالب");
+
 	if (spec.needsTeacher && teacher.isEmpty()) {
-		QMessageBox::warning(this, UiI18n::T("Constraint templates", "القيود بالقوالب"),
+		QMessageBox::warning(this, dialogTitle,
 				     UiI18n::T("Choose a teacher first.", "اختر أستاذًا أولًا."));
 		return;
 	}
 	if (spec.needsStudents && students.isEmpty()) {
-		QMessageBox::warning(this, UiI18n::T("Constraint templates", "القيود بالقوالب"),
+		QMessageBox::warning(this, dialogTitle,
 				     UiI18n::T("Choose a class or group first.", "اختر قسمًا أو فوجًا أولًا."));
 		return;
 	}
+	if (spec.needsSubject && subject.isEmpty()) {
+		QMessageBox::warning(this, dialogTitle,
+				     UiI18n::T("Choose a subject first.", "اختر مادة أولًا."));
+		return;
+	}
+	if (spec.needsActivityTag && activityTag.isEmpty()) {
+		QMessageBox::warning(this, dialogTitle,
+				     UiI18n::T("Choose an activity tag first.", "اختر وسم نشاط أولًا."));
+		return;
+	}
 	if (spec.needsRoom && room.isEmpty()) {
-		QMessageBox::warning(this, UiI18n::T("Constraint templates", "القيود بالقوالب"),
+		QMessageBox::warning(this, dialogTitle,
 				     UiI18n::T("Choose a room first.", "اختر قاعة أولًا."));
 		return;
+	}
+
+	QStringList checkedRooms;
+	if (spec.needsRoomList) {
+		for (int i = 0; i < roomListWidget->count(); ++i) {
+			QListWidgetItem* item = roomListWidget->item(i);
+			if (item != nullptr && item->checkState() == Qt::Checked)
+				checkedRooms.append(item->text());
+		}
+		if (checkedRooms.isEmpty()) {
+			QMessageBox::warning(this, dialogTitle,
+					     UiI18n::T("Tick at least one room.", "علّم قاعة واحدة على الأقل."));
+			return;
+		}
 	}
 
 	QList<int> days;
@@ -827,7 +1257,7 @@ void TemplateDialog::addConstraint()
 	if (spec.needsTimes) {
 		gridToDaysHours(timesTable, days, hours);
 		if (days.isEmpty()) {
-			QMessageBox::warning(this, UiI18n::T("Constraint templates", "القيود بالقوالب"),
+			QMessageBox::warning(this, dialogTitle,
 					     UiI18n::T("Mark at least one time slot.",
 						       "حدّد وقتًا واحدًا على الأقل من الشبكة."));
 			return;
@@ -839,6 +1269,7 @@ void TemplateDialog::addConstraint()
 	SpaceConstraint* sc = nullptr;
 	const int value = valueSpin->value();
 	const bool allowEmpty = allowEmptyCheckBox->isChecked();
+	const bool exceptDay = exceptCheckBox->isChecked();
 
 	switch (id) {
 	case T_TEACHER_NOT_AVAILABLE:
@@ -886,6 +1317,50 @@ void TemplateDialog::addConstraint()
 	case T_STUDENTS_SET_HOME_ROOM:
 		sc = new ConstraintStudentsSetHomeRoom(weight, students, room);
 		break;
+
+	// ---------- الضروريات ----------
+	case T_TEACHER_MIN_HOURS_DAILY:
+		tc = new ConstraintTeacherMinHoursDaily(weight, value, teacher, allowEmpty);
+		break;
+	case T_TEACHER_MIN_DAYS_PER_WEEK:
+		tc = new ConstraintTeacherMinDaysPerWeek(weight, value, teacher);
+		break;
+	case T_TEACHER_MAX_HOURS_CONTINUOUSLY:
+		tc = new ConstraintTeacherMaxHoursContinuously(weight, value, teacher);
+		break;
+	case T_TEACHER_MAX_SPAN_PER_DAY:
+		tc = new ConstraintTeacherMaxSpanPerDay(weight, value, exceptDay, teacher);
+		break;
+	case T_STUDENTS_SET_MAX_HOURS_CONTINUOUSLY:
+		tc = new ConstraintStudentsSetMaxHoursContinuously(weight, value, students);
+		break;
+	case T_STUDENTS_MAX_HOURS_CONTINUOUSLY:
+		tc = new ConstraintStudentsMaxHoursContinuously(weight, value);
+		break;
+	case T_STUDENTS_SET_MAX_SPAN_PER_DAY:
+		tc = new ConstraintStudentsSetMaxSpanPerDay(weight, value, students);
+		break;
+	case T_STUDENTS_MAX_SPAN_PER_DAY:
+		tc = new ConstraintStudentsMaxSpanPerDay(weight, value);
+		break;
+	case T_STUDENTS_EARLY_MAX_BEGINNINGS:
+		tc = new ConstraintStudentsEarlyMaxBeginningsAtSecondHour(weight, value);
+		break;
+	case T_STUDENTS_SET_EARLY_MAX_BEGINNINGS:
+		tc = new ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour(weight, value, students);
+		break;
+	case T_ROOM_NOT_AVAILABLE:
+		sc = new ConstraintRoomNotAvailableTimes(weight, room, days, hours);
+		break;
+	case T_SUBJECT_PREFERRED_ROOM:
+		sc = new ConstraintSubjectPreferredRoom(weight, subject, room);
+		break;
+	case T_ACTIVITY_TAG_PREFERRED_ROOM:
+		sc = new ConstraintActivityTagPreferredRoom(weight, activityTag, room);
+		break;
+	case T_SUBJECT_PREFERRED_ROOMS:
+		sc = new ConstraintSubjectPreferredRooms(weight, subject, checkedRooms);
+		break;
 	default:
 		break;
 	}
@@ -896,32 +1371,28 @@ void TemplateDialog::addConstraint()
 	if (tc != nullptr) {
 		description = tc->getDetailedDescription(gt.rules);
 		ok = gt.rules.addTimeConstraint(tc);
-		if (ok) {
+		if (ok)
 			gt.rules.addUndoPoint(
 				UiI18n::T("Added the constraint: %1", "أُضيف القيد: %1")
 					.arg(QStringLiteral("<br /><br />\n") + description));
-		}
-		else {
+		else
 			delete tc;
-		}
 	}
 	else if (sc != nullptr) {
 		description = sc->getDetailedDescription(gt.rules);
 		ok = gt.rules.addSpaceConstraint(sc);
-		if (ok) {
+		if (ok)
 			gt.rules.addUndoPoint(
 				UiI18n::T("Added the constraint: %1", "أُضيف القيد: %1")
 					.arg(QStringLiteral("<br /><br />\n") + description));
-		}
-		else {
+		else
 			delete sc;
-		}
 	}
 
 	if (!ok) {
-		QMessageBox::warning(this, UiI18n::T("Constraint templates", "القيود بالقوالب"),
-				     UiI18n::T("The constraint could not be added. A similar constraint of this type probably already exists for the same teacher/class.",
-					       "تعذّرت إضافة القيد. الأرجح أن قيدًا مشابهًا من النوع نفسه موجود بالفعل لنفس الأستاذ/القسم."));
+		QMessageBox::warning(this, dialogTitle,
+				     UiI18n::T("The constraint could not be added. A similar constraint of this type probably already exists for the same teacher/class/subject.",
+					       "تعذّرت إضافة القيد. الأرجح أن قيدًا مشابهًا من النوع نفسه موجود بالفعل لنفس الأستاذ/القسم/المادة."));
 		return;
 	}
 
@@ -952,7 +1423,8 @@ bool run(QWidget* parent)
 
 	// نُحدّث عنوان النافذة (علامة التعديل) ولوحة البداية بعد أي إضافة
 	if (dialog.addedCount > 0) {
-		QMainWindow* window = qobject_cast<QMainWindow*>(parent != nullptr ? parent->window() : nullptr);
+		QMainWindow* window = qobject_cast<QMainWindow*>(parent != nullptr ? parent->window()
+										  : nullptr);
 		if (FetMainForm* mainForm = qobject_cast<FetMainForm*>(window)) {
 			// تحديث عنوان النافذة (علامة «معدَّل») واسم الملف الحالي
 			mainForm->setCurrentFile(INPUT_FILENAME_XML);
