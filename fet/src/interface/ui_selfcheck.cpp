@@ -25,6 +25,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include <QDir>
 #include <QFileInfo>
 #include <QDialog>
+#include <QScreen>
 #include <QToolButton>
 #include <QTreeWidget>
 #include <QTranslator>
