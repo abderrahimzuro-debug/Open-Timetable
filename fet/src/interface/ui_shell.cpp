@@ -358,6 +358,13 @@ void retranslate(QMainWindow* window)
 	if (splitter == nullptr)
 		return;
 
+	// نص إجراء «القيود بالقوالب» (يظهر في قائمة البيانات أيضًا)
+	if (QAction* templatesAction = window->findChild<QAction*>(QStringLiteral("otConstraintTemplatesAction"))) {
+		templatesAction->setText(UiI18n::T("Constraint templates…", "القيود بالقوالب…"));
+		templatesAction->setToolTip(UiI18n::T("Add the everyday constraints through a simple form",
+						      "إضافة القيود اليومية عبر نموذج مبسّط"));
+	}
+
 	// نصوص الشريط الجانبي
 	QListWidget* nav = splitter->findChild<QListWidget*>(QStringLiteral("otNav"));
 	if (nav != nullptr)
