@@ -6,19 +6,19 @@
 <style>
   :root{
     --bg:#eef1f6; --card:#ffffff; --line:#dde3ec; --text:#1f2937; --muted:#5b6675;
-    --accent:#1d4ed8; --accent-soft:#dbeafe; --ok:#166534;
+    --accent:#1d4ed8; --accent-soft:#dbeafe; --ok:#166534; --warn:#9a3412;
   }
   *{box-sizing:border-box}
   body{
-    margin:0;padding:28px;background:var(--bg);color:var(--text);
+    margin:0;padding:26px;background:var(--bg);color:var(--text);
     font-family:"Noto Naskh Arabic","Segoe UI",Tahoma,sans-serif;
   }
   .note{
-    max-width:880px;margin:0 auto 18px;padding:12px 16px;background:#fff7ed;
-    border:1px solid #fed7aa;border-radius:10px;color:#9a3412;font-size:14px;
+    max-width:1040px;margin:0 auto 16px;padding:12px 16px;background:#fff7ed;
+    border:1px solid #fed7aa;border-radius:10px;color:var(--warn);font-size:14px;line-height:1.8;
   }
   .dialog{
-    max-width:880px;margin:0 auto;background:var(--card);border:1px solid var(--line);
+    max-width:1040px;margin:0 auto;background:var(--card);border:1px solid var(--line);
     border-radius:14px;box-shadow:0 10px 30px rgba(15,23,42,.08);overflow:hidden;
   }
   .titlebar{
@@ -26,39 +26,58 @@
     background:#f8fafc;border-bottom:1px solid var(--line);font-weight:600;
   }
   .titlebar .dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}
-  .body{padding:18px}
-  .cols{display:grid;grid-template-columns:1fr 1.35fr;gap:18px}
+  .body{padding:16px 18px}
+  .cols{display:grid;grid-template-columns:320px 1fr;gap:16px}
+
   .box{border:1px solid var(--line);border-radius:10px;padding:12px}
-  .box h3{margin:0 0 10px;font-size:14px;color:var(--accent);font-weight:600}
-  select,.field{
-    width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;
-    background:#fff;font-family:inherit;font-size:14px;color:var(--text);
+  .box > h3{margin:0 0 10px;font-size:13.5px;color:var(--accent);font-weight:600}
+
+  .search{
+    width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
+    font-family:inherit;font-size:13.5px;background:#fff;margin-bottom:10px;
   }
-  .hint{margin-top:10px;font-size:13px;color:var(--muted);line-height:1.7}
-  .row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-  .row label{min-width:96px;font-size:13.5px;color:var(--muted)}
-  .row .grow{flex:1}
+  ul.templates{list-style:none;margin:0;padding:0;font-size:13.5px;max-height:360px;overflow:auto}
+  ul.templates li.section{
+    background:#eef2ff;color:var(--accent);font-weight:700;padding:6px 10px;
+    border-radius:6px;margin:8px 0 4px;font-size:13px;
+  }
+  ul.templates li.section:first-child{margin-top:0}
+  ul.templates li.item{padding:6px 12px;border-radius:6px;color:#334155;cursor:pointer}
+  ul.templates li.item:hover{background:#f1f5f9}
+  ul.templates li.item.active{background:var(--accent-soft);color:#1e3a8a;font-weight:600}
+  .hint{margin-top:10px;font-size:13px;color:var(--muted);line-height:1.8}
+
+  .row{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+  .row label{min-width:120px;font-size:13.5px;color:var(--muted)}
+  .row select,.row input[type=text]{
+    flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
+    background:#fff;font-family:inherit;font-size:13.5px;color:var(--text);
+  }
   .spin{
-    width:110px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
-    background:#fff;font-family:inherit;font-size:14px;text-align:center;
+    width:120px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;
+    background:#fff;font-family:inherit;font-size:13.5px;text-align:center;
   }
+  .check{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#334155;margin-bottom:10px}
+
   .grid-wrap{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:6px}
   table{border-collapse:collapse;width:100%;font-size:13px}
-  th,td{border:1px solid var(--line);padding:7px 4px;text-align:center}
+  th,td{border:1px solid var(--line);padding:6px 4px;text-align:center}
   thead th{background:#f1f5f9;font-weight:600;font-size:12.5px}
   tbody th{background:#f8fafc;font-weight:500;font-size:12.5px;white-space:nowrap}
   td.slot{cursor:pointer;color:#1e40af;font-weight:700}
   td.slot.on{background:var(--accent-soft)}
+
   .btn{
     border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 14px;
     font-family:inherit;font-size:13.5px;cursor:pointer;color:var(--text);
   }
   .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
   .toolbar{display:flex;gap:8px;margin-top:10px}
-  .existing{margin-top:16px}
+
+  .existing{margin-top:14px}
   .existing ul{margin:0;padding-inline-start:18px;font-size:13px;color:var(--muted);line-height:1.9}
   .footer{
-    display:flex;align-items:center;gap:10px;padding:14px 18px;border-top:1px solid var(--line);
+    display:flex;align-items:center;gap:10px;padding:13px 18px;border-top:1px solid var(--line);
     background:#f8fafc;
   }
   .status{flex:1;font-size:13px;color:var(--ok);font-weight:600}
@@ -66,50 +85,80 @@
     display:inline-block;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;
     border-radius:999px;padding:2px 10px;font-size:12px;margin-inline-start:6px;
   }
+  .rooms{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;color:#334155}
+  .rooms span{padding:3px 8px;border:1px solid var(--line);border-radius:6px;background:#fbfdff}
 </style>
 </head>
 <body>
 
 <div class="note">
-  معاينة ساكنة (ليست البرنامج) لشكل <strong>محرّر القيود بالقوالب — الأساسيات</strong> كما ظهر بعد البناء.
-  تُفتح من: الشريط الجانبي ▸ <strong>القيود ▸ القيود بالقوالب…</strong> أو قائمة <strong>البيانات</strong> أو
-  <strong>Ctrl+Shift+T</strong>. نفس الأداة فيها 15 قالبًا؛ هذا عرض القالب الأول.
+  <strong>معاينة ساكنة</strong> (ليست البرنامج) لمحرّر القيود بالقوالب بعد القسم الثاني.
+  يُفتح من: الشريط الجانبي ▸ <strong>القيود ▸ القيود بالقوالب…</strong> أو قائمة <strong>البيانات</strong>
+  أو <strong>Ctrl+Shift+T</strong>. فيه الآن <strong>29 قالبًا</strong> في قسمين مع بحث فوري.
 </div>
 
 <div class="dialog">
-  <div class="titlebar"><span class="dot"></span> محرّر القيود بالقوالب — الأساسيات</div>
+  <div class="titlebar"><span class="dot"></span> محرّر القيود بالقوالب</div>
 
   <div class="body">
     <div class="cols">
 
-      <!-- اختيار القالب -->
+      <!-- القوالب -->
       <div class="box">
-        <h3>اختر القالب</h3>
-        <select>
-          <option>أستاذ غير متاح في أوقات</option>
-          <option>قسم أو فوج غير متاح في أوقات</option>
-          <option>أقصى ساعات يومية — لأستاذ</option>
-          <option>أقصى ساعات يومية — لكل الأساتذة</option>
-          <option>أقصى ساعات يومية — لقسم</option>
-          <option>أقصى ساعات يومية — لكل الأقسام</option>
-          <option>أدنى ساعات يومية — لقسم</option>
-          <option>أدنى ساعات يومية — لكل الأقسام</option>
-          <option>أقصى فراغات يومية — لكل الأساتذة</option>
-          <option>أقصى فراغات يومية — لأستاذ</option>
-          <option>أقصى فراغات يومية — لقسم</option>
-          <option>أقصى فراغات يومية — لكل الأقسام</option>
-          <option>أقصى أيام أسبوعيًا — لأستاذ</option>
-          <option>أقصى أيام أسبوعيًا — لكل الأساتذة</option>
-          <option>قاعة القسم الثابتة</option>
-        </select>
-        <div class="hint">حدّد الأوقات التي لا يستطيع الأستاذ التدريس فيها (علّامات الأوقات الممنوعة).</div>
+        <h3>القوالب</h3>
+        <input class="search" placeholder="ابحث في القوالب…">
+        <ul class="templates">
+          <li class="section">الأساسيات (15)</li>
+          <li class="item">أستاذ غير متاح في أوقات</li>
+          <li class="item">قسم أو فوج غير متاح في أوقات</li>
+          <li class="item">أقصى ساعات يومية — لأستاذ</li>
+          <li class="item">أقصى ساعات يومية — لكل الأساتذة</li>
+          <li class="item">أقصى ساعات يومية — لقسم</li>
+          <li class="item">أقصى ساعات يومية — لكل الأقسام</li>
+          <li class="item">أدنى ساعات يومية — لقسم</li>
+          <li class="item">أدنى ساعات يومية — لكل الأقسام</li>
+          <li class="item">أقصى فراغات يومية — لكل الأساتذة</li>
+          <li class="item">أقصى فراغات يومية — لأستاذ</li>
+          <li class="item">أقصى فراغات يومية — لقسم</li>
+          <li class="item">أقصى فراغات يومية — لكل الأقسام</li>
+          <li class="item">أقصى أيام أسبوعيًا — لأستاذ</li>
+          <li class="item">أقصى أيام أسبوعيًا — لكل الأساتذة</li>
+          <li class="item">قاعة القسم الثابتة</li>
 
-        <div class="row" style="margin-top:14px">
+          <li class="section">الضروريات (ضبط دقيق) (14)</li>
+          <li class="item">أدنى ساعات يومية — لأستاذ</li>
+          <li class="item">أدنى أيام أسبوعيًا — لأستاذ</li>
+          <li class="item active">أقصى ساعات متواصلة — لأستاذ</li>
+          <li class="item">أقصى امتداد يومي — لأستاذ</li>
+          <li class="item">أقصى ساعات متواصلة — لقسم</li>
+          <li class="item">أقصى ساعات متواصلة — لكل الأقسام</li>
+          <li class="item">أقصى امتداد يومي — لقسم</li>
+          <li class="item">أقصى امتداد يومي — لكل الأقسام</li>
+          <li class="item">أقصى بدايات في الحصة الثانية — لكل الأقسام</li>
+          <li class="item">أقصى بدايات في الحصة الثانية — لقسم</li>
+          <li class="item">قاعة غير متاحة في أوقات</li>
+          <li class="item">قاعة مفضّلة لمادة</li>
+          <li class="item">قاعة مفضّلة لوسم نشاط</li>
+          <li class="item">قاعات مادة (عدة قاعات مسموحة)</li>
+        </ul>
+        <div class="hint">لا يزيد عدد الحصص المتتالية عن المحدّد دون راحة.</div>
+      </div>
+
+      <!-- التفاصيل -->
+      <div class="box">
+        <h3>تفاصيل القيد</h3>
+
+        <div class="row">
           <label>الأستاذ:</label>
-          <select class="grow">
+          <select>
             <option>بن علي محمد</option>
             <option>حمداني سعاد</option>
           </select>
+        </div>
+
+        <div class="row">
+          <label>أقصى ساعات متتالية:</label>
+          <input class="spin" value="3">
         </div>
 
         <div class="row">
@@ -117,47 +166,53 @@
           <input class="spin" value="100 %">
         </div>
 
-        <div class="hint">
+        <div class="hint" style="margin-bottom:14px">
           100 % = قيد صارم (يجب احترامه). القيم الأقل تسمح للبرنامج بالتضحية به مقابل جدول أفضل عمومًا.
         </div>
-      </div>
 
-      <!-- الشبكة -->
-      <div class="box">
-        <h3>الأوقات</h3>
-        <div class="hint" style="margin-top:0">اضغط على خانة لتحديدها، ثم اضغط «إضافة القيد».</div>
-        <div class="grid-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>الأحد</th><th>الإثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><th>08:00</th><td class="slot"></td><td class="slot"></td><td class="slot"></td><td class="slot"></td><td class="slot on">✓</td></tr>
-              <tr><th>09:00</th><td class="slot"></td><td class="slot on">✓</td><td class="slot on">✓</td><td class="slot"></td><td class="slot on">✓</td></tr>
-              <tr><th>10:00</th><td class="slot"></td><td class="slot on">✓</td><td class="slot on">✓</td><td class="slot"></td><td class="slot on">✓</td></tr>
-              <tr><th>11:00</th><td class="slot"></td><td class="slot"></td><td class="slot on">✓</td><td class="slot"></td><td class="slot on">✓</td></tr>
-              <tr><th>13:00</th><td class="slot"></td><td class="slot"></td><td class="slot"></td><td class="slot"></td><td class="slot on">✓</td></tr>
-              <tr><th>14:00</th><td class="slot"></td><td class="slot"></td><td class="slot"></td><td class="slot"></td><td class="slot on">✓</td></tr>
-            </tbody>
-          </table>
+        <div class="row"><label>قسم/فوج:</label><select><option>2 ثانوي — فوج 1</option></select></div>
+        <div class="row"><label>المادة:</label><select><option>الرياضيات</option></select></div>
+        <div class="row"><label>وسم النشاط:</label><select><option>مخبر</option></select></div>
+
+        <div class="check"><input type="checkbox" checked> السماح بيوم واحد بزيادة ساعة (استثناء)</div>
+
+        <div style="margin-top:14px">
+          <div class="hint" style="margin:0 0 6px">القاعات المسموحة (علّم واحدة أو أكثر):</div>
+          <div class="rooms">
+            <span>✓ قاعة 1</span><span>✓ قاعة 2</span><span>مخبر الفيزياء</span><span>ورشة</span>
+          </div>
         </div>
-        <div class="toolbar">
-          <button class="btn">تحديد الكل</button>
-          <button class="btn">مسح التحديد</button>
+
+        <div style="margin-top:16px">
+          <div class="hint" style="margin:0 0 6px">اضغط على خانة لتحديدها، ثم اضغط «إضافة القيد».</div>
+          <div class="grid-wrap">
+            <table>
+              <thead>
+                <tr><th></th><th>الأحد</th><th>الإثنين</th><th>الثلاثاء</th><th>الأربعاء</th><th>الخميس</th></tr>
+              </thead>
+              <tbody>
+                <tr><th>08:00</th><td class="slot"></td><td class="slot"></td><td class="slot"></td><td class="slot"></td><td class="slot on">✓</td></tr>
+                <tr><th>09:00</th><td class="slot"></td><td class="slot on">✓</td><td class="slot on">✓</td><td class="slot"></td><td class="slot on">✓</td></tr>
+                <tr><th>10:00</th><td class="slot"></td><td class="slot on">✓</td><td class="slot"></td><td class="slot"></td><td class="slot on">✓</td></tr>
+                <tr><th>11:00</th><td class="slot"></td><td class="slot"></td><td class="slot on">✓</td><td class="slot"></td><td class="slot on">✓</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="toolbar">
+            <button class="btn">تحديد الكل</button>
+            <button class="btn">مسح التحديد</button>
+          </div>
         </div>
       </div>
 
     </div>
 
-    <!-- القيود الموجودة -->
     <div class="box existing">
-      <h3>القيود الموجودة من هذا النوع <span class="badge">2</span></h3>
+      <h3>القيود الموجودة من هذا النوع <span class="badge">3</span></h3>
       <ul>
-        <li>Teacher not available — WP:100% — T:حمداني سعاد — NA at: الأحد 13:00؛ الأحد 14:00</li>
-        <li>Teacher not available — WP:100% — T:بن علي محمد — NA at: الخميس 08:00</li>
+        <li>Teacher max hours continuously — WP:100% — T:حمداني سعاد — MCH:2</li>
+        <li>Teacher max hours continuously — WP:100% — T:بن علي محمد — MCH:3</li>
+        <li>Teacher max hours continuously — WP:100% — T:زروقي أمين — MCH:4</li>
       </ul>
     </div>
   </div>
