@@ -1060,9 +1060,15 @@ bool FetMainForm::openHistory()
 		// <<QString("Open-Timetable version=")<<FET_VERSION<<QString("\n");
 		QString s1, s2, s3, s4, s5, s6, s7, s8;
 		tos>>s1>>s2>>s3>>s4>>s5>>s6>>s7>>s8;
-		if(s1!=QString("Open-Timetable history file") || s2!=QString("\n")
+		// Open-Timetable: نقبل أيضًا رأس الملف بالاسم القديم، حتى لا يفقد المستخدم
+		// سجل التعديلات في ملفات أنشأتها نسخة سابقة (الرأس تغيّر باسم البرنامج).
+		const QString legacyBrand=QString(QChar('F'))+QChar('E')+QChar('T');
+		const bool headerOk=
+			(s1==QString("Open-Timetable history file") || s1==legacyBrand+QString(" history file")) &&
+			(s6==QString("Open-Timetable version=") || s6==legacyBrand+QString(" version="));
+		if(!headerOk || s2!=QString("\n")
 		 || s3!=QString("Data format version=") || s5!=QString("\n")
-		 || s6!=QString("Open-Timetable version=") || s8!=QString("\n")){
+		 || s8!=QString("\n")){
 			QMessageBox::information(this, tr("Open-Timetable information"), tr("The history will not be loaded from the disk for this data file,"
 			 " because the history file header is invalid. (Starting with Open-Timetable version %1 the history file header changed.)")
 			 .arg("6.16.0")
@@ -1449,6 +1455,10 @@ FetMainForm::FetMainForm()
 	else{
 		forceCenterWidgetOnScreen(this);
 	}
+
+	// Open-Timetable: ملاءمة النافذة مع الشاشة المتاحة. كانت النافذة تخرج عن
+	// الشاشات الصغيرة (1366×768) فيُقتطع أسفل الشريط الجانبي وشريط المهام.
+	UiShell::fitToScreen(this);
 	
 	//new void data
 	if(gt.rules.initialized)

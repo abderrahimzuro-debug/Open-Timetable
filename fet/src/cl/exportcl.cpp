@@ -215,7 +215,7 @@ void Export::exportCSV(Solution* bestOrHighest, Solution* current){
 	else
 		lastWarnings.insert(0,Export::tr("Export incomplete"));
 		
-	std::cout<<qPrintable(tr("FET - export comments", "The comments of the exporting operation"))<<std::endl;
+	std::cout<<qPrintable(tr("Open-Timetable - export comments", "The comments of the exporting operation"))<<std::endl;
 	std::cout<<qPrintable(lastWarnings)<<std::endl;
 }
 
@@ -536,7 +536,7 @@ bool Export::exportCSVActivityTags(QString& lastWarnings, const QString& textquo
 #else
 	if(!fileExport.open(QIODevice::WriteOnly)){
 #endif
-		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
+		lastWarnings+=Export::tr("Open-Timetable critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
 		return false;
 	}
 	QTextStream tosExport(&fileExport);
@@ -560,7 +560,7 @@ bool Export::exportCSVActivityTags(QString& lastWarnings, const QString& textquo
 
 	lastWarnings+=Export::tr("%1 activity tags exported.").arg(gt.rules.activityTagsList.size())+"\n";
 	if(fileExport.error()!=QFileDevice::NoError){
-		lastWarnings+=Export::tr("FET critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
+		lastWarnings+=Export::tr("Open-Timetable critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(file).arg(fileExport.errorString())+QString("\n");
 		return false;
 	}
@@ -578,7 +578,7 @@ bool Export::exportCSVRoomsAndBuildings(QString& lastWarnings, const QString& te
 		}
 
 	if(usingVirtualRooms)
-		TimetableExportMessage::warning(nullptr, tr("FET information"), tr("Your data contains virtual rooms. These virtual rooms will be exported as normal/real rooms."
+		TimetableExportMessage::warning(nullptr, tr("Open-Timetable information"), tr("Your data contains virtual rooms. These virtual rooms will be exported as normal/real rooms."
 		 " The list of sets of real rooms of the virtual rooms will not be exported."));
 	
 	QString s2=INPUT_FILENAME_XML.right(INPUT_FILENAME_XML.length()-INPUT_FILENAME_XML.lastIndexOf(FILE_SEP)-1);	//TODO: remove s2, because too long filenames!
@@ -602,7 +602,7 @@ bool Export::exportCSVRoomsAndBuildings(QString& lastWarnings, const QString& te
 #else
 	if(!fileExport.open(QIODevice::WriteOnly)){
 #endif
-		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
+		lastWarnings+=Export::tr("Open-Timetable critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
 		return false;
 	}
 	QTextStream tosExport(&fileExport);
@@ -633,7 +633,7 @@ bool Export::exportCSVRoomsAndBuildings(QString& lastWarnings, const QString& te
 	}
 	
 	if(fileExport.error()!=QFileDevice::NoError){
-		lastWarnings+=Export::tr("FET critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
+		lastWarnings+=Export::tr("Open-Timetable critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(file).arg(fileExport.errorString())+QString("\n");
 		return false;
 	}
@@ -664,7 +664,7 @@ bool Export::exportCSVSubjects(QString& lastWarnings, const QString& textquote, 
 #else
 	if(!fileExport.open(QIODevice::WriteOnly)){
 #endif
-		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
+		lastWarnings+=Export::tr("Open-Timetable critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
 		return false;
 	}
 	QTextStream tosExport(&fileExport);
@@ -686,7 +686,7 @@ bool Export::exportCSVSubjects(QString& lastWarnings, const QString& textquote, 
 
 	lastWarnings+=Export::tr("%1 subjects exported.").arg(gt.rules.subjectsList.size())+"\n";
 	if(fileExport.error()!=QFileDevice::NoError){
-		lastWarnings+=Export::tr("FET critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
+		lastWarnings+=Export::tr("Open-Timetable critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(file).arg(fileExport.errorString())+QString("\n");
 		return false;
 	}
@@ -716,7 +716,7 @@ bool Export::exportCSVTeachers(QString& lastWarnings, const QString& textquote, 
 #else
 	if(!fileExport.open(QIODevice::WriteOnly)){
 #endif
-		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
+		lastWarnings+=Export::tr("Open-Timetable critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
 		return false;
 	}
 	QTextStream tosExport(&fileExport);
@@ -740,7 +740,7 @@ bool Export::exportCSVTeachers(QString& lastWarnings, const QString& textquote, 
 
 	lastWarnings+=Export::tr("%1 teachers exported.").arg(gt.rules.teachersList.size())+"\n";
 	if(fileExport.error()!=QFileDevice::NoError){
-		lastWarnings+=Export::tr("FET critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
+		lastWarnings+=Export::tr("Open-Timetable critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(file).arg(fileExport.errorString())+QString("\n");
 		return false;
 	}
@@ -770,7 +770,7 @@ bool Export::exportCSVStudents(QString& lastWarnings, const QString& textquote, 
 #else
 	if(!fileExport.open(QIODevice::WriteOnly)){
 #endif
-		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
+		lastWarnings+=Export::tr("Open-Timetable critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
 		return false;
 	}
 	QTextStream tosExport(&fileExport);
@@ -828,7 +828,7 @@ bool Export::exportCSVStudents(QString& lastWarnings, const QString& textquote, 
 	lastWarnings+=Export::tr("%1 groups exported.").arg(ig)+"\n";
 	lastWarnings+=Export::tr("%1 subgroups exported.").arg(is)+"\n";
 	if(fileExport.error()!=QFileDevice::NoError){
-		lastWarnings+=Export::tr("FET critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
+		lastWarnings+=Export::tr("Open-Timetable critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(file).arg(fileExport.errorString())+QString("\n");
 		return false;
 	}
@@ -858,7 +858,7 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString& textquote
 #else
 	if(!fileExport.open(QIODevice::WriteOnly)){
 #endif
-		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
+		lastWarnings+=Export::tr("Open-Timetable critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
 		return false;
 	}
 	QTextStream tosExport(&fileExport);
@@ -1259,14 +1259,14 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString& textquote
 	}
 	
 	if(manuallyEditedPart1){
-		std::cout<<qPrintable(tr("FET warning"))<<std::endl;
+		std::cout<<qPrintable(tr("Open-Timetable warning"))<<std::endl;
 		std::cout<<qPrintable(tr("There are subactivities which were modified separately - so the "
 		 "components had different values for subject, activity tags, teachers, or students. The export is done, "
 		 "but for each field which is different there will be added n_subactivities fields, separated by the %1 symbol.").arg("|"))
 		 <<std::endl;
 	}
 	if(manuallyEditedPart2){
-		std::cout<<qPrintable(tr("FET warning"))<<std::endl;
+		std::cout<<qPrintable(tr("Open-Timetable warning"))<<std::endl;
 		std::cout<<qPrintable(tr("There are subactivities which were modified separately - so the "
 		 "components had different values for 'must compute n total students' or number of students from the representative subactivity. "
 		 "The export is done, but it is not very accurate."))
@@ -1275,7 +1275,7 @@ bool Export::exportCSVActivities(QString& lastWarnings, const QString& textquote
 
 	lastWarnings+=Export::tr("%1 activities exported.").arg(countExportedActivities)+"\n";
 	if(fileExport.error()!=QFileDevice::NoError){
-		lastWarnings+=Export::tr("FET critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
+		lastWarnings+=Export::tr("Open-Timetable critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(file).arg(fileExport.errorString())+"\n";
 		return false;
 	}
@@ -1305,7 +1305,7 @@ bool Export::exportCSVActivitiesStatistics(QString& lastWarnings, const QString&
 #else
 	if(!fileExport.open(QIODevice::WriteOnly)){
 #endif
-		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
+		lastWarnings+=Export::tr("Open-Timetable critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
 		return false;
 	}
 	QTextStream tosExport(&fileExport);
@@ -1363,7 +1363,7 @@ bool Export::exportCSVActivitiesStatistics(QString& lastWarnings, const QString&
 
 	lastWarnings+=Export::tr("%1 active activities statistics exported.").arg(countExportedActivities)+"\n";
 	if(fileExport.error()!=QFileDevice::NoError){
-		lastWarnings+=Export::tr("FET critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
+		lastWarnings+=Export::tr("Open-Timetable critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(file).arg(fileExport.errorString())+"\n";
 		return false;
 	}
@@ -1393,7 +1393,7 @@ bool Export::exportCSVTimetable(QString& lastWarnings, const QString& textquote,
 #else
 	if(!fileExport.open(QIODevice::WriteOnly)){
 #endif
-		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
+		lastWarnings+=Export::tr("Open-Timetable critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
 		return false;
 	}
 	QTextStream tosExport(&fileExport);
@@ -1503,7 +1503,7 @@ bool Export::exportCSVTimetable(QString& lastWarnings, const QString& textquote,
 		lastWarnings+=Export::tr("0 scheduled activities exported, because no timetable was generated.")+"\n";
 	}
 	if(fileExport.error()!=QFileDevice::NoError){
-		lastWarnings+=Export::tr("FET critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
+		lastWarnings+=Export::tr("Open-Timetable critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(file).arg(fileExport.errorString())+"\n";
 		return false;
 	}
@@ -1533,7 +1533,7 @@ bool Export::exportCSVTeacherNotAvailable(QString& lastWarnings, const QString& 
 #else
 	if(!fileExport.open(QIODevice::WriteOnly)){
 #endif
-		lastWarnings+=Export::tr("FET critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
+		lastWarnings+=Export::tr("Open-Timetable critical. Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(file)+"\n";
 		return false;
 	}
 	QTextStream tosExport(&fileExport);
@@ -1643,7 +1643,7 @@ bool Export::exportCSVTeacherNotAvailable(QString& lastWarnings, const QString& 
 
 	lastWarnings+=Export::tr("%1 not available teachers exported.").arg(countExportedTeachers)+"\n";
 	if(fileExport.error()!=QFileDevice::NoError){
-		lastWarnings+=Export::tr("FET critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
+		lastWarnings+=Export::tr("Open-Timetable critical. Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(file).arg(fileExport.errorString())+"\n";
 		return false;
 	}

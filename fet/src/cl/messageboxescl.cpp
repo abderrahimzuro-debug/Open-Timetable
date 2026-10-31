@@ -54,7 +54,7 @@ void commandLineMessage(QWidget* parent, const QString& title, const QString& me
 #else
 	if(!file.open(QIODevice::Append)){
 #endif
-		std::cout<<"FET critical - you don't have write permissions in the output directory - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(filename))<<")."
+		std::cout<<"Open-Timetable critical - you don't have write permissions in the output directory - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(filename))<<")."
 			 " If this is a bug - please report it."<<std::endl;
 		return;
 	}
@@ -73,7 +73,7 @@ void commandLineMessage(QWidget* parent, const QString& title, const QString& me
 	tos<<Qt::endl;
 	
 	if(file.error()!=QFileDevice::NoError){
-		std::cout<<"FET critical - writing in the file "<<qPrintable(QDir::toNativeSeparators(filename))<<" gave the error message "
+		std::cout<<"Open-Timetable critical - writing in the file "<<qPrintable(QDir::toNativeSeparators(filename))<<" gave the error message "
 			 <<qPrintable(file.errorString())<<" which means the writing is compromised. Please check your disk's free space."<<std::endl;
 	}
 	file.close();
@@ -106,7 +106,7 @@ int commandLineMessage(QWidget* parent, const QString& title, const QString& mes
 #else
 	if(!file.open(QIODevice::Append)){
 #endif
-		std::cout<<"FET critical - you don't have write permissions in the output directory - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(filename))<<")."
+		std::cout<<"Open-Timetable critical - you don't have write permissions in the output directory - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(filename))<<")."
 			 " If this is a bug - please report it."<<std::endl;
 		return defaultButton;
 	}
@@ -138,7 +138,7 @@ int commandLineMessage(QWidget* parent, const QString& title, const QString& mes
 	tos<<Qt::endl;
 	
 	if(file.error()!=QFileDevice::NoError){
-		std::cout<<"FET critical - writing in the file "<<qPrintable(QDir::toNativeSeparators(filename))<<" gave the error message "
+		std::cout<<"Open-Timetable critical - writing in the file "<<qPrintable(QDir::toNativeSeparators(filename))<<" gave the error message "
 			 <<qPrintable(file.errorString())<<" which means the writing is compromised. Please check your disk's free space."<<std::endl;
 	}
 	file.close();

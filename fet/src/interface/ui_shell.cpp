@@ -21,6 +21,7 @@ timetabling engine. Licensed under the GNU Affero General Public License v3.
 
 #include "ui_shell.h"
 
+#include "ui_command_palette.h"
 #include "ui_constraints.h"
 #include "ui_dashboard.h"
 #include "ui_i18n.h"
@@ -32,6 +33,7 @@ timetabling engine. Licensed under the GNU Affero General Public License v3.
 #include <QColor>
 #include <QFont>
 #include <QFrame>
+#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QKeySequence>
 #include <QLabel>
@@ -41,6 +43,8 @@ timetabling engine. Licensed under the GNU Affero General Public License v3.
 #include <QMenu>
 #include <QMenuBar>
 #include <QPushButton>
+#include <QScreen>
+#include <QGuiApplication>
 #include <QSettings>
 #include <QSplitter>
 #include <QStackedWidget>
@@ -71,6 +75,7 @@ QString settingsKey(const char* suffix)
 QListWidgetItem* addSection(QListWidget* nav, const QString& title)
 {
 	QListWidgetItem* item = new QListWidgetItem(title, nav);
+	item->setData(RoleLabel, title);
 	item->setFlags(Qt::NoItemFlags);
 	QFont font = item->font();
 	font.setBold(true);
@@ -97,8 +102,9 @@ void addNavItem(QListWidget* nav, const QString& text, const QString& iconName,
 	item->setToolTip(tooltip.isEmpty() ? text : tooltip);
 }
 
-// يُعيد بناء عناصر الشريط الجانبي باللغة/الوضع الحاليين، ويُبقي التحديد.
-void buildNavItems(QListWidget* nav, bool compact)
+// يُعيد بناء عناصر الشريط الجانبي باللغة الحالية، ويُبقي التحديد.
+// (يُستدعى عند تغيير اللغة/المظهر فقط، لا عند الطي.)
+void buildNavItems(QListWidget* nav)
 {
 	QString selAction;
 	int selPage = -1;
@@ -109,94 +115,112 @@ void buildNavItems(QListWidget* nav, bool compact)
 			selPage = currentItem->data(RolePageIndex).toInt();
 	}
 
-	nav->clear();
+	// إعادة البناء بهدوء: لا إشارات ولا إعادة رسم أثناء الإضافة (كان سبب التقطيع
+	// عند الطي/التبديل)، ثم نُرسم مرة واحدة في النهاية.
+	nav->setUpdatesEnabled(false);
+	{
+		const QSignalBlocker blocker(nav);
+		nav->clear();
 
-	// في الوضع المطوي: الأيقونة وحدها، والاسم يظهر كتلميح
-	auto label = [compact](const QString& text) { return compact ? QString() : text; };
-	auto nav0 = [&](const QString& text, const QString& icon, const QString& action,
-			int page, const QString& tip) {
-		addNavItem(nav, label(text), icon, action, page, tip.isEmpty() ? text : tip);
-	};
+		auto nav0 = [&](const QString& text, const QString& icon, const QString& action,
+				int page, const QString& tip) {
+			addNavItem(nav, text, icon, action, page, tip.isEmpty() ? text : tip);
+		};
 
-	nav0(UiI18n::T("Dashboard", "لوحة البداية"), QStringLiteral("home"), QString(),
-	     PAGE_HOME, UiI18n::T("Project summary and quick actions",
-				  "ملخّص المشروع والإجراءات السريعة"));
+		nav0(UiI18n::T("Dashboard", "لوحة البداية"), QStringLiteral("home"), QString(),
+		     PAGE_HOME, UiI18n::T("Project summary and quick actions",
+					  "ملخّص المشروع والإجراءات السريعة"));
 
-	if (!compact)
 		addSection(nav, UiI18n::T("Data", "البيانات"));
-	else
-		addSection(nav, QString());
 
-	nav0(UiI18n::T("Teachers", "الأساتذة"), QStringLiteral("teachers"),
-	     QStringLiteral("dataTeachersAction"), -1, QString());
-	nav0(UiI18n::T("Subjects", "المواد"), QStringLiteral("subjects"),
-	     QStringLiteral("dataSubjectsAction"), -1, QString());
-	nav0(UiI18n::T("Years and groups", "الأقسام والأفواج"), QStringLiteral("years"),
-	     QStringLiteral("dataYearsAction"), -1, QString());
-	nav0(UiI18n::T("Subgroups", "الفرق الفرعية"), QStringLiteral("subgroups"),
-	     QStringLiteral("dataSubgroupsAction"), -1, QString());
-	nav0(UiI18n::T("Rooms", "القاعات"), QStringLiteral("rooms"),
-	     QStringLiteral("dataRoomsAction"), -1, QString());
-	nav0(UiI18n::T("Buildings", "المباني"), QStringLiteral("buildings"),
-	     QStringLiteral("dataBuildingsAction"), -1, QString());
-	nav0(UiI18n::T("Activities", "الأنشطة"), QStringLiteral("activities"),
-	     QStringLiteral("dataActivitiesAction"), -1, QString());
+		nav0(UiI18n::T("Teachers", "الأساتذة"), QStringLiteral("teachers"),
+		     QStringLiteral("dataTeachersAction"), -1, QString());
+		nav0(UiI18n::T("Subjects", "المواد"), QStringLiteral("subjects"),
+		     QStringLiteral("dataSubjectsAction"), -1, QString());
+		nav0(UiI18n::T("Years and groups", "الأقسام والأفواج"), QStringLiteral("years"),
+		     QStringLiteral("dataYearsAction"), -1, QString());
+		nav0(UiI18n::T("Subgroups", "الفرق الفرعية"), QStringLiteral("subgroups"),
+		     QStringLiteral("dataSubgroupsAction"), -1, QString());
+		nav0(UiI18n::T("Rooms", "القاعات"), QStringLiteral("rooms"),
+		     QStringLiteral("dataRoomsAction"), -1, QString());
+		nav0(UiI18n::T("Buildings", "المباني"), QStringLiteral("buildings"),
+		     QStringLiteral("dataBuildingsAction"), -1, QString());
+		nav0(UiI18n::T("Activities", "الأنشطة"), QStringLiteral("activities"),
+		     QStringLiteral("dataActivitiesAction"), -1, QString());
 
-	if (!compact)
 		addSection(nav, UiI18n::T("Constraints", "القيود"));
-	else
-		addSection(nav, QString());
 
-	nav0(UiI18n::T("Constraint templates", "القيود بالقوالب"), QStringLiteral("templates"),
-	     QStringLiteral("otConstraintTemplatesAction"), -1,
-	     UiI18n::T("Add the everyday constraints through a simple form",
-		       "إضافة القيود اليومية عبر نموذج مبسّط"));
-	nav0(UiI18n::T("All time constraints", "كل القيود الزمنية"), QStringLiteral("constraints"),
-	     QStringLiteral("dataAllTimeConstraintsAction"), -1, QString());
-	nav0(UiI18n::T("All space constraints", "كل القيود المكانية"), QStringLiteral("space"),
-	     QStringLiteral("dataAllSpaceConstraintsAction"), -1, QString());
+		nav0(UiI18n::T("Constraint templates", "القيود بالقوالب"), QStringLiteral("templates"),
+		     QStringLiteral("otConstraintTemplatesAction"), -1,
+		     UiI18n::T("Add the everyday constraints through a simple form",
+			       "إضافة القيود اليومية عبر نموذج مبسّط"));
+		nav0(UiI18n::T("All time constraints", "كل القيود الزمنية"), QStringLiteral("constraints"),
+		     QStringLiteral("dataAllTimeConstraintsAction"), -1, QString());
+		nav0(UiI18n::T("All space constraints", "كل القيود المكانية"), QStringLiteral("space"),
+		     QStringLiteral("dataAllSpaceConstraintsAction"), -1, QString());
 
-	if (!compact)
 		addSection(nav, UiI18n::T("Generation and timetables", "التوليد والجداول"));
-	else
-		addSection(nav, QString());
 
-	nav0(UiI18n::T("Generate timetable", "توليد الجدول"), QStringLiteral("generate"),
-	     QStringLiteral("timetableGenerateAction"), -1, QString());
-	nav0(UiI18n::T("Teachers' timetables", "جداول الأساتذة"), QStringLiteral("view-teachers"),
-	     QStringLiteral("timetableViewTeachersTimeHorizontalAction"), -1, QString());
-	nav0(UiI18n::T("Students' timetables", "جداول الأقسام"), QStringLiteral("view-students"),
-	     QStringLiteral("timetableViewStudentsTimeHorizontalAction"), -1, QString());
-	nav0(UiI18n::T("Rooms' timetables", "جداول القاعات"), QStringLiteral("view-rooms"),
-	     QStringLiteral("timetableViewRoomsTimeHorizontalAction"), -1, QString());
-	nav0(UiI18n::T("Conflicts", "التعارضات"), QStringLiteral("conflicts"),
-	     QStringLiteral("timetableShowConflictsAction"), -1, QString());
+		nav0(UiI18n::T("Generate timetable", "توليد الجدول"), QStringLiteral("generate"),
+		     QStringLiteral("timetableGenerateAction"), -1, QString());
+		nav0(UiI18n::T("Teachers' timetables", "جداول الأساتذة"), QStringLiteral("view-teachers"),
+		     QStringLiteral("timetableViewTeachersTimeHorizontalAction"), -1, QString());
+		nav0(UiI18n::T("Students' timetables", "جداول الأقسام"), QStringLiteral("view-students"),
+		     QStringLiteral("timetableViewStudentsTimeHorizontalAction"), -1, QString());
+		nav0(UiI18n::T("Rooms' timetables", "جداول القاعات"), QStringLiteral("view-rooms"),
+		     QStringLiteral("timetableViewRoomsTimeHorizontalAction"), -1, QString());
+		nav0(UiI18n::T("Conflicts", "التعارضات"), QStringLiteral("conflicts"),
+		     QStringLiteral("timetableShowConflictsAction"), -1, QString());
 
-	if (!compact)
 		addSection(nav, UiI18n::T("Publish", "النشر"));
-	else
-		addSection(nav, QString());
 
-	nav0(UiI18n::T("Publish timetables", "نشر الجداول"), QStringLiteral("publish"),
-	     QStringLiteral("filePublishToShareAction"), -1,
-	     UiI18n::T("Copy the timetables to a shared folder on the school network",
-		       "نسخ الجداول إلى مجلد مشترك على شبكة المؤسسة"));
+		nav0(UiI18n::T("Publish timetables", "نشر الجداول"), QStringLiteral("publish"),
+		     QStringLiteral("filePublishToShareAction"), -1,
+		     UiI18n::T("Copy the timetables to a shared folder on the school network",
+			       "نسخ الجداول إلى مجلد مشترك على شبكة المؤسسة"));
 
-	// استعادة التحديد
-	int rowToSelect = 0;
+		addSection(nav, UiI18n::T("Tools", "أدوات"));
+
+		nav0(UiI18n::T("All commands…", "كل الأدوات…"), QStringLiteral("commands"),
+		     QStringLiteral("otCommandPaletteAction"), -1,
+		     UiI18n::T("Search every command of the program (Ctrl+Shift+P)",
+			       "ابحث في كل أوامر البرنامج (Ctrl+Shift+P)"));
+
+		// استعادة التحديد
+		int rowToSelect = 0;
+		for (int i = 0; i < nav->count(); ++i) {
+			QListWidgetItem* item = nav->item(i);
+			if (!selAction.isEmpty() && item->data(RoleActionName).toString() == selAction) {
+				rowToSelect = i;
+				break;
+			}
+			if (selPage >= 0 && item->data(RolePageIndex).isValid()
+			    && item->data(RolePageIndex).toInt() == selPage) {
+				rowToSelect = i;
+				break;
+			}
+		}
+		nav->setCurrentRow(rowToSelect);
+	}
+	nav->setUpdatesEnabled(true);
+}
+
+// طيّ/فتح: يُخفي النصوص فقط (لا إعادة بناء ولا رسم أيقونات) ⇒ فوري بلا تقطيع.
+void applyCompact(QListWidget* nav, bool compact)
+{
+	if (nav == nullptr)
+		return;
+
+	nav->setUpdatesEnabled(false);
 	for (int i = 0; i < nav->count(); ++i) {
 		QListWidgetItem* item = nav->item(i);
-		if (!selAction.isEmpty() && item->data(RoleActionName).toString() == selAction) {
-			rowToSelect = i;
-			break;
-		}
-		if (selPage >= 0 && item->data(RolePageIndex).isValid()
-		    && item->data(RolePageIndex).toInt() == selPage) {
-			rowToSelect = i;
-			break;
-		}
+		const QString label = item->data(RoleLabel).toString();
+		item->setText(compact ? QString() : label);
+		// في الوضع المطوي يظهر الاسم كتلميح فقط
+		item->setToolTip(label);
 	}
-	nav->setCurrentRow(rowToSelect);
+	nav->setUpdatesEnabled(true);
+	nav->update();
 }
 
 void saveNavIndex(int row)
@@ -298,6 +322,19 @@ void install(QMainWindow* window)
 			dataMenu->insertAction(dataMenu->actions().value(0), templatesAction);
 	}
 
+	// ---------- إجراء «كل الأدوات» (وصول سريع إلى كل أوامر البرنامج) ----------
+	if (window->findChild<QAction*>(QStringLiteral("otCommandPaletteAction")) == nullptr) {
+		QAction* paletteAction = new QAction(window);
+		paletteAction->setObjectName(QStringLiteral("otCommandPaletteAction"));
+		paletteAction->setText(UiI18n::T("All commands…", "كل الأدوات…"));
+		paletteAction->setToolTip(UiI18n::T("Search every command of the program (Ctrl+Shift+P)",
+						    "ابحث في كل أوامر البرنامج (Ctrl+Shift+P)"));
+		paletteAction->setShortcut(QKeySequence(QStringLiteral("Ctrl+Shift+P")));
+		QObject::connect(paletteAction, &QAction::triggered, window,
+				 [window]() { UiCommandPalette::run(window); });
+		window->addAction(paletteAction);
+	}
+
 	// ---------- الصفحات ----------
 	// الواجهة الكلاسيكية تخرج من الشاشات: نفصلها عن النافذة قبل استبدال الوسط
 	// حتى تبقى كائنات الإجراءات حيّة (لا وظيفة تُفقد، ولا زر يظهر للمستخدم).
@@ -317,12 +354,14 @@ void install(QMainWindow* window)
 	sideLayout->setContentsMargins(0, 0, 0, 0);
 	sideLayout->setSpacing(0);
 
-	// ترويسة: الشعار + الاسم + أزرار الطي والمظهر
+	// ترويسة: الشعار + الاسم + أزرار الطي والمظهر.
+	// تتغيّر بنيتها عند الطي (عموديان بدل صفّ) حتى لا تُقتطع أي أيقونة في 66 بكسل.
 	QWidget* header = new QWidget(sidebar);
 	header->setObjectName(QStringLiteral("otSidebarHeader"));
-	QHBoxLayout* headerLayout = new QHBoxLayout(header);
-	headerLayout->setContentsMargins(12, 12, 8, 6);
-	headerLayout->setSpacing(8);
+	QGridLayout* headerLayout = new QGridLayout(header);
+	headerLayout->setContentsMargins(10, 10, 10, 6);
+	headerLayout->setHorizontalSpacing(6);
+	headerLayout->setVerticalSpacing(4);
 
 	QLabel* logoLabel = new QLabel(header);
 	logoLabel->setObjectName(QStringLiteral("otBrandLogo"));
@@ -341,28 +380,26 @@ void install(QMainWindow* window)
 	themeButton->setAutoRaise(true);
 	themeButton->setCursor(Qt::PointingHandCursor);
 	themeButton->setIconSize(QSize(18, 18));
+	themeButton->setFixedSize(26, 26);
 
 	QToolButton* collapseButton = new QToolButton(header);
 	collapseButton->setObjectName(QStringLiteral("otCollapseButton"));
 	collapseButton->setAutoRaise(true);
 	collapseButton->setCursor(Qt::PointingHandCursor);
 	collapseButton->setIconSize(QSize(18, 18));
-
-	headerLayout->addWidget(logoLabel);
-	headerLayout->addWidget(brand, 1);
-	headerLayout->addWidget(themeButton);
-	headerLayout->addWidget(collapseButton);
+	collapseButton->setFixedSize(26, 26);
 
 	QLabel* brandSub = new QLabel(sidebar);
 	brandSub->setObjectName(QStringLiteral("otBrandSub"));
-	brandSub->setContentsMargins(14, 0, 12, 10);
+	brandSub->setContentsMargins(14, 0, 12, 8);
 
 	QListWidget* nav = new QListWidget(sidebar);
 	nav->setObjectName(QStringLiteral("otNav"));
 	nav->setFrameShape(QFrame::NoFrame);
 	nav->setWordWrap(false);
 	nav->setIconSize(QSize(20, 20));
-	nav->setSpacing(1);
+	nav->setSpacing(0);
+	nav->setUniformItemSizes(false);
 	nav->setSelectionMode(QAbstractItemView::SingleSelection);
 	nav->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	nav->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -371,8 +408,39 @@ void install(QMainWindow* window)
 	sideLayout->addWidget(brandSub);
 	sideLayout->addWidget(nav, 1);
 
+	buildNavItems(nav);
+
 	bool compact = settings.value(settingsKey("collapsed"), false).toBool();
-	buildNavItems(nav, compact);
+
+	// توزيع الترويسة حسب الوضع، وإظهار/إخفاء النصوص
+	auto refreshLayout = [headerLayout, logoLabel, brand, themeButton, collapseButton, brandSub,
+			      nav](bool compactMode) {
+		headerLayout->removeWidget(logoLabel);
+		headerLayout->removeWidget(brand);
+		headerLayout->removeWidget(themeButton);
+		headerLayout->removeWidget(collapseButton);
+
+		applyCompact(nav, compactMode);
+		brand->setVisible(!compactMode);
+		logoLabel->setVisible(!compactMode);
+		brandSub->setVisible(!compactMode);
+
+		if (compactMode) {
+			// أيقونتان فوق بعضهما في عمود ضيّق
+			headerLayout->addWidget(themeButton, 0, 0, Qt::AlignCenter);
+			headerLayout->addWidget(collapseButton, 1, 0, Qt::AlignCenter);
+			headerLayout->setColumnStretch(0, 1);
+			headerLayout->setColumnStretch(1, 0);
+		}
+		else {
+			headerLayout->addWidget(logoLabel, 0, 0, Qt::AlignVCenter);
+			headerLayout->addWidget(brand, 0, 1, Qt::AlignVCenter);
+			headerLayout->addWidget(themeButton, 0, 2, Qt::AlignVCenter);
+			headerLayout->addWidget(collapseButton, 0, 3, Qt::AlignVCenter);
+			headerLayout->setColumnStretch(0, 0);
+			headerLayout->setColumnStretch(1, 1);
+		}
+	};
 
 	// ---------- التجميع ----------
 	QSplitter* splitter = new QSplitter(Qt::Horizontal, window);
@@ -423,23 +491,37 @@ void install(QMainWindow* window)
 		setTheme(window, next);
 	});
 
-	// زر الطي: أيقونات مع أسماء ⟷ أيقونات فقط
-	QObject::connect(collapseButton, &QToolButton::clicked, window, [window, nav, splitter]() {
+	// زر الطي: أيقونات مع أسماء ⟷ أيقونات فقط (تغيير فوري، بلا إعادة بناء)
+	QObject::connect(collapseButton, &QToolButton::clicked, window,
+			 [window, splitter, refreshLayout, nav, collapseButton]() {
 		QSettings s(QStringLiteral("fet"), QStringLiteral("fettimetabling"));
 		const bool nowCompact = !s.value(settingsKey("collapsed"), false).toBool();
 		s.setValue(settingsKey("collapsed"), nowCompact);
+		const int previousWidth = s.value(settingsKey("sidebar-width"), 220).toInt();
 
-		buildNavItems(nav, nowCompact);
-		if (QToolButton* button = window->findChild<QToolButton*>(QStringLiteral("otCollapseButton")))
-			button->setIcon(UiIcons::icon(QStringLiteral("sidebar"), 18));
+		// تجميد التحديثات مؤقتًا: تعديل واحد ثم رسم واحد (لا تقطيع)
+		splitter->setUpdatesEnabled(false);
+		refreshLayout(nowCompact);
+
+		collapseButton->setIcon(UiIcons::icon(nowCompact ? QStringLiteral("sidebar-open")
+								 : QStringLiteral("sidebar"),
+						      18));
+		collapseButton->setToolTip(nowCompact
+			? UiI18n::T("Expand the sidebar", "فتح الشريط الجانبي")
+			: UiI18n::T("Collapse the sidebar", "طي الشريط الجانبي"));
 
 		QList<int> sizes = splitter->sizes();
 		if (sizes.size() == 2) {
-			sizes[0] = nowCompact ? COMPACT_WIDTH : qMax(196, sizes[0]);
-			sizes[1] = qMax(400, splitter->width() - sizes[0]);
+			const int sidebarWidth = nowCompact ? COMPACT_WIDTH
+							    : qBound(196, previousWidth, 320);
+			sizes[0] = sidebarWidth;
+			// لا نلمس عرض المحتوى: نحسبه من العرض الكلي الحالي الفعلي
+			sizes[1] = qMax(320, splitter->width() - sidebarWidth);
 			splitter->setSizes(sizes);
 		}
-		UiShell::retranslate(window);
+		splitter->setUpdatesEnabled(true);
+		splitter->update();
+		Q_UNUSED(nav);
 	});
 
 	// أيقونة الأزرار حسب الحالة
@@ -447,8 +529,10 @@ void install(QMainWindow* window)
 						  ? QStringLiteral("sun")
 						  : QStringLiteral("moon"), 18));
 	themeButton->setToolTip(UiI18n::T("Switch light / dark mode", "تبديل المظهر الفاتح/الداكن"));
-	collapseButton->setIcon(UiIcons::icon(QStringLiteral("sidebar"), 18));
-	collapseButton->setToolTip(UiI18n::T("Collapse / expand the sidebar", "طي/فتح الشريط الجانبي"));
+	collapseButton->setIcon(UiIcons::icon(compact ? QStringLiteral("sidebar-open")
+						    : QStringLiteral("sidebar"), 18));
+	collapseButton->setToolTip(compact ? UiI18n::T("Expand the sidebar", "فتح الشريط الجانبي")
+					   : UiI18n::T("Collapse the sidebar", "طي الشريط الجانبي"));
 
 	// ---------- الحفظ والاستعادة ----------
 	const int savedIndex = settings.value(settingsKey("nav-index"), PAGE_HOME).toInt();
@@ -462,6 +546,8 @@ void install(QMainWindow* window)
 		stack->setCurrentIndex(PAGE_HOME);
 		nav->setCurrentRow(0);
 	}
+
+	refreshLayout(compact);
 
 	const int savedWidth = settings.value(settingsKey("sidebar-width"), 220).toInt();
 	QList<int> sizes;
@@ -487,6 +573,45 @@ void install(QMainWindow* window)
 	// أيقونة النافذة والشعار الخاص بنا
 	qApp->setWindowIcon(UiIcons::logo(64));
 	window->setWindowIcon(UiIcons::logo(64));
+}
+
+void fitToScreen(QMainWindow* window)
+{
+	if (window == nullptr)
+		return;
+
+	QScreen* screen = window->screen();
+	if (screen == nullptr)
+		screen = QGuiApplication::primaryScreen();
+	if (screen == nullptr)
+		return;
+
+	const QRect available = screen->availableGeometry();
+	if (!available.isValid())
+		return;
+
+	// هامش صغير حتى لا يلتصق إطار النافذة بحافّة الشاشة (شريط المهام)
+	const int maxWidth = qMax(800, available.width() - 16);
+	const int maxHeight = qMax(560, available.height() - 16);
+
+	// الحدّ الأدنى للنافذة لا يجوز أن يتجاوز الشاشة نفسها
+	const QSize minSize(qMin(window->minimumSize().width() > 0 ? window->minimumSize().width() : 640, maxWidth),
+			    qMin(window->minimumSize().height() > 0 ? window->minimumSize().height() : 480, maxHeight));
+	window->setMinimumSize(minSize);
+
+	QSize size = window->size();
+	const int width = qBound(minSize.width(), size.width(), maxWidth);
+	const int height = qBound(minSize.height(), size.height(), maxHeight);
+	if (width != size.width() || height != size.height())
+		window->resize(width, height);
+
+	// إعادة التوسيط داخل المساحة المتاحة (لا خارجها)
+	QRect frame = window->frameGeometry();
+	if (!available.contains(frame)) {
+		const int x = available.x() + qMax(0, (available.width() - frame.width()) / 2);
+		const int y = available.y() + qMax(0, (available.height() - frame.height()) / 2);
+		window->move(x, y);
+	}
 }
 
 void refreshDashboard(QMainWindow* window)
@@ -529,6 +654,11 @@ void retranslate(QMainWindow* window)
 		return;
 
 	// نصوص الإجراءات التي أضفناها
+	if (QAction* paletteAction = window->findChild<QAction*>(QStringLiteral("otCommandPaletteAction"))) {
+		paletteAction->setText(UiI18n::T("All commands…", "كل الأدوات…"));
+		paletteAction->setToolTip(UiI18n::T("Search every command of the program (Ctrl+Shift+P)",
+						    "ابحث في كل أوامر البرنامج (Ctrl+Shift+P)"));
+	}
 	if (QAction* templatesAction = window->findChild<QAction*>(QStringLiteral("otConstraintTemplatesAction"))) {
 		templatesAction->setText(UiI18n::T("Constraint templates…", "القيود بالقوالب…"));
 		templatesAction->setToolTip(UiI18n::T("Add the everyday constraints through a simple form",
@@ -546,16 +676,23 @@ void retranslate(QMainWindow* window)
 							   : QStringLiteral("moon"), 18));
 		themeButton->setToolTip(UiI18n::T("Switch light / dark mode", "تبديل المظهر الفاتح/الداكن"));
 	}
+	QSettings settings(QStringLiteral("fet"), QStringLiteral("fettimetabling"));
+	const bool compact = settings.value(settingsKey("collapsed"), false).toBool();
+
 	if (QToolButton* collapseButton = window->findChild<QToolButton*>(QStringLiteral("otCollapseButton"))) {
-		collapseButton->setIcon(UiIcons::icon(QStringLiteral("sidebar"), 18));
-		collapseButton->setToolTip(UiI18n::T("Collapse / expand the sidebar", "طي/فتح الشريط الجانبي"));
+		collapseButton->setIcon(UiIcons::icon(compact ? QStringLiteral("sidebar-open")
+							     : QStringLiteral("sidebar"),
+						      18));
+		collapseButton->setToolTip(compact
+			? UiI18n::T("Expand the sidebar", "فتح الشريط الجانبي")
+			: UiI18n::T("Collapse the sidebar", "طي الشريط الجانبي"));
 	}
 
 	// عناصر التنقّل (تعيد أيضًا رسم الأيقونات بألوان المظهر الحالي)
-	QSettings settings(QStringLiteral("fet"), QStringLiteral("fettimetabling"));
-	const bool compact = settings.value(settingsKey("collapsed"), false).toBool();
-	if (QListWidget* nav = splitter->findChild<QListWidget*>(QStringLiteral("otNav")))
-		buildNavItems(nav, compact);
+	if (QListWidget* nav = splitter->findChild<QListWidget*>(QStringLiteral("otNav"))) {
+		buildNavItems(nav);
+		applyCompact(nav, compact);
+	}
 
 	// لوحة البداية
 	UiDashboard* dashboard = splitter->findChild<UiDashboard*>();

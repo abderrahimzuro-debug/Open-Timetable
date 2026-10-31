@@ -29,6 +29,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include <QLabel>
 #include <QMainWindow>
 #include <QPushButton>
+#include <QScrollArea>
 #include <QSize>
 #include <QShowEvent>
 #include <QHideEvent>
@@ -84,17 +85,34 @@ UiDashboard::UiDashboard(QMainWindow* mainWindow, QWidget* parent)
 	stats_.timeConstraints = nullptr;
 	stats_.spaceConstraints = nullptr;
 
-	QVBoxLayout* root = new QVBoxLayout(this);
-	root->setContentsMargins(26, 22, 26, 22);
-	root->setSpacing(16);
+	// اللوحة توضع داخل منطقة تمرير: على الشاشات الصغيرة (1366×768 مثلًا) لا
+	// يُقتطع أي جزء منها، ولا حاجة لتكبير النافذة أو إخفاء شريط المهام.
+	QVBoxLayout* outer = new QVBoxLayout(this);
+	outer->setContentsMargins(0, 0, 0, 0);
+	outer->setSpacing(0);
 
-	buildHeader(this);
+	QScrollArea* scroll = new QScrollArea(this);
+	scroll->setObjectName(QStringLiteral("otDashScroll"));
+	scroll->setWidgetResizable(true);
+	scroll->setFrameShape(QFrame::NoFrame);
+	scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	outer->addWidget(scroll);
+
+	QWidget* page = new QWidget(scroll);
+	page->setObjectName(QStringLiteral("otDashPage"));
+	scroll->setWidget(page);
+
+	QVBoxLayout* root = new QVBoxLayout(page);
+	root->setContentsMargins(20, 14, 20, 14);
+	root->setSpacing(12);
+
+	buildHeader(page);
 	root->addWidget(titleLabel_);
 	root->addWidget(subtitleLabel_);
 	root->addWidget(fileNameLabel_);
-	root->addWidget(buildStatusSection(this));
-	root->addWidget(buildStatsSection(this));
-	root->addWidget(buildQuickActionsSection(this));
+	root->addWidget(buildStatusSection(page));
+	root->addWidget(buildStatsSection(page));
+	root->addWidget(buildQuickActionsSection(page));
 	root->addStretch(1);
 
 	refreshTimer_ = new QTimer(this);
@@ -137,24 +155,25 @@ QWidget* UiDashboard::buildStatusSection(QWidget* host)
 }
 
 QLabel* UiDashboard::addStatCard(QGridLayout* grid, int row, int column,
-				 const QString& label, const QString& accentColor)
+				 const QString& label, const QString& accentKey)
 {
 	QFrame* card = new QFrame(this);
 	card->setObjectName(QStringLiteral("otCard"));
-	card->setMinimumHeight(84);
+	card->setMinimumHeight(64);
 	card->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	QVBoxLayout* layout = new QVBoxLayout(card);
-	layout->setContentsMargins(16, 12, 16, 12);
-	layout->setSpacing(2);
+	layout->setContentsMargins(14, 8, 14, 8);
+	layout->setSpacing(0);
 
 	QLabel* value = new QLabel(card);
 	value->setObjectName(QStringLiteral("otCardValue"));
-	value->setStyleSheet(QStringLiteral("font-size:22pt; font-weight:700; color:%1;").arg(accentColor));
+	// اللون يأتي من ورقة الأنماط حسب المظهر (فاتح/داكن)، لا من كود الواجهة،
+	// حتى يبقى مقروءًا في المظهرين.
+	value->setProperty("otAccent", accentKey);
 
 	QLabel* caption = new QLabel(label, card);
 	caption->setObjectName(QStringLiteral("otCardLabel"));
-	caption->setStyleSheet(QStringLiteral("color:#5b6675; font-size:9.5pt;"));
 	cardCaptions_.append(caption);
 
 	layout->addWidget(value);
@@ -182,20 +201,33 @@ QWidget* UiDashboard::buildStatsSection(QWidget* host)
 	QWidget* gridHost = new QWidget(container);
 	QGridLayout* grid = new QGridLayout(gridHost);
 	grid->setContentsMargins(0, 0, 0, 0);
-	grid->setHorizontalSpacing(12);
-	grid->setVerticalSpacing(12);
+	grid->setHorizontalSpacing(10);
+	grid->setVerticalSpacing(10);
 
-	stats_.teachers = addStatCard(grid, 0, 0, UiI18n::T("Teachers", "الأساتذة"), QStringLiteral("#1d4ed8"));
-	stats_.subjects = addStatCard(grid, 0, 1, UiI18n::T("Subjects", "المواد"), QStringLiteral("#0f766e"));
-	stats_.years = addStatCard(grid, 0, 2, UiI18n::T("Years (classes)", "الأقسام (السنوات)"), QStringLiteral("#7c3aed"));
-	stats_.groups = addStatCard(grid, 0, 3, UiI18n::T("Groups", "الأفواج"), QStringLiteral("#9333ea"));
-
-	stats_.subgroups = addStatCard(grid, 1, 0, UiI18n::T("Subgroups", "الفرق الفرعية"), QStringLiteral("#c2410c"));
-	stats_.rooms = addStatCard(grid, 1, 1, UiI18n::T("Rooms", "القاعات"), QStringLiteral("#0369a1"));
-	stats_.activities = addStatCard(grid, 1, 2, UiI18n::T("Activities", "الأنشطة"), QStringLiteral("#b45309"));
-	stats_.timeConstraints = addStatCard(grid, 1, 3, UiI18n::T("Time constraints", "قيود زمنية"), QStringLiteral("#be123c"));
-
-	stats_.spaceConstraints = addStatCard(grid, 2, 0, UiI18n::T("Space constraints", "قيود مكانية"), QStringLiteral("#4d7c0f"));
+	// 9 بطاقات في صفّين (5 + 4) بدل ثلاثة صفوف: توفير مساحة رأسية بلا فقدان معلومة
+	const struct {
+		QLabel** target;
+		int row;
+		int column;
+		const char* english;
+		const char* arabic;
+		const char* accent;
+	} cards[] = {
+		{ &stats_.teachers, 0, 0, "Teachers", "الأساتذة", "blue" },
+		{ &stats_.subjects, 0, 1, "Subjects", "المواد", "teal" },
+		{ &stats_.years, 0, 2, "Years (classes)", "الأقسام (السنوات)", "violet" },
+		{ &stats_.groups, 0, 3, "Groups", "الأفواج", "purple" },
+		{ &stats_.subgroups, 0, 4, "Subgroups", "الفرق الفرعية", "orange" },
+		{ &stats_.rooms, 1, 0, "Rooms", "القاعات", "sky" },
+		{ &stats_.activities, 1, 1, "Activities", "الأنشطة", "amber" },
+		{ &stats_.timeConstraints, 1, 2, "Time constraints", "قيود زمنية", "rose" },
+		{ &stats_.spaceConstraints, 1, 3, "Space constraints", "قيود مكانية", "olive" }
+	};
+	for (const auto& card : cards) {
+		*card.target = addStatCard(grid, card.row, card.column,
+					   UiI18n::T(card.english, card.arabic),
+					   QString::fromLatin1(card.accent));
+	}
 
 	outer->addWidget(gridHost);
 	return container;
@@ -208,7 +240,7 @@ QWidget* UiDashboard::addQuickButton(QGridLayout* grid, int row, int column,
 	QPushButton* button = new QPushButton(text, this);
 	button->setProperty("otAction", actionName);
 	button->setCursor(Qt::PointingHandCursor);
-	button->setMinimumHeight(38);
+	button->setMinimumHeight(34);
 	button->setToolTip(tooltip);
 
 	QAction* action = nullptr;
@@ -227,8 +259,8 @@ QWidget* UiDashboard::addQuickButton(QGridLayout* grid, int row, int column,
 		quickActions_.append(action);
 
 	// أيقونة احترافية حسب نوع الإجراء (لا إيموجي)
-	button->setIcon(UiIcons::icon(quickButtonIcon(actionName), 18));
-	button->setIconSize(QSize(18, 18));
+	button->setIcon(UiIcons::icon(quickButtonIcon(actionName), 16));
+	button->setIconSize(QSize(16, 16));
 	grid->addWidget(button, row, column);
 	quickButtons_.append(button);
 	return button;
@@ -262,7 +294,7 @@ QWidget* UiDashboard::buildQuickActionsSection(QWidget* host)
 		"timetableGenerateAction",
 		"timetableViewTeachersTimeHorizontalAction", "timetableViewStudentsTimeHorizontalAction",
 		"timetableViewRoomsTimeHorizontalAction", "filePublishToShareAction",
-		"otConstraintTemplatesAction"
+		"otConstraintTemplatesAction", "otCommandPaletteAction"
 	};
 	const char* const tooltipsEn[] = {
 		"Add or edit teachers", "Add or edit subjects", "Manage years, groups and subgroups",
@@ -270,7 +302,8 @@ QWidget* UiDashboard::buildQuickActionsSection(QWidget* host)
 		"All room constraints", "Start timetable generation", "View teachers' timetables",
 		"View students' timetables", "View rooms' timetables",
 		"Copy the timetables to a shared folder on the school network",
-		"Add the everyday constraints through a simple form"
+		"Add the everyday constraints through a simple form",
+		"Search every command of the program"
 	};
 	const char* const tooltipsAr[] = {
 		"إضافة/تعديل قائمة الأساتذة", "إضافة/تعديل المواد", "إدارة السنوات والأفواج والفرق",
@@ -278,7 +311,8 @@ QWidget* UiDashboard::buildQuickActionsSection(QWidget* host)
 		"كل قيود القاعات", "بدء توليد الجدول الزمني", "عرض جداول الأساتذة بعد التوليد",
 		"عرض جداول الأقسام بعد التوليد", "عرض جداول القاعات بعد التوليد",
 		"نسخ الجداول إلى مجلد مشترك على شبكة المؤسسة",
-		"إضافة القيود اليومية عبر نموذج مبسّط"
+		"إضافة القيود اليومية عبر نموذج مبسّط",
+		"ابحث في كل أوامر البرنامج"
 	};
 
 	const int count = int(sizeof(actionNames) / sizeof(actionNames[0]));
@@ -326,6 +360,8 @@ QString UiDashboard::quickButtonText(const QString& actionName)
 		return UiI18n::T("Publish timetables", "نشر الجداول");
 	if (actionName == QLatin1String("otConstraintTemplatesAction"))
 		return UiI18n::T("Constraint templates", "القيود بالقوالب");
+	if (actionName == QLatin1String("otCommandPaletteAction"))
+		return UiI18n::T("All commands", "كل الأدوات");
 	return actionName;
 }
 
@@ -357,6 +393,8 @@ QString UiDashboard::quickButtonIcon(const QString& actionName)
 		return QStringLiteral("publish");
 	if (actionName == QLatin1String("otConstraintTemplatesAction"))
 		return QStringLiteral("templates");
+	if (actionName == QLatin1String("otCommandPaletteAction"))
+		return QStringLiteral("commands");
 	return QStringLiteral("home");
 }
 
@@ -397,7 +435,7 @@ void UiDashboard::retranslate()
 		if (!actionName.isEmpty()) {
 			button->setText(quickButtonText(actionName));
 			// الأيقونات تُرسم بألوان المظهر الحالي، لذا نعيد ضبطها هنا
-			button->setIcon(UiIcons::icon(quickButtonIcon(actionName), 18));
+			button->setIcon(UiIcons::icon(quickButtonIcon(actionName), 16));
 		}
 	}
 

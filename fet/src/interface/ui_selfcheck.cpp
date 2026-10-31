@@ -12,6 +12,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include "ui_selfcheck.h"
 
 #include "ui_dashboard.h"
+#include "ui_command_palette.h"
 #include "ui_constraints.h"
 #include "ui_icons.h"
 #include "ui_theme.h"
@@ -23,7 +24,9 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QDialog>
 #include <QToolButton>
+#include <QTreeWidget>
 #include <QTranslator>
 #include <QListWidget>
 #include <QMainWindow>
@@ -299,6 +302,128 @@ int run(QMainWindow* mainWindow)
 			r.ok(QStringLiteral("نصوص الواجهة تتبع اللغة"), QStringLiteral("عربي: %1").arg(arabic));
 		else
 			r.ok(QStringLiteral("نصوص الواجهة تتبع اللغة"), QStringLiteral("إنجليزي: %1").arg(arabic));
+	}
+
+	// ---- 6.4) الوصول الكامل إلى أوامر البرنامج (لا ميزة مفقودة) ----
+	{
+		QAction* paletteAction = mainWindow->findChild<QAction*>(QStringLiteral("otCommandPaletteAction"));
+		if (paletteAction != nullptr)
+			r.ok(QStringLiteral("إجراء «كل الأدوات» موجود"), paletteAction->shortcut().toString());
+		else
+			r.fail(QStringLiteral("إجراء «كل الأدوات» موجود"));
+
+		// عدد الأوامر المتاحة عبر البحث (يجب أن يكون كبيرًا: كل قوائم البرنامج)
+		int commands = 0;
+		const QList<QAction*> actions = mainWindow->findChildren<QAction*>();
+		for (QAction* action : actions) {
+			if (action == nullptr || !action->isVisible() || action->isSeparator())
+				continue;
+			if (action->menu() != nullptr)
+				continue;
+			if (action->objectName().startsWith(QStringLiteral("ot")))
+				continue;
+			QString text = action->text();
+			text.remove(QLatin1Char('&'));
+			if (text.trimmed().isEmpty())
+				continue;
+			++commands;
+		}
+		if (commands >= 60)
+			r.ok(QStringLiteral("كل أوامر البرنامج متاحة للبحث"),
+			     QStringLiteral("%1 أمرًا").arg(commands));
+		else
+			r.fail(QStringLiteral("كل أوامر البرنامج متاحة للبحث"),
+			       QStringLiteral("%1 فقط").arg(commands));
+
+		// لوحة الأوامر تُفتح فعلًا وتعرض نتائج
+		UiCommandPalette::run(mainWindow);
+		QDialog* palette = mainWindow->findChild<QDialog*>(QStringLiteral("ot_command_palette"));
+		if (palette != nullptr) {
+			QTreeWidget* tree = palette->findChild<QTreeWidget*>(QStringLiteral("otPaletteTree"));
+			if (tree != nullptr && tree->topLevelItemCount() >= 60)
+				r.ok(QStringLiteral("لوحة الأوامر تعرض الأوامر"),
+				     QStringLiteral("%1 صفًّا").arg(tree->topLevelItemCount()));
+			else
+				r.fail(QStringLiteral("لوحة الأوامر تعرض الأوامر"),
+				       tree == nullptr ? QStringLiteral("لا شجرة")
+						       : QStringLiteral("%1 صفًّا").arg(tree->topLevelItemCount()));
+			palette->close();
+		}
+		else {
+			r.fail(QStringLiteral("لوحة الأوامر تُفتح"));
+		}
+	}
+
+	// ---- 6.45) الطي فوري: العناصر تُخفى وتظهر بلا إعادة بناء ----
+	{
+		QToolButton* collapse = mainWindow->findChild<QToolButton*>(QStringLiteral("otCollapseButton"));
+		if (collapse != nullptr && nav != nullptr) {
+			const int countBefore = nav->count();
+			collapse->click();
+			const int compactCount = nav->count();
+			const QString compactText = nav->count() > 0 ? nav->item(0)->text() : QString();
+			collapse->click();
+			const int expandedText = nav->count() > 0 ? nav->item(0)->text().size() : 0;
+
+			if (countBefore == compactCount && compactText.isEmpty() && expandedText > 0)
+				r.ok(QStringLiteral("طي الشريط وفتحه يعملان بلا إعادة بناء"),
+				     QStringLiteral("%1 عنصرًا").arg(countBefore));
+			else
+				r.fail(QStringLiteral("طي الشريط وفتحه يعملان بلا إعادة بناء"));
+		}
+		else {
+			r.fail(QStringLiteral("طي الشريط وفتحه يعملان بلا إعادة بناء"));
+		}
+	}
+
+	// ---- 6.47) ملاءمة النافذة مع الشاشة ----
+	{
+		UiShell::fitToScreen(mainWindow);
+		const QRect available = mainWindow->screen() != nullptr
+					 ? mainWindow->screen()->availableGeometry() : QRect();
+		const QSize size = mainWindow->size();
+		if (available.isValid() && size.width() <= available.width() + 40
+		    && size.height() <= available.height() + 40)
+			r.ok(QStringLiteral("النافذة تُلائم الشاشة"),
+			     QStringLiteral("%1×%2 داخل %3×%4").arg(size.width()).arg(size.height())
+				     .arg(available.width()).arg(available.height()));
+		else if (!available.isValid())
+			r.info(QStringLiteral("لا شاشة معروفة (بيئة بلا عرض) — تخطّي ملاءمة النافذة"));
+		else
+			r.fail(QStringLiteral("النافذة تُلائم الشاشة"),
+			       QStringLiteral("%1×%2").arg(size.width()).arg(size.height()));
+	}
+
+	// ---- 6.48) سلامة الترجمة بعد التصدير ----
+	// العطل الذي بلّغ عنه المستخدم: بعد تصدير الجداول تتغيّر كل الجمل إلى نص
+	// إنجليزي/غريب وسط العربية. السبب أن نصوص «المحرّك» (المصدَّرة) كانت ما تزال
+	// باسم البرنامج القديم بينما مفاتيح ملفات الترجمة صارت بالاسم الجديد، فلا تُطابق
+	// أي ترجمة. هذا الفحص يحمّل العربية ويتأكد أن نص محرّك التصدير مترجم فعلًا.
+	{
+		const QString exeDir = QCoreApplication::applicationDirPath();
+		const QString dir = exeDir + QStringLiteral("/translations");
+		QTranslator t;
+		const bool loaded = t.load(QStringLiteral("fet_") + FET_LANGUAGE, dir);
+
+		if (!loaded) {
+			r.info(QStringLiteral("لا ترجمة محمّلة — تخطّي فحص نص التصدير"));
+		}
+		else {
+			const QString source = QStringLiteral("This file was automatically generated by Open-Timetable %1.");
+			const QString translated = t.translate("TimetableExport", source.toUtf8().constData());
+
+			// إن كانت قيمة المصدر هي نفسها في الترجمة فمعناه: ليس في الملف ترجمة
+			// لهذا النص أصلًا. نعتبره نجاحًا إن كان ملف الترجمة لا يغطيه (لغة جديدة)،
+			// وفشلًا إن كان الملف يحتوي نفس الجملة بالاسم القديم (عدم تطابق مفاتيح).
+			if (!translated.isEmpty() && translated != source)
+				r.ok(QStringLiteral("نص التصدير مترجم"), QStringLiteral("%1: %2").arg(FET_LANGUAGE,
+												       translated.left(60)));
+			else if (!translated.isEmpty())
+				r.ok(QStringLiteral("نص التصدير غير مترجم في هذه اللغة (طبيعي)"),
+				     FET_LANGUAGE);
+			else
+				r.fail(QStringLiteral("نص التصدير مترجم"));
+		}
 	}
 
 	// ---- 6.5) المظهر الداكن ثم الفاتح ----

@@ -117,7 +117,7 @@ void showStatusBarAutosaved()
 
 bool generatePreMessage(QWidget* parent, const QString& s)
 {
-	int b=GeneratePreReconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("FET warning"), s, GeneratePreTranslate::tr("Yes"), GeneratePreTranslate::tr("No"), QString(), 0, 1);
+	int b=GeneratePreReconcilableMessage::mediumConfirmation(parent, GeneratePreTranslate::tr("Open-Timetable warning"), s, GeneratePreTranslate::tr("Yes"), GeneratePreTranslate::tr("No"), QString(), 0, 1);
 	if(b!=0)
 		return false;
 	else
@@ -320,7 +320,7 @@ void usage(QTextStream* out, const QString& error)
 		"\t--randomseeds10=s10 --randomseeds11=s11 --randomseeds12=s12 --randomseeds20=s20 --randomseeds21=s21 --randomseeds22=s22\n"
 		"\t\twhere you need to specify all the 6 random seed components, and s10, s11, and s12 are integers from minimum 0 to maximum 4294967086,"
 		" not all 3 zero, and s20, s21, and s22 are integers from minimum 0 to maximum 4294944442, not all 3 zero "
-		"(you can get the same timetable if the input file is identical, if the FET version is the same (or if the generation algorithm did not change),"
+		"(you can get the same timetable if the input file is identical, if the Open-Timetable version is the same (or if the generation algorithm did not change),"
 		" and if all the 6 random seed components are respectively equal).\n"
 		"\n"
 		"\t--warnifusinggroupactivitiesininitialorder=WGA\n"
@@ -933,9 +933,9 @@ void usage(QTextStream* out, const QString& error)
 		"\n"
 		"Run \"fet-cl --version\" to get version information.\n"
 		"\n"
-		"You can ask the FET command line process to stop the timetable generation, by sending it the SIGTERM (or SIGBREAK, on Windows) signal. "
-		"FET will then write the current timetable and the highest stage timetable and exit. "
-		"(If you send the FET command line the SIGINT signal it will stop immediately, without writing the timetable.)\n"
+		"You can ask the Open-Timetable command line process to stop the timetable generation, by sending it the SIGTERM (or SIGBREAK, on Windows) signal. "
+		"Open-Timetable will then write the current timetable and the highest stage timetable and exit. "
+		"(If you send the Open-Timetable command line the SIGINT signal it will stop immediately, without writing the timetable.)\n"
 		"\n"
 		"If you create a file named exactly 'sigwrite' in the root output directory, the program will try to remove this file and, if the file was successfully removed, "
 		"it will output the current and the highest stage timetables without stopping the generation (a poll for the existence of this file is done once every second)."
@@ -1035,7 +1035,7 @@ void setLanguage(QCoreApplication& qapplication, QWidget* parent)
 	}
 	else{
 		if(FET_LANGUAGE!="en_US"){
-			FetMessage::warning(parent, QString("FET warning"),
+			FetMessage::warning(parent, QString("Open-Timetable warning"),
 			 QString("Specified language is incorrect - making it en_US (US English)"));
 			FET_LANGUAGE="en_US";
 		}
@@ -1046,10 +1046,10 @@ void setLanguage(QCoreApplication& qapplication, QWidget* parent)
 	}
 	
 	if(!translation_loaded){
-		FetMessage::warning(parent, QString("FET warning"),
+		FetMessage::warning(parent, QString("Open-Timetable warning"),
 		 QString("Translation for specified language not loaded - maybe the translation file is missing - setting the language to en_US (US English)")
 		 +"\n\n"+
-		 QString("FET searched for the translation file %1 in the directory %2, then in the directory %3, and "
+		 QString("Open-Timetable searched for the translation file %1 in the directory %2, then in the directory %3, and "
 		 "then in the directory %4, but could not find it.")
 		 .arg("fet_"+FET_LANGUAGE+".qm")
 		 .arg(QDir::toNativeSeparators(s1))
@@ -4344,7 +4344,7 @@ int main(int argc, char **argv)
 				return 0;
 			}
 			else if(showVersion){
-				std::cout<<"FET version "<<qPrintable(FET_VERSION)<<std::endl;
+				std::cout<<"Open-Timetable version "<<qPrintable(FET_VERSION)<<std::endl;
 				std::cout<<"Free timetabling software, licensed under the GNU Affero General Public License version 3"<<std::endl;
 				//This is one of the two places in which we print the program's copyright period and authors.
 				//The other place is in the file src/interface/helpaboutform.cpp.
@@ -4420,7 +4420,7 @@ int main(int argc, char **argv)
 		bool tttt=logFile.open(QIODevice::WriteOnly);
 #endif
 		if(!tttt){
-			std::cout<<"FET critical - you don't have write permissions in the output directory - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"result.txt)."
+			std::cout<<"Open-Timetable critical - you don't have write permissions in the output directory - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"result.txt)."
 			 " If this is a bug - please report it."<<std::endl;
 			return 1;
 		}
@@ -4432,9 +4432,9 @@ int main(int argc, char **argv)
 			bool t=QFile::remove(communicationFile);
 			if(!t){
 				out<<"Cannot remove the file named "<<qPrintable(QDir::toNativeSeparators(communicationFile))
-				 <<". This is a fatal error for FET-CL. Please either remove this file, or start the generation in another directory."<<Qt::endl;
+				 <<". This is a fatal error for Open-Timetable-CL. Please either remove this file, or start the generation in another directory."<<Qt::endl;
 				std::cout<<"Cannot remove the file named "<<qPrintable(QDir::toNativeSeparators(communicationFile))
-				 <<". This is a fatal error for FET-CL. Please either remove this file, or start the generation in another directory."<<std::endl;
+				 <<". This is a fatal error for Open-Timetable-CL. Please either remove this file, or start the generation in another directory."<<std::endl;
 				exit(1);
 			}
 		}
@@ -4478,7 +4478,7 @@ int main(int argc, char **argv)
 		
 		setLanguage(qCoreApplication, nullptr);
 		
-		QCoreApplication::setApplicationName(FetTranslate::tr("FET-CL"));
+		QCoreApplication::setApplicationName(FetTranslate::tr("Open-Timetable-CL"));
 		
 		QFile maxPlacedActivityFile(logsDir+"max_placed_activities.txt");
 #if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
@@ -4487,9 +4487,9 @@ int main(int argc, char **argv)
 		bool tmpaf=maxPlacedActivityFile.open(QIODevice::WriteOnly);
 #endif
 		if(!tmpaf){
-			std::cout<<"fet: critical error - cannot open the log file for the maximum placed activities - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"max_placed_activities.txt."
+			std::cout<<"fet: critical error - cannot open the log file for the maximum placed activities - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"max_placed_activities.txt."
 			 " If this is a bug - please report it."<<std::endl;
-			out<<"fet: critical error - cannot open the log file for the maximum placed activities - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"max_placed_activities.txt."
+			out<<"fet: critical error - cannot open the log file for the maximum placed activities - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"max_placed_activities.txt."
 			 " If this is a bug - please report it."<<Qt::endl;
 
 			return 1;
@@ -4502,7 +4502,7 @@ int main(int argc, char **argv)
 		maxPlacedActivityStream.setCodec("UTF-8");
 #endif
 		maxPlacedActivityStream.setGenerateByteOrderMark(true);
-		maxPlacedActivityStream<<FetTranslate::tr("This is the list of max placed activities, chronologically. If FET could reach maximum n-th activity, look at the n+1-st activity"
+		maxPlacedActivityStream<<FetTranslate::tr("This is the list of max placed activities, chronologically. If Open-Timetable could reach maximum n-th activity, look at the n+1-st activity"
 			" in the initial order of the activities")<<Qt::endl<<Qt::endl;
 		
 		QFile initialOrderFile(logsDir+"initial_order.txt");
@@ -4512,9 +4512,9 @@ int main(int argc, char **argv)
 		bool iof=initialOrderFile.open(QIODevice::WriteOnly);
 #endif
 		if(!iof){
-			std::cout<<"fet: critical error - cannot open the log file for the initial order of the activities - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"initial_order.txt."
+			std::cout<<"fet: critical error - cannot open the log file for the initial order of the activities - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"initial_order.txt."
 			 " If this is a bug - please report it."<<std::endl;
-			out<<"fet: critical error - cannot open the log file for the initial order of the activities - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"initial_order.txt."
+			out<<"fet: critical error - cannot open the log file for the initial order of the activities - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"initial_order.txt."
 			 " If this is a bug - please report it."<<Qt::endl;
 
 			return 1;
@@ -4534,7 +4534,7 @@ int main(int argc, char **argv)
 		QTime tim=QTime::currentTime();
 		QLocale loc(FET_LANGUAGE);
 		QString sTime=loc.toString(dat, QLocale::ShortFormat)+" "+loc.toString(tim, QLocale::ShortFormat);
-		out<<"FET command line generation started on "<<qPrintable(sTime)<<Qt::endl<<Qt::endl;
+		out<<"Open-Timetable command line generation started on "<<qPrintable(sTime)<<Qt::endl<<Qt::endl;
 		
 		tempOutputDirectory=outputDirectory;
 		
@@ -4565,9 +4565,9 @@ int main(int argc, char **argv)
 		bool t_t=test.open(QIODevice::ReadWrite);
 #endif
 		if(!t_t){
-			std::cout<<"fet: critical error - you don't have write permissions in the output directory - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(outputDirectory))<<"test_write_permissions_2.tmp)."
+			std::cout<<"fet: critical error - you don't have write permissions in the output directory - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(outputDirectory))<<"test_write_permissions_2.tmp)."
 			 " If this is a bug - please report it."<<std::endl;
-			out<<"fet: critical error - you don't have write permissions in the output directory - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(outputDirectory))<<"test_write_permissions_2.tmp)."
+			out<<"fet: critical error - you don't have write permissions in the output directory - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(outputDirectory))<<"test_write_permissions_2.tmp)."
 			 " If this is a bug - please report it."<<Qt::endl;
 			return 1;
 		}
@@ -4593,7 +4593,7 @@ int main(int argc, char **argv)
 			return 1;
 		}
 		if(randomSeedXSpecified || randomSeedYSpecified){
-			usage(nullptr, QString("Starting with FET version 5.44.0 the random number generator was changed to a better one. Please see usage for instructions"
+			usage(nullptr, QString("Starting with Open-Timetable version 5.44.0 the random number generator was changed to a better one. Please see usage for instructions"
 			 " on how to specify the random number generator seed at the start of the program (or do not specify a random seed at all)."
 			 " The program will now abort the generation"));
 			logFile.close();
@@ -4869,7 +4869,7 @@ int main(int argc, char **argv)
 			bool t=difficultActivitiesFile.open(QIODevice::WriteOnly);
 #endif
 			if(!t){
-				std::cout<<"FET critical - you don't have write permissions in the output directory - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"difficult_activities.txt)."
+				std::cout<<"Open-Timetable critical - you don't have write permissions in the output directory - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"difficult_activities.txt)."
 				 " If this is a bug - please report it."<<std::endl;
 				return 1;
 			}
@@ -4986,7 +4986,7 @@ int main(int argc, char **argv)
 
 			if(gen.maxActivitiesPlaced>=0 && gen.maxActivitiesPlaced<gt.rules.nInternalActivities
 			 && initialOrderOfActivitiesIndices[gen.maxActivitiesPlaced]>=0 && initialOrderOfActivitiesIndices[gen.maxActivitiesPlaced]<gt.rules.nInternalActivities){
-				s=FetTranslate::tr("FET managed to schedule correctly the first %1 most difficult activities."
+				s=FetTranslate::tr("Open-Timetable managed to schedule correctly the first %1 most difficult activities."
 				 " You can see the initial order of placing the activities in the corresponding output file. The activity which might cause problems"
 				 " might be the next activity in the initial order of evaluation. This activity is listed below:").arg(gen.maxActivitiesPlaced);
 				s+=QString("\n\n");
@@ -5003,7 +5003,7 @@ int main(int argc, char **argv)
 			s+=QString("\n\n----------\n\n");
 			
 			s+=FetTranslate::tr("Here are the placed activities which led to an inconsistency, "
-			 "in order, from the first one to the last one (the last one FET failed to schedule "
+			 "in order, from the first one to the last one (the last one Open-Timetable failed to schedule "
 			 "and the last ones are most likely the difficult ones):");
 			s+="\n\n";
 			for(int i=0; i<gen.nDifficultActivities; i++){
@@ -5027,7 +5027,7 @@ int main(int argc, char **argv)
 			bool t=difficultActivitiesFile.open(QIODevice::WriteOnly);
 #endif
 			if(!t){
-				std::cout<<"FET critical - you don't have write permissions in the output directory - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"difficult_activities.txt)."
+				std::cout<<"Open-Timetable critical - you don't have write permissions in the output directory - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"difficult_activities.txt)."
 				 " If this is a bug - please report it."<<std::endl;
 				return 1;
 			}

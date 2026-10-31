@@ -206,7 +206,7 @@ void Generate::checkWriteCurrentAndHighestTimetable()
 
 	if(this->maxActivitiesPlaced>=0 && this->maxActivitiesPlaced<gt.rules.nInternalActivities
 		&& initialOrderOfActivitiesIndices[this->maxActivitiesPlaced]>=0 && initialOrderOfActivitiesIndices[this->maxActivitiesPlaced]<gt.rules.nInternalActivities){
-		s=FetTranslate::tr("FET managed to schedule correctly the first %1 most difficult activities."
+		s=FetTranslate::tr("Open-Timetable managed to schedule correctly the first %1 most difficult activities."
 			" You can see the initial order of placing the activities in the corresponding output file. The activity which might cause problems"
 			" might be the next activity in the initial order of evaluation. This activity is listed below:").arg(this->maxActivitiesPlaced);
 		s+=QString("\n\n");
@@ -223,7 +223,7 @@ void Generate::checkWriteCurrentAndHighestTimetable()
 	s+=QString("\n\n----------\n\n");
 
 	s+=FetTranslate::tr("Here are the placed activities which led to an inconsistency, "
-		"in order, from the first one to the last one (the last one FET failed to schedule "
+		"in order, from the first one to the last one (the last one Open-Timetable failed to schedule "
 		"and the last ones are most likely the difficult ones):");
 	s+="\n\n";
 	for(int i=0; i<this->nDifficultActivities; i++){
@@ -247,7 +247,7 @@ void Generate::checkWriteCurrentAndHighestTimetable()
 	bool t=difficultActivitiesFile.open(QIODevice::WriteOnly);
 #endif
 	if(!t){
-		std::cout<<"FET critical - you don't have write permissions in the output directory - (FET cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"difficult_activities.txt)."
+		std::cout<<"Open-Timetable critical - you don't have write permissions in the output directory - (Open-Timetable cannot open or create file "<<qPrintable(QDir::toNativeSeparators(logsDir))<<"difficult_activities.txt)."
 			" If this is a bug - please report it."<<std::endl;
 		exit(1);
 	}
@@ -9666,7 +9666,7 @@ prevvalue:
 					sec%=3600;
 					int mm=sec/60;
 					sec%=60;
-					QString s=tr("At time %1 h %2 m %3 s, FET reached %4 activities placed", "h=hours, m=minutes, s=seconds. Please leave spaces between 'time', %1, h, %2, m, %3, s, so they are visible")
+					QString s=tr("At time %1 h %2 m %3 s, Open-Timetable reached %4 activities placed", "h=hours, m=minutes, s=seconds. Please leave spaces between 'time', %1, h, %2, m, %3, s, so they are visible")
 						.arg(hh).arg(mm).arg(sec).arg(maxActivitiesPlaced);
 					
 					(*maxPlacedActivityStream)<<s<<Qt::endl;

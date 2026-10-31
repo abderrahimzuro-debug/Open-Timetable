@@ -3411,7 +3411,7 @@ bool ConstraintRoomNotAvailableTimes::computeInternalStructure(QWidget* parent, 
 	room_ID=r.roomsHash.value(room, -1);
 	
 	if(this->room_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room not available times is wrong because it refers to nonexistent room."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -3421,14 +3421,14 @@ bool ConstraintRoomNotAvailableTimes::computeInternalStructure(QWidget* parent, 
 	assert(days.count()==hours.count());
 	for(int k=0; k<days.count(); k++){
 		if(this->days.at(k) >= r.nDaysPerWeek){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET information"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable information"),
 			 tr("Constraint room not available times is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->hours.at(k) >= r.nHoursPerDay){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET information"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable information"),
 			 tr("Constraint room not available times is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -3767,7 +3767,7 @@ QString ConstraintTeacherRoomNotAvailableTimes::getDetailedDescription(Rules& r,
 bool ConstraintTeacherRoomNotAvailableTimes::computeInternalStructure(QWidget* parent, Rules& r){
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher room not available times is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		 
@@ -3778,7 +3778,7 @@ bool ConstraintTeacherRoomNotAvailableTimes::computeInternalStructure(QWidget* p
 	room_ID=r.roomsHash.value(room, -1);
 	
 	if(this->room_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher room not available times is wrong because it refers to nonexistent room."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		 
@@ -3788,14 +3788,14 @@ bool ConstraintTeacherRoomNotAvailableTimes::computeInternalStructure(QWidget* p
 	assert(days.count()==hours.count());
 	for(int k=0; k<days.count(); k++){
 		if(this->days.at(k) >= r.nDaysPerWeek){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET information"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable information"),
 			 tr("Constraint teacher room not available times is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		 
 			return false;
 		}		
 		if(this->hours.at(k) >= r.nHoursPerDay){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET information"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable information"),
 			 tr("Constraint teacher room not available times is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		 
@@ -4060,7 +4060,7 @@ bool ConstraintActivityPreferredRoom::computeInternalStructure(QWidget* parent, 
 			break;
 		}
 	if(ac==r.nInternalActivities){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
@@ -4071,7 +4071,7 @@ bool ConstraintActivityPreferredRoom::computeInternalStructure(QWidget* parent, 
 	//assert(_room>=0);
 
 	if(this->_room<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because preferred room %1 does not exist):\n%2").arg(roomName).arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -4083,7 +4083,7 @@ bool ConstraintActivityPreferredRoom::computeInternalStructure(QWidget* parent, 
 		int rr=r.roomsHash.value(rrn, -1);
 
 		if(rr<0){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 				tr("Following constraint is wrong (because preferred real room %1 does not exist):\n%2").arg(rrn).arg(this->getDetailedDescription(r)));
 			return false;
 		}
@@ -4407,7 +4407,7 @@ bool ConstraintActivityPreferredRooms::computeInternalStructure(QWidget* parent,
 		}*/
 		
 	if(ac==r.nInternalActivities){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
@@ -4419,7 +4419,7 @@ bool ConstraintActivityPreferredRooms::computeInternalStructure(QWidget* parent,
 		int t=r.roomsHash.value(rm, -1);
 
 		if(t<0){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -4701,7 +4701,7 @@ bool ConstraintStudentsSetHomeRoom::computeInternalStructure(QWidget* parent, Ru
 	//this->_room = r.searchRoom(this->roomName);
 	_room=r.roomsHash.value(roomName, -1);
 	if(this->_room<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -4992,7 +4992,7 @@ bool ConstraintStudentsSetHomeRooms::computeInternalStructure(QWidget* parent, R
 		//int t=r.searchRoom(rm);
 		int t=r.roomsHash.value(rm, -1);
 		if(t<0){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -5293,7 +5293,7 @@ bool ConstraintTeacherHomeRoom::computeInternalStructure(QWidget* parent, Rules&
 	//this->_room = r.searchRoom(this->roomName);
 	_room=r.roomsHash.value(roomName, -1);
 	if(this->_room<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -5641,7 +5641,7 @@ bool ConstraintTeacherHomeRooms::computeInternalStructure(QWidget* parent, Rules
 		//int t=r.searchRoom(rm);
 		int t=r.roomsHash.value(rm, -1);
 		if(t<0){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -5985,7 +5985,7 @@ bool ConstraintSubjectPreferredRoom::computeInternalStructure(QWidget* parent, R
 	//this->_room = r.searchRoom(this->roomName);
 	_room=r.roomsHash.value(roomName, -1);
 	if(this->_room<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
@@ -6241,7 +6241,7 @@ bool ConstraintSubjectPreferredRooms::computeInternalStructure(QWidget* parent, 
 		//int t=r.searchRoom(rm);
 		int t=r.roomsHash.value(rm, -1);
 		if(t<0){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -6510,7 +6510,7 @@ bool ConstraintSubjectActivityTagPreferredRoom::computeInternalStructure(QWidget
 	//this->_room = r.searchRoom(this->roomName);
 	_room=r.roomsHash.value(roomName, -1);
 	if(this->_room<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
@@ -6772,7 +6772,7 @@ bool ConstraintSubjectActivityTagPreferredRooms::computeInternalStructure(QWidge
 		//int t=r.searchRoom(rm);
 		int t=r.roomsHash.value(rm, -1);
 		if(t<0){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -7043,7 +7043,7 @@ bool ConstraintActivityTagPreferredRoom::computeInternalStructure(QWidget* paren
 	//this->_room = r.searchRoom(this->roomName);
 	_room=r.roomsHash.value(roomName, -1);
 	if(this->_room<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
@@ -7300,7 +7300,7 @@ bool ConstraintActivityTagPreferredRooms::computeInternalStructure(QWidget* pare
 		//int t=r.searchRoom(rm);
 		int t=r.roomsHash.value(rm, -1);
 		if(t<0){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 				tr("Following constraint is wrong:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
@@ -7559,7 +7559,7 @@ bool ConstraintStudentsSetMaxBuildingChangesPerDay::computeInternalStructure(QWi
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 	
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max building changes per day is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -8131,7 +8131,7 @@ bool ConstraintStudentsSetMaxBuildingChangesPerWeek::computeInternalStructure(QW
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 	
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max building changes per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -8702,7 +8702,7 @@ bool ConstraintStudentsSetMinGapsBetweenBuildingChanges::computeInternalStructur
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 	
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min gaps between building changes is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -9298,7 +9298,7 @@ bool ConstraintTeacherMaxBuildingChangesPerDay::computeInternalStructure(QWidget
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max building changes per day is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -9834,7 +9834,7 @@ bool ConstraintTeacherMaxBuildingChangesPerWeek::computeInternalStructure(QWidge
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max building changes per week is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -10370,7 +10370,7 @@ bool ConstraintTeacherMinGapsBetweenBuildingChanges::computeInternalStructure(QW
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher min gaps between building changes is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -10931,7 +10931,7 @@ bool ConstraintStudentsSetMaxRoomChangesPerDay::computeInternalStructure(QWidget
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 	
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max room changes per day is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -11503,7 +11503,7 @@ bool ConstraintStudentsSetMaxRoomChangesPerWeek::computeInternalStructure(QWidge
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 	
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max room changes per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -12074,7 +12074,7 @@ bool ConstraintStudentsSetMinGapsBetweenRoomChanges::computeInternalStructure(QW
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 	
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min gaps between room changes is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -12670,7 +12670,7 @@ bool ConstraintTeacherMaxRoomChangesPerDay::computeInternalStructure(QWidget* pa
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max room changes per day is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -13206,7 +13206,7 @@ bool ConstraintTeacherMaxRoomChangesPerWeek::computeInternalStructure(QWidget* p
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max room changes per week is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -13742,7 +13742,7 @@ bool ConstraintTeacherMinGapsBetweenRoomChanges::computeInternalStructure(QWidge
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher min gaps between room changes is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -14312,7 +14312,7 @@ bool ConstraintActivitiesOccupyMaxDifferentRooms::computeInternalStructure(QWidg
 	///////////////////////
 	
 	if(this->_activitiesIndices.count()<2){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to less than two activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -14603,7 +14603,7 @@ bool ConstraintActivitiesSameRoomIfConsecutive::computeInternalStructure(QWidget
 	///////////////////////
 	
 	if(this->_activitiesIndices.count()<2){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to less than two activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -15162,7 +15162,7 @@ bool ConstraintStudentsSetMaxRoomChangesPerRealDay::computeInternalStructure(QWi
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max room changes per real day is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -15481,7 +15481,7 @@ bool ConstraintTeacherMaxRoomChangesPerRealDay::computeInternalStructure(QWidget
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max room changes per real day is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -16305,7 +16305,7 @@ bool ConstraintStudentsSetMaxBuildingChangesPerRealDay::computeInternalStructure
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max building changes per real day is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -16624,7 +16624,7 @@ bool ConstraintTeacherMaxBuildingChangesPerRealDay::computeInternalStructure(QWi
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max building changes per real day is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -17180,7 +17180,7 @@ bool ConstraintStudentsSetMaxBuildingChangesPerDayInInterval::computeInternalStr
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 	
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max building changes per day in hourly interval is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -17824,7 +17824,7 @@ bool ConstraintTeacherMaxBuildingChangesPerDayInInterval::computeInternalStructu
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max building changes per day in hourly interval is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -18432,7 +18432,7 @@ bool ConstraintStudentsSetMaxBuildingChangesPerRealDayInInterval::computeInterna
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 	
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max building changes per real day in hourly interval is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -19156,7 +19156,7 @@ bool ConstraintTeacherMaxBuildingChangesPerRealDayInInterval::computeInternalStr
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max building changes per real day in hourly interval is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -19845,7 +19845,7 @@ bool ConstraintStudentsSetMaxRoomChangesPerDayInInterval::computeInternalStructu
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 	
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max room changes per day in hourly interval is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -20489,7 +20489,7 @@ bool ConstraintTeacherMaxRoomChangesPerDayInInterval::computeInternalStructure(Q
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max room changes per day in hourly interval is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -21097,7 +21097,7 @@ bool ConstraintStudentsSetMaxRoomChangesPerRealDayInInterval::computeInternalStr
 	StudentsSet* ss=r.studentsHash.value(studentsName, nullptr);
 	
 	if(ss==nullptr){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max room changes per real day in hourly interval is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -21821,7 +21821,7 @@ bool ConstraintTeacherMaxRoomChangesPerRealDayInInterval::computeInternalStructu
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max room changes per real day in hourly interval is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -22509,7 +22509,7 @@ bool ConstraintRoomMaxActivityTagsPerDayFromSet::computeInternalStructure(QWidge
 	room_ID=r.roomsHash.value(room, -1);
 	
 	if(this->room_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room max activity tags per day from a set is wrong because it refers to a nonexistent room."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -22521,7 +22521,7 @@ bool ConstraintRoomMaxActivityTagsPerDayFromSet::computeInternalStructure(QWidge
 		int tgi=r.activityTagsHash.value(at, -1);
 		
 		if(tgi==-1){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -22781,7 +22781,7 @@ bool ConstraintRoomMaxActivityTagsPerRealDayFromSet::computeInternalStructure(QW
 	room_ID=r.roomsHash.value(room, -1);
 	
 	if(this->room_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room max activity tags per real day from a set is wrong because it refers to a nonexistent room."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -22793,7 +22793,7 @@ bool ConstraintRoomMaxActivityTagsPerRealDayFromSet::computeInternalStructure(QW
 		int tgi=r.activityTagsHash.value(at, -1);
 		
 		if(tgi==-1){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -23056,7 +23056,7 @@ bool ConstraintRoomMaxActivityTagsPerWeekFromSet::computeInternalStructure(QWidg
 	room_ID=r.roomsHash.value(room, -1);
 	
 	if(this->room_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room max activity tags per week from a set is wrong because it refers to a nonexistent room."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -23068,7 +23068,7 @@ bool ConstraintRoomMaxActivityTagsPerWeekFromSet::computeInternalStructure(QWidg
 		int tgi=r.activityTagsHash.value(at, -1);
 		
 		if(tgi==-1){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -23329,28 +23329,28 @@ bool ConstraintRoomPairOfMutuallyExclusiveTimeSlots::computeInternalStructure(QW
 	assert(this->room_ID>=0);
 
 	if(this->day1 >= r.nDaysPerWeek){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room pair of mutually exclusive time slots is wrong because the first time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour1 >= r.nHoursPerDay){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room pair of mutually exclusive time slots is wrong because the first time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->day2 >= r.nDaysPerWeek){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room pair of mutually exclusive time slots is wrong because the second time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour2 >= r.nHoursPerDay){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room pair of mutually exclusive time slots is wrong because the second time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -23358,7 +23358,7 @@ bool ConstraintRoomPairOfMutuallyExclusiveTimeSlots::computeInternalStructure(QW
 	}
 
 	if(this->day1==this->day2 && this->hour1==this->hour2){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room pair of mutually exclusive time slots is wrong because the two time slots are the same. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -23612,7 +23612,7 @@ bool ConstraintRoomPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalStruct
 	assert(selectedDays2.count()==selectedHours2.count());
 
 	if(selectedDays1.count()==0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room pair of mutually exclusive sets of time slots is wrong because the first set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -23620,7 +23620,7 @@ bool ConstraintRoomPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalStruct
 		return false;
 	}
 	if(selectedDays2.count()==0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room pair of mutually exclusive sets of time slots is wrong because the second set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -23650,7 +23650,7 @@ bool ConstraintRoomPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalStruct
 	}
 
 	if(set1.intersects(set2)){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room pair of mutually exclusive sets of time slots is wrong because the two sets of time slots have at least one common time slot. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -24036,7 +24036,7 @@ bool ConstraintRoomOccupiesMaxSetsOfTimeSlotsFromSelection::computeInternalStruc
 	assert(selectedDays.count()==selectedHours.count());
 
 	if(selectedDays.count()<2){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room occupies max sets of time slots from selection is wrong because the selection contains less than two sets of time"
 		 " slots. Please correct and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -24062,7 +24062,7 @@ bool ConstraintRoomOccupiesMaxSetsOfTimeSlotsFromSelection::computeInternalStruc
 		}
 		assert(ts.count()==tl.count());
 		if(tl.count()==0){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Constraint room occupies max sets of time slots from selection is wrong because the set number %1 of selected time slots is empty. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%2")
 			 .arg(q+1).arg(this->getDetailedDescription(r)));
@@ -24078,7 +24078,7 @@ bool ConstraintRoomOccupiesMaxSetsOfTimeSlotsFromSelection::computeInternalStruc
 		for(int j=i+1; j<listOfSets.count(); j++){
 			const QSet<int>& set2=listOfSets.at(j);
 			if(set1.intersects(set2)){
-				SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+				SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 				 tr("Constraint room occupies max sets of time slots from selection is wrong because the set number %1 of selected time slots and the set number %2 of selected time slots have at least one common time slot. Please correct"
 				 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%3")
 				 .arg(i+1)
@@ -24476,7 +24476,7 @@ bool ConstraintRoomsMaxActivityTagsPerDayFromSet::computeInternalStructure(QWidg
 		int tgi=r.activityTagsHash.value(at, -1);
 		
 		if(tgi==-1){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -24740,7 +24740,7 @@ bool ConstraintRoomsMaxActivityTagsPerRealDayFromSet::computeInternalStructure(Q
 		int tgi=r.activityTagsHash.value(at, -1);
 		
 		if(tgi==-1){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -25007,7 +25007,7 @@ bool ConstraintRoomsMaxActivityTagsPerWeekFromSet::computeInternalStructure(QWid
 		int tgi=r.activityTagsHash.value(at, -1);
 		
 		if(tgi==-1){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -25268,28 +25268,28 @@ ConstraintRoomsPairOfMutuallyExclusiveTimeSlots::ConstraintRoomsPairOfMutuallyEx
 bool ConstraintRoomsPairOfMutuallyExclusiveTimeSlots::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->day1 >= r.nDaysPerWeek){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint rooms pair of mutually exclusive time slots is wrong because the first time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour1 >= r.nHoursPerDay){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint rooms pair of mutually exclusive time slots is wrong because the first time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->day2 >= r.nDaysPerWeek){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint rooms pair of mutually exclusive time slots is wrong because the second time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour2 >= r.nHoursPerDay){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint rooms pair of mutually exclusive time slots is wrong because the second time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -25297,7 +25297,7 @@ bool ConstraintRoomsPairOfMutuallyExclusiveTimeSlots::computeInternalStructure(Q
 	}
 
 	if(this->day1==this->day2 && this->hour1==this->hour2){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint rooms pair of mutually exclusive time slots is wrong because the two time slots are the same. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -25546,7 +25546,7 @@ bool ConstraintRoomsPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalStruc
 	assert(selectedDays2.count()==selectedHours2.count());
 
 	if(selectedDays1.count()==0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint rooms pair of mutually exclusive sets of time slots is wrong because the first set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -25554,7 +25554,7 @@ bool ConstraintRoomsPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalStruc
 		return false;
 	}
 	if(selectedDays2.count()==0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint rooms pair of mutually exclusive sets of time slots is wrong because the second set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -25584,7 +25584,7 @@ bool ConstraintRoomsPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalStruc
 	}
 
 	if(set1.intersects(set2)){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint rooms pair of mutually exclusive sets of time slots is wrong because the two sets of time slots have at least one common time slot. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -25964,7 +25964,7 @@ bool ConstraintRoomsOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalStruct
 	assert(selectedDays.count()==selectedHours.count());
 
 	if(selectedDays.count()<2){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint rooms occupy max sets of time slots from selection is wrong because the selection contains less than two sets of time"
 		 " slots. Please correct and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -25990,7 +25990,7 @@ bool ConstraintRoomsOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalStruct
 		}
 		assert(ts.count()==tl.count());
 		if(tl.count()==0){
-			SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Constraint rooms occupy max sets of time slots from selection is wrong because the set number %1 of selected time slots is empty. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%2")
 			 .arg(q+1).arg(this->getDetailedDescription(r)));
@@ -26006,7 +26006,7 @@ bool ConstraintRoomsOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalStruct
 		for(int j=i+1; j<listOfSets.count(); j++){
 			const QSet<int>& set2=listOfSets.at(j);
 			if(set1.intersects(set2)){
-				SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+				SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 				 tr("Constraint rooms occupy max sets of time slots from selection is wrong because the set number %1 of selected time slots and the set number %2 of selected time slots have at least one common time slot. Please correct"
 				 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%3")
 				 .arg(i+1)
@@ -26935,7 +26935,7 @@ bool ConstraintRoomMaxActivitiesPerTeacher::computeInternalStructure(QWidget* pa
 	room_ID=r.roomsHash.value(room, -1);
 	
 	if(this->room_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint room max activities per teacher is wrong because it refers to nonexistent room."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -27475,7 +27475,7 @@ QString ConstraintTeacherMaxActivitiesInRoom::getDetailedDescription(Rules& r, b
 bool ConstraintTeacherMaxActivitiesInRoom::computeInternalStructure(QWidget* parent, Rules& r){
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	if(this->teacher_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max activities in room is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -27485,7 +27485,7 @@ bool ConstraintTeacherMaxActivitiesInRoom::computeInternalStructure(QWidget* par
 	//this->room_ID=r.searchRoom(this->room);
 	room_ID=r.roomsHash.value(room, -1);
 	if(this->room_ID<0){
-		SpaceConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		SpaceConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max activities in room is wrong because it refers to nonexistent room."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		

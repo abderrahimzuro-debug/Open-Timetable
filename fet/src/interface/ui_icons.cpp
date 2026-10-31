@@ -14,6 +14,7 @@ timetabling engine. Licensed under the GNU Affero General Public License v3.
 #include "ui_icons.h"
 
 #include <QColor>
+#include <QLinearGradient>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPixmap>
@@ -28,7 +29,8 @@ enum PrimType {
 	P_RECT,       // (x,y,w,h, r)
 	P_CIRCLE,     // (cx,cy,r)
 	P_ARC,        // (x,y,w,h, start, span)
-	P_DOT         // نقطة مطموسة بلون الخلفية (تُستعمل لعمل الهلال مثلًا)
+	P_DOT,        // نقطة مطموسة بلون الخلفية
+	P_MOON        // هلال: (cx,cy,r) ناقص دائرة (a2,b2,r2)
 };
 
 struct Prim {
@@ -59,6 +61,12 @@ Prim A(qreal x, qreal y, qreal w, qreal h, qreal start, qreal span)
 Prim D(qreal cx, qreal cy, qreal r)
 {
 	return Prim{ P_DOT, cx, cy, r, 0, 0, 0 };
+}
+
+// هلال حقيقي (طرح دائرتين) — لا يعتمد على لون الخلفية فيبقى صحيحًا في كل مظهر
+Prim M(qreal cx, qreal cy, qreal r, qreal sx, qreal sy, qreal sr)
+{
+	return Prim{ P_MOON, cx, cy, r, sx, sy, sr };
 }
 
 UiIcons::Tone g_tone = UiIcons::OnLight;
@@ -141,11 +149,22 @@ QVector<Prim> geometry(const QString& name)
 		  << L(4.5, 20.5, 19.5, 20.5);
 	}
 	else if (name == QLatin1String("sidebar")) {
+		// سهم يشير إلى الداخل (طي)
 		p << R(3, 4, 18, 16, 2) << L(9, 4, 9, 20)
 		  << L(15.5, 9, 12.8, 12) << L(12.8, 12, 15.5, 15);
 	}
+	else if (name == QLatin1String("sidebar-open")) {
+		// سهم يشير إلى الخارج (فتح)
+		p << R(3, 4, 18, 16, 2) << L(9, 4, 9, 20)
+		  << L(12.8, 9, 15.5, 12) << L(15.5, 12, 12.8, 15);
+	}
+	else if (name == QLatin1String("commands")) {
+		// عدسة بحث + سهم أمر داخل الإطار
+		p << C(10.5, 10.5, 6.0) << L(15.0, 15.0, 20.5, 20.5)
+		  << L(8.0, 8.8, 10.0, 10.9) << L(10.0, 10.9, 12.6, 8.2);
+	}
 	else if (name == QLatin1String("moon")) {
-		p << C(12, 12, 6.5) << D(15.6, 9.8, 5.3);
+		p << M(11.4, 12.0, 7.0, 15.6, 9.2, 6.0);
 	}
 	else if (name == QLatin1String("sun")) {
 		p << C(12, 12, 4)
@@ -206,6 +225,18 @@ QPixmap render(const QString& name, int size)
 					int(prim.e * 16), int(prim.f * 16));
 			break;
 		}
+		case P_MOON: {
+			QPainterPath moon;
+			moon.addEllipse(QPointF(prim.a, prim.b), prim.c, prim.c);
+			QPainterPath bite;
+			bite.addEllipse(QPointF(prim.d, prim.e), prim.f, prim.f);
+			painter.save();
+			painter.setPen(Qt::NoPen);
+			painter.setBrush(strokeColor());
+			painter.drawPath(moon.subtracted(bite));
+			painter.restore();
+			break;
+		}
 		case P_DOT:
 			painter.save();
 			painter.setPen(Qt::NoPen);
@@ -223,7 +254,8 @@ QPixmap render(const QString& name, int size)
 	return pixmap;
 }
 
-// أيقونة للشعار: مربّع مستدير + شبكة جدول + علامة صح
+// شعار البرنامج: مربّع مستدير بتدرّج أزرق/بنفسجي + أربعة مربّعات تمثّل خلايا
+// جدول زمني (الخلية الرابعة بلون مميّز). بسيط ومقروء حتى في 16×16.
 QPixmap renderLogo(int size)
 {
 	QPixmap pixmap(size, size);
@@ -235,29 +267,23 @@ QPixmap renderLogo(int size)
 	const qreal scale = qreal(size) / 64.0;
 	painter.scale(scale, scale);
 
-	// الخلفية
+	// الخلفية بتدرّج قطري
+	QLinearGradient gradient(2, 2, 62, 62);
+	gradient.setColorAt(0.0, QColor(0x4f, 0x46, 0xe5));
+	gradient.setColorAt(1.0, QColor(0x25, 0x63, 0xeb));
+
 	QPainterPath background;
-	background.addRoundedRect(QRectF(2, 2, 60, 60), 14, 14);
-	painter.fillPath(background, QColor(0x2563eb));
+	background.addRoundedRect(QRectF(2, 2, 60, 60), 15, 15);
+	painter.fillPath(background, gradient);
 
-	// شبكة الجدول
-	QPen gridPen(QColor(0xff, 0xff, 0xff, 210));
-	gridPen.setWidthF(2.4);
-	gridPen.setCapStyle(Qt::RoundCap);
-	painter.setPen(gridPen);
-	painter.drawLine(QPointF(14, 22), QPointF(50, 22));
-	painter.drawLine(QPointF(24, 14), QPointF(24, 20));
-	painter.drawLine(QPointF(40, 14), QPointF(40, 20));
-	painter.drawLine(QPointF(14, 34), QPointF(50, 34));
+	painter.setPen(Qt::NoPen);
+	painter.setBrush(QColor(0xff, 0xff, 0xff));
+	painter.drawRoundedRect(QRectF(14, 14, 11, 11), 2.5, 2.5);  // أعلى يسار
+	painter.drawRoundedRect(QRectF(28, 14, 22, 11), 2.5, 2.5);  // أعلى يمين
+	painter.drawRoundedRect(QRectF(14, 28, 11, 22), 2.5, 2.5);  // أسفل يسار
 
-	// علامة الصح
-	QPen checkPen(Qt::white);
-	checkPen.setWidthF(5.0);
-	checkPen.setCapStyle(Qt::RoundCap);
-	checkPen.setJoinStyle(Qt::RoundJoin);
-	painter.setPen(checkPen);
-	painter.drawLine(QPointF(20, 46), QPointF(28, 54));
-	painter.drawLine(QPointF(28, 54), QPointF(44, 38));
+	painter.setBrush(QColor(0xc7, 0xd2, 0xfe));
+	painter.drawRoundedRect(QRectF(28, 28, 22, 22), 3.0, 3.0);  // الخلية المميّزة
 
 	painter.end();
 	return pixmap;
@@ -314,7 +340,8 @@ QStringList names()
 			   QStringLiteral("view-teachers"), QStringLiteral("view-students"),
 			   QStringLiteral("view-rooms"), QStringLiteral("conflicts"),
 			   QStringLiteral("publish"),   QStringLiteral("sidebar"),
-			   QStringLiteral("moon"),      QStringLiteral("sun") };
+			   QStringLiteral("moon"),      QStringLiteral("sun"),
+			   QStringLiteral("sidebar-open"), QStringLiteral("commands") };
 }
 
 } // namespace UiIcons

@@ -6074,7 +6074,7 @@ void Rules::addUndoPoint(const QString& description, bool autosave, bool resetCo
 				if(!dir.exists(das))
 					t=dir.mkpath(das);
 				if(!t){
-					RulesIrreconcilableMessage::warning((QWidget*)pFetMainForm, tr("FET warning"), tr("Cannot create or use directory %1 - cannot autosave your data file - please change"
+					RulesIrreconcilableMessage::warning((QWidget*)pFetMainForm, tr("Open-Timetable warning"), tr("Cannot create or use directory %1 - cannot autosave your data file - please change"
 					 " the chosen autosave directory or disable the autosave.")
 					 .arg(QDir::toNativeSeparators(das)));
 				}
@@ -6256,9 +6256,9 @@ void Rules::restoreState(QWidget* parent, int iterationsBackward)
 	//qUncompress(...) should have the same behavior with other (older, and also hopefully newer) versions of Qt, see this Qt function's doc.
 	//We need this compatibility for the disk history, where the user might have saved the history on disk from a different Qt version.
 	if(oldRulesBA.isEmpty()){
-		EngineMessageBox::critical(parent, tr("FET critical"), tr("Corrupted state read from the memory or from the hard disk ... returning to the previous state.")+
-		 QString("\n\n")+tr("If the problem is caused by the history file saved on the disk, you might want to exit FET, remove the corresponding history file"
-		 " ending in '%1', open FET again, and open your .fet data file again. Or just ignore the problem, until the history will be replaced with new, valid entries.")
+		EngineMessageBox::critical(parent, tr("Open-Timetable critical"), tr("Corrupted state read from the memory or from the hard disk ... returning to the previous state.")+
+		 QString("\n\n")+tr("If the problem is caused by the history file saved on the disk, you might want to exit Open-Timetable, remove the corresponding history file"
+		 " ending in '%1', open Open-Timetable again, and open your .fet data file again. Or just ignore the problem, until the history will be replaced with new, valid entries.")
 		 .arg(SUFFIX_FILENAME_SAVE_HISTORY));
 		crtBAIt=savedCrtBAIt;
 		cntUndoRedoStackIterator=savedCntUndoRedoStackIterator;
@@ -6545,7 +6545,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 		if(sty->groupsList.count()==0){
 			StudentsGroup* tmpGroup = new StudentsGroup();
 			tmpGroup->name = sty->name+" "+tr("Automatic Group", "Please keep the translation short. It is used when a year contains no groups and an automatic group "
-			 "is added in the year, in the timetable (when viewing the students timetable from FET and also in the HTML timetables for students groups or subgroups)"
+			 "is added in the year, in the timetable (when viewing the students timetable from Open-Timetable and also in the HTML timetables for students groups or subgroups)"
 			 ". In the empty year there will be added a group with name = yearName+a space character+your translation of 'Automatic Group'.");
 			
 			//to avoid rare/very improbable, but possible name crashes
@@ -6563,10 +6563,10 @@ bool Rules::computeInternalStructure(QWidget* parent)
 			augmentedHash.insert(tmpGroup->name, tmpGroup);
 			
 			tmpGroup->longName = sty->longName+" "+tr("Automatic Group", "Please keep the translation short. It is used when a year contains no groups and an automatic group "
-			 "is added in the year, in the timetable (when viewing the students timetable from FET and also in the HTML timetables for students groups or subgroups)"
+			 "is added in the year, in the timetable (when viewing the students timetable from Open-Timetable and also in the HTML timetables for students groups or subgroups)"
 			 ". In the empty year there will be added a group with name = yearName+a space character+your translation of 'Automatic Group'.");
 			tmpGroup->code = sty->code+" "+tr("Automatic Group", "Please keep the translation short. It is used when a year contains no groups and an automatic group "
-			 "is added in the year, in the timetable (when viewing the students timetable from FET and also in the HTML timetables for students groups or subgroups)"
+			 "is added in the year, in the timetable (when viewing the students timetable from Open-Timetable and also in the HTML timetables for students groups or subgroups)"
 			 ". In the empty year there will be added a group with name = yearName+a space character+your translation of 'Automatic Group'.");
 			tmpGroup->numberOfStudents = sty->numberOfStudents;
 			sty->groupsList << tmpGroup;
@@ -6581,7 +6581,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 			if(stg->subgroupsList.size()==0){
 				StudentsSubgroup* tmpSubgroup = new StudentsSubgroup();
 				tmpSubgroup->name = stg->name+" "+tr("Automatic Subgroup", "Please keep the translation short. It is used when a group contains no subgroups and an automatic subgroup "
-				 "is added in the group, in the timetable (when viewing the students timetable from FET and also in the HTML timetables for students subgroups)"
+				 "is added in the group, in the timetable (when viewing the students timetable from Open-Timetable and also in the HTML timetables for students subgroups)"
 				 ". In the empty group there will be added a subgroup with name = groupName+a space character+your translation of 'Automatic Subgroup'.");
 				
 				//to avoid rare/very improbable, but possible name crashes
@@ -6599,10 +6599,10 @@ bool Rules::computeInternalStructure(QWidget* parent)
 				augmentedHash.insert(tmpSubgroup->name, tmpSubgroup);
 				
 				tmpSubgroup->longName = stg->longName+" "+tr("Automatic Subgroup", "Please keep the translation short. It is used when a group contains no subgroups and an automatic subgroup "
-				 "is added in the group, in the timetable (when viewing the students timetable from FET and also in the HTML timetables for students subgroups)"
+				 "is added in the group, in the timetable (when viewing the students timetable from Open-Timetable and also in the HTML timetables for students subgroups)"
 				 ". In the empty group there will be added a subgroup with name = groupName+a space character+your translation of 'Automatic Subgroup'.");
 				tmpSubgroup->code = stg->code+" "+tr("Automatic Subgroup", "Please keep the translation short. It is used when a group contains no subgroups and an automatic subgroup "
-				 "is added in the group, in the timetable (when viewing the students timetable from FET and also in the HTML timetables for students subgroups)"
+				 "is added in the group, in the timetable (when viewing the students timetable from Open-Timetable and also in the HTML timetables for students subgroups)"
 				 ". In the empty group there will be added a subgroup with name = groupName+a space character+your translation of 'Automatic Subgroup'.");
 				tmpSubgroup->numberOfStudents=stg->numberOfStudents;
 				stg->subgroupsList << tmpSubgroup;
@@ -6643,7 +6643,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 	}
 	int tmpNSubgroups=allSubgroupsList.count();
 	if(tmpNSubgroups>MAX_TOTAL_SUBGROUPS){
-		RulesImpossible::warning(parent, tr("FET information"),
+		RulesImpossible::warning(parent, tr("Open-Timetable information"),
 		 tr("You have too many total subgroups. You need to increase the variable MAX_TOTAL_SUBGROUPS (which is currently %1).")
 		 .arg(MAX_TOTAL_SUBGROUPS));
 		return false;
@@ -6657,21 +6657,21 @@ bool Rules::computeInternalStructure(QWidget* parent)
 			counter++;
 	}
 	if(counter>MAX_ACTIVITIES){
-		RulesImpossible::warning(parent, tr("FET information"),
+		RulesImpossible::warning(parent, tr("Open-Timetable information"),
 		 tr("You have too many active activities. You need to increase the variable MAX_ACTIVITIES (which is currently %1).")
 		 .arg(MAX_ACTIVITIES));
 		return false;
 	}
 
 	if(this->buildingsList.size()>MAX_BUILDINGS){
-		RulesImpossible::warning(parent, tr("FET information"),
+		RulesImpossible::warning(parent, tr("Open-Timetable information"),
 		 tr("You have too many buildings. You need to increase the variable MAX_BUILDINGS (which is currently %1).")
 		 .arg(MAX_BUILDINGS));
 		return false;
 	}
 	
 	if(this->roomsList.size()>MAX_ROOMS){
-		RulesImpossible::warning(parent, tr("FET information"),
+		RulesImpossible::warning(parent, tr("Open-Timetable information"),
 		 tr("You have too many rooms. You need to increase the variable MAX_ROOMS (which is currently %1).")
 		 .arg(MAX_ROOMS));
 		return false;
@@ -6796,12 +6796,12 @@ bool Rules::computeInternalStructure(QWidget* parent)
 		
 		if(rm->isVirtual){
 			if(rm->realRoomsSetsList.count()==0){
-				RulesImpossible::warning(parent, tr("FET information"), tr("Virtual room %1 has 0 sets of real rooms to choose"
+				RulesImpossible::warning(parent, tr("Open-Timetable information"), tr("Virtual room %1 has 0 sets of real rooms to choose"
 				 " from. The number of sets of real rooms must be at least 2. Please correct this.").arg(rm->name));
 				return false;
 			}
 			if(rm->realRoomsSetsList.count()==1){
-				RulesImpossible::warning(parent, tr("FET information"), tr("Virtual room %1 has only 1 set of real rooms to choose"
+				RulesImpossible::warning(parent, tr("Open-Timetable information"), tr("Virtual room %1 has only 1 set of real rooms to choose"
 				 " from. The number of sets of real rooms must be at least 2. Please correct this.").arg(rm->name));
 				return false;
 			}
@@ -6809,7 +6809,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 			int i=0;
 			for(const QStringList& tl : std::as_const(rm->realRoomsSetsList)){
 				if(tl.count()==0){
-					RulesImpossible::warning(parent, tr("FET information"), tr("Virtual room %1, in set number %2, has 0 real rooms"
+					RulesImpossible::warning(parent, tr("Open-Timetable information"), tr("Virtual room %1, in set number %2, has 0 real rooms"
 					 " to choose from. The number of real rooms from each set must be at least 1. Please correct this.").arg(rm->name).arg(i+1));
 					return false;
 				}
@@ -6822,7 +6822,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 					else
 						tl2.append(t);
 				if(!tl2.isEmpty()){
-					RulesImpossible::warning(parent, tr("FET information"), tr("Virtual room %1, in set number %2, has these duplicate real rooms names: %3."
+					RulesImpossible::warning(parent, tr("Open-Timetable information"), tr("Virtual room %1, in set number %2, has these duplicate real rooms names: %3."
 					 " Please correct this.").arg(rm->name).arg(i+1).arg(tl2.join(translatedCommaSpace())));
 					return false;
 				}
@@ -6831,7 +6831,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 					int rri=roomsHash.value(rr, -1);
 
 					if(rri==-1){
-						RulesImpossible::warning(parent, tr("FET information"),
+						RulesImpossible::warning(parent, tr("Open-Timetable information"),
 						 tr("The virtual room %1 contains the unrecognized real room %2 in the sets of real rooms - please correct this.").arg(rm->name).arg(rr));
 						
 						return false;
@@ -6839,7 +6839,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 					
 					assert(rri>=0);
 					if(internalRoomsList[rri]->isVirtual==true){
-						RulesImpossible::warning(parent, tr("FET information"), tr("Virtual room %1, in set number %2, contains the virtual room"
+						RulesImpossible::warning(parent, tr("Open-Timetable information"), tr("Virtual room %1, in set number %2, contains the virtual room"
 						 " %3 - please correct this (a virtual room can only contain sets with real rooms).").arg(rm->name).arg(i+1).arg(rr));
 						return false;
 					}
@@ -6884,7 +6884,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 			//pqapplication->processEvents();
 			if(progress.wasCanceled()){
 				progress.setValue(range);
-				RulesImpossible::warning(parent, tr("FET information"), tr("Canceled"));
+				RulesImpossible::warning(parent, tr("Open-Timetable information"), tr("Canceled"));
 				return false;
 			}
 			ttt++;
@@ -7055,7 +7055,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 				s+="\n";
 				s+=tctr->getDetailedDescription(*this);
 				
-				int t=RulesConstraintIgnored::mediumConfirmation(parent, tr("FET information"), s,
+				int t=RulesConstraintIgnored::mediumConfirmation(parent, tr("Open-Timetable information"), s,
 				 tr("Skip rest"), tr("See next"), QString(),
  				 1, 0 );
 
@@ -7083,7 +7083,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 		//pqapplication->processEvents();
 		if(progress.wasCanceled()){
 			progress.setValue(timeConstraintsList.size());
-			RulesImpossible::warning(parent, tr("FET information"), tr("Canceled"));
+			RulesImpossible::warning(parent, tr("Open-Timetable information"), tr("Canceled"));
 			return false;
 		}
 		ttt++;
@@ -7137,7 +7137,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 				s+="\n";
 				s+=sctr->getDetailedDescription(*this);
 				
-				int t=RulesConstraintIgnored::mediumConfirmation(parent, tr("FET information"), s,
+				int t=RulesConstraintIgnored::mediumConfirmation(parent, tr("Open-Timetable information"), s,
 				 tr("Skip rest"), tr("See next"), QString(),
  				 1, 0 );
 
@@ -7165,7 +7165,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 		//pqapplication->processEvents();
 		if(progress.wasCanceled()){
 			progress.setValue(spaceConstraintsList.size());
-			RulesImpossible::warning(parent, tr("FET information"), tr("Canceled"));
+			RulesImpossible::warning(parent, tr("Open-Timetable information"), tr("Canceled"));
 			return false;
 		}
 		ttt++;
@@ -7225,7 +7225,7 @@ bool Rules::computeInternalStructure(QWidget* parent)
 			}
 
 			if(!fetBugs.isEmpty() || !userErrors.isEmpty()){
-				RulesImpossible::warning(parent, tr("FET information"), fetBugs.join("\n\n")+userErrors.join("\n\n"));
+				RulesImpossible::warning(parent, tr("Open-Timetable information"), fetBugs.join("\n\n")+userErrors.join("\n\n"));
 				return false;
 			}
 		}
@@ -11419,17 +11419,17 @@ bool Rules::addSimpleActivityFast(
 	//check for duplicates - idea and code by Volker Dirr
 	int t=QStringList(_teachersNames).removeDuplicates();
 	if(t>0)
-		RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("Activity with Id=%1 contains %2 duplicate teachers - please correct that")
+		RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("Activity with Id=%1 contains %2 duplicate teachers - please correct that")
 		 .arg(_id).arg(t));
 
 	t=QStringList(_studentsNames).removeDuplicates();
 	if(t>0)
-		RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("Activity with Id=%1 contains %2 duplicate students sets - please correct that")
+		RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("Activity with Id=%1 contains %2 duplicate students sets - please correct that")
 		 .arg(_id).arg(t));
 
 	t=QStringList(_activityTagsNames).removeDuplicates();
 	if(t>0)
-		RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("Activity with Id=%1 contains %2 duplicate activity tags - please correct that")
+		RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("Activity with Id=%1 contains %2 duplicate activity tags - please correct that")
 		 .arg(_id).arg(t));
 
 	Activity *act=new Activity(*this, _id, _activityGroupId, _teachersNames, _subjectName, _activityTagsNames,
@@ -11473,17 +11473,17 @@ bool Rules::addSplitActivityFast(
 	//check for duplicates - idea and code by Volker Dirr
 	int t=QStringList(_teachersNames).removeDuplicates();
 	if(t>0)
-		RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("Activities with group_Id=%1 contain %2 duplicate teachers - please correct that")
+		RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("Activities with group_Id=%1 contain %2 duplicate teachers - please correct that")
 		 .arg(_activityGroupId).arg(t));
 
 	t=QStringList(_studentsNames).removeDuplicates();
 	if(t>0)
-		RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("Activities with group_Id=%1 contain %2 duplicate students sets - please correct that")
+		RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("Activities with group_Id=%1 contain %2 duplicate students sets - please correct that")
 		 .arg(_activityGroupId).arg(t));
 
 	t=QStringList(_activityTagsNames).removeDuplicates();
 	if(t>0)
-		RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("Activities with group_Id=%1 contain %2 duplicate activity tags - please correct that")
+		RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("Activities with group_Id=%1 contain %2 duplicate activity tags - please correct that")
 		 .arg(_activityGroupId).arg(t));
 
 	assert(_firstActivityId==_activityGroupId);
@@ -11584,19 +11584,19 @@ bool Rules::addSplitActivityFastWithComponents(
 		const QStringList& tl=tempTN.at(i);
 		int t=QStringList(tl).removeDuplicates();
 		if(t>0)
-			RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("The activity with id=%1 contains %2 duplicate teachers - please correct that")
+			RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("The activity with id=%1 contains %2 duplicate teachers - please correct that")
 			 .arg(_firstActivityId+i).arg(t));
 
 		const QStringList& stl=tempSTN.at(i);
 		t=QStringList(stl).removeDuplicates();
 		if(t>0)
-			RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("The activity with id=%1 contains %2 duplicate students sets - please correct that")
+			RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("The activity with id=%1 contains %2 duplicate students sets - please correct that")
 			 .arg(_firstActivityId+i).arg(t));
 
 		const QStringList& atl=tempATN.at(i);
 		t=QStringList(atl).removeDuplicates();
 		if(t>0)
-			RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("The activity with id=%1 contains %2 duplicate activity tags - please correct that")
+			RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("The activity with id=%1 contains %2 duplicate activity tags - please correct that")
 			 .arg(_firstActivityId+i).arg(t));
 	}
 
@@ -15345,7 +15345,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 	if(!file.open(QIODevice::ReadOnly)){
 #endif
 		//cout<<"Could not open file - not existing or in use\n";
-		RulesIrreconcilableMessage::warning(parent, tr("FET warning"), tr("Could not open file - not existing or in use"));
+		RulesIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("Could not open file - not existing or in use"));
 		return false;
 	}
 	
@@ -15366,7 +15366,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 		if(!dir.exists(OUTPUT_DIR+FILE_SEP+"logs"))
 			t=dir.mkpath(OUTPUT_DIR+FILE_SEP+"logs");
 		if(!t){
-			RulesIrreconcilableMessage::warning(parent, tr("FET warning"), tr("Cannot create or use directory %1 - cannot continue").arg(QDir::toNativeSeparators(OUTPUT_DIR+FILE_SEP+"logs")));
+			RulesIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("Cannot create or use directory %1 - cannot continue").arg(QDir::toNativeSeparators(OUTPUT_DIR+FILE_SEP+"logs")));
 			return false;
 		}
 		assert(t);
@@ -15377,7 +15377,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 		if(!dir.exists(commandLineDirectory+"logs"))
 			t=dir.mkpath(commandLineDirectory+"logs");
 		if(!t){
-			RulesIrreconcilableMessage::warning(parent, tr("FET warning"), tr("Cannot create or use directory %1 - cannot continue").arg(QDir::toNativeSeparators(commandLineDirectory+"logs")));
+			RulesIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("Cannot create or use directory %1 - cannot continue").arg(QDir::toNativeSeparators(commandLineDirectory+"logs")));
 			return false;
 		}
 		assert(t);
@@ -15392,7 +15392,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 	QString sTime=loc.toString(dat, QLocale::ShortFormat)+" "+loc.toString(tim, QLocale::ShortFormat);
 
 	QString reducedXmlLog="";
-	reducedXmlLog+="Log generated by FET "+FET_VERSION+" on "+sTime+"\n\n";
+	reducedXmlLog+="Log generated by Open-Timetable "+FET_VERSION+" on "+sTime+"\n\n";
 	QString shortFileName=fileName.right(fileName.length()-fileName.lastIndexOf(FILE_SEP)-1);
 	reducedXmlLog+="Reading file "+shortFileName+"\n";
 	QFileInfo fileinfo(fileName);
@@ -15411,12 +15411,12 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 #else
 	if(!file2.open(QIODevice::WriteOnly)){
 #endif
-		QString s=tr("FET cannot open the log file %1 for writing. This might mean that you don't"
+		QString s=tr("Open-Timetable cannot open the log file %1 for writing. This might mean that you don't"
 			" have write permissions in this location. You can continue operation, but you might not be able to save the generated timetables"
 			" as HTML files").arg(QDir::toNativeSeparators(tmp))+
 			"\n\n"+tr("A solution is to remove that file (if it exists already) or set its permissions to allow writing")+
 			"\n\n"+tr("Please report possible bug");
-		IrreconcilableCriticalMessage::critical(parent, tr("FET critical"), s);
+		IrreconcilableCriticalMessage::critical(parent, tr("Open-Timetable critical"), s);
 		canWriteLogFile=false;
 	}
 	QTextStream logStream;
@@ -15449,7 +15449,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 		xmlReadingLog+=" Found "+xmlReader.name().toString()+" tag\n";
 	
 		bool okfetTag;
-		if(xmlReader.name()==QString("fet") || xmlReader.name()==QString("FET")) //the new tag is fet, the old tag - FET
+		if(xmlReader.name()==QString("fet") || xmlReader.name()==QString("Open-Timetable")) //the new tag is fet, the old tag - FET
 			okfetTag=true;
 		else
 			okfetTag=false;
@@ -15460,13 +15460,13 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 			assert(xmlReader.isStartElement());
 			assert(okAbove3_12_17==true);
 			/*QDomDocumentType dt=doc.doctype();
-			if(dt.isNull() || dt.name()!="FET")
+			if(dt.isNull() || dt.name()!="Open-Timetable")
 				okAbove3_12_17=false;
 			else*/
 			int filev[3], fetv[3];
 			QString fileVersionSuffix;
 			
-			assert(xmlReader.name()==QString("fet") || xmlReader.name()==QString("FET"));
+			assert(xmlReader.name()==QString("fet") || xmlReader.name()==QString("Open-Timetable"));
 			QString version=xmlReader.attributes().value("version").toString();
 			file_version=version;
 		
@@ -15479,10 +15479,10 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 			QRegularExpressionMatch match=fileVerReCap.match(file_version);
 			filev[0]=filev[1]=filev[2]=-1;
 			if(!match.hasMatch()){
-				RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("File contains a version numbering scheme which"
+				RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("File contains a version numbering scheme which"
 				" is not matched by v.v.va (3 numbers separated by points, followed by any string a, which may be empty). File will be opened, but you are advised"
-				" to check the version of the .fet file (in the beginning of the file). If this is a FET bug, please report it")+"\n\n"+
-				tr("If you are opening a file older than FET format version 5, it will be converted to latest FET data format"));
+				" to check the version of the .fet file (in the beginning of the file). If this is a Open-Timetable bug, please report it")+"\n\n"+
+				tr("If you are opening a file older than Open-Timetable format version 5, it will be converted to latest Open-Timetable data format"));
 				if(VERBOSE){
 					std::cout<<"Opened file version not matched by regexp"<<std::endl;
 				}
@@ -15507,10 +15507,10 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 			
 			fetv[0]=fetv[1]=fetv[2]=-1;
 			if(!match.hasMatch()){
-				RulesReconcilableMessage::warning(parent, tr("FET warning"), tr("FET version does not respect the format v.v.va"
-				" (3 numbers separated by points, followed by any string a, which may be empty). This is probably a bug in FET - please report it"));
+				RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("Open-Timetable version does not respect the format v.v.va"
+				" (3 numbers separated by points, followed by any string a, which may be empty). This is probably a bug in Open-Timetable - please report it"));
 				if(VERBOSE){
-					std::cout<<"FET version not matched by regexp"<<std::endl;
+					std::cout<<"Open-Timetable version not matched by regexp"<<std::endl;
 				}
 			}
 			else{
@@ -15522,7 +15522,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				fetv[2]=match.captured(3).toInt(&ok);
 				assert(ok);
 				if(VERBOSE){
-					std::cout<<"FET version matched by regexp: major="<<fetv[0]<<", minor="<<fetv[1]<<", revision="<<fetv[2];
+					std::cout<<"Open-Timetable version matched by regexp: major="<<fetv[0]<<", minor="<<fetv[1]<<", revision="<<fetv[2];
 					std::cout<<", additional text="<<qPrintable(match.captured(4))<<"."<<std::endl;
 				}
 			}
@@ -15574,21 +15574,21 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 		file.close();
 		
 		if(canWriteLogFile){
-			xmlReadingLog+="  Incorrect/incomplete FET XML data file.\n";
+			xmlReadingLog+="  Incorrect/incomplete Open-Timetable XML data file.\n";
 
 			reducedXmlLog+="\n";
-			reducedXmlLog+="Incorrect/incomplete FET XML data file.\n";
+			reducedXmlLog+="Incorrect/incomplete Open-Timetable XML data file.\n";
 			logStream<<reducedXmlLog;
 
 			file2.close();
 		}
 		
-		RulesIrreconcilableMessage::warning(parent, tr("FET warning"), tr("File is incorrect...it cannot be opened"));
+		RulesIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), tr("File is incorrect...it cannot be opened"));
 		return false;
 	}
 	
 	if(!version5AndAbove){
-		RulesReconcilableMessage::warning(parent, tr("FET information"),
+		RulesReconcilableMessage::warning(parent, tr("Open-Timetable information"),
 		 tr("Opening older file - it will be converted to latest format, automatically "
 		 "assigning weight percentages to constraints and dropping parity (weekly/fortnightly) for activities. "
 		 "You are advised to make a backup of your old file before saving in new format.\n\n"
@@ -15601,35 +15601,35 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 	else if(!version6AndAbove){
 		QString s="";
 		if(probably5MA)
-			s=tr("Opening an older file - it will be converted to the latest format. FET detected that this file was generated with a custom FET-5-MA version for mornings-afternoons,"
+			s=tr("Opening an older file - it will be converted to the latest format. Open-Timetable detected that this file was generated with a custom Open-Timetable-5-MA version for mornings-afternoons,"
 			 " because the file version contains the string '-ma'. Some constraints will be renamed. The new style will refer to half days as 'days' and to real days as 'real days'."
 			 " Please be very careful and check once more the list of your constraints. If this is not true, please report the bug.");
 		else if(probably5Morocco)
-			s=tr("Opening an older file - it will be converted to the latest format. FET detected that this file was generated with a custom FET-5-Morocco version for mornings-afternoons,"
+			s=tr("Opening an older file - it will be converted to the latest format. Open-Timetable detected that this file was generated with a custom Open-Timetable-5-Morocco version for mornings-afternoons,"
 			 " because the file version contains the string '-morocco'. Some constraints will be renamed. The new style will refer to half days as 'days' and to real days as 'real days'."
 			 " Please be very careful and check once more the list of your constraints. If this is not true, please report the bug.");
 		else if(probably5Algeria)
-			s=tr("Opening an older file - it will be converted to the latest format. FET detected that this file was generated with a custom FET-5-Algeria version for mornings-afternoons,"
+			s=tr("Opening an older file - it will be converted to the latest format. Open-Timetable detected that this file was generated with a custom Open-Timetable-5-Algeria version for mornings-afternoons,"
 			 " because the file version contains the string '-algeria'. Some constraints will be renamed. The new style will refer to half days as 'days' and to real days as 'real days'."
 			 " Please be very careful and check once more the list of your constraints. If this is not true, please report the bug.");
 		else if(probably5BP)
-			s=tr("Opening an older file - it will be converted to the latest format. FET detected that this file was generated with a custom FET-5-BP (block-planning) version,"
+			s=tr("Opening an older file - it will be converted to the latest format. Open-Timetable detected that this file was generated with a custom Open-Timetable-5-BP (block-planning) version,"
 			 " because the file version contains the string '-bp'. Please be very careful and check once more the list of your constraints. If this is not true, please report the bug.");
 		else if(probably5Terms)
-			s=tr("Opening an older file - it will be converted to the latest format. FET detected that this file was generated with a custom FET-5-mathmake (terms) version,"
+			s=tr("Opening an older file - it will be converted to the latest format. Open-Timetable detected that this file was generated with a custom Open-Timetable-5-mathmake (terms) version,"
 			 " because the file version contains the string '-mathmake'. Please be very careful and check once more the list of your constraints. If this is not true, please report the bug.");
 		else
-			s=tr("Opening an older file - it will be converted to the latest format. FET detected that this file was generated with a FET-5 version."
+			s=tr("Opening an older file - it will be converted to the latest format. Open-Timetable detected that this file was generated with a Open-Timetable-5 version."
 			" After opening, please check your constraints. If this is not true, please report the bug.");
 		s+="\n\n";
 		s+=tr("It is advisable to keep a backup copy of your old file.");
-		RulesReconcilableMessage::warning(parent, tr("FET information"), s);
+		RulesReconcilableMessage::warning(parent, tr("Open-Timetable information"), s);
 	}
 	
 	if(warning){
-		RulesReconcilableMessage::warning(parent, tr("FET information"),
-		 tr("Opening a file generated with a newer version than your current FET software ... file will be opened but it is recommended to update your FET software to the latest version")
-		 +"\n\n"+tr("Your FET version: %1, file version: %2").arg(FET_VERSION).arg(file_version));
+		RulesReconcilableMessage::warning(parent, tr("Open-Timetable information"),
+		 tr("Opening a file generated with a newer version than your current Open-Timetable software ... file will be opened but it is recommended to update your Open-Timetable software to the latest version")
+		 +"\n\n"+tr("Your Open-Timetable version: %1, file version: %2").arg(FET_VERSION).arg(file_version));
 	}
 	
 	//int oldMode=this->mode;
@@ -15706,7 +15706,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 	
 	bool skipDuplicatedStudentsSets=false;
 	
-	assert(xmlReader.isStartElement() && (xmlReader.name()==QString("fet") || xmlReader.name()==QString("FET")));
+	assert(xmlReader.isStartElement() && (xmlReader.name()==QString("fet") || xmlReader.name()==QString("Open-Timetable")));
 	while(xmlReader.readNextStartElement()){
 		xmlReadingLog+="  Found "+xmlReader.name().toString()+" tag\n";
 		if(xmlReader.name()==QString("Mode")){
@@ -16356,7 +16356,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					}
 					bool tmp2=subjectsRead.contains(subject->name);
 					if(tmp2){
-						RulesReconcilableMessage::warning(parent, tr("FET warning"),
+						RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						 tr("Duplicate subject %1 found - ignoring").arg(subject->name));
 						xmlReadingLog+="   Subject not added - duplicate\n";
 						
@@ -16389,7 +16389,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 		else if(xmlReader.name()==QString("Subject_Tags_List")){
 			QSet<QString> activityTagsRead;
 		
-			RulesReconcilableMessage::information(parent, tr("FET information"), tr("Your file contains subject tags list"
+			RulesReconcilableMessage::information(parent, tr("Open-Timetable information"), tr("Your file contains subject tags list"
 			  ", which is named in versions>=5.5.0 activity tags list"));
 		
 			int tmp=0;
@@ -16422,7 +16422,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					}
 					bool tmp2=activityTagsRead.contains(activityTag->name);
 					if(tmp2){
-						RulesReconcilableMessage::warning(parent, tr("FET warning"),
+						RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						 tr("Duplicate activity tag %1 found - ignoring").arg(activityTag->name));
 						xmlReadingLog+="   Activity tag not added - duplicate\n";
 						
@@ -16503,7 +16503,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					}
 					bool tmp2=activityTagsRead.contains(activityTag->name);
 					if(tmp2){
-						RulesReconcilableMessage::warning(parent, tr("FET warning"),
+						RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						 tr("Duplicate activity tag %1 found - ignoring").arg(activityTag->name));
 						xmlReadingLog+="   Activity tag not added - duplicate\n";
 						
@@ -16615,9 +16615,9 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 									}
 									else if(!subjectsRead.contains(text)){
 										xmlReader.raiseError(tr("The teacher %1 has attached an nonexistent qualified subject %2."
-										 " Please note that starting with FET version %3 the list of subjects (tag <Subjects_List> in the .fet XML file)"
+										 " Please note that starting with Open-Timetable version %3 the list of subjects (tag <Subjects_List> in the .fet XML file)"
 										 " must appear before the list of teachers (tag <Teachers_List> in the .fet XML file)",
-										 "%3 is the FET version number. Please keep <Subjects_List> and <Teachers_List> untranslated, as in the"
+										 "%3 is the Open-Timetable version number. Please keep <Subjects_List> and <Teachers_List> untranslated, as in the"
 										 " original English string")
 										 .arg(teacher->name).arg(text).arg("5.30.0"));
 									}
@@ -16652,7 +16652,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					}
 					bool tmp2=teachersRead.contains(teacher->name);
 					if(tmp2){
-						RulesReconcilableMessage::warning(parent, tr("FET warning"),
+						RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						 tr("Duplicate teacher %1 found - ignoring").arg(teacher->name));
 						xmlReadingLog+="   Teacher not added - duplicate\n";
 						
@@ -16695,14 +16695,14 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					tch->morningsAfternoonsBehavior=TEACHER_MORNING_OR_EXCLUSIVELY_AFTERNOON;
 
 			if(reportMoroccoTeachers && !probably5Morocco){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 				 tr("You are opening an old Morocco file. All the teachers will have mornings-afternoons behavior"
 				 " 'Exclusive mornings/afternoons' by default, and the exceptions will be recognized correctly."
 				 " If this is a mistake and your file is not an old Morocco file, please report the bug.")+QString(" ")+
 				 tr("(The program detected this because your file contains the section %1.)").arg("'Exception_Teachers_One_Day_List'")+
 				 QString("\n\n")+
 				 tr("Please note that if you save now your file, you won't be able to open it correctly again later using"
-				 " the old version of FET Morocco."));
+				 " the old version of Open-Timetable Morocco."));
 				reportMoroccoTeachers=false;
 			}
 			
@@ -17014,7 +17014,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 									/*str=tr("Could not read file - XML parse error at line %1, column %2:\n%3", "The error description is %3")
 									 .arg(xmlReader.lineNumber()).arg(xmlReader.columnNumber()).arg(str);
 								
-									int t=RulesIrreconcilableMessage::warning(parent, tr("FET warning"), str,
+									int t=RulesIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), str,
 									 tr("Skip rest"), tr("See next"), QString(),
 									 1, 0 );
 									
@@ -17192,7 +17192,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 												/*str=tr("Could not read file - XML parse error at line %1, column %2:\n%3", "The error description is %3")
 												 .arg(xmlReader.lineNumber()).arg(xmlReader.columnNumber()).arg(str);
 
-												t=RulesIrreconcilableMessage::warning(parent, tr("FET warning"), str,
+												t=RulesIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), str,
 												 tr("Skip rest"), tr("See next"), QString(),
 												 1, 0 );
 												
@@ -17326,7 +17326,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 														/*str=tr("Could not read file - XML parse error at line %1, column %2:\n%3", "The error description is %3")
 														 .arg(xmlReader.lineNumber()).arg(xmlReader.columnNumber()).arg(str);
 
-														t=RulesIrreconcilableMessage::warning(parent, tr("FET warning"), str,
+														t=RulesIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), str,
 														 tr("Skip rest"), tr("See next"), QString(),
 														 1, 0 );
 														
@@ -17539,7 +17539,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				/*progress.setValue(ttt);
 				pqapplication->processEvents();
 				if(progress.wasCanceled()){
-					QMessageBox::information(parent, tr("FET information"), tr("Interrupted - only partial file was loaded"));
+					QMessageBox::information(parent, tr("Open-Timetable information"), tr("Interrupted - only partial file was loaded"));
 					return true;
 				}
 				
@@ -17605,7 +17605,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 							}
 							else{
 								if(!(text=="no" || text=="false" || text=="0")){
-									RulesReconcilableMessage::warning(parent, tr("FET warning"),
+									RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 									 tr("Found activity active tag which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 									 " The activity will be considered not active",
 									 "Instructions for translators: please leave the 'true', 'false', 'yes' and 'no' fields untranslated, as they are in English"));
@@ -17794,7 +17794,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 						s+=additionalErrorMessages.join("\n");
 						xmlReader.raiseError(s);
 						/*xmlReadingLog+="   Activity with id ="+CustomFETString::number(id)+" contains invalid data - skipping\n";
-						RulesReconcilableMessage::warning(parent, tr("FET information"),
+						RulesReconcilableMessage::warning(parent, tr("Open-Timetable information"),
 						 tr("Activity with id=%1 contains invalid data - skipping").arg(id));*/
 					}
 				}
@@ -17811,7 +17811,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 			reducedXmlLog+="Added "+CustomFETString::number(na)+" activities\n";
 		}
 		else if(xmlReader.name()==QString("Equipments_List")){
-			RulesReconcilableMessage::warning(parent, tr("FET warning"),
+			RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("File contains deprecated equipments list - will be ignored"));
 			xmlReader.skipCurrentElement();
 			//NOT! xmlReaderNumberOfUnrecognizedFields++; because this entry was once allowed
@@ -17862,7 +17862,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 
 					bool tmp2=buildingsRead.contains(bu->name);
 					if(tmp2){
-						RulesReconcilableMessage::warning(parent, tr("FET warning"),
+						RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						 tr("Duplicate building %1 found - ignoring").arg(bu->name));
 						xmlReadingLog+="   Building not added - duplicate\n";
 						
@@ -18039,7 +18039,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					if(correct){
 						bool tmp2=roomsRead.contains(rm->name);
 						if(tmp2){
-							RulesReconcilableMessage::warning(parent, tr("FET warning"),
+							RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 							 tr("Duplicate room %1 found - ignoring").arg(rm->name));
 							xmlReadingLog+="   Room not added - duplicate\n";
 							
@@ -18108,8 +18108,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintTeacherNotAvailable")){
 					if(reportTeacherNotAvailableChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint teacher not available, which is old (it was improved in FET 5.5.0), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint teacher not available, which is old (it was improved in Open-Timetable 5.5.0), and will be converted"
 						 " to the similar constraint of this type, constraint teacher not available times (a matrix)."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
 						if(t==0)
@@ -18161,8 +18161,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintStudentsSetNotAvailable")){
 					if(reportStudentsSetNotAvailableChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint students set not available, which is old (it was improved in FET 5.5.0), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint students set not available, which is old (it was improved in Open-Timetable 5.5.0), and will be converted"
 						 " to the similar constraint of this type, constraint students set not available times (a matrix)."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
 						if(t==0)
@@ -18296,7 +18296,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((xmlReader.name()==QString("ConstraintTeachersSubgroupsMaxHoursDaily")
 				 //TODO: erase the line below. It is only kept for compatibility with older versions
 				 || xmlReader.name()==QString("ConstraintTeachersSubgroupsNoMoreThanXHoursDaily")) && !skipDeprecatedConstraints){
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint teachers subgroups max hours daily - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0 );
@@ -18307,7 +18307,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					xmlReader.skipCurrentElement();
 				}
 				else if(xmlReader.name()==QString("ConstraintStudentsNHoursDaily") && !skipDeprecatedConstraints){
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint students n hours daily - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0 );
@@ -18318,7 +18318,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					xmlReader.skipCurrentElement();
 				}
 				else if(xmlReader.name()==QString("ConstraintStudentsSetNHoursDaily") && !skipDeprecatedConstraints){
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint students set n hours daily - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0 );
@@ -18453,7 +18453,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				/////
 				else if(xmlReader.name()==QString("ConstraintActivityPreferredTime")){
 					if(reportActivityPreferredTimeChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("File contains old constraint type activity preferred time, which will be converted"
 						 " to the newer similar constraint of this type, constraint activity preferred STARTING time."
 						 " This improvement is done in versions 5.5.9 and above"),
@@ -18545,7 +18545,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					crt_constraint=readTwoActivitiesOrderedIfSameDay(xmlReader, xmlReadingLog);
 				}
 				else if(xmlReader.name()==QString("ConstraintActivityEndsDay") && !skipDeprecatedConstraints ){
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint activity ends day - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0 );
@@ -18557,9 +18557,9 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintActivityPreferredTimes")){
 					if(reportActivityPreferredTimesChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("Your file contains old constraint activity preferred times, which will be converted to"
-						 " new equivalent constraint activity preferred starting times. Beginning with FET-5.5.9 it is possible"
+						 " new equivalent constraint activity preferred starting times. Beginning with Open-Timetable-5.5.9 it is possible"
 						 " to specify: 1. the starting times of an activity (constraint activity preferred starting times)"
 						 " or: 2. the accepted time slots (constraint activity preferred time slots)."
 						 " If what you need is type 2 of this constraint, you will have to add it by yourself from the interface."),
@@ -18578,8 +18578,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintBreak")){
 					if(reportBreakChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint break, which is old (it was improved in FET 5.5.0), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint break, which is old (it was improved in Open-Timetable 5.5.0), and will be converted"
 						 " to the similar constraint of this type, constraint break times (a matrix)."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
 						if(t==0)
@@ -18614,8 +18614,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintStudentsNoGaps")){
 					if(reportMaxGapsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint students no gaps, which is old (it was improved in FET 5.5.0), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint students no gaps, which is old (it was improved in Open-Timetable 5.5.0), and will be converted"
 						 " to the similar constraint of this type, constraint students max gaps per week,"
 						 " with max gaps=0. If you like, you can modify this constraint to allow"
 						 " more gaps per week (normally not accepted in schools)"),
@@ -18628,8 +18628,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintStudentsSetNoGaps")){
 					if(reportMaxGapsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint students set no gaps, which is old (it was improved in FET 5.5.0), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint students set no gaps, which is old (it was improved in Open-Timetable 5.5.0), and will be converted"
 						 " to the similar constraint of this type, constraint students set max gaps per week,"
 						 " with max gaps=0. If you like, you can modify this constraint to allow"
 						 " more gaps per week (normally not accepted in schools)"),
@@ -18702,8 +18702,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 
 				else if(xmlReader.name()==QString("ConstraintStudentsEarly")){
 					if(reportMaxBeginningsAtSecondHourChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint students early, which is old (it was improved in FET 5.5.0), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint students early, which is old (it was improved in Open-Timetable 5.5.0), and will be converted"
 						 " to the similar constraint of this type, constraint students early max beginnings at second hour,"
 						 " with max beginnings=0. If you like, you can modify this constraint to allow"
 						 " more beginnings at second available hour (above 0 - this will make the timetable easier)"),
@@ -18719,8 +18719,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintStudentsSetEarly")){
 					if(reportMaxBeginningsAtSecondHourChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint students set early, which is old (it was improved in FET 5.5.0), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint students set early, which is old (it was improved in Open-Timetable 5.5.0), and will be converted"
 						 " to the similar constraint of this type, constraint students set early max beginnings at second hour,"
 						 " with max beginnings=0. If you like, you can modify this constraint to allow"
 						 " more beginnings at second available hour (above 0 - this will make the timetable easier)"),
@@ -18736,9 +18736,9 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintActivitiesPreferredTimes")){
 					if(reportActivitiesPreferredTimesChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("Your file contains old constraint activities preferred times, which will be converted to"
-						 " new equivalent constraint activities preferred starting times. Beginning with FET-5.5.9 it is possible"
+						 " new equivalent constraint activities preferred starting times. Beginning with Open-Timetable-5.5.9 it is possible"
 						 " to specify: 1. the starting times of several activities (constraint activities preferred starting times)"
 						 " or: 2. the accepted time slots (constraint activities preferred time slots)."
 						 " If what you need is type 2 of this constraint, you will have to add it by yourself from the interface."),
@@ -18838,7 +18838,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 ////////////////
 
 				else if(xmlReader.name()==QString("ConstraintTeachersSubjectTagsMaxHoursContinuously") && !skipDeprecatedConstraints){
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint teachers subject tags max hours continuously - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0 );
@@ -18849,7 +18849,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					xmlReader.skipCurrentElement();
 				}
 				else if(xmlReader.name()==QString("ConstraintTeachersSubjectTagMaxHoursContinuously") && !skipDeprecatedConstraints){
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint teachers subject tag max hours continuously - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0 );
@@ -18895,8 +18895,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeacherMaxDaysPerWeek")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teacher max days per week, which will be converted"
 						  " to a constraint of type teacher max real days per week."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -18912,8 +18912,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeachersMaxDaysPerWeek")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teachers max days per week, which will be converted"
 						  " to a constraint of type teachers max real days per week."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -18935,7 +18935,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 
 				else if(xmlReader.name()==QString("ConstraintTeacherMaxTwoActivityTagsPerDayFromN1N2N3")){
 					if(reportN1N2N3Change){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("Your file contains a constraint of type teacher(s)/students (set) max two activity tags"
 						 " per day/real day from N1, N2, N3, which will be converted to the newer constraint,"
 						 " teacher(s)/students (set) max activity tags per day/real day from a set"),
@@ -18948,7 +18948,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintTeachersMaxTwoActivityTagsPerDayFromN1N2N3")){
 					if(reportN1N2N3Change){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("Your file contains a constraint of type teacher(s)/students (set) max two activity tags"
 						 " per day/real day from N1, N2, N3, which will be converted to the newer constraint,"
 						 " teacher(s)/students (set) max activity tags per day/real day from a set"),
@@ -18962,7 +18962,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 
 				else if(xmlReader.name()==QString("ConstraintStudentsSetMaxTwoActivityTagsPerDayFromN1N2N3")){
 					if(reportN1N2N3Change){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("Your file contains a constraint of type teacher(s)/students (set) max two activity tags"
 						 " per day/real day from N1, N2, N3, which will be converted to the newer constraint,"
 						 " teacher(s)/students (set) max activity tags per day/real day from a set"),
@@ -18975,7 +18975,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintStudentsMaxTwoActivityTagsPerDayFromN1N2N3")){
 					if(reportN1N2N3Change){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("Your file contains a constraint of type teacher(s)/students (set) max two activity tags"
 						 " per day/real day from N1, N2, N3, which will be converted to the newer constraint,"
 						 " teacher(s)/students (set) max activity tags per day/real day from a set"),
@@ -18989,7 +18989,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 
 				else if(xmlReader.name()==QString("ConstraintTeacherMaxTwoActivityTagsPerRealDayFromN1N2N3")){
 					if(reportN1N2N3Change){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("Your file contains a constraint of type teacher(s)/students (set) max two activity tags"
 						 " per day/real day from N1, N2, N3, which will be converted to the newer constraint,"
 						 " teacher(s)/students (set) max activity tags per day/real day from a set"),
@@ -19002,7 +19002,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintTeachersMaxTwoActivityTagsPerRealDayFromN1N2N3")){
 					if(reportN1N2N3Change){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("Your file contains a constraint of type teacher(s)/students (set) max two activity tags"
 						 " per day/real day from N1, N2, N3, which will be converted to the newer constraint,"
 						 " teacher(s)/students (set) max activity tags per day/real day from a set"),
@@ -19016,7 +19016,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 
 				else if(xmlReader.name()==QString("ConstraintStudentsSetMaxTwoActivityTagsPerRealDayFromN1N2N3")){
 					if(reportN1N2N3Change){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("Your file contains a constraint of type teacher(s)/students (set) max two activity tags"
 						 " per day/real day from N1, N2, N3, which will be converted to the newer constraint,"
 						 " teacher(s)/students (set) max activity tags per day/real day from a set"),
@@ -19029,7 +19029,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintStudentsMaxTwoActivityTagsPerRealDayFromN1N2N3")){
 					if(reportN1N2N3Change){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						 tr("Your file contains a constraint of type teacher(s)/students (set) max two activity tags"
 						 " per day/real day from N1, N2, N3, which will be converted to the newer constraint,"
 						 " teacher(s)/students (set) max activity tags per day/real day from a set"),
@@ -19092,8 +19092,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeacherMinDaysPerWeek")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teacher min days per week, which will be converted"
 						  " to a constraint of type teacher min real days per week."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19109,8 +19109,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeachersMinDaysPerWeek")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teachers min days per week, which will be converted"
 						  " to a constraint of type teachers min real days per week."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19153,8 +19153,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintStudentsSetMaxDaysPerWeek")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type students set max days per week, which will be converted"
 						  " to a constraint of type students set max real days per week."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19170,8 +19170,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintStudentsMaxDaysPerWeek")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type students max days per week, which will be converted"
 						  " to a constraint of type students max real days per week."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19229,8 +19229,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeachersMaxHoursDaily")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teachers max hours daily, which will be converted"
 						  " to a constraint of type teachers max hours daily real days."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19246,8 +19246,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeacherMaxHoursDaily")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teacher max hours daily, which will be converted"
 						  " to a constraint of type teacher max hours daily real days."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19263,8 +19263,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeachersMaxHoursDailyHalfDays")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teachers max hours daily for half days, which will be converted"
 						  " to a constraint of type teachers max hours daily."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19276,8 +19276,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeacherMaxHoursDailyHalfDays")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teacher max hours daily for half days, which will be converted"
 						  " to a constraint of type teacher max hours daily."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19290,8 +19290,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeacherActivityTagMaxHoursDaily")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teacher activity tag max hours daily, which will be converted"
 						  " to a constraint of type teacher activity tag max hours daily real days."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19307,8 +19307,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeachersActivityTagMaxHoursDaily")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teachers activity tag max hours daily, which will be converted"
 						  " to a constraint of type teachers activity tag max hours daily real days."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19360,8 +19360,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintStudentsMaxHoursDaily")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type students max hours daily, which will be converted"
 						  " to a constraint of type students max hours daily real days."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19377,8 +19377,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintStudentsSetMaxHoursDaily")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type student set max hours daily, which will be converted"
 						  " to a constraint of type students set max hours daily real days."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19394,8 +19394,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintStudentsSetActivityTagMaxHoursDaily")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type student set activity tag max hours daily, which will be converted"
 						  " to a constraint of type students set activity tag max hours daily real days."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19411,8 +19411,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintStudentsActivityTagMaxHoursDaily")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type students activity tag max hours daily, which will be converted"
 						  " to a constraint of type students activity tag max hours daily real days."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19503,8 +19503,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeacherMaxSpanPerDay")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teacher max span per day, which will be converted"
 						  " to a constraint of type teacher max span per real day."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19520,8 +19520,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeachersMaxSpanPerDay")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teachers max span per day, which will be converted"
 						  " to a constraint of type teachers max span per real day."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19537,8 +19537,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintStudentsSetMaxSpanPerDay")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type students set max span per day, which will be converted"
 						  " to a constraint of type students set max span per real day."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19554,8 +19554,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintStudentsMaxSpanPerDay")){
 					if(reportMA5OldTimeConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type students max span per day, which will be converted"
 						  " to a constraint of type students max span per real day."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19675,7 +19675,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					bool tmp=this->addTimeConstraint(crt_constraint);
 					if(!tmp){
 						if(seeNextWarnNotAddedTimeConstraint){
-							int t=RulesReconcilableMessage::warning(parent, tr("FET information"),
+							int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable information"),
 							 tr("Constraint\n%1\nnot added - must be a duplicate").
 							 arg(crt_constraint->getDetailedDescription(*this)), tr("Skip rest"), tr("See next"), QString(""), 1, 0);
 							if(t==0)
@@ -19715,8 +19715,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintRoomNotAvailable")){
 					if(reportRoomNotAvailableChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint room not available, which is old (it was improved in FET 5.5.0), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint room not available, which is old (it was improved in Open-Timetable 5.5.0), and will be converted"
 						 " to the similar constraint of this type, constraint room not available times (a matrix)."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
 						if(t==0)
@@ -19733,8 +19733,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintRoomMaxTeachersRepetitions")){
 					if(reportRoomsMaxTeachersRepetitions){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint room max teachers repetitions, which is old (it was improved in FET 7.8.2), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint room max teachers repetitions, which is old (it was improved in Open-Timetable 7.8.2), and will be converted"
 						 " to the similar constraint of this type, constraint room max activities per teacher (the new 'max activities' will be the old"
 						 " 'max repetitions' + 1).")+"\n\n"+tr("Note that the new constraint will consider also activities with several teachers."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19746,8 +19746,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintRoomsMaxTeachersRepetitions")){
 					if(reportRoomsMaxTeachersRepetitions){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint rooms max teachers repetitions, which is old (it was improved in FET 7.8.2), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint rooms max teachers repetitions, which is old (it was improved in Open-Timetable 7.8.2), and will be converted"
 						 " to the similar constraint of this type, constraint rooms max activities per teacher (the new 'max activities' will be the old"
 						 " 'max repetitions' + 1).")+"\n\n"+tr("Note that the new constraint will consider also activities with several teachers."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -19768,8 +19768,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintBuildingMinOneActivityInEachNonBreakTimeSlot")){
 					if(reportBuildingMinOneActivityInEachNonBreakTimeSlot){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint building min one activity in each non-break time slot, which is old (it was improved in FET 7.8.3), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint building min one activity in each non-break time slot, which is old (it was improved in Open-Timetable 7.8.3), and will be converted"
 						 " to the similar constraint of this type, constraint building min one activity in each available slot"),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
 						if(t==0)
@@ -19780,8 +19780,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintBuildingsMinOneActivityInEachNonBreakTimeSlot")){
 					if(reportBuildingMinOneActivityInEachNonBreakTimeSlot){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						 tr("File contains constraint buildings min one activity in each non-break time slot, which is old (it was improved in FET 7.8.3), and will be converted"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						 tr("File contains constraint buildings min one activity in each non-break time slot, which is old (it was improved in Open-Timetable 7.8.3), and will be converted"
 						 " to the similar constraint of this type, constraint buildings min one activity in each available slot"),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
 						if(t==0)
@@ -19798,7 +19798,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintRoomTypeNotAllowedSubjects") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint room type not allowed subjects - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19810,7 +19810,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintSubjectRequiresEquipments") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint subject requires equipments - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19823,7 +19823,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintSubjectSubjectTagRequireEquipments") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint subject tag requires equipments - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19835,7 +19835,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintTeacherRequiresRoom") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint teacher requires room - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19847,7 +19847,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintTeacherSubjectRequireRoom") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint teacher subject require room - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19859,7 +19859,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintMinimizeNumberOfRoomsForStudents") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint minimize number of rooms for students - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19871,7 +19871,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintMinimizeNumberOfRoomsForTeachers") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint minimize number of rooms for teachers - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19889,7 +19889,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintActivitiesSameRoom") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint activities same room - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19938,7 +19938,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintMaxBuildingChangesPerDayForTeachers") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint max building changes per day for teachers - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19950,7 +19950,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintMaxBuildingChangesPerDayForStudents") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint max building changes per day for students - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19962,7 +19962,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintMaxRoomChangesPerDayForTeachers") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint max room changes per day for teachers - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -19974,7 +19974,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				}
 				else if(xmlReader.name()==QString("ConstraintMaxRoomChangesPerDayForStudents") && !skipDeprecatedConstraints){
 				
-					int t=RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 					 tr("File contains deprecated constraint max room changes per day for students - will be ignored"),
 					 tr("Skip rest"), tr("See next"), QString(),
 					 1, 0);
@@ -20077,8 +20077,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeacherMaxRoomChangesPerDay")){
 					if(reportMA5OldSpaceConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teacher max room changes per day, which will be converted"
 						  " to a constraint of type teacher max room changes per real day."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -20098,8 +20098,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintTeachersMaxRoomChangesPerDay")){
 					if(reportMA5OldSpaceConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type teachers max room changes per day, which will be converted"
 						  " to a constraint of type teachers max room changes per real day."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -20119,8 +20119,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintStudentsSetMaxRoomChangesPerDay")){
 					if(reportMA5OldSpaceConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type students set max room changes per day, which will be converted"
 						  " to a constraint of type students set max room changes per real day."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -20140,8 +20140,8 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 				else if((!version6AndAbove && (probably5Morocco || probably5Algeria || probably5MA))
 				 && xmlReader.name()==QString("ConstraintStudentsMaxRoomChangesPerDay")){
 					if(reportMA5OldSpaceConstraintsChange){
-						int t=RulesReconcilableMessage::information(parent, tr("FET information"),
-						  tr("Your file was detected as an old FET-5 MA, Morocco, or Algeria file, and"
+						int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
+						  tr("Your file was detected as an old Open-Timetable-5 MA, Morocco, or Algeria file, and"
 						  " contains a constraint of type students max room changes per day, which will be converted"
 						  " to a constraint of type students max room changes per real day."),
 						  tr("Skip rest"), tr("See next"), QString(), 1, 0 );
@@ -20269,7 +20269,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 					bool tmp=this->addSpaceConstraint(crt_constraint);
 					if(!tmp){
 						if(seeNextWarnNotAddedSpaceConstraint){
-							int t=RulesReconcilableMessage::warning(parent, tr("FET information"),
+							int t=RulesReconcilableMessage::warning(parent, tr("Open-Timetable information"),
 							 tr("Constraint\n%1\nnot added - must be a duplicate").
 							 arg(crt_constraint->getDetailedDescription(*this)), tr("Skip rest"), tr("See next"), QString(""), 1, 0);
 							if(t==0)
@@ -20361,7 +20361,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 	}
 	
 	if(xmlReader.error()){
-		RulesIrreconcilableMessage::warning(parent, tr("FET warning"),
+		RulesIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Could not read file - XML parse error at line %1, column %2:\n%3", "The error description is %3")
 		 .arg(xmlReader.lineNumber())
 		 .arg(xmlReader.columnNumber())
@@ -20371,10 +20371,10 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 		//this->mode=oldMode;
 
 		if(canWriteLogFile){
-			xmlReadingLog+="  Incorrect/incomplete FET XML data file.\n";
+			xmlReadingLog+="  Incorrect/incomplete Open-Timetable XML data file.\n";
 
 			reducedXmlLog+="\n";
-			reducedXmlLog+="Incorrect/incomplete FET XML data file.\n";
+			reducedXmlLog+="Incorrect/incomplete Open-Timetable XML data file.\n";
 			logStream<<reducedXmlLog;
 
 			file2.close();
@@ -20405,7 +20405,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 		}
 		s.chop(1);
 		
-		RulesReconcilableMessage::warning(parent, tr("FET information"), s);
+		RulesReconcilableMessage::warning(parent, tr("Open-Timetable information"), s);
 	}
 	
 	if(this->mode==MORNINGS_AFTERNOONS){
@@ -20453,7 +20453,7 @@ bool Rules::read(QWidget* parent, const QString& fileName, bool commandLine, con
 	}
 
 	if(file2.error()!=QFileDevice::NoError){
-		IrreconcilableCriticalMessage::critical(parent, tr("FET critical"),
+		IrreconcilableCriticalMessage::critical(parent, tr("Open-Timetable critical"),
 		 tr("Saving the logging file gave the error message '%1', which means you cannot see the data file reading log. Please check your disk's free space.",
 		 "It means you cannot see the log of the operation of reading the data file.")
 		 .arg(file2.errorString()));
@@ -20504,7 +20504,7 @@ bool Rules::write(QWidget* parent, const QString& filename)
 #else
 	if(!file.open(QIODevice::WriteOnly | QIODevice::Truncate)){
 #endif
-		IrreconcilableCriticalMessage::critical(parent, tr("FET critical"),
+		IrreconcilableCriticalMessage::critical(parent, tr("Open-Timetable critical"),
 		 tr("Cannot open %1 for writing ... please check the write permissions of the selected directory and your disk's free space. Saving of the data file aborted.").arg(QFileInfo(filename).fileName()));
 		
 		return false;
@@ -20522,7 +20522,7 @@ bool Rules::write(QWidget* parent, const QString& filename)
 	
 	tos<<"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 
-//	tos<<"<!DOCTYPE FET><FET version=\""+FET_VERSION+"\">\n\n";
+//	tos<<"<!DOCTYPE Open-Timetable><Open-Timetable version=\""+FET_VERSION+"\">\n\n";
 	tos<<"<fet version=\""+FET_VERSION+"\">\n";
 	
 	QString ms;
@@ -20673,13 +20673,13 @@ bool Rules::write(QWidget* parent, const QString& filename)
 		tos << IL1+"</Timetable_Generation_Options_List>\n";
 	}
 
-//	tos<<"</FET>\n";
+//	tos<<"</Open-Timetable>\n";
 	tos<<"</fet>\n";
 
 	//tos<<s;
 	
 	if(file.error()!=QFileDevice::NoError){
-		IrreconcilableCriticalMessage::critical(parent, tr("FET critical"),
+		IrreconcilableCriticalMessage::critical(parent, tr("Open-Timetable critical"),
 		 tr("Saving the data file gave the error message '%1', which means the saving is compromised. Please check your disk's free space.")
 		 .arg(file.errorString()));
 		
@@ -21068,7 +21068,7 @@ TimeConstraint* Rules::readTeacherNotAvailable(QXmlStreamReader& xmlReader, Fake
 					break;
 			if(d>=this->nDaysPerWeek){
 				xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherNotAvailable day corrupt for teacher %1, day %2 is nonexistent ... ignoring constraint")
 					.arg(teacher)
 					.arg(text));*/
@@ -21091,7 +21091,7 @@ TimeConstraint* Rules::readTeacherNotAvailable(QXmlStreamReader& xmlReader, Fake
 			}
 			else if(h1>this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherNotAvailable start hour corrupt for teacher %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(teacher)
 					.arg(text));*/
@@ -21117,7 +21117,7 @@ TimeConstraint* Rules::readTeacherNotAvailable(QXmlStreamReader& xmlReader, Fake
 				return nullptr;
 			}
 			/*if(h2<=0 || h2>this->nHoursPerDay){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherNotAvailable end hour corrupt for teacher %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(teacher)
 					.arg(text));
@@ -21251,7 +21251,7 @@ TimeConstraint* Rules::readTeacherNotAvailableTimes(QXmlStreamReader& xmlReader,
 
 					if(d>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint TeacherNotAvailableTimes day corrupt for teacher %1, day %2 is nonexistent ... ignoring constraint")
 							.arg(cn->teacher)
 							.arg(text));*/
@@ -21272,7 +21272,7 @@ TimeConstraint* Rules::readTeacherNotAvailableTimes(QXmlStreamReader& xmlReader,
 					
 					if(h>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint TeacherNotAvailableTimes hour corrupt for teacher %1, hour %2 is nonexistent ... ignoring constraint")
 							.arg(cn->teacher)
 							.arg(text));*/
@@ -21387,7 +21387,7 @@ TimeConstraint* Rules::readTeacherMaxDaysPerWeek(QXmlStreamReader& xmlReader, Fa
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek<=0 || cn->maxDaysPerWeek>this->nDaysPerWeek){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMaxDaysPerWeek max days corrupt for teacher %1, max days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -21436,7 +21436,7 @@ TimeConstraint* Rules::readTeachersMaxDaysPerWeek(QXmlStreamReader& xmlReader, F
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek<=0 || cn->maxDaysPerWeek>this->nDaysPerWeek){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMaxDaysPerWeek max days corrupt, max days %1 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(text));*/
 				delete cn;
@@ -21494,7 +21494,7 @@ TimeConstraint* Rules::readTeacherMinDaysPerWeek(QXmlStreamReader& xmlReader, Fa
 			cn->minDaysPerWeek=text.toInt();
 			if(cn->minDaysPerWeek<=0 || cn->minDaysPerWeek>this->nDaysPerWeek){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Minimum_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMinDaysPerWeek min days corrupt for teacher %1, min days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -21543,7 +21543,7 @@ TimeConstraint* Rules::readTeachersMinDaysPerWeek(QXmlStreamReader& xmlReader, F
 			cn->minDaysPerWeek=text.toInt();
 			if(cn->minDaysPerWeek<=0 || cn->minDaysPerWeek>this->nDaysPerWeek){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Minimum_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMinDaysPerWeek min days corrupt, min days %1 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(text));*/
 				delete cn;
@@ -21622,7 +21622,7 @@ TimeConstraint* Rules::readTeacherIntervalMaxDaysPerWeek(QWidget* parent, QXmlSt
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherIntervalMaxDaysPerWeek max days corrupt for teacher %1, max days %2 >nDaysPerWeek, constraint added, please correct constraint")
 					.arg(cn->teacherName)
 					.arg(text));
@@ -21640,7 +21640,7 @@ TimeConstraint* Rules::readTeacherIntervalMaxDaysPerWeek(QWidget* parent, QXmlSt
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Teacher interval max days per week start hour corrupt for teacher %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -21665,7 +21665,7 @@ TimeConstraint* Rules::readTeacherIntervalMaxDaysPerWeek(QWidget* parent, QXmlSt
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Teacher interval max days per week end hour corrupt for teacher %1, hour %2 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						.arg(cn->teacherName)
 						.arg(text));*/
@@ -21742,7 +21742,7 @@ TimeConstraint* Rules::readTeachersIntervalMaxDaysPerWeek(QWidget* parent, QXmlS
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersIntervalMaxDaysPerWeek max days corrupt, max days %1 >nDaysPerWeek, constraint added, please correct constraint")
 					//.arg(cn->teacherName)
 					.arg(text));
@@ -21760,7 +21760,7 @@ TimeConstraint* Rules::readTeachersIntervalMaxDaysPerWeek(QWidget* parent, QXmlS
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Teachers interval max days per week start hour corrupt because hour %1 is nonexistent ... ignoring constraint")
 					//.arg(cn->teacherName)
 					.arg(text));*/
@@ -21785,7 +21785,7 @@ TimeConstraint* Rules::readTeachersIntervalMaxDaysPerWeek(QWidget* parent, QXmlS
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Teachers interval max days per week end hour corrupt because hour %1 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						//.arg(cn->teacherName)
 						.arg(text));*/
@@ -21841,7 +21841,7 @@ TimeConstraint* Rules::readStudentsSetMaxDaysPerWeek(QWidget* parent, QXmlStream
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetMaxDaysPerWeek max days corrupt for students set %1, max days %2 >nDaysPerWeek, constraint added, please correct constraint")
 					.arg(cn->students)
 					.arg(text));
@@ -21885,7 +21885,7 @@ TimeConstraint* Rules::readStudentsMaxDaysPerWeek(QWidget* parent, QXmlStreamRea
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsMaxDaysPerWeek max days corrupt, max days %1 >nDaysPerWeek, constraint added, please correct constraint")
 					.arg(text));
 			}
@@ -21955,7 +21955,7 @@ TimeConstraint* Rules::readStudentsSetIntervalMaxDaysPerWeek(QWidget* parent, QX
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetIntervalMaxDaysPerWeek max days corrupt for students set %1, max days %2 >nDaysPerWeek, constraint added, please correct constraint")
 					.arg(cn->students)
 					.arg(text));
@@ -21973,7 +21973,7 @@ TimeConstraint* Rules::readStudentsSetIntervalMaxDaysPerWeek(QWidget* parent, QX
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Students set interval max days per week start hour corrupt for students %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(cn->students)
 					.arg(text));*/
@@ -21998,7 +21998,7 @@ TimeConstraint* Rules::readStudentsSetIntervalMaxDaysPerWeek(QWidget* parent, QX
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Students set interval max days per week end hour corrupt for students %1, hour %2 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						.arg(cn->students)
 						.arg(text));*/
@@ -22075,7 +22075,7 @@ TimeConstraint* Rules::readStudentsIntervalMaxDaysPerWeek(QWidget* parent, QXmlS
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsIntervalMaxDaysPerWeek max days corrupt: max days %1 >nDaysPerWeek, constraint added, please correct constraint")
 					.arg(text));
 				/*delete cn;
@@ -22092,7 +22092,7 @@ TimeConstraint* Rules::readStudentsIntervalMaxDaysPerWeek(QWidget* parent, QXmlS
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Students interval max days per week start hour corrupt: hour %1 is nonexistent ... ignoring constraint")
 					//.arg(cn->students)
 					.arg(text));*/
@@ -22117,7 +22117,7 @@ TimeConstraint* Rules::readStudentsIntervalMaxDaysPerWeek(QWidget* parent, QXmlS
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Students interval max days per week end hour corrupt: hour %1 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						//.arg(cn->students)
 						.arg(text));*/
@@ -22183,7 +22183,7 @@ TimeConstraint* Rules::readStudentsSetNotAvailable(QXmlStreamReader& xmlReader, 
 					break;
 			if(d>=this->nDaysPerWeek){
 				xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetNotAvailable day corrupt for students %1, day %2 is nonexistent ... ignoring constraint")
 					.arg(students)
 					.arg(text));*/
@@ -22205,7 +22205,7 @@ TimeConstraint* Rules::readStudentsSetNotAvailable(QXmlStreamReader& xmlReader, 
 			}
 			else if(h1>this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetNotAvailable start hour corrupt for students set %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(students)
 					.arg(text));*/
@@ -22230,7 +22230,7 @@ TimeConstraint* Rules::readStudentsSetNotAvailable(QXmlStreamReader& xmlReader, 
 				return nullptr;
 			}
 			/*if(h2<=0 || h2>this->nHoursPerDay){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetNotAvailable end hour corrupt for students %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(students)
 					.arg(text));
@@ -22359,7 +22359,7 @@ TimeConstraint* Rules::readStudentsSetNotAvailableTimes(QXmlStreamReader& xmlRea
 
 					if(d>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint StudentsSetNotAvailableTimes day corrupt for students %1, day %2 is nonexistent ... ignoring constraint")
 							.arg(cn->students)
 							.arg(text));*/
@@ -22380,7 +22380,7 @@ TimeConstraint* Rules::readStudentsSetNotAvailableTimes(QXmlStreamReader& xmlRea
 					
 					if(h>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint StudentsSetNotAvailableTimes hour corrupt for students %1, hour %2 is nonexistent ... ignoring constraint")
 							.arg(cn->students)
 							.arg(text));*/
@@ -22480,7 +22480,7 @@ TimeConstraint* Rules::readMinNDaysBetweenActivities(QWidget* parent, QXmlStream
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint min days between activities with tag consecutive if on the same day"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -22584,7 +22584,7 @@ TimeConstraint* Rules::readMinNDaysBetweenActivities(QWidget* parent, QXmlStream
 		s+="\n\n";
 		s+=tr("Note: If the weight of the added constraint min days between activities is 0% or a low value, you can safely ignore this warning.");
 		
-		int t=QMessageBox::warning(parent, tr("FET warning"), s,
+		int t=QMessageBox::warning(parent, tr("Open-Timetable warning"), s,
 			tr("Skip rest"), tr("See next"), QString(),
 			1, 0 );
 		
@@ -22635,7 +22635,7 @@ TimeConstraint* Rules::readMinDaysBetweenActivities(QWidget* parent, QXmlStreamR
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint min days between activities with tag consecutive if on the same day"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -22739,7 +22739,7 @@ TimeConstraint* Rules::readMinDaysBetweenActivities(QWidget* parent, QXmlStreamR
 		s+="\n\n";
 		s+=tr("Note: If the weight of the added constraint min days between activities is 0% or a low value, you can safely ignore this warning.");
 		
-		int t=QMessageBox::warning(parent, tr("FET warning"), s,
+		int t=QMessageBox::warning(parent, tr("Open-Timetable warning"), s,
 			tr("Skip rest"), tr("See next"), QString(),
 			1, 0 );
 		
@@ -22790,7 +22790,7 @@ TimeConstraint* Rules::readMinHalfDaysBetweenActivities(QWidget* parent, QXmlStr
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint min half days between activities with tag consecutive if on the same day"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -22894,7 +22894,7 @@ TimeConstraint* Rules::readMinHalfDaysBetweenActivities(QWidget* parent, QXmlStr
 		s+="\n\n";
 		s+=tr("Note: If the weight of the added constraint min days between activities is 0% or a low value, you can safely ignore this warning.");
 		
-		int t=QMessageBox::warning(parent, tr("FET warning"), s,
+		int t=QMessageBox::warning(parent, tr("Open-Timetable warning"), s,
 			tr("Skip rest"), tr("See next"), QString(),
 			1, 0 );
 		
@@ -24579,7 +24579,7 @@ TimeConstraint* Rules::readTeachersMinHoursDaily(QWidget* parent, QXmlStreamRead
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teachers min hours daily with tag allow empty days"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -24665,7 +24665,7 @@ TimeConstraint* Rules::readTeacherMinHoursDaily(QWidget* parent, QXmlStreamReade
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teacher min hours daily with tag allow empty days"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -25558,7 +25558,7 @@ TimeConstraint* Rules::readStudentsMinHoursDaily(QWidget* parent, QXmlStreamRead
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint students min hours daily with tag allow empty days"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -25653,7 +25653,7 @@ TimeConstraint* Rules::readStudentsSetMinHoursDaily(QWidget* parent, QXmlStreamR
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint students set min hours daily with tag allow empty days"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -27199,7 +27199,7 @@ bool& reportUnspecifiedPermanentlyLockedTime, bool& reportUnspecifiedDayOrHourPr
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint activity preferred starting time with tag permanently locked"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -27223,7 +27223,7 @@ bool& reportUnspecifiedPermanentlyLockedTime, bool& reportUnspecifiedDayOrHourPr
 					break;
 			if(cn->day>=this->nDaysPerWeek){
 				xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint ActivityPreferredTime day corrupt for activity with id %1, day %2 is nonexistent ... ignoring constraint")
 					.arg(cn->activityId)
 					.arg(text));*/
@@ -27242,7 +27242,7 @@ bool& reportUnspecifiedPermanentlyLockedTime, bool& reportUnspecifiedDayOrHourPr
 					break;
 			if(cn->hour>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint ActivityPreferredTime hour corrupt for activity with id %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(cn->activityId)
 					.arg(text));*/
@@ -27266,7 +27266,7 @@ bool& reportUnspecifiedPermanentlyLockedTime, bool& reportUnspecifiedDayOrHourPr
 	//crt_constraint=cn;
 
 	if(cn->hour>=0 && cn->day>=0 && !foundLocked && reportUnspecifiedPermanentlyLockedTime){
-		int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+		int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 			tr("Found constraint activity preferred starting time, with unspecified tag"
 			" 'permanently locked' - this tag will be set to 'false' by default. You can always modify it"
 			" by editing the constraint in the 'Data' menu")+"\n\n"
@@ -27288,10 +27288,10 @@ bool& reportUnspecifiedPermanentlyLockedTime, bool& reportUnspecifiedDayOrHourPr
 	
 	if(cn->hour==-1 || cn->day==-1){
 		if(reportUnspecifiedDayOrHourPreferredStartingTime){
-			int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+			int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 				tr("Found constraint activity preferred starting time, with unspecified day or hour."
 				" This constraint will be transformed into constraint activity preferred starting times (a set of times, not only one)."
-				" This change is done in FET versions 5.8.1 and higher."
+				" This change is done in Open-Timetable versions 5.8.1 and higher."
 				),
 				tr("Skip rest"), tr("See next"), QString(), 1, 0 );
 			if(t==0)
@@ -27381,7 +27381,7 @@ bool& reportUnspecifiedPermanentlyLockedTime, bool& reportUnspecifiedDayOrHourPr
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint activity preferred starting time with tag permanently locked"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -27405,7 +27405,7 @@ bool& reportUnspecifiedPermanentlyLockedTime, bool& reportUnspecifiedDayOrHourPr
 					break;
 			if(cn->day>=this->nDaysPerWeek){
 				xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint ActivityPreferredStartingTime day corrupt for activity with id %1, day %2 is nonexistent ... ignoring constraint")
 					.arg(cn->activityId)
 					.arg(text));*/
@@ -27424,7 +27424,7 @@ bool& reportUnspecifiedPermanentlyLockedTime, bool& reportUnspecifiedDayOrHourPr
 					break;
 			if(cn->hour>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint ActivityPreferredStartingTime hour corrupt for activity with id %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(cn->activityId)
 					.arg(text));*/
@@ -27448,7 +27448,7 @@ bool& reportUnspecifiedPermanentlyLockedTime, bool& reportUnspecifiedDayOrHourPr
 	//crt_constraint=cn;
 
 	if(cn->hour>=0 && cn->day>=0 && !foundLocked && reportUnspecifiedPermanentlyLockedTime){
-		int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+		int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 			tr("Found constraint activity preferred starting time, with unspecified tag"
 			" 'permanently locked' - this tag will be set to 'false' by default. You can always modify it"
 			" by editing the constraint in the 'Data' menu")+"\n\n"
@@ -27470,10 +27470,10 @@ bool& reportUnspecifiedPermanentlyLockedTime, bool& reportUnspecifiedDayOrHourPr
 
 	if(cn->hour==-1 || cn->day==-1){
 		if(reportUnspecifiedDayOrHourPreferredStartingTime){
-			int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+			int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 				tr("Found constraint activity preferred starting time, with unspecified day or hour."
 				" This constraint will be transformed into constraint activity preferred starting times (a set of times, not only one)."
-				" This change is done in FET versions 5.8.1 and higher."
+				" This change is done in Open-Timetable versions 5.8.1 and higher."
 				),
 				tr("Skip rest"), tr("See next"), QString(), 1, 0 );
 			if(t==0)
@@ -27562,7 +27562,7 @@ TimeConstraint* Rules::readActivityPreferredDay(QXmlStreamReader& xmlReader, Fak
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint activity preferred starting time with tag permanently locked"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -27594,7 +27594,7 @@ TimeConstraint* Rules::readActivityPreferredDay(QXmlStreamReader& xmlReader, Fak
 					break;
 			if(cn->day>=this->nDaysPerWeek){
 				xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint ActivityPreferredStartingTime day corrupt for activity with id %1, day %2 is nonexistent ... ignoring constraint")
 					.arg(cn->activityId)
 					.arg(text));*/
@@ -27618,7 +27618,7 @@ TimeConstraint* Rules::readActivityPreferredDay(QXmlStreamReader& xmlReader, Fak
 	//crt_constraint=cn;
 
 	/*if(cn->hour>=0 && cn->day>=0 && !foundLocked && reportUnspecifiedPermanentlyLockedTime){
-		int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+		int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 			tr("Found constraint activity preferred starting time, with unspecified tag"
 			" 'permanently locked' - this tag will be set to 'false' by default. You can always modify it"
 			" by editing the constraint in the 'Data' menu")+"\n\n"
@@ -27640,10 +27640,10 @@ TimeConstraint* Rules::readActivityPreferredDay(QXmlStreamReader& xmlReader, Fak
 
 	/*if(cn->hour==-1 || cn->day==-1){
 		if(reportUnspecifiedDayOrHourPreferredStartingTime){
-			int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+			int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 				tr("Found constraint activity preferred starting time, with unspecified day or hour."
 				" This constraint will be transformed into constraint activity preferred starting times (a set of times, not only one)."
-				" This change is done in FET versions 5.8.1 and higher."
+				" This change is done in Open-Timetable versions 5.8.1 and higher."
 				),
 				tr("Skip rest"), tr("See next"), QString(), 1, 0 );
 			if(t==0)
@@ -29100,7 +29100,7 @@ TimeConstraint* Rules::readActivityPreferredTimes(QXmlStreamReader& xmlReader, F
 
 					if(cn->days_L[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivityPreferredTimes day corrupt for activity with id %1, day %2 is nonexistent ... ignoring constraint")
 							.arg(cn->activityId)
 							.arg(text));*/
@@ -29123,7 +29123,7 @@ TimeConstraint* Rules::readActivityPreferredTimes(QXmlStreamReader& xmlReader, F
 					
 					if(cn->hours_L[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivityPreferredTimes hour corrupt for activity with id %1, hour %2 is nonexistent ... ignoring constraint")
 							.arg(cn->activityId)
 							.arg(text));*/
@@ -29246,7 +29246,7 @@ TimeConstraint* Rules::readActivityPreferredTimeSlots(QXmlStreamReader& xmlReade
 
 					if(cn->p_days_L[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivityPreferredTimeSlots day corrupt for activity with id %1, day %2 is nonexistent ... ignoring constraint")
 							.arg(cn->p_activityId)
 							.arg(text));*/
@@ -29269,7 +29269,7 @@ TimeConstraint* Rules::readActivityPreferredTimeSlots(QXmlStreamReader& xmlReade
 					
 					if(cn->p_hours_L[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivityPreferredTimeSlots hour corrupt for activity with id %1, hour %2 is nonexistent ... ignoring constraint")
 							.arg(cn->p_activityId)
 							.arg(text));*/
@@ -29393,7 +29393,7 @@ TimeConstraint* Rules::readActivityPreferredStartingTimes(QXmlStreamReader& xmlR
 
 					if(cn->days_L[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivityPreferredStartingTimes day corrupt for activity with id %1, day %2 is nonexistent ... ignoring constraint")
 							.arg(cn->activityId)
 							.arg(text));*/
@@ -29416,7 +29416,7 @@ TimeConstraint* Rules::readActivityPreferredStartingTimes(QXmlStreamReader& xmlR
 					
 					if(cn->hours_L[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivityPreferredStartingTimes hour corrupt for activity with id %1, hour %2 is nonexistent ... ignoring constraint")
 							.arg(cn->activityId)
 							.arg(text));*/
@@ -29507,7 +29507,7 @@ TimeConstraint* Rules::readBreak(QXmlStreamReader& xmlReader, FakeString& xmlRea
 					break;
 			if(d>=this->nDaysPerWeek){
 				xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Break day corrupt for day %1 is nonexistent ... ignoring constraint")
 					.arg(text));*/
 				//cn=nullptr;
@@ -29528,7 +29528,7 @@ TimeConstraint* Rules::readBreak(QXmlStreamReader& xmlReader, FakeString& xmlRea
 			}
 			else if(h1>this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Break start hour corrupt for hour %1 is nonexistent ... ignoring constraint")
 					.arg(text));*/
 				//cn=nullptr;
@@ -29552,7 +29552,7 @@ TimeConstraint* Rules::readBreak(QXmlStreamReader& xmlReader, FakeString& xmlRea
 				return nullptr;
 			}
 			/*if(h2<=0 || h2>this->nHoursPerDay){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Break end hour corrupt for hour %1 is nonexistent ... ignoring constraint")
 					.arg(text));
 				//goto corruptConstraintTime;
@@ -29673,7 +29673,7 @@ TimeConstraint* Rules::readBreakTimes(QXmlStreamReader& xmlReader, FakeString& x
 
 					if(d>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint BreakTimes day corrupt for day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -29693,7 +29693,7 @@ TimeConstraint* Rules::readBreakTimes(QXmlStreamReader& xmlReader, FakeString& x
 					
 					if(h>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint BreakTimes hour corrupt for hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -30586,7 +30586,7 @@ TimeConstraint* Rules::readStudentsSetMaxSingleGapsInSelectedTimeSlots(QXmlStrea
 							
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -30608,7 +30608,7 @@ TimeConstraint* Rules::readStudentsSetMaxSingleGapsInSelectedTimeSlots(QXmlStrea
 							
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -30711,7 +30711,7 @@ TimeConstraint* Rules::readStudentsMaxSingleGapsInSelectedTimeSlots(QXmlStreamRe
 							
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -30733,7 +30733,7 @@ TimeConstraint* Rules::readStudentsMaxSingleGapsInSelectedTimeSlots(QXmlStreamRe
 							
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -30842,7 +30842,7 @@ TimeConstraint* Rules::readTeacherMaxSingleGapsInSelectedTimeSlots(QXmlStreamRea
 							
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -30864,7 +30864,7 @@ TimeConstraint* Rules::readTeacherMaxSingleGapsInSelectedTimeSlots(QXmlStreamRea
 							
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -30967,7 +30967,7 @@ TimeConstraint* Rules::readTeachersMaxSingleGapsInSelectedTimeSlots(QXmlStreamRe
 							
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -30989,7 +30989,7 @@ TimeConstraint* Rules::readTeachersMaxSingleGapsInSelectedTimeSlots(QXmlStreamRe
 							
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -31824,7 +31824,7 @@ TimeConstraint* Rules::readActivitiesPreferredTimes(QXmlStreamReader& xmlReader,
 							
 					if(cn->days_L[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesPreferredTimes day corrupt for teacher name=%1, students names=%2, subject name=%3, activity tag name=%4, day %5 is nonexistent ... ignoring constraint")
 							.arg(cn->teacherName)
 							.arg(cn->studentsName)
@@ -31850,7 +31850,7 @@ TimeConstraint* Rules::readActivitiesPreferredTimes(QXmlStreamReader& xmlReader,
 							
 					if(cn->hours_L[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesPreferredTimes hour corrupt for teacher name=%1, students names=%2, subject name=%3, activity tag name=%4, hour %5 is nonexistent ... ignoring constraint")
 							.arg(cn->teacherName)
 							.arg(cn->studentsName)
@@ -32033,7 +32033,7 @@ TimeConstraint* Rules::readActivitiesPreferredTimeSlots(QXmlStreamReader& xmlRea
 							
 					if(cn->p_days_L[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesPreferredTimeSlots day corrupt for teacher name=%1, students names=%2, subject name=%3, activity tag name=%4, day %5 is nonexistent ... ignoring constraint")
 							.arg(cn->p_teacherName)
 							.arg(cn->p_studentsName)
@@ -32059,7 +32059,7 @@ TimeConstraint* Rules::readActivitiesPreferredTimeSlots(QXmlStreamReader& xmlRea
 							
 					if(cn->p_hours_L[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesPreferredTimeSlots hour corrupt for teacher name=%1, students names=%2, subject name=%3, activity tag name=%4, hour %5 is nonexistent ... ignoring constraint")
 							.arg(cn->p_teacherName)
 							.arg(cn->p_studentsName)
@@ -32242,7 +32242,7 @@ TimeConstraint* Rules::readActivitiesPreferredStartingTimes(QXmlStreamReader& xm
 							
 					if(cn->days_L[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesPreferredStartingTimes day corrupt for teacher name=%1, students names=%2, subject name=%3, activity tag name=%4, day %5 is nonexistent ... ignoring constraint")
 							.arg(cn->teacherName)
 							.arg(cn->studentsName)
@@ -32268,7 +32268,7 @@ TimeConstraint* Rules::readActivitiesPreferredStartingTimes(QXmlStreamReader& xm
 							
 					if(cn->hours_L[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesPreferredStartingTimes hour corrupt for teacher name=%1, students names=%2, subject name=%3, activity tag name=%4, hour %5 is nonexistent ... ignoring constraint")
 							.arg(cn->teacherName)
 							.arg(cn->studentsName)
@@ -32458,7 +32458,7 @@ TimeConstraint* Rules::readSubactivitiesPreferredTimeSlots(QXmlStreamReader& xml
 							
 					if(cn->p_days_L[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesPreferredTimeSlots day corrupt for teacher name=%1, students names=%2, subject name=%3, activity tag name=%4, day %5 is nonexistent ... ignoring constraint")
 							.arg(cn->p_teacherName)
 							.arg(cn->p_studentsName)
@@ -32484,7 +32484,7 @@ TimeConstraint* Rules::readSubactivitiesPreferredTimeSlots(QXmlStreamReader& xml
 							
 					if(cn->p_hours_L[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesPreferredTimeSlots hour corrupt for teacher name=%1, students names=%2, subject name=%3, activity tag name=%4, hour %5 is nonexistent ... ignoring constraint")
 							.arg(cn->p_teacherName)
 							.arg(cn->p_studentsName)
@@ -32673,7 +32673,7 @@ TimeConstraint* Rules::readSubactivitiesPreferredStartingTimes(QXmlStreamReader&
 					
 					if(cn->days_L[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesPreferredStartingTimes day corrupt for teacher name=%1, students names=%2, subject name=%3, activity tag name=%4, day %5 is nonexistent ... ignoring constraint")
 							.arg(cn->teacherName)
 							.arg(cn->studentsName)
@@ -32699,7 +32699,7 @@ TimeConstraint* Rules::readSubactivitiesPreferredStartingTimes(QXmlStreamReader&
 							
 					if(cn->hours_L[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesPreferredStartingTimes hour corrupt for teacher name=%1, students names=%2, subject name=%3, activity tag name=%4, hour %5 is nonexistent ... ignoring constraint")
 							.arg(cn->teacherName)
 							.arg(cn->studentsName)
@@ -32880,7 +32880,7 @@ TimeConstraint* Rules::readTwoSetsOfActivitiesSameSections(QXmlStreamReader& xml
 
 					if(cn->oDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -32902,7 +32902,7 @@ TimeConstraint* Rules::readTwoSetsOfActivitiesSameSections(QXmlStreamReader& xml
 
 					if(cn->oHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -33016,7 +33016,7 @@ TimeConstraint* Rules::readActivitiesOccupyMaxTimeSlotsFromSelection(QXmlStreamR
 							
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -33038,7 +33038,7 @@ TimeConstraint* Rules::readActivitiesOccupyMaxTimeSlotsFromSelection(QXmlStreamR
 							
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -33206,7 +33206,7 @@ TimeConstraint* Rules::readActivitiesMaxActivityTagsFromSetInSelectedTimeSlots(Q
 							
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -33228,7 +33228,7 @@ TimeConstraint* Rules::readActivitiesMaxActivityTagsFromSetInSelectedTimeSlots(Q
 							
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -33358,7 +33358,7 @@ TimeConstraint* Rules::readActivitiesMaxTotalNumberOfStudentsInSelectedTimeSlots
 							
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -33380,7 +33380,7 @@ TimeConstraint* Rules::readActivitiesMaxTotalNumberOfStudentsInSelectedTimeSlots
 							
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -33509,7 +33509,7 @@ TimeConstraint* Rules::readActivitiesPairOfMutuallyExclusiveSetsOfTimeSlots(QXml
 							
 					if(cn->selectedDays1[i1]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -33531,7 +33531,7 @@ TimeConstraint* Rules::readActivitiesPairOfMutuallyExclusiveSetsOfTimeSlots(QXml
 							
 					if(cn->selectedHours1[i1]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -33585,7 +33585,7 @@ TimeConstraint* Rules::readActivitiesPairOfMutuallyExclusiveSetsOfTimeSlots(QXml
 							
 					if(cn->selectedDays2[i2]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -33607,7 +33607,7 @@ TimeConstraint* Rules::readActivitiesPairOfMutuallyExclusiveSetsOfTimeSlots(QXml
 							
 					if(cn->selectedHours2[i2]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -34022,7 +34022,7 @@ TimeConstraint* Rules::readMaxDaysBetweenEachPairOfConsecutiveActivities(QWidget
 			QString text=xmlReader.readElementText();
 			cn->maxDays=text.toInt();
 			if(cn->maxDays==0){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint MaxDaysBetweenEachPairOfConsecutiveActivities max days is 0, but it should be at least 1. It will be set to 1."));
 				cn->maxDays=1;
 			}
@@ -34116,7 +34116,7 @@ TimeConstraint* Rules::readActivitiesOccupyMinTimeSlotsFromSelection(QXmlStreamR
 							
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMinTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -34138,7 +34138,7 @@ TimeConstraint* Rules::readActivitiesOccupyMinTimeSlotsFromSelection(QXmlStreamR
 							
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMinTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -34264,7 +34264,7 @@ TimeConstraint* Rules::readActivitiesMaxSimultaneousInSelectedTimeSlots(QXmlStre
 							
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesMaxSimultaneousInSelectedTimeSlots day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -34286,7 +34286,7 @@ TimeConstraint* Rules::readActivitiesMaxSimultaneousInSelectedTimeSlots(QXmlStre
 							
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesMaxSimultaneousInSelectedTimeSlots hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -34414,7 +34414,7 @@ TimeConstraint* Rules::readActivitiesMinSimultaneousInSelectedTimeSlots(QXmlStre
 							
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesMinSimultaneousInSelectedTimeSlots day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -34436,7 +34436,7 @@ TimeConstraint* Rules::readActivitiesMinSimultaneousInSelectedTimeSlots(QXmlStre
 							
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesMinSimultaneousInSelectedTimeSlots hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -34569,7 +34569,7 @@ TimeConstraint* Rules::readMaxTotalActivitiesFromSetInSelectedTimeSlots(QXmlStre
 
 					if(cn->selectedDays[i]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesMaxSimultaneousInSelectedTimeSlots day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -34591,7 +34591,7 @@ TimeConstraint* Rules::readMaxTotalActivitiesFromSetInSelectedTimeSlots(QXmlStre
 
 					if(cn->selectedHours[i]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesMaxSimultaneousInSelectedTimeSlots hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -35274,7 +35274,7 @@ TimeConstraint* Rules::readOldMATeacherMaxDaysPerWeek(QXmlStreamReader& xmlReade
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek<0 || cn->maxDaysPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMaxDaysPerWeek max days corrupt for teacher %1, max days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -35352,7 +35352,7 @@ TimeConstraint* Rules::readTeacherMaxRealDaysPerWeek(QXmlStreamReader& xmlReader
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek<0 || cn->maxDaysPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMaxDaysPerWeek max days corrupt for teacher %1, max days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -35401,7 +35401,7 @@ TimeConstraint* Rules::readOldMATeachersMaxDaysPerWeek(QXmlStreamReader& xmlRead
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek<0 || cn->maxDaysPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMaxDaysPerWeek max days corrupt, max days %1 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(text));*/
 				delete cn;
@@ -35449,7 +35449,7 @@ TimeConstraint* Rules::readTeachersMaxRealDaysPerWeek(QXmlStreamReader& xmlReade
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek<0 || cn->maxDaysPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMaxDaysPerWeek max days corrupt, max days %1 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(text));*/
 				delete cn;
@@ -35526,7 +35526,7 @@ TimeConstraint* Rules::readTeacherMaxAfternoonsPerWeek(QXmlStreamReader& xmlRead
 			cn->maxAfternoonsPerWeek=text.toInt();
 			if(cn->maxAfternoonsPerWeek<0 || cn->maxAfternoonsPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Afternoons_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMaxDaysPerWeek max days corrupt for teacher %1, max days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -35575,7 +35575,7 @@ TimeConstraint* Rules::readTeachersMaxAfternoonsPerWeek(QXmlStreamReader& xmlRea
 			cn->maxAfternoonsPerWeek=text.toInt();
 			if(cn->maxAfternoonsPerWeek<0 || cn->maxAfternoonsPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Afternoons_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMaxDaysPerWeek max days corrupt, max days %1 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(text));*/
 				delete cn;
@@ -36802,7 +36802,7 @@ TimeConstraint* Rules::readTeacherMaxMorningsPerWeek(QXmlStreamReader& xmlReader
 			cn->maxMorningsPerWeek=text.toInt();
 			if(cn->maxMorningsPerWeek<0 || cn->maxMorningsPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Mornings_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMaxDaysPerWeek max days corrupt for teacher %1, max days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -36851,7 +36851,7 @@ TimeConstraint* Rules::readTeachersMaxMorningsPerWeek(QXmlStreamReader& xmlReade
 			cn->maxMorningsPerWeek=text.toInt();
 			if(cn->maxMorningsPerWeek<0 || cn->maxMorningsPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Mornings_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMaxDaysPerWeek max days corrupt, max days %1 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(text));*/
 				delete cn;
@@ -37061,7 +37061,7 @@ TimeConstraint* Rules::readOldMATeacherMinDaysPerWeek(QXmlStreamReader& xmlReade
 			cn->minDaysPerWeek=text.toInt();
 			if(cn->minDaysPerWeek<=0 || cn->minDaysPerWeek>this->nDaysPerWeek){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Minimum_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMinDaysPerWeek min days corrupt for teacher %1, min days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -37120,7 +37120,7 @@ TimeConstraint* Rules::readTeacherMinRealDaysPerWeek(QXmlStreamReader& xmlReader
 			cn->minDaysPerWeek=text.toInt();
 			if(cn->minDaysPerWeek<=0 || cn->minDaysPerWeek>this->nDaysPerWeek){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Minimum_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMinDaysPerWeek min days corrupt for teacher %1, min days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -37169,7 +37169,7 @@ TimeConstraint* Rules::readOldMATeachersMinDaysPerWeek(QXmlStreamReader& xmlRead
 			cn->minDaysPerWeek=text.toInt();
 			if(cn->minDaysPerWeek<=0 || cn->minDaysPerWeek>this->nDaysPerWeek){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Minimum_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMinDaysPerWeek min days corrupt, min days %1 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(text));*/
 				delete cn;
@@ -37217,7 +37217,7 @@ TimeConstraint* Rules::readTeachersMinRealDaysPerWeek(QXmlStreamReader& xmlReade
 			cn->minDaysPerWeek=text.toInt();
 			if(cn->minDaysPerWeek<=0 || cn->minDaysPerWeek>this->nDaysPerWeek){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Minimum_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMinDaysPerWeek min days corrupt, min days %1 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(text));*/
 				delete cn;
@@ -37275,7 +37275,7 @@ TimeConstraint* Rules::readTeacherMinMorningsPerWeek(QXmlStreamReader& xmlReader
 			cn->minMorningsPerWeek=text.toInt();
 			if(cn->minMorningsPerWeek<0 || cn->minMorningsPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Minimum_Mornings_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMinMorningsPerWeek min days corrupt for teacher %1, min days %2 <= 0 or >nMorningsPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -37324,7 +37324,7 @@ TimeConstraint* Rules::readTeachersMinMorningsPerWeek(QXmlStreamReader& xmlReade
 			cn->minMorningsPerWeek=text.toInt();
 			if(cn->minMorningsPerWeek<0 || cn->minMorningsPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Minimum_Mornings_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMinMorningsPerWeek min days corrupt, min days %1 <= 0 or >nMorningsPerWeek, ignoring constraint")
 					.arg(text));*/
 				delete cn;
@@ -37382,7 +37382,7 @@ TimeConstraint* Rules::readTeacherMinAfternoonsPerWeek(QXmlStreamReader& xmlRead
 			cn->minAfternoonsPerWeek=text.toInt();
 			if(cn->minAfternoonsPerWeek<0 || cn->minAfternoonsPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Minimum_Afternoons_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMinAfternoonsPerWeek min days corrupt for teacher %1, min days %2 <= 0 or >nAfternoonsPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -37431,7 +37431,7 @@ TimeConstraint* Rules::readTeachersMinAfternoonsPerWeek(QXmlStreamReader& xmlRea
 			cn->minAfternoonsPerWeek=text.toInt();
 			if(cn->minAfternoonsPerWeek<0 || cn->minAfternoonsPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Minimum_Afternoons_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMinAfternoonsPerWeek min days corrupt, min days %1 <= 0 or >nAfternoonsPerWeek, ignoring constraint")
 					.arg(text));*/
 				delete cn;
@@ -37511,7 +37511,7 @@ TimeConstraint* Rules::readTeacherMorningIntervalMaxDaysPerWeek(QWidget* parent,
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMorningIntervalMaxDaysPerWeek max days corrupt for teacher %1, max days %2 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(cn->teacherName)
 					.arg(text));
@@ -37529,7 +37529,7 @@ TimeConstraint* Rules::readTeacherMorningIntervalMaxDaysPerWeek(QWidget* parent,
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Teacher interval max days per week start hour corrupt for teacher %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -37554,7 +37554,7 @@ TimeConstraint* Rules::readTeacherMorningIntervalMaxDaysPerWeek(QWidget* parent,
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Teacher interval max days per week end hour corrupt for teacher %1, hour %2 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						.arg(cn->teacherName)
 						.arg(text));*/
@@ -37631,7 +37631,7 @@ TimeConstraint* Rules::readTeachersMorningIntervalMaxDaysPerWeek(QWidget* parent
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersMorningIntervalMaxDaysPerWeek max days corrupt, max days %1 >nDaysPerWeek/2, constraint added, please correct constraint")
 					//.arg(cn->teacherName)
 					.arg(text));
@@ -37649,7 +37649,7 @@ TimeConstraint* Rules::readTeachersMorningIntervalMaxDaysPerWeek(QWidget* parent
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Teachers interval max days per week start hour corrupt because hour %1 is nonexistent ... ignoring constraint")
 					//.arg(cn->teacherName)
 					.arg(text));*/
@@ -37674,7 +37674,7 @@ TimeConstraint* Rules::readTeachersMorningIntervalMaxDaysPerWeek(QWidget* parent
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Teachers interval max days per week end hour corrupt because hour %1 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						//.arg(cn->teacherName)
 						.arg(text));*/
@@ -37758,7 +37758,7 @@ TimeConstraint* Rules::readTeacherAfternoonIntervalMaxDaysPerWeek(QWidget* paren
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherAfternoonIntervalMaxDaysPerWeek max days corrupt for teacher %1, max days %2 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(cn->teacherName)
 					.arg(text));
@@ -37776,7 +37776,7 @@ TimeConstraint* Rules::readTeacherAfternoonIntervalMaxDaysPerWeek(QWidget* paren
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Teacher interval max days per week start hour corrupt for teacher %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -37801,7 +37801,7 @@ TimeConstraint* Rules::readTeacherAfternoonIntervalMaxDaysPerWeek(QWidget* paren
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Teacher interval max days per week end hour corrupt for teacher %1, hour %2 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						.arg(cn->teacherName)
 						.arg(text));*/
@@ -37878,7 +37878,7 @@ TimeConstraint* Rules::readTeachersAfternoonIntervalMaxDaysPerWeek(QWidget* pare
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeachersAfternoonIntervalMaxDaysPerWeek max days corrupt, max days %1 >nDaysPerWeek/2, constraint added, please correct constraint")
 					//.arg(cn->teacherName)
 					.arg(text));
@@ -37896,7 +37896,7 @@ TimeConstraint* Rules::readTeachersAfternoonIntervalMaxDaysPerWeek(QWidget* pare
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Teachers interval max days per week start hour corrupt because hour %1 is nonexistent ... ignoring constraint")
 					//.arg(cn->teacherName)
 					.arg(text));*/
@@ -37921,7 +37921,7 @@ TimeConstraint* Rules::readTeachersAfternoonIntervalMaxDaysPerWeek(QWidget* pare
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Teachers interval max days per week end hour corrupt because hour %1 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						//.arg(cn->teacherName)
 						.arg(text));*/
@@ -37978,7 +37978,7 @@ TimeConstraint* Rules::readOldMAStudentsSetMaxDaysPerWeek(QXmlStreamReader& xmlR
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek<0 || cn->maxDaysPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetMaxDaysPerWeek max days corrupt for students set %1, max days %2 >nDaysPerWeek, constraint added, please correct constraint")
 					.arg(cn->students)
 					.arg(text));*/
@@ -38028,7 +38028,7 @@ TimeConstraint* Rules::readStudentsSetMaxRealDaysPerWeek(QXmlStreamReader& xmlRe
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek<0 || cn->maxDaysPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetMaxDaysPerWeek max days corrupt for students set %1, max days %2 >nDaysPerWeek, constraint added, please correct constraint")
 					.arg(cn->students)
 					.arg(text));*/
@@ -38073,7 +38073,7 @@ TimeConstraint* Rules::readOldMAStudentsMaxDaysPerWeek(QXmlStreamReader& xmlRead
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek<0 || cn->maxDaysPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsMaxDaysPerWeek max days corrupt, max days %1 >nDaysPerWeek, constraint added, please correct constraint")
 					.arg(text));*/
 			}
@@ -38117,7 +38117,7 @@ TimeConstraint* Rules::readStudentsMaxRealDaysPerWeek(QXmlStreamReader& xmlReade
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek<0 || cn->maxDaysPerWeek>this->nDaysPerWeek/2){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Days_Per_Week"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsMaxDaysPerWeek max days corrupt, max days %1 >nDaysPerWeek, constraint added, please correct constraint")
 					.arg(text));*/
 			}
@@ -38166,7 +38166,7 @@ TimeConstraint* Rules::readStudentsSetMaxAfternoonsPerWeek(QWidget* parent, QXml
 			QString text=xmlReader.readElementText();
 			cn->maxAfternoonsPerWeek=text.toInt();
 			if(cn->maxAfternoonsPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetMaxAfternoonsPerWeek max afternoons corrupt for students set %1, max afternoons %2 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(cn->students)
 					.arg(text));
@@ -38210,7 +38210,7 @@ TimeConstraint* Rules::readStudentsMaxAfternoonsPerWeek(QWidget* parent, QXmlStr
 			QString text=xmlReader.readElementText();
 			cn->maxAfternoonsPerWeek=text.toInt();
 			if(cn->maxAfternoonsPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsMaxAfternoonsPerWeek max afternoons corrupt, max afternoons %1 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(text));
 			}
@@ -38258,7 +38258,7 @@ TimeConstraint* Rules::readStudentsSetMaxMorningsPerWeek(QWidget* parent, QXmlSt
 			QString text=xmlReader.readElementText();
 			cn->maxMorningsPerWeek=text.toInt();
 			if(cn->maxMorningsPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetMaxMorningsPerWeek max mornings corrupt for students set %1, max mornings %2 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(cn->students)
 					.arg(text));
@@ -38302,7 +38302,7 @@ TimeConstraint* Rules::readStudentsMaxMorningsPerWeek(QWidget* parent, QXmlStrea
 			QString text=xmlReader.readElementText();
 			cn->maxMorningsPerWeek=text.toInt();
 			if(cn->maxMorningsPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsMaxMorningsPerWeek max mornings corrupt, max mornings %1 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(text));
 			}
@@ -38351,7 +38351,7 @@ TimeConstraint* Rules::readStudentsSetMinAfternoonsPerWeek(QWidget* parent, QXml
 			QString text=xmlReader.readElementText();
 			cn->minAfternoonsPerWeek=text.toInt();
 			if(cn->minAfternoonsPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetMinAfternoonsPerWeek min afternoons corrupt for students set %1, min afternoons %2 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(cn->students)
 					.arg(text));
@@ -38395,7 +38395,7 @@ TimeConstraint* Rules::readStudentsMinAfternoonsPerWeek(QWidget* parent, QXmlStr
 			QString text=xmlReader.readElementText();
 			cn->minAfternoonsPerWeek=text.toInt();
 			if(cn->minAfternoonsPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsMinAfternoonsPerWeek min afternoons corrupt, min afternoons %1 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(text));
 			}
@@ -38443,7 +38443,7 @@ TimeConstraint* Rules::readStudentsSetMinMorningsPerWeek(QWidget* parent, QXmlSt
 			QString text=xmlReader.readElementText();
 			cn->minMorningsPerWeek=text.toInt();
 			if(cn->minMorningsPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetMinMorningsPerWeek min mornings corrupt for students set %1, min mornings %2 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(cn->students)
 					.arg(text));
@@ -38487,7 +38487,7 @@ TimeConstraint* Rules::readStudentsMinMorningsPerWeek(QWidget* parent, QXmlStrea
 			QString text=xmlReader.readElementText();
 			cn->minMorningsPerWeek=text.toInt();
 			if(cn->minMorningsPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsMinMorningsPerWeek min mornings corrupt, min mornings %1 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(text));
 			}
@@ -38559,7 +38559,7 @@ TimeConstraint* Rules::readStudentsSetMorningIntervalMaxDaysPerWeek(QWidget* par
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetMorningIntervalMaxDaysPerWeek max days corrupt for students set %1, max days %2 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(cn->students)
 					.arg(text));
@@ -38577,7 +38577,7 @@ TimeConstraint* Rules::readStudentsSetMorningIntervalMaxDaysPerWeek(QWidget* par
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Students set interval max days per week start hour corrupt for students %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(cn->students)
 					.arg(text));*/
@@ -38602,7 +38602,7 @@ TimeConstraint* Rules::readStudentsSetMorningIntervalMaxDaysPerWeek(QWidget* par
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Students set interval max days per week end hour corrupt for students %1, hour %2 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						.arg(cn->students)
 						.arg(text));*/
@@ -38679,7 +38679,7 @@ TimeConstraint* Rules::readStudentsMorningIntervalMaxDaysPerWeek(QWidget* parent
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsMorningIntervalMaxDaysPerWeek max days corrupt: max days %1 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(text));
 				/*delete cn;
@@ -38696,7 +38696,7 @@ TimeConstraint* Rules::readStudentsMorningIntervalMaxDaysPerWeek(QWidget* parent
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Students interval max days per week start hour corrupt: hour %1 is nonexistent ... ignoring constraint")
 					//.arg(cn->students)
 					.arg(text));*/
@@ -38721,7 +38721,7 @@ TimeConstraint* Rules::readStudentsMorningIntervalMaxDaysPerWeek(QWidget* parent
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Students interval max days per week end hour corrupt: hour %1 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						//.arg(cn->students)
 						.arg(text));*/
@@ -38799,7 +38799,7 @@ TimeConstraint* Rules::readStudentsSetAfternoonIntervalMaxDaysPerWeek(QWidget* p
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsSetAfternoonIntervalMaxDaysPerWeek max days corrupt for students set %1, max days %2 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(cn->students)
 					.arg(text));
@@ -38817,7 +38817,7 @@ TimeConstraint* Rules::readStudentsSetAfternoonIntervalMaxDaysPerWeek(QWidget* p
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Students set interval max days per week start hour corrupt for students %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(cn->students)
 					.arg(text));*/
@@ -38842,7 +38842,7 @@ TimeConstraint* Rules::readStudentsSetAfternoonIntervalMaxDaysPerWeek(QWidget* p
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Students set interval max days per week end hour corrupt for students %1, hour %2 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						.arg(cn->students)
 						.arg(text));*/
@@ -38919,7 +38919,7 @@ TimeConstraint* Rules::readStudentsAfternoonIntervalMaxDaysPerWeek(QWidget* pare
 			QString text=xmlReader.readElementText();
 			cn->maxDaysPerWeek=text.toInt();
 			if(cn->maxDaysPerWeek>this->nDaysPerWeek/2){
-				RulesReconcilableMessage::information(parent, tr("FET information"),
+				RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint StudentsAfternoonIntervalMaxDaysPerWeek max days corrupt: max days %1 >nDaysPerWeek/2, constraint added, please correct constraint")
 					.arg(text));
 				/*delete cn;
@@ -38936,7 +38936,7 @@ TimeConstraint* Rules::readStudentsAfternoonIntervalMaxDaysPerWeek(QWidget* pare
 					break;
 			if(h1>=this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint Students interval max days per week start hour corrupt: hour %1 is nonexistent ... ignoring constraint")
 					//.arg(cn->students)
 					.arg(text));*/
@@ -38961,7 +38961,7 @@ TimeConstraint* Rules::readStudentsAfternoonIntervalMaxDaysPerWeek(QWidget* pare
 						break;
 				if(h2>=this->nHoursPerDay){
 					xmlReader.raiseError(tr("Hour %1 is nonexistent (it is also not void, to specify end of the day)").arg(text));
-					/*RulesReconcilableMessage::information(parent, tr("FET information"),
+					/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 						tr("Constraint Students interval max days per week end hour corrupt: hour %1 is nonexistent (it is also not void, to specify end of the day) ... ignoring constraint")
 						//.arg(cn->students)
 						.arg(text));*/
@@ -39781,7 +39781,7 @@ TimeConstraint* Rules::readTeachersMinHoursPerMorning(QWidget* parent, QXmlStrea
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teachers min hours per morning with tag allow empty days"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -39800,7 +39800,7 @@ TimeConstraint* Rules::readTeachersMinHoursPerMorning(QWidget* parent, QXmlStrea
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teachers min hours per morning with tag allow empty mornings"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -39887,7 +39887,7 @@ TimeConstraint* Rules::readTeacherMinHoursPerMorning(QWidget* parent, QXmlStream
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teacher min hours per morning with tag allow empty days"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -39906,7 +39906,7 @@ TimeConstraint* Rules::readTeacherMinHoursPerMorning(QWidget* parent, QXmlStream
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teacher min hours per morning with tag allow empty mornings"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -39963,7 +39963,7 @@ TimeConstraint* Rules::readTeachersMinHoursPerAfternoon(QWidget* parent, QXmlStr
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teachers min hours per afternoon with tag allow empty afternoons"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -40030,7 +40030,7 @@ TimeConstraint* Rules::readTeacherMinHoursPerAfternoon(QWidget* parent, QXmlStre
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teacher min hours per afternoon with tag allow empty afternoons"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -40106,7 +40106,7 @@ TimeConstraint* Rules::readTeachersMinHoursDailyRealDays(QWidget* parent, QXmlSt
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teachers min hours daily with tag allow empty days"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -40192,7 +40192,7 @@ TimeConstraint* Rules::readTeacherMinHoursDailyRealDays(QWidget* parent, QXmlStr
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teacher min hours daily with tag allow empty days"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -40799,7 +40799,7 @@ TimeConstraint* Rules::readStudentsMinHoursPerMorning(QWidget* parent, QXmlStrea
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint students min hours per morning with tag allow empty mornings"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -40894,7 +40894,7 @@ TimeConstraint* Rules::readStudentsSetMinHoursPerMorning(QWidget* parent, QXmlSt
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint students set min hours per morning with tag allow empty mornings"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -40965,7 +40965,7 @@ TimeConstraint* Rules::readStudentsMinHoursPerAfternoon(QWidget* parent, QXmlStr
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint students min hours per afternoon with tag allow empty afternoons"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -41041,7 +41041,7 @@ TimeConstraint* Rules::readStudentsSetMinHoursPerAfternoon(QWidget* parent, QXml
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint students set min hours per afternoon with tag allow empty afternoons"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -42827,7 +42827,7 @@ TimeConstraint* Rules::readTeacherMaxThreeConsecutiveDays(QWidget* parent, QXmlS
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teacher max three consecutive days with tag %1"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -42888,7 +42888,7 @@ TimeConstraint* Rules::readTeachersMaxThreeConsecutiveDays(QWidget* parent, QXml
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint teachers max three consecutive days with tag %1"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -42955,7 +42955,7 @@ TimeConstraint* Rules::readStudentsSetMaxThreeConsecutiveDays(QWidget* parent, Q
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint students set max three consecutive days with tag %1"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -43016,7 +43016,7 @@ TimeConstraint* Rules::readStudentsMaxThreeConsecutiveDays(QWidget* parent, QXml
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint students max three consecutive days with tag %1"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -44046,7 +44046,7 @@ TimeConstraint* Rules::readTeacherPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStr
 							
 					if(cn->selectedDays1[i1]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44068,7 +44068,7 @@ TimeConstraint* Rules::readTeacherPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStr
 							
 					if(cn->selectedHours1[i1]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44122,7 +44122,7 @@ TimeConstraint* Rules::readTeacherPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStr
 							
 					if(cn->selectedDays2[i2]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44144,7 +44144,7 @@ TimeConstraint* Rules::readTeacherPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStr
 							
 					if(cn->selectedHours2[i2]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44255,7 +44255,7 @@ TimeConstraint* Rules::readTeachersPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlSt
 							
 					if(cn->selectedDays1[i1]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44277,7 +44277,7 @@ TimeConstraint* Rules::readTeachersPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlSt
 							
 					if(cn->selectedHours1[i1]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44331,7 +44331,7 @@ TimeConstraint* Rules::readTeachersPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlSt
 							
 					if(cn->selectedDays2[i2]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44353,7 +44353,7 @@ TimeConstraint* Rules::readTeachersPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlSt
 							
 					if(cn->selectedHours2[i2]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44469,7 +44469,7 @@ TimeConstraint* Rules::readStudentsSetPairOfMutuallyExclusiveSetsOfTimeSlots(QXm
 							
 					if(cn->selectedDays1[i1]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44491,7 +44491,7 @@ TimeConstraint* Rules::readStudentsSetPairOfMutuallyExclusiveSetsOfTimeSlots(QXm
 							
 					if(cn->selectedHours1[i1]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44545,7 +44545,7 @@ TimeConstraint* Rules::readStudentsSetPairOfMutuallyExclusiveSetsOfTimeSlots(QXm
 							
 					if(cn->selectedDays2[i2]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44567,7 +44567,7 @@ TimeConstraint* Rules::readStudentsSetPairOfMutuallyExclusiveSetsOfTimeSlots(QXm
 							
 					if(cn->selectedHours2[i2]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44678,7 +44678,7 @@ TimeConstraint* Rules::readStudentsPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlSt
 							
 					if(cn->selectedDays1[i1]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44700,7 +44700,7 @@ TimeConstraint* Rules::readStudentsPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlSt
 							
 					if(cn->selectedHours1[i1]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44754,7 +44754,7 @@ TimeConstraint* Rules::readStudentsPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlSt
 							
 					if(cn->selectedDays2[i2]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -44776,7 +44776,7 @@ TimeConstraint* Rules::readStudentsPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlSt
 							
 					if(cn->selectedHours2[i2]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -45702,7 +45702,7 @@ TimeConstraint* Rules::readTeacherMaxHoursPerTerm(QXmlStreamReader& xmlReader, F
 			cn->maxHoursPerTerm=text.toInt();
 			if(cn->maxHoursPerTerm<=0 || cn->maxHoursPerTerm > this->nDaysPerTerm*this->nHoursPerDay){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Hours_Per_Term"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMaxDaysPerWeek max days corrupt for teacher %1, max days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -45751,7 +45751,7 @@ TimeConstraint* Rules::readTeachersMaxHoursPerTerm(QXmlStreamReader& xmlReader, 
 			cn->maxHoursPerTerm=text.toInt();
 			if(cn->maxHoursPerTerm<=0 || cn->maxHoursPerTerm > this->nDaysPerTerm*this->nHoursPerDay){
 				xmlReader.raiseError(tr("%1 is incorrect").arg("Max_Hours_Per_Term"));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint TeacherMaxDaysPerWeek max days corrupt for teacher %1, max days %2 <= 0 or >nDaysPerWeek, ignoring constraint")
 					.arg(cn->teacherName)
 					.arg(text));*/
@@ -45877,7 +45877,7 @@ SpaceConstraint* Rules::readRoomNotAvailable(QXmlStreamReader& xmlReader, FakeSt
 					break;
 			if(d>=this->nDaysPerWeek){
 				xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint RoomNotAvailable day corrupt for room %1, day %2 is nonexistent ... ignoring constraint")
 					.arg(room)
 					.arg(text));*/
@@ -45899,7 +45899,7 @@ SpaceConstraint* Rules::readRoomNotAvailable(QXmlStreamReader& xmlReader, FakeSt
 			}
 			else if(h1>this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint RoomNotAvailable start hour corrupt for room %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(room)
 					.arg(text));*/
@@ -45921,7 +45921,7 @@ SpaceConstraint* Rules::readRoomNotAvailable(QXmlStreamReader& xmlReader, FakeSt
 			}
 			else if(h2<0 || h2>this->nHoursPerDay){
 				xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-				/*RulesReconcilableMessage::information(parent, tr("FET information"),
+				/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 					tr("Constraint RoomNotAvailable end hour corrupt for room %1, hour %2 is nonexistent ... ignoring constraint")
 					.arg(room)
 					.arg(text));*/
@@ -46053,7 +46053,7 @@ SpaceConstraint* Rules::readRoomNotAvailableTimes(QXmlStreamReader& xmlReader, F
 
 					if(d>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint RoomNotAvailableTimes day corrupt for room %1, day %2 is nonexistent ... ignoring constraint")
 							.arg(cn->room)
 							.arg(text));*/
@@ -46074,7 +46074,7 @@ SpaceConstraint* Rules::readRoomNotAvailableTimes(QXmlStreamReader& xmlReader, F
 					
 					if(h>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint RoomNotAvailableTimes hour corrupt for room %1, hour %2 is nonexistent ... ignoring constraint")
 							.arg(cn->room)
 							.arg(text));*/
@@ -46179,7 +46179,7 @@ SpaceConstraint* Rules::readTeacherRoomNotAvailableTimes(QXmlStreamReader& xmlRe
 
 					if(d>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"), 
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"), 
 							tr("Constraint RoomNotAvailableTimes day corrupt for room %1, day %2 is nonexistent ... ignoring constraint")
 							.arg(cn->room)
 							.arg(text));*/
@@ -46200,7 +46200,7 @@ SpaceConstraint* Rules::readTeacherRoomNotAvailableTimes(QXmlStreamReader& xmlRe
 					
 					if(h>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"), 
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"), 
 							tr("Constraint RoomNotAvailableTimes hour corrupt for room %1, hour %2 is nonexistent ... ignoring constraint")
 							.arg(cn->room)
 							.arg(text));*/
@@ -46713,7 +46713,7 @@ bool& reportUnspecifiedPermanentlyLockedSpace){
 			}
 			else{
 				if(!(text=="no" || text=="false" || text=="0")){
-					RulesReconcilableMessage::warning(parent, tr("FET warning"),
+					RulesReconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 						tr("Found constraint activity preferred room with tag permanently locked"
 						" which is not 'true', 'false', 'yes', 'no', '1' or '0'."
 						" The tag will be considered false",
@@ -46792,7 +46792,7 @@ bool& reportUnspecifiedPermanentlyLockedSpace){
 	}
 
 	if(!foundLocked && reportUnspecifiedPermanentlyLockedSpace){
-		int t=RulesReconcilableMessage::information(parent, tr("FET information"),
+		int t=RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 			tr("Found constraint activity preferred room, with unspecified tag"
 			" 'permanently locked' - this tag will be set to 'false' by default. You can always modify it"
 			" by editing the constraint in the 'Data' menu")+"\n\n"
@@ -51332,7 +51332,7 @@ SpaceConstraint* Rules::readRoomPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStrea
 							
 					if(cn->selectedDays1[i1]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -51354,7 +51354,7 @@ SpaceConstraint* Rules::readRoomPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStrea
 							
 					if(cn->selectedHours1[i1]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -51408,7 +51408,7 @@ SpaceConstraint* Rules::readRoomPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStrea
 							
 					if(cn->selectedDays2[i2]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -51430,7 +51430,7 @@ SpaceConstraint* Rules::readRoomPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStrea
 							
 					if(cn->selectedHours2[i2]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -52132,7 +52132,7 @@ SpaceConstraint* Rules::readRoomsPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStre
 							
 					if(cn->selectedDays1[i1]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -52154,7 +52154,7 @@ SpaceConstraint* Rules::readRoomsPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStre
 							
 					if(cn->selectedHours1[i1]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -52208,7 +52208,7 @@ SpaceConstraint* Rules::readRoomsPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStre
 							
 					if(cn->selectedDays2[i2]>=this->nDaysPerWeek){
 						xmlReader.raiseError(tr("Day %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr("Constraint ActivitiesOccupyMaxTimeSlotsFromSelection day corrupt, day %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;
@@ -52230,7 +52230,7 @@ SpaceConstraint* Rules::readRoomsPairOfMutuallyExclusiveSetsOfTimeSlots(QXmlStre
 							
 					if(cn->selectedHours2[i2]>=this->nHoursPerDay){
 						xmlReader.raiseError(tr("Hour %1 is nonexistent").arg(text));
-						/*RulesReconcilableMessage::information(parent, tr("FET information"),
+						/*RulesReconcilableMessage::information(parent, tr("Open-Timetable information"),
 							tr(" Constraint ActivitiesOccupyMaxTimeSlotsFromSelection hour corrupt, hour %1 is nonexistent ... ignoring constraint")
 							.arg(text));*/
 						delete cn;

@@ -10007,7 +10007,7 @@ bool ConstraintTeacherNotAvailableTimes::computeInternalStructure(QWidget* paren
 	teacher_ID=r.teachersHash.value(teacher, -1);
 
 	if(this->teacher_ID<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher not available times is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -10017,14 +10017,14 @@ bool ConstraintTeacherNotAvailableTimes::computeInternalStructure(QWidget* paren
 	assert(days.count()==hours.count());
 	for(int k=0; k<days.count(); k++){
 		if(this->days.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint teacher not available times is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->hours.at(k) >= r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint teacher not available times is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -10230,7 +10230,7 @@ bool ConstraintStudentsSetNotAvailableTimes::computeInternalStructure(QWidget* p
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set not available is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -10240,14 +10240,14 @@ bool ConstraintStudentsSetNotAvailableTimes::computeInternalStructure(QWidget* p
 	assert(days.count()==hours.count());
 	for(int k=0; k<days.count(); k++){
 		if(this->days.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint students set not available times is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->hours.at(k) >= r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint students set not available times is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -10631,7 +10631,7 @@ bool ConstraintActivitiesSameStartingTime::computeInternalStructure(QWidget* par
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -10959,7 +10959,7 @@ bool ConstraintActivitiesNotOverlapping::computeInternalStructure(QWidget* paren
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -11274,7 +11274,7 @@ ConstraintActivityTagsNotOverlapping::ConstraintActivityTagsNotOverlapping(doubl
 bool ConstraintActivityTagsNotOverlapping::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(activityTagsNames.count()<2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("The following constraint is wrong (because it needs at least two activity tags). "
 			"Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
@@ -11302,7 +11302,7 @@ bool ConstraintActivityTagsNotOverlapping::computeInternalStructure(QWidget* par
 	assert(activityTagsNames.count()==activityTagsIndices.count());
 	for(int i=0; i<activityTagsIndices.count(); i++){
 		if(activitiesIndicesLists.at(i).count()<1){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 				tr("Following constraint is wrong (because you need at least one activity for each activity tag, but"
 				 " no activity has activity tag %1). Please correct it:\n%2").arg(activityTagsNames.at(i)).arg(this->getDetailedDescription(r)));
 			return false;
@@ -11598,7 +11598,7 @@ bool ConstraintMinDaysBetweenActivities::computeInternalStructure(QWidget* paren
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -12031,7 +12031,7 @@ bool ConstraintMaxDaysBetweenActivities::computeInternalStructure(QWidget* paren
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -12400,7 +12400,7 @@ bool ConstraintActivitiesMaxHourlySpan::computeInternalStructure(QWidget* parent
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -12773,7 +12773,7 @@ bool ConstraintMinGapsBetweenActivities::computeInternalStructure(QWidget* paren
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -13097,7 +13097,7 @@ bool ConstraintMaxGapsBetweenActivities::computeInternalStructure(QWidget* paren
 	this->_n_activities=this->_activities.count();
 
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -16920,14 +16920,14 @@ bool ConstraintBreakTimes::computeInternalStructure(QWidget* parent, Rules& r)
 	assert(days.count()==hours.count());
 	for(int k=0; k<days.count(); k++){
 		if(this->days.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint break times is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->hours.at(k) >= r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint break times is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -17354,7 +17354,7 @@ bool ConstraintStudentsSetMaxGapsPerWeek::computeInternalStructure(QWidget* pare
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max gaps per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -17893,7 +17893,7 @@ bool ConstraintStudentsSetEarlyMaxBeginningsAtSecondHour::computeInternalStructu
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set early is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -18486,7 +18486,7 @@ bool ConstraintStudentsSetMaxHoursDaily::computeInternalStructure(QWidget* paren
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max hours daily is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -18994,7 +18994,7 @@ bool ConstraintStudentsSetMaxHoursContinuously::computeInternalStructure(QWidget
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max hours continuously is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -19580,7 +19580,7 @@ bool ConstraintStudentsSetActivityTagMaxHoursContinuously::computeInternalStruct
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max hours continuously is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -20241,7 +20241,7 @@ bool ConstraintStudentsSetMinHoursDaily::computeInternalStructure(QWidget* paren
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min hours daily is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -20559,27 +20559,27 @@ bool ConstraintActivityPreferredStartingTime::computeInternalStructure(QWidget* 
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because it refers to invalid activity id). Please correct it (maybe removing it is a solution):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
 
 	if(this->day >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 		 tr("Constraint activity preferred starting time is wrong because it refers to removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour == r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 		 tr("Constraint activity preferred starting time is wrong because preferred hour is too late (after the last acceptable slot). Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour > r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 		 tr("Constraint activity preferred starting time is wrong because it refers to removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -20845,7 +20845,7 @@ bool ConstraintActivityPreferredTimeSlots::computeInternalStructure(QWidget* par
 	int i=r.activitiesHash.value(p_activityId, r.nInternalActivities);
 
 	if(i==r.nInternalActivities){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because it refers to invalid activity id). Please correct it (maybe removing it is a solution):\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -20853,21 +20853,21 @@ bool ConstraintActivityPreferredTimeSlots::computeInternalStructure(QWidget* par
 
 	for(int k=0; k<p_nPreferredTimeSlots_L; k++){
 		if(this->p_days_L[k] >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activity preferred time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->p_hours_L[k] == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activity preferred time slots is wrong because a preferred hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->p_hours_L[k] > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activity preferred time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -20875,7 +20875,7 @@ bool ConstraintActivityPreferredTimeSlots::computeInternalStructure(QWidget* par
 		}
 
 		if(this->p_hours_L[k]<0 || this->p_days_L[k]<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activity preferred time slots is wrong because it has hour or day not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -21270,28 +21270,28 @@ bool ConstraintActivitiesPreferredTimeSlots::computeInternalStructure(QWidget* p
 	//////////////////////
 	for(int k=0; k<p_nPreferredTimeSlots_L; k++){
 		if(this->p_days_L[k] >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities preferred time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->p_hours_L[k] == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities preferred time slots is wrong because a preferred hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->p_hours_L[k] > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities preferred time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->p_hours_L[k]<0 || this->p_days_L[k]<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities preferred time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -21303,7 +21303,7 @@ bool ConstraintActivitiesPreferredTimeSlots::computeInternalStructure(QWidget* p
 	if(this->p_nActivities>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET - useless constraint", "The title of a dialog which reports a useless constraint"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable - useless constraint", "The title of a dialog which reports a useless constraint"),
 			tr("The following constraint does not affect any activity (it is useless). Please modify, deactivate, or remove it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -21862,28 +21862,28 @@ bool ConstraintSubactivitiesPreferredTimeSlots::computeInternalStructure(QWidget
 	//////////////////////
 	for(int k=0; k<p_nPreferredTimeSlots_L; k++){
 		if(this->p_days_L[k] >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint subactivities preferred time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->p_hours_L[k] == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint subactivities preferred time slots is wrong because a preferred hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->p_hours_L[k] > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint subactivities preferred time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->p_hours_L[k]<0 || this->p_days_L[k]<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint subactivities preferred time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -21895,7 +21895,7 @@ bool ConstraintSubactivitiesPreferredTimeSlots::computeInternalStructure(QWidget
 	if(this->p_nActivities>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET - useless constraint", "The title of a dialog which reports a useless constraint"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable - useless constraint", "The title of a dialog which reports a useless constraint"),
 			tr("The following constraint does not affect any activity (it is useless). Please modify, deactivate, or remove it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -22426,28 +22426,28 @@ bool ConstraintActivityPreferredStartingTimes::computeInternalStructure(QWidget*
 	int i=r.activitiesHash.value(activityId, r.nInternalActivities);
 
 	if(i==r.nInternalActivities){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because it refers to invalid activity id). Please correct it (maybe removing it is a solution):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
 
 	for(int k=0; k<nPreferredStartingTimes_L; k++){
 		if(this->days_L[k] >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activity preferred starting times is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->hours_L[k] == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activity preferred starting times is wrong because a preferred hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->hours_L[k] > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activity preferred starting times is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -22837,21 +22837,21 @@ bool ConstraintActivitiesPreferredStartingTimes::computeInternalStructure(QWidge
 	//////////////////////
 	for(int k=0; k<nPreferredStartingTimes_L; k++){
 		if(this->days_L[k] >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities preferred starting times is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->hours_L[k] == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities preferred starting times is wrong because a preferred hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->hours_L[k] > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities preferred starting times is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -22863,7 +22863,7 @@ bool ConstraintActivitiesPreferredStartingTimes::computeInternalStructure(QWidge
 	if(this->nActivities>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET - useless constraint", "The title of a dialog which reports a useless constraint"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable - useless constraint", "The title of a dialog which reports a useless constraint"),
 			tr("The following constraint does not affect any activity (it is useless). Please modify, deactivate, or remove it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -23419,21 +23419,21 @@ bool ConstraintSubactivitiesPreferredStartingTimes::computeInternalStructure(QWi
 	//////////////////////
 	for(int k=0; k<nPreferredStartingTimes_L; k++){
 		if(this->days_L[k] >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint subactivities preferred starting times is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->hours_L[k] == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint subactivities preferred starting times is wrong because a preferred hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->hours_L[k] > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint subactivities preferred starting times is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -23445,7 +23445,7 @@ bool ConstraintSubactivitiesPreferredStartingTimes::computeInternalStructure(QWi
 	if(this->nActivities>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET - useless constraint", "The title of a dialog which reports a useless constraint"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable - useless constraint", "The title of a dialog which reports a useless constraint"),
 			tr("The following constraint does not affect any activity (it is useless). Please modify, deactivate, or remove it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -23977,7 +23977,7 @@ bool ConstraintActivitiesSameStartingHour::computeInternalStructure(QWidget* par
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -24305,7 +24305,7 @@ bool ConstraintActivitiesSameStartingDay::computeInternalStructure(QWidget* pare
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -24614,7 +24614,7 @@ bool ConstraintTwoActivitiesConsecutive::computeInternalStructure(QWidget* paren
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -24633,7 +24633,7 @@ bool ConstraintTwoActivitiesConsecutive::computeInternalStructure(QWidget* paren
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -24642,7 +24642,7 @@ bool ConstraintTwoActivitiesConsecutive::computeInternalStructure(QWidget* paren
 	
 	if(firstActivityIndex==secondActivityIndex){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to same activities):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -24902,7 +24902,7 @@ bool ConstraintTwoActivitiesGrouped::computeInternalStructure(QWidget* parent, R
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -24921,7 +24921,7 @@ bool ConstraintTwoActivitiesGrouped::computeInternalStructure(QWidget* parent, R
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -24930,7 +24930,7 @@ bool ConstraintTwoActivitiesGrouped::computeInternalStructure(QWidget* parent, R
 	
 	if(firstActivityIndex==secondActivityIndex){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to same activities):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -25203,7 +25203,7 @@ bool ConstraintThreeActivitiesGrouped::computeInternalStructure(QWidget* parent,
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -25222,7 +25222,7 @@ bool ConstraintThreeActivitiesGrouped::computeInternalStructure(QWidget* parent,
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -25241,7 +25241,7 @@ bool ConstraintThreeActivitiesGrouped::computeInternalStructure(QWidget* parent,
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -25250,7 +25250,7 @@ bool ConstraintThreeActivitiesGrouped::computeInternalStructure(QWidget* parent,
 	
 	if(firstActivityIndex==secondActivityIndex || firstActivityIndex==thirdActivityIndex || secondActivityIndex==thirdActivityIndex){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to same activities):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -25585,7 +25585,7 @@ bool ConstraintTwoActivitiesOrdered::computeInternalStructure(QWidget* parent, R
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -25604,7 +25604,7 @@ bool ConstraintTwoActivitiesOrdered::computeInternalStructure(QWidget* parent, R
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -25613,7 +25613,7 @@ bool ConstraintTwoActivitiesOrdered::computeInternalStructure(QWidget* parent, R
 	
 	if(firstActivityIndex==secondActivityIndex){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to same activities):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -25859,7 +25859,7 @@ bool ConstraintTwoSetsOfActivitiesOrdered::computeInternalStructure(QWidget* par
 	}
 
 	if(this->firstActivitiesIndicesList.isEmpty()){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (its first set of activities is empty/incorrect). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -25881,13 +25881,13 @@ bool ConstraintTwoSetsOfActivitiesOrdered::computeInternalStructure(QWidget* par
 	}
 
 	if(this->secondActivitiesIndicesList.isEmpty()){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (its second set of activities is empty/incorrect). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
 
 	if(intersect){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (the first set of activities has activities in common with the second set of activities). Please correct it:\n%1")
 			 .arg(this->getDetailedDescription(r)));
 		return false;
@@ -26224,7 +26224,7 @@ bool ConstraintTwoActivitiesOrderedIfSameDay::computeInternalStructure(QWidget* 
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -26243,7 +26243,7 @@ bool ConstraintTwoActivitiesOrderedIfSameDay::computeInternalStructure(QWidget* 
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to nonexistent activity ids):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -26252,7 +26252,7 @@ bool ConstraintTwoActivitiesOrderedIfSameDay::computeInternalStructure(QWidget* 
 	
 	if(firstActivityIndex==secondActivityIndex){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to same activities):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -26498,7 +26498,7 @@ bool ConstraintActivityEndsStudentsDay::computeInternalStructure(QWidget* parent
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because it refers to invalid activity id). Please correct it (maybe removing it is a solution):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -26727,7 +26727,7 @@ bool ConstraintTeachersMinHoursDaily::computeInternalStructure(QWidget* parent, 
 			" so that it allows empty days. If you need a facility like that, please use constraint teachers min days per week");
 		s+="\n\n";
 		s+=tr("Constraint is:")+"\n"+this->getDetailedDescription(r);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"), s);
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), s);
 		
 		return false;
 	}
@@ -26983,7 +26983,7 @@ bool ConstraintTeacherMinHoursDaily::computeInternalStructure(QWidget* parent, R
 			" so that it allows empty days. If you need a facility like that, please use constraint teacher min days per week");
 		s+="\n\n";
 		s+=tr("Constraint is:")+"\n"+this->getDetailedDescription(r);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"), s);
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), s);
 		
 		return false;
 	}
@@ -27672,21 +27672,21 @@ bool ConstraintTeacherIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* 
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	assert(this->teacher_ID>=0);
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -27942,21 +27942,21 @@ ConstraintTeachersIntervalMaxDaysPerWeek::ConstraintTeachersIntervalMaxDaysPerWe
 bool ConstraintTeachersIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -28209,21 +28209,21 @@ ConstraintStudentsSetIntervalMaxDaysPerWeek::ConstraintStudentsSetIntervalMaxDay
 bool ConstraintStudentsSetIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -28235,7 +28235,7 @@ bool ConstraintStudentsSetIntervalMaxDaysPerWeek::computeInternalStructure(QWidg
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set interval max days per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -28531,21 +28531,21 @@ ConstraintStudentsIntervalMaxDaysPerWeek::ConstraintStudentsIntervalMaxDaysPerWe
 bool ConstraintStudentsIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -28843,7 +28843,7 @@ bool ConstraintActivitiesEndStudentsDay::computeInternalStructure(QWidget* paren
 	if(this->nActivities>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET - useless constraint", "The title of a dialog which reports a useless constraint"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable - useless constraint", "The title of a dialog which reports a useless constraint"),
 			tr("The following constraint does not affect any activity (it is useless). Please modify, deactivate, or remove it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -29148,7 +29148,7 @@ bool ConstraintActivityEndsTeachersDay::computeInternalStructure(QWidget* parent
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"), 
 			tr("Following constraint is wrong (because it refers to invalid activity id). Please correct it (maybe removing it is a solution):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -29414,7 +29414,7 @@ bool ConstraintActivitiesEndTeachersDay::computeInternalStructure(QWidget* paren
 	if(this->nActivities>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET - useless constraint", "The title of a dialog which reports a useless constraint"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable - useless constraint", "The title of a dialog which reports a useless constraint"),
 			tr("The following constraint does not affect any activity (it is useless). Please modify, deactivate, or remove it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -30548,7 +30548,7 @@ bool ConstraintStudentsSetActivityTagMaxHoursDaily::computeInternalStructure(QWi
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max hours daily is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -31672,7 +31672,7 @@ bool ConstraintStudentsSetActivityTagMinHoursDaily::computeInternalStructure(QWi
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min hours daily is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -32143,7 +32143,7 @@ bool ConstraintStudentsSetMaxGapsPerDay::computeInternalStructure(QWidget* paren
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max gaps per day is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -32448,28 +32448,28 @@ bool ConstraintActivitiesOccupyMaxTimeSlotsFromSelection::computeInternalStructu
 	
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities occupy max time slots from selection is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities occupy max time slots from selection is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities occupy max time slots from selection is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities occupy max time slots from selection is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -32481,7 +32481,7 @@ bool ConstraintActivitiesOccupyMaxTimeSlotsFromSelection::computeInternalStructu
 	if(this->_activitiesIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -32879,28 +32879,28 @@ bool ConstraintActivitiesOccupyMinTimeSlotsFromSelection::computeInternalStructu
 	
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities occupy min time slots from selection is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities occupy min time slots from selection is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities occupy min time slots from selection is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities occupy min time slots from selection is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -32912,7 +32912,7 @@ bool ConstraintActivitiesOccupyMinTimeSlotsFromSelection::computeInternalStructu
 	if(this->_activitiesIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -33319,28 +33319,28 @@ bool ConstraintActivitiesMaxSimultaneousInSelectedTimeSlots::computeInternalStru
 	
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max simultaneous in selected time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max simultaneous in selected time slots is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max simultaneous in selected time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max simultaneous in selected time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -33352,7 +33352,7 @@ bool ConstraintActivitiesMaxSimultaneousInSelectedTimeSlots::computeInternalStru
 	if(this->_activitiesIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -33747,28 +33747,28 @@ bool ConstraintActivitiesMinSimultaneousInSelectedTimeSlots::computeInternalStru
 	
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities min simultaneous in selected time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities min simultaneous in selected time slots is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities min simultaneous in selected time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities min simultaneous in selected time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -33780,7 +33780,7 @@ bool ConstraintActivitiesMinSimultaneousInSelectedTimeSlots::computeInternalStru
 	if(this->_activitiesIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -34190,28 +34190,28 @@ bool ConstraintMaxTotalActivitiesFromSetInSelectedTimeSlots::computeInternalStru
 
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint max total activities from set in selected time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint max total activities from set in selected time slots is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint max total activities from set in selected time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint max total activities from set in selected time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -34223,7 +34223,7 @@ bool ConstraintMaxTotalActivitiesFromSetInSelectedTimeSlots::computeInternalStru
 	if(this->_activitiesIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -34605,7 +34605,7 @@ bool ConstraintActivitiesMaxInATerm::computeInternalStructure(QWidget* parent, R
 	if(this->_activitiesIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -34886,7 +34886,7 @@ bool ConstraintActivitiesOccupyMaxTerms::computeInternalStructure(QWidget* paren
 	if(this->_activitiesIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -35151,7 +35151,7 @@ bool ConstraintStudentsSetMaxDaysPerWeek::computeInternalStructure(QWidget* pare
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max days per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -36147,7 +36147,7 @@ bool ConstraintStudentsSetMaxSpanPerDay::computeInternalStructure(QWidget* paren
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max span per day is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -37045,7 +37045,7 @@ bool ConstraintStudentsSetMinRestingHours::computeInternalStructure(QWidget* par
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min resting hours is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -37531,7 +37531,7 @@ bool ConstraintStudentsSetMinGapsBetweenOrderedPairOfActivityTags::computeIntern
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min gaps between ordered pair of activity tags is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -38161,7 +38161,7 @@ bool ConstraintTeacherMinGapsBetweenOrderedPairOfActivityTags::computeInternalSt
 	int teacherIndex=r.teachersHash.value(teacher, -1);
 
 	if(teacherIndex<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher min gaps between ordered pair of activity tags is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -38747,7 +38747,7 @@ bool ConstraintStudentsSetMinGapsBetweenActivityTag::computeInternalStructure(QW
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min gaps between activity tag is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -39362,7 +39362,7 @@ bool ConstraintTeacherMinGapsBetweenActivityTag::computeInternalStructure(QWidge
 	int teacherIndex=r.teachersHash.value(teacher, -1);
 
 	if(teacherIndex<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher min gaps between activity tag is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -39949,7 +39949,7 @@ bool ConstraintStudentsSetMinGapsBetweenOrderedPairOfActivityTagsPerRealDay::com
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min gaps between ordered pair of activity tags per real day is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -40579,7 +40579,7 @@ bool ConstraintTeacherMinGapsBetweenOrderedPairOfActivityTagsPerRealDay::compute
 	int teacherIndex=r.teachersHash.value(teacher, -1);
 
 	if(teacherIndex<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher min gaps between ordered pair of activity tags per real day is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -41165,7 +41165,7 @@ bool ConstraintStudentsSetMinGapsBetweenActivityTagPerRealDay::computeInternalSt
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min gaps between activity tag per real day is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -41780,7 +41780,7 @@ bool ConstraintTeacherMinGapsBetweenActivityTagPerRealDay::computeInternalStruct
 	int teacherIndex=r.teachersHash.value(teacher, -1);
 
 	if(teacherIndex<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher min gaps between activity tag per real day is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -42367,7 +42367,7 @@ bool ConstraintStudentsSetMinGapsBetweenOrderedPairOfActivityTagsBetweenMorningA
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min gaps between ordered pair of activity tags between morning and afternoon is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -43001,7 +43001,7 @@ bool ConstraintTeacherMinGapsBetweenOrderedPairOfActivityTagsBetweenMorningAndAf
 	int teacherIndex=r.teachersHash.value(teacher, -1);
 
 	if(teacherIndex<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher min gaps between ordered pair of activity tags between morning and afternoon is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -43591,7 +43591,7 @@ bool ConstraintStudentsSetMinGapsBetweenActivityTagBetweenMorningAndAfternoon::c
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min gaps between activity tag between morning and afternoon is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -44194,7 +44194,7 @@ bool ConstraintTeacherMinGapsBetweenActivityTagBetweenMorningAndAfternoon::compu
 	int teacherIndex=r.teachersHash.value(teacher, -1);
 
 	if(teacherIndex<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher min gaps between activity tag between morning and afternoon is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -46506,7 +46506,7 @@ bool ConstraintStudentsSetMaxHoursDailyRealDays::computeInternalStructure(QWidge
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max hours daily is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -46717,7 +46717,7 @@ bool ConstraintTeachersMinHoursPerMorning::computeInternalStructure(QWidget* par
 			" so that it allows empty mornings. If you need a facility like that, please use constraint teachers min mornings per week");
 		s+="\n\n";
 		s+=tr("Constraint is:")+"\n"+this->getDetailedDescription(r);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"), s);
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), s);
 
 		return false;
 	}
@@ -46974,7 +46974,7 @@ bool ConstraintTeacherMinHoursPerMorning::computeInternalStructure(QWidget* pare
 			" so that it allows empty mornings. If you need a facility like that, please use constraint teacher min mornings per week");
 		s+="\n\n";
 		s+=tr("Constraint is:")+"\n"+this->getDetailedDescription(r);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"), s);
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), s);
 
 		return false;
 	}
@@ -47230,7 +47230,7 @@ bool ConstraintTeachersMinHoursDailyRealDays::computeInternalStructure(QWidget* 
 			" so that it allows empty days. If you need a facility like that, please use constraint teachers min days per week");
 		s+="\n\n";
 		s+=tr("Constraint is:")+"\n"+this->getDetailedDescription(r);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"), s);
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), s);
 
 		return false;
 	}
@@ -47489,7 +47489,7 @@ bool ConstraintTeacherMinHoursDailyRealDays::computeInternalStructure(QWidget* p
 			" so that it allows empty days. If you need a facility like that, please use constraint teacher min days per week");
 		s+="\n\n";
 		s+=tr("Constraint is:")+"\n"+this->getDetailedDescription(r);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"), s);
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), s);
 
 		return false;
 	}
@@ -48177,21 +48177,21 @@ bool ConstraintTeacherMorningIntervalMaxDaysPerWeek::computeInternalStructure(QW
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	assert(this->teacher_ID>=0);
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher morning interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher morning interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher morning interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -48446,21 +48446,21 @@ ConstraintTeachersMorningIntervalMaxDaysPerWeek::ConstraintTeachersMorningInterv
 bool ConstraintTeachersMorningIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers morning interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers morning interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers morning interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -48716,21 +48716,21 @@ bool ConstraintTeacherAfternoonIntervalMaxDaysPerWeek::computeInternalStructure(
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 	assert(this->teacher_ID>=0);
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher afternoon interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher afternoon interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher afternoon interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -48985,21 +48985,21 @@ ConstraintTeachersAfternoonIntervalMaxDaysPerWeek::ConstraintTeachersAfternoonIn
 bool ConstraintTeachersAfternoonIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers afternoon interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers afternoon interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers afternoon interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -50091,7 +50091,7 @@ bool ConstraintStudentsSetActivityTagMaxHoursDailyRealDays::computeInternalStruc
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max hours daily is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -50572,7 +50572,7 @@ bool ConstraintStudentsSetMaxGapsPerRealDay::computeInternalStructure(QWidget* p
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max gaps per real day is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -50865,7 +50865,7 @@ bool ConstraintStudentsSetMaxRealDaysPerWeek::computeInternalStructure(QWidget* 
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max real days per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -51879,7 +51879,7 @@ bool ConstraintStudentsSetMaxSpanPerRealDay::computeInternalStructure(QWidget* p
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max span per real day is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -53348,7 +53348,7 @@ bool ConstraintTeacherMaxActivityTagsPerDayFromSet::computeInternalStructure(QWi
 		int tgi=r.activityTagsHash.value(at, -1);
 		
 		if(tgi==-1){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -53592,7 +53592,7 @@ bool ConstraintTeachersMaxActivityTagsPerDayFromSet::computeInternalStructure(QW
 		int tgi=r.activityTagsHash.value(at, -1);
 
 		if(tgi==-1){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -56677,7 +56677,7 @@ bool ConstraintStudentsSetMinHoursPerMorning::computeInternalStructure(QWidget* 
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min hours per morning is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -57348,7 +57348,7 @@ bool ConstraintStudentsSetMaxAfternoonsPerWeek::computeInternalStructure(QWidget
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max afternoons per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -57839,7 +57839,7 @@ bool ConstraintStudentsSetMaxMorningsPerWeek::computeInternalStructure(QWidget* 
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max mornings per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -58331,7 +58331,7 @@ bool ConstraintStudentsSetMinAfternoonsPerWeek::computeInternalStructure(QWidget
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min afternoons per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -58822,7 +58822,7 @@ bool ConstraintStudentsSetMinMorningsPerWeek::computeInternalStructure(QWidget* 
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min mornings per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -59315,21 +59315,21 @@ ConstraintStudentsSetMorningIntervalMaxDaysPerWeek::ConstraintStudentsSetMorning
 bool ConstraintStudentsSetMorningIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set morning interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set morning interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set morning interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -59341,7 +59341,7 @@ bool ConstraintStudentsSetMorningIntervalMaxDaysPerWeek::computeInternalStructur
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set morning interval max days per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -59635,21 +59635,21 @@ ConstraintStudentsMorningIntervalMaxDaysPerWeek::ConstraintStudentsMorningInterv
 bool ConstraintStudentsMorningIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students morning interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students morning interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students morning interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -59902,21 +59902,21 @@ ConstraintStudentsSetAfternoonIntervalMaxDaysPerWeek::ConstraintStudentsSetAfter
 bool ConstraintStudentsSetAfternoonIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set afternoon interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set afternoon interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set afternoon interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -59928,7 +59928,7 @@ bool ConstraintStudentsSetAfternoonIntervalMaxDaysPerWeek::computeInternalStruct
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set afternoon interval max days per week is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -60222,21 +60222,21 @@ ConstraintStudentsAfternoonIntervalMaxDaysPerWeek::ConstraintStudentsAfternoonIn
 bool ConstraintStudentsAfternoonIntervalMaxDaysPerWeek::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->startHour>=this->endHour){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students afternoon interval max days per week is wrong because start hour >= end hour."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->startHour<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students afternoon interval max days per week is wrong because start hour < first hour of the day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 	if(this->endHour>r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students afternoon interval max days per week is wrong because end hour > number of hours per day."
 		 " Please correct it. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -60886,7 +60886,7 @@ bool ConstraintStudentsSetMaxHoursPerAllAfternoons::computeInternalStructure(QWi
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max hours per all afternoons is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -61800,7 +61800,7 @@ bool ConstraintStudentsSetMinRestingHoursBetweenMorningAndAfternoon::computeInte
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min resting hours between morning and afternoon is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -62461,7 +62461,7 @@ bool ConstraintStudentsSetAfternoonsEarlyMaxBeginningsAtSecondHour::computeInter
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set afternoons early is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -63489,7 +63489,7 @@ bool ConstraintStudentsSetMaxGapsPerWeekForRealDays::computeInternalStructure(QW
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max gaps per week for real days is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -64581,7 +64581,7 @@ bool ConstraintStudentsSetMorningsEarlyMaxBeginningsAtSecondHour::computeInterna
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set mornings early is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -65328,7 +65328,7 @@ bool ConstraintStudentsSetMaxThreeConsecutiveDays::computeInternalStructure(QWid
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max three consecutive days is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -65858,7 +65858,7 @@ bool ConstraintMinHalfDaysBetweenActivities::computeInternalStructure(QWidget* p
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -66242,13 +66242,13 @@ bool ConstraintActivityPreferredDay::computeInternalStructure(QWidget* parent, R
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because it refers to invalid activity id). Please correct it (maybe removing it is a solution):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
 
 	if(this->day >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 		 tr("Constraint activity preferred starting time is wrong because it refers to removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -66510,7 +66510,7 @@ bool ConstraintActivitiesMinInATerm::computeInternalStructure(QWidget* parent, R
 	if(this->_activitiesIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -66817,7 +66817,7 @@ bool ConstraintMaxTermsBetweenActivities::computeInternalStructure(QWidget* pare
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -67131,7 +67131,7 @@ bool ConstraintStudentsSetMaxActivityTagsPerDayFromSet::computeInternalStructure
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max activity tags per day from a set is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -67147,7 +67147,7 @@ bool ConstraintStudentsSetMaxActivityTagsPerDayFromSet::computeInternalStructure
 		int tgi=r.activityTagsHash.value(at, -1);
 
 		if(tgi==-1){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -67386,7 +67386,7 @@ bool ConstraintStudentsMaxActivityTagsPerDayFromSet::computeInternalStructure(QW
 		int tgi=r.activityTagsHash.value(at, -1);
 
 		if(tgi==-1){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -67630,7 +67630,7 @@ bool ConstraintTeacherMaxActivityTagsPerRealDayFromSet::computeInternalStructure
 		int tgi=r.activityTagsHash.value(at, -1);
 
 		if(tgi==-1){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -67877,7 +67877,7 @@ bool ConstraintTeachersMaxActivityTagsPerRealDayFromSet::computeInternalStructur
 		int tgi=r.activityTagsHash.value(at, -1);
 
 		if(tgi==-1){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -68115,7 +68115,7 @@ bool ConstraintStudentsSetMaxActivityTagsPerRealDayFromSet::computeInternalStruc
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max activity tags per real day from a set is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -68131,7 +68131,7 @@ bool ConstraintStudentsSetMaxActivityTagsPerRealDayFromSet::computeInternalStruc
 		int tgi=r.activityTagsHash.value(at, -1);
 
 		if(tgi==-1){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -68373,7 +68373,7 @@ bool ConstraintStudentsMaxActivityTagsPerRealDayFromSet::computeInternalStructur
 		int tgi=r.activityTagsHash.value(at, -1);
 
 		if(tgi==-1){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -68639,7 +68639,7 @@ bool ConstraintMaxHalfDaysBetweenActivities::computeInternalStructure(QWidget* p
 	this->_n_activities=this->_activities.count();
 	
 	if(this->_n_activities<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -68974,7 +68974,7 @@ bool ConstraintActivityBeginsStudentsDay::computeInternalStructure(QWidget* pare
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because it refers to invalid activity id). Please correct it (maybe removing it is a solution):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -69240,7 +69240,7 @@ bool ConstraintActivitiesBeginStudentsDay::computeInternalStructure(QWidget* par
 	if(this->nActivities>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET - useless constraint", "The title of a dialog which reports a useless constraint"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable - useless constraint", "The title of a dialog which reports a useless constraint"),
 			tr("The following constraint does not affect any activity (it is useless). Please modify, deactivate, or remove it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -69545,7 +69545,7 @@ bool ConstraintActivityBeginsTeachersDay::computeInternalStructure(QWidget* pare
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"), 
 			tr("Following constraint is wrong (because it refers to invalid activity id). Please correct it (maybe removing it is a solution):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -69811,7 +69811,7 @@ bool ConstraintActivitiesBeginTeachersDay::computeInternalStructure(QWidget* par
 	if(this->nActivities>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET - useless constraint", "The title of a dialog which reports a useless constraint"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable - useless constraint", "The title of a dialog which reports a useless constraint"),
 			tr("The following constraint does not affect any activity (it is useless). Please modify, deactivate, or remove it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -70118,7 +70118,7 @@ bool ConstraintTeachersMinHoursPerAfternoon::computeInternalStructure(QWidget* p
 			" so that it allows empty afternoons. If you need a facility like that, please use constraint teachers min afternoons per week");
 		s+="\n\n";
 		s+=tr("Constraint is:")+"\n"+this->getDetailedDescription(r);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"), s);
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), s);
 
 		return false;
 	}
@@ -70375,7 +70375,7 @@ bool ConstraintTeacherMinHoursPerAfternoon::computeInternalStructure(QWidget* pa
 			" so that it allows empty afternoons. If you need a facility like that, please use constraint teacher min afternoons per week");
 		s+="\n\n";
 		s+=tr("Constraint is:")+"\n"+this->getDetailedDescription(r);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"), s);
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"), s);
 
 		return false;
 	}
@@ -70967,7 +70967,7 @@ bool ConstraintStudentsSetMinHoursPerAfternoon::computeInternalStructure(QWidget
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set min hours per afternoon is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -71844,7 +71844,7 @@ bool ConstraintStudentsSetMaxHoursDailyInInterval::computeInternalStructure(QWid
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max hours daily in hourly interval is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -72725,28 +72725,28 @@ bool ConstraintTeacherPairOfMutuallyExclusiveTimeSlots::computeInternalStructure
 	assert(this->teacher_ID>=0);
 
 	if(this->day1 >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher pair of mutually exclusive time slots is wrong because the first time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour1 >= r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher pair of mutually exclusive time slots is wrong because the first time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->day2 >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher pair of mutually exclusive time slots is wrong because the second time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour2 >= r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher pair of mutually exclusive time slots is wrong because the second time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -72754,7 +72754,7 @@ bool ConstraintTeacherPairOfMutuallyExclusiveTimeSlots::computeInternalStructure
 	}
 
 	if(this->day1==this->day2 && this->hour1==this->hour2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher pair of mutually exclusive time slots is wrong because the two time slots are the same. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -72990,28 +72990,28 @@ ConstraintTeachersPairOfMutuallyExclusiveTimeSlots::ConstraintTeachersPairOfMutu
 bool ConstraintTeachersPairOfMutuallyExclusiveTimeSlots::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->day1 >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers pair of mutually exclusive time slots is wrong because the first time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour1 >= r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers pair of mutually exclusive time slots is wrong because the first time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->day2 >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers pair of mutually exclusive time slots is wrong because the second time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour2 >= r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers pair of mutually exclusive time slots is wrong because the second time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -73019,7 +73019,7 @@ bool ConstraintTeachersPairOfMutuallyExclusiveTimeSlots::computeInternalStructur
 	}
 	
 	if(this->day1==this->day2 && this->hour1==this->hour2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers pair of mutually exclusive time slots is wrong because the two time slots are the same. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -73255,7 +73255,7 @@ bool ConstraintStudentsSetPairOfMutuallyExclusiveTimeSlots::computeInternalStruc
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set pair of mutually exclusive time slots is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -73263,28 +73263,28 @@ bool ConstraintStudentsSetPairOfMutuallyExclusiveTimeSlots::computeInternalStruc
 	}
 	
 	if(this->day1 >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set pair of mutually exclusive time slots is wrong because the first time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour1 >= r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set pair of mutually exclusive time slots is wrong because the first time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->day2 >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set pair of mutually exclusive time slots is wrong because the second time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour2 >= r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set pair of mutually exclusive time slots is wrong because the second time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -73292,7 +73292,7 @@ bool ConstraintStudentsSetPairOfMutuallyExclusiveTimeSlots::computeInternalStruc
 	}
 
 	if(this->day1==this->day2 && this->hour1==this->hour2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set pair of mutually exclusive time slots is wrong because the two time slots are the same. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -73531,28 +73531,28 @@ ConstraintStudentsPairOfMutuallyExclusiveTimeSlots::ConstraintStudentsPairOfMutu
 bool ConstraintStudentsPairOfMutuallyExclusiveTimeSlots::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->day1 >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students pair of mutually exclusive time slots is wrong because the first time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour1 >= r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students pair of mutually exclusive time slots is wrong because the first time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->day2 >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students pair of mutually exclusive time slots is wrong because the second time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour2 >= r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students pair of mutually exclusive time slots is wrong because the second time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -73560,7 +73560,7 @@ bool ConstraintStudentsPairOfMutuallyExclusiveTimeSlots::computeInternalStructur
 	}
 
 	if(this->day1==this->day2 && this->hour1==this->hour2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students pair of mutually exclusive time slots is wrong because the two time slots are the same. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -73831,28 +73831,28 @@ bool ConstraintTwoSetsOfActivitiesSameSections::computeInternalStructure(QWidget
 
 	for(int k=0; k<this->oDays.count(); k++){
 		if(this->oDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint two sets of activities have the same sections is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
 		}
 		if(this->oHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint two sets of activities have the same sections is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
 		}
 		if(this->oHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint two sets of activities have the same sections is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
 			return false;
 		}
 		if(this->oDays.at(k)<0 || this->oHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint two sets of activities have the same sections is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -73871,7 +73871,7 @@ bool ConstraintTwoSetsOfActivitiesSameSections::computeInternalStructure(QWidget
 	if(this->_activitiesAIndices.count()>0 && this->_activitiesBIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (the first set and/or the second set contain(s) no active activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -74321,7 +74321,7 @@ bool ConstraintStudentsSetMaxSingleGapsInSelectedTimeSlots::computeInternalStruc
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max single gaps in selected time slots is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -74337,28 +74337,28 @@ bool ConstraintStudentsSetMaxSingleGapsInSelectedTimeSlots::computeInternalStruc
 	
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint students set max single gaps in selected time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint students set max single gaps in selected time slots is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint students set max single gaps in selected time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint students set max single gaps in selected time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -74688,28 +74688,28 @@ bool ConstraintStudentsMaxSingleGapsInSelectedTimeSlots::computeInternalStructur
 	
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint students max single gaps in selected time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint students max single gaps in selected time slots is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint students max single gaps in selected time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint students max single gaps in selected time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -75038,28 +75038,28 @@ bool ConstraintTeachersMaxSingleGapsInSelectedTimeSlots::computeInternalStructur
 	
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint teachers max single gaps in selected time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint teachers max single gaps in selected time slots is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint teachers max single gaps in selected time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint teachers max single gaps in selected time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -75389,7 +75389,7 @@ bool ConstraintTeacherMaxSingleGapsInSelectedTimeSlots::computeInternalStructure
 	teacher_ID=r.teachersHash.value(teacher, -1);
 
 	if(this->teacher_ID<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max single gaps in selected time slots is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -75402,28 +75402,28 @@ bool ConstraintTeacherMaxSingleGapsInSelectedTimeSlots::computeInternalStructure
 
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint teacher max single gaps in selected time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint teacher max single gaps in selected time slots is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint teacher max single gaps in selected time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint teacher max single gaps in selected time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -76157,7 +76157,7 @@ bool ConstraintTeacherPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalStr
 	assert(selectedDays2.count()==selectedHours2.count());
 
 	if(selectedDays1.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher pair of mutually exclusive sets of time slots is wrong because the first set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -76165,7 +76165,7 @@ bool ConstraintTeacherPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalStr
 		return false;
 	}
 	if(selectedDays2.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher pair of mutually exclusive sets of time slots is wrong because the second set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -76195,7 +76195,7 @@ bool ConstraintTeacherPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalStr
 	}
 
 	if(set1.intersects(set2)){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher pair of mutually exclusive sets of time slots is wrong because the two sets of time slots have at least one common time slot. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -76569,7 +76569,7 @@ bool ConstraintTeachersPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalSt
 	assert(selectedDays2.count()==selectedHours2.count());
 
 	if(selectedDays1.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers pair of mutually exclusive sets of time slots is wrong because the first set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -76577,7 +76577,7 @@ bool ConstraintTeachersPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalSt
 		return false;
 	}
 	if(selectedDays2.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers pair of mutually exclusive sets of time slots is wrong because the second set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -76607,7 +76607,7 @@ bool ConstraintTeachersPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalSt
 	}
 
 	if(set1.intersects(set2)){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers pair of mutually exclusive sets of time slots is wrong because the two sets of time slots have at least one common time slot. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -76978,7 +76978,7 @@ bool ConstraintStudentsSetPairOfMutuallyExclusiveSetsOfTimeSlots::computeInterna
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set pair of mutually exclusive sets of time slots is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -76989,7 +76989,7 @@ bool ConstraintStudentsSetPairOfMutuallyExclusiveSetsOfTimeSlots::computeInterna
 	assert(selectedDays2.count()==selectedHours2.count());
 
 	if(selectedDays1.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set pair of mutually exclusive sets of time slots is wrong because the first set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -76997,7 +76997,7 @@ bool ConstraintStudentsSetPairOfMutuallyExclusiveSetsOfTimeSlots::computeInterna
 		return false;
 	}
 	if(selectedDays2.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set pair of mutually exclusive sets of time slots is wrong because the second set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -77027,7 +77027,7 @@ bool ConstraintStudentsSetPairOfMutuallyExclusiveSetsOfTimeSlots::computeInterna
 	}
 
 	if(set1.intersects(set2)){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set pair of mutually exclusive sets of time slots is wrong because the two sets of time slots have at least one common time slot. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -77404,7 +77404,7 @@ bool ConstraintStudentsPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalSt
 	assert(selectedDays2.count()==selectedHours2.count());
 
 	if(selectedDays1.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students pair of mutually exclusive sets of time slots is wrong because the first set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -77412,7 +77412,7 @@ bool ConstraintStudentsPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalSt
 		return false;
 	}
 	if(selectedDays2.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students pair of mutually exclusive sets of time slots is wrong because the second set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -77442,7 +77442,7 @@ bool ConstraintStudentsPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternalSt
 	}
 
 	if(set1.intersects(set2)){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students pair of mutually exclusive sets of time slots is wrong because the two sets of time slots have at least one common time slot. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -77819,7 +77819,7 @@ bool ConstraintActivitiesPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternal
 	}
 	
 	if(this->_activitiesIndices.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -77828,7 +77828,7 @@ bool ConstraintActivitiesPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternal
 	assert(selectedDays2.count()==selectedHours2.count());
 
 	if(selectedDays1.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint activities pair of mutually exclusive sets of time slots is wrong because the first set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -77836,7 +77836,7 @@ bool ConstraintActivitiesPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternal
 		return false;
 	}
 	if(selectedDays2.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint activities pair of mutually exclusive sets of time slots is wrong because the second set of selected time slots is empty. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -77866,7 +77866,7 @@ bool ConstraintActivitiesPairOfMutuallyExclusiveSetsOfTimeSlots::computeInternal
 	}
 
 	if(timeSlotsSet1.intersects(timeSlotsSet2)){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint activities pair of mutually exclusive sets of time slots is wrong because the two sets of time slots have at least one common time slot. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -78313,34 +78313,34 @@ bool ConstraintActivitiesPairOfMutuallyExclusiveTimeSlots::computeInternalStruct
 	}
 	
 	if(this->_activitiesIndices.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
 	
 	if(this->day1 >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint activities pair of mutually exclusive time slots is wrong because the first time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour1 >= r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint activities pair of mutually exclusive time slots is wrong because the first time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->day2 >= r.nDaysPerWeek){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint activities pair of mutually exclusive time slots is wrong because the second time slot's day refers to a removed day. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 		return false;
 	}
 	if(this->hour2 >= r.nHoursPerDay){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint activities pair of mutually exclusive time slots is wrong because the second time slot's hour refers to a removed hour. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -78348,7 +78348,7 @@ bool ConstraintActivitiesPairOfMutuallyExclusiveTimeSlots::computeInternalStruct
 	}
 
 	if(this->day1==this->day2 && this->hour1==this->hour2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint activities pair of mutually exclusive time slots is wrong because the two time slots are the same. Please correct"
 		 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -78649,7 +78649,7 @@ bool ConstraintTeacherOccupiesMaxSetsOfTimeSlotsFromSelection::computeInternalSt
 	assert(selectedDays.count()==selectedHours.count());
 
 	if(selectedDays.count()<2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher occupies max sets of time slots from selection is wrong because the selection contains less than two sets of time"
 		 " slots. Please correct and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -78675,7 +78675,7 @@ bool ConstraintTeacherOccupiesMaxSetsOfTimeSlotsFromSelection::computeInternalSt
 		}
 		assert(ts.count()==tl.count());
 		if(tl.count()==0){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Constraint teacher occupies max sets of time slots from selection is wrong because the set number %1 of selected time slots is empty. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%2")
 			 .arg(q+1).arg(this->getDetailedDescription(r)));
@@ -78691,7 +78691,7 @@ bool ConstraintTeacherOccupiesMaxSetsOfTimeSlotsFromSelection::computeInternalSt
 		for(int j=i+1; j<listOfSets.count(); j++){
 			const QSet<int>& set2=listOfSets.at(j);
 			if(set1.intersects(set2)){
-				TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+				TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 				 tr("Constraint teacher occupies max sets of time slots from selection is wrong because the set number %1 of selected time slots and the set number %2 of selected time slots have at least one common time slot. Please correct"
 				 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%3")
 				 .arg(i+1)
@@ -79080,7 +79080,7 @@ bool ConstraintTeachersOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalStr
 	assert(selectedDays.count()==selectedHours.count());
 
 	if(selectedDays.count()<2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teachers occupy max sets of time slots from selection is wrong because the selection contains less than two sets of time"
 		 " slots. Please correct and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -79106,7 +79106,7 @@ bool ConstraintTeachersOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalStr
 		}
 		assert(ts.count()==tl.count());
 		if(tl.count()==0){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Constraint teachers occupy max sets of time slots from selection is wrong because the set number %1 of selected time slots is empty. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%2")
 			 .arg(q+1).arg(this->getDetailedDescription(r)));
@@ -79122,7 +79122,7 @@ bool ConstraintTeachersOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalStr
 		for(int j=i+1; j<listOfSets.count(); j++){
 			const QSet<int>& set2=listOfSets.at(j);
 			if(set1.intersects(set2)){
-				TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+				TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 				 tr("Constraint teachers occupy max sets of time slots from selection is wrong because the set number %1 of selected time slots and the set number %2 of selected time slots have at least one common time slot. Please correct"
 				 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%3")
 				 .arg(i+1)
@@ -79510,7 +79510,7 @@ bool ConstraintStudentsSetOccupiesMaxSetsOfTimeSlotsFromSelection::computeIntern
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set occupies max sets of time slots from selection is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -79520,7 +79520,7 @@ bool ConstraintStudentsSetOccupiesMaxSetsOfTimeSlotsFromSelection::computeIntern
 	assert(selectedDays.count()==selectedHours.count());
 
 	if(selectedDays.count()<2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set occupies max sets of time slots from selection is wrong because the selection contains less than two sets of time"
 		 " slots. Please correct and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -79546,7 +79546,7 @@ bool ConstraintStudentsSetOccupiesMaxSetsOfTimeSlotsFromSelection::computeIntern
 		}
 		assert(ts.count()==tl.count());
 		if(tl.count()==0){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Constraint students set occupies max sets of time slots from selection is wrong because the set number %1 of selected time slots is empty. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%2")
 			 .arg(q+1).arg(this->getDetailedDescription(r)));
@@ -79562,7 +79562,7 @@ bool ConstraintStudentsSetOccupiesMaxSetsOfTimeSlotsFromSelection::computeIntern
 		for(int j=i+1; j<listOfSets.count(); j++){
 			const QSet<int>& set2=listOfSets.at(j);
 			if(set1.intersects(set2)){
-				TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+				TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 				 tr("Constraint students set occupies max sets of time slots from selection is wrong because the set number %1 of selected time slots and the set number %2 of selected time slots have at least one common time slot. Please correct"
 				 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%3")
 				 .arg(i+1)
@@ -79953,7 +79953,7 @@ bool ConstraintStudentsOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalStr
 	assert(selectedDays.count()==selectedHours.count());
 
 	if(selectedDays.count()<2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students occupy max sets of time slots from selection is wrong because the selection contains less than two sets of time"
 		 " slots. Please correct and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -79979,7 +79979,7 @@ bool ConstraintStudentsOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalStr
 		}
 		assert(ts.count()==tl.count());
 		if(tl.count()==0){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Constraint students occupy max sets of time slots from selection is wrong because the set number %1 of selected time slots is empty. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%2")
 			 .arg(q+1).arg(this->getDetailedDescription(r)));
@@ -79995,7 +79995,7 @@ bool ConstraintStudentsOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalStr
 		for(int j=i+1; j<listOfSets.count(); j++){
 			const QSet<int>& set2=listOfSets.at(j);
 			if(set1.intersects(set2)){
-				TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+				TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 				 tr("Constraint students occupy max sets of time slots from selection is wrong because the set number %1 of selected time slots and the set number %2 of selected time slots have at least one common time slot. Please correct"
 				 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%3")
 				 .arg(i+1)
@@ -80386,7 +80386,7 @@ bool ConstraintActivitiesOverlapCompletelyOrDoNotOverlap::computeInternalStructu
 				dur=r.internalActivitiesList[i].duration;
 			}
 			else{
-				TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+				TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 					tr("Following constraint is wrong, because the activities have different durations. Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 
 				return false;
@@ -80394,14 +80394,14 @@ bool ConstraintActivitiesOverlapCompletelyOrDoNotOverlap::computeInternalStructu
 		}
 	}
 	if(dur==1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is useless, because the durations of the activities are 1. Please correct it or remove it:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
 	}
 
 	if(this->_activitiesIndices.count()<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 
 		return false;
@@ -80677,7 +80677,7 @@ bool ConstraintActivitiesOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalS
 	}
 	
 	if(this->_activitiesIndices.count()==0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -80685,7 +80685,7 @@ bool ConstraintActivitiesOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalS
 	assert(selectedDays.count()==selectedHours.count());
 
 	if(selectedDays.count()<2){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint activities occupy max sets of time slots from selection is wrong because the selection contains less than two sets of time"
 		 " slots. Please correct and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%1")
 		 .arg(this->getDetailedDescription(r)));
@@ -80711,7 +80711,7 @@ bool ConstraintActivitiesOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalS
 		}
 		assert(ts.count()==tl.count());
 		if(tl.count()==0){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Constraint activities occupy max sets of time slots from selection is wrong because the set number %1 of selected time slots is empty. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information, or removing the constraint. Constraint is:\n%2")
 			 .arg(q+1).arg(this->getDetailedDescription(r)));
@@ -80727,7 +80727,7 @@ bool ConstraintActivitiesOccupyMaxSetsOfTimeSlotsFromSelection::computeInternalS
 		for(int j=i+1; j<listOfSets.count(); j++){
 			const QSet<int>& set2=listOfSets.at(j);
 			if(set1.intersects(set2)){
-				TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+				TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 				 tr("Constraint activities occupy max sets of time slots from selection is wrong because the set number %1 of selected time slots and the set number %2 of selected time slots have at least one common time slot. Please correct"
 				 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%3")
 				 .arg(i+1)
@@ -81191,7 +81191,7 @@ bool ConstraintActivityBeginsOrEndsStudentsDay::computeInternalStructure(QWidget
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because it refers to invalid activity id). Please correct it (maybe removing it is a solution):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -81466,7 +81466,7 @@ bool ConstraintActivitiesBeginOrEndStudentsDay::computeInternalStructure(QWidget
 	if(this->nActivities>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET - useless constraint", "The title of a dialog which reports a useless constraint"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable - useless constraint", "The title of a dialog which reports a useless constraint"),
 			tr("The following constraint does not affect any activity (it is useless). Please modify, deactivate, or remove it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -81782,7 +81782,7 @@ bool ConstraintActivityBeginsOrEndsTeachersDay::computeInternalStructure(QWidget
 	
 	if(i==r.nInternalActivities){
 		//assert(0);
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"), 
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"), 
 			tr("Following constraint is wrong (because it refers to invalid activity id). Please correct it (maybe removing it is a solution):\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -82057,7 +82057,7 @@ bool ConstraintActivitiesBeginOrEndTeachersDay::computeInternalStructure(QWidget
 	if(this->nActivities>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::information(parent, tr("FET - useless constraint", "The title of a dialog which reports a useless constraint"),
+		TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable - useless constraint", "The title of a dialog which reports a useless constraint"),
 			tr("The following constraint does not affect any activity (it is useless). Please modify, deactivate, or remove it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -82392,28 +82392,28 @@ bool ConstraintActivitiesMaxTotalNumberOfStudentsInSelectedTimeSlots::computeInt
 	
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max total number of students in selected time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max total number of students in selected time slots is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max total number of students in selected time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max total number of students in selected time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -82425,7 +82425,7 @@ bool ConstraintActivitiesMaxTotalNumberOfStudentsInSelectedTimeSlots::computeInt
 	if(this->_activitiesIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities with the number of students > 0). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -82823,7 +82823,7 @@ bool ConstraintActivitiesMaxActivityTagsFromSetInSelectedTimeSlots::computeInter
 		int tgi=r.activityTagsHash.value(at, -1);
 		
 		if(tgi==-1){
-			TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+			TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 			 tr("Activity tag %1 is not existing in the following constraint. Please edit or remove the constraint. Constraint is:\n%2").arg(at).arg(this->getDetailedDescription(r)));
 			
 			return false;
@@ -82837,28 +82837,28 @@ bool ConstraintActivitiesMaxActivityTagsFromSetInSelectedTimeSlots::computeInter
 	
 	for(int k=0; k<this->selectedDays.count(); k++){
 		if(this->selectedDays.at(k) >= r.nDaysPerWeek){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max activity tags from set in selected time slots is wrong because it refers to removed day. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) == r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max activity tags from set in selected time slots is wrong because an hour is too late (after the last acceptable slot). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedHours.at(k) > r.nHoursPerDay){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max activity tags from set in selected time slots is wrong because it refers to removed hour. Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
 			return false;
 		}
 		if(this->selectedDays.at(k)<0 || this->selectedHours.at(k)<0){
-			TimeConstraintIrreconcilableMessage::information(parent, tr("FET information"),
+			TimeConstraintIrreconcilableMessage::information(parent, tr("Open-Timetable information"),
 			 tr("Constraint activities max activity tags from set in selected time slots is wrong because hour or day is not specified for a slot (-1). Please correct"
 			 " and try again. Correcting means editing the constraint and updating information. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -82870,7 +82870,7 @@ bool ConstraintActivitiesMaxActivityTagsFromSetInSelectedTimeSlots::computeInter
 	if(this->_activitiesIndices.count()>0)
 		return true;
 	else{
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (refers to no activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		return false;
 	}
@@ -83237,7 +83237,7 @@ ConstraintMaxDaysBetweenEachPairOfConsecutiveActivities::ConstraintMaxDaysBetwee
 bool ConstraintMaxDaysBetweenEachPairOfConsecutiveActivities::computeInternalStructure(QWidget* parent, Rules& r)
 {
 	if(this->maxDays<1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because max days must be greater than or equal to 1). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -83254,7 +83254,7 @@ bool ConstraintMaxDaysBetweenEachPairOfConsecutiveActivities::computeInternalStr
 	}
 
 	if(this->_activitiesIndices.count()<=1){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET error in data"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable error in data"),
 			tr("Following constraint is wrong (because you need 2 or more activities). Please correct it:\n%1").arg(this->getDetailedDescription(r)));
 		//assert(0);
 		return false;
@@ -84551,7 +84551,7 @@ bool ConstraintStudentsSetMaxActivityTagChangesPerDay::computeInternalStructure(
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("A constraint students set max activity tag changes per day is wrong because it refers to a nonexistent students set."
 		 " Please correct it! (Removing it might be a solution.) Please report potential bug! The constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -85045,7 +85045,7 @@ bool ConstraintStudentsSetMaxActivityTagChangesPerWeek::computeInternalStructure
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("A constraint students set max activity tag changes per week is wrong because it refers to a nonexistent students set."
 		 " Please correct it! (Removing it might be a solution.) Please report potential bug! The constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -85535,7 +85535,7 @@ bool ConstraintStudentsSetMaxSingleEarlyMorningGaps::computeInternalStructure(QW
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max single early morning gaps is wrong because it refers to a nonexistent students set."
 		 " Please correct it! (Removing it might be a solution.) Please report potential bug! Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -85993,7 +85993,7 @@ bool ConstraintStudentsSetMaxSingleEarlyAfternoonGaps::computeInternalStructure(
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max single early afternoon gaps is wrong because it refers to a nonexistent students set."
 		 " Please correct it! (Removing it might be a solution.) Please report potential bug! Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -86451,7 +86451,7 @@ bool ConstraintStudentsSetMaxSingleGapsBetweenMorningAndAfternoon::computeIntern
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max single gaps between morning and afternoon is wrong because it refers to a nonexistent students set."
 		 " Please correct it! (Removing it might be a solution.) Please report potential bug! Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -87230,7 +87230,7 @@ bool ConstraintStudentsSetMaxHoursContinuouslyRealDays::computeInternalStructure
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 	
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max hours continuously is wrong because it refers to nonexistent students set."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		
@@ -87457,7 +87457,7 @@ bool ConstraintStudentsSetMaxSingleEarlyGaps::computeInternalStructure(QWidget* 
 	StudentsSet* ss=r.studentsHash.value(students, nullptr);
 
 	if(ss==nullptr){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint students set max single early gaps is wrong because it refers to a nonexistent students set."
 		 " Please correct it! (Removing it might be a solution.) Please report potential bug! Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 
@@ -87916,7 +87916,7 @@ bool ConstraintTeacherMaxSingleEarlyGaps::computeInternalStructure(QWidget* pare
 	teacher_ID=r.teachersHash.value(teacherName, -1);
 
 	if(this->teacher_ID<0){
-		TimeConstraintIrreconcilableMessage::warning(parent, tr("FET warning"),
+		TimeConstraintIrreconcilableMessage::warning(parent, tr("Open-Timetable warning"),
 		 tr("Constraint teacher max single early gaps is wrong because it refers to nonexistent teacher."
 		 " Please correct it (removing it might be a solution). Please report potential bug. Constraint is:\n%1").arg(this->getDetailedDescription(r)));
 		

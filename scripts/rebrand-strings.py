@@ -23,14 +23,12 @@ BRAND = re.compile(r"\bFET\b")
 REPLACEMENT = "Open-Timetable"
 
 # نصوص لا نلمسها: روابط، أسماء ملفات، صيغ تقنية
-SKIP_MARKERS = ("http://", "https://", ".qm", ".fet", "fet_", "FET_")
+SKIP_MARKERS = ("http://", "https://", ".qm", "fet_", "FET_", "fet-v")
 
 
 def rebrand_text(text, relaxed=False):
     if any(marker in text for marker in SKIP_MARKERS):
-        # في ملفات .ts نسمح بالاستبدال رغم امتداد .fet، حتى تبقى الترجمات مطابقة
-        if not (relaxed and ".fet" in text and "http" not in text):
-            return text, 0
+        return text, 0
     new, count = BRAND.subn(REPLACEMENT, text)
     return new, count
 
@@ -120,13 +118,21 @@ def main():
         return 0
 
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    interface = os.path.join(root, "fet", "src", "interface")
+    src = os.path.join(root, "fet", "src")
 
+    # المهم: المحرّك (engine) وواجهة سطر الأوامر (cl) أيضًا، لأن نصوصهما تظهر
+    # للمستخدم في جداول HTML المصدَّرة والرسائل. لو غيّرنا نصوص الواجهة وحدها
+    # لاختلفت مفاتيح الترجمة في .qm عن النصوص في الكود، فتظهر الإنجليزية
+    # وسط العربية عند التصدير. لذلك نُغيّر الاسم في كل مكان بنفس القاعدة.
     total = 0
-    for path in sorted(glob.glob(os.path.join(interface, "*.cpp"))):
-        total += process_cpp(path, apply_changes)
-    for path in sorted(glob.glob(os.path.join(interface, "*.ui"))):
-        total += process_ui(path, apply_changes)
+    for folder in ("interface", "engine", "cl"):
+        directory = os.path.join(src, folder)
+        for path in sorted(glob.glob(os.path.join(directory, "*.cpp"))):
+            total += process_cpp(path, apply_changes)
+        for path in sorted(glob.glob(os.path.join(directory, "*.h"))):
+            pass  # النصوص الظاهرة تكون في .cpp؛ لا نلمس العناوين
+        for path in sorted(glob.glob(os.path.join(directory, "*.ui"))):
+            total += process_ui(path, apply_changes)
 
     # نافذة «عن البرنامج» كُتبت من جديد، لا حاجة لمسها
     print(f"\nالمجموع: {total} نصًا" + (" (لم يُطبَّق شيء)" if check_only else ""))

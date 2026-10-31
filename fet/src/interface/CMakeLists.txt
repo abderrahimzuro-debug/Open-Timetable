@@ -17,6 +17,7 @@ set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION
 qt_add_executable(fet WIN32 MACOSX_BUNDLE
     ui_i18n.h
     ui_icons.cpp ui_icons.h
+    ui_command_palette.cpp ui_command_palette.h
     ui_theme.cpp ui_theme.h
     ui_publish.cpp ui_publish.h
     ui_shell.cpp ui_shell.h

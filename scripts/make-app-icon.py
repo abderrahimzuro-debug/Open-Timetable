@@ -2,7 +2,7 @@
 """يولّد شعار Open-Timetable (PNG و ICO) بلا أي مكتبات خارجية.
 
 الرسم مطابق لشعار الواجهة داخل البرنامج (fet/src/interface/ui_icons.cpp):
-مربّع مستدير أزرق + رأس جدول + علامة صح.
+مربّع مستدير بتدرّج أزرق/بنفسجي + أربعة مربّعات تمثّل خلايا جدول زمني.
 
 الاستخدام:
     python3 scripts/make-app-icon.py
@@ -20,19 +20,17 @@ import zlib
 SIZE = 256
 SS = 4  # معامل التنقية (supersampling)
 
-BLUE = (0x25, 0x63, 0xEB)
+TOP = (0x4F, 0x46, 0xE5)     # بداية التدرّج
+BOTTOM = (0x25, 0x63, 0xEB)  # نهاية التدرّج
 WHITE = (0xFF, 0xFF, 0xFF)
+ACCENT = (0xC7, 0xD2, 0xFE)
 
-# أبعاد الشعار في شبكة 64×64 (نفس أبعاد ui_icons.cpp)
-GRID_LINES = [
-    (14.0, 22.0, 50.0, 22.0, 2.4, 0.85),
-    (24.0, 14.0, 24.0, 20.0, 2.4, 0.85),
-    (40.0, 14.0, 40.0, 20.0, 2.4, 0.85),
-    (14.0, 34.0, 50.0, 34.0, 2.4, 0.85),
-]
-CHECK_LINES = [
-    (20.0, 46.0, 28.0, 54.0, 5.0, 1.0),
-    (28.0, 54.0, 44.0, 38.0, 5.0, 1.0),
+# الخلايا الأربع في شبكة 64×64: (يسار، أعلى، يمين، أسفل، نصف قطر، هل هي المميّزة)
+CELLS = [
+    (14.0, 14.0, 25.0, 25.0, 2.5, False),
+    (28.0, 14.0, 50.0, 25.0, 2.5, False),
+    (14.0, 28.0, 25.0, 50.0, 2.5, False),
+    (28.0, 28.0, 50.0, 50.0, 3.0, True),
 ]
 
 
@@ -44,37 +42,23 @@ def rounded_rect_contains(x, y, left, top, right, bottom, radius):
     return (x - cx) ** 2 + (y - cy) ** 2 <= radius ** 2
 
 
-def distance_to_segment(px, py, x1, y1, x2, y2):
-    dx, dy = x2 - x1, y2 - y1
-    length_sq = dx * dx + dy * dy
-    if length_sq == 0:
-        return math.hypot(px - x1, py - y1)
-    t = max(0.0, min(1.0, ((px - x1) * dx + (py - y1) * dy) / length_sq))
-    return math.hypot(px - (x1 + t * dx), py - (y1 + t * dy))
+def mix(a, b, t):
+    return tuple(int(round(a[i] + (b[i] - a[i]) * t)) for i in range(3))
 
 
 def sample(x, y):
-    """يعيد اللون (r,g,b,a) عند نقطة داخل شبكة 64×64."""
-    if not rounded_rect_contains(x, y, 2, 2, 62, 62, 14):
+    """يعيد اللون (r,g,b,a) عند نقطة داخل شبكة 64×64، أو None خارج الشعار."""
+    if not rounded_rect_contains(x, y, 2, 2, 62, 62, 15):
         return None
 
-    best = None  # (الشفافية، اللون)
-    for x1, y1, x2, y2, width, alpha in GRID_LINES + CHECK_LINES:
-        d = distance_to_segment(x, y, x1, y1, x2, y2)
-        if d <= width / 2.0:
-            a = alpha
-            if best is None or a >= best[0]:
-                best = (a, WHITE)
+    for left, top, right, bottom, radius, accent in CELLS:
+        if rounded_rect_contains(x, y, left, top, right, bottom, radius):
+            color = ACCENT if accent else WHITE
+            return (color[0], color[1], color[2], 255)
 
-    if best is None:
-        return (BLUE[0], BLUE[1], BLUE[2], 255)
-
-    a = best[0]
-    color = best[1]
-    r = int(round(BLUE[0] * (1 - a) + color[0] * a))
-    g = int(round(BLUE[1] * (1 - a) + color[1] * a))
-    b = int(round(BLUE[2] * (1 - a) + color[2] * a))
-    return (r, g, b, 255)
+    t = min(1.0, max(0.0, ((x - 2.0) + (y - 2.0)) / 120.0))
+    base = mix(TOP, BOTTOM, t)
+    return (base[0], base[1], base[2], 255)
 
 
 def render(size):
