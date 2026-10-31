@@ -36,6 +36,7 @@ namespace {
 
 struct Report {
 	int failures;
+	QStringList failureLines;
 	QTextStream out;
 
 	Report() : failures(0), out(stdout) {}
@@ -51,6 +52,7 @@ struct Report {
 	void fail(const QString& what, const QString& detail = QString())
 	{
 		++failures;
+		failureLines.append(detail.isEmpty() ? what : what + QStringLiteral(" — ") + detail);
 		if (detail.isEmpty())
 			out << "  [FAIL] " << what << "\n";
 		else
@@ -367,6 +369,13 @@ int run(QMainWindow* mainWindow)
 		r.ok(QStringLiteral("العودة إلى لوحة البداية تعمل"));
 	else
 		r.fail(QStringLiteral("العودة إلى لوحة البداية تعمل"));
+
+	// ملخّص الفشل في النهاية: يبقى ظاهرًا حتى لو اقتُطع التقرير الطويل
+	if (!r.failureLines.isEmpty()) {
+		r.out << "\n===== FAILURES (" << r.failureLines.count() << ") =====\n";
+		for (const QString& line : r.failureLines)
+			r.out << "  [FAIL] " << line << "\n";
+	}
 
 	r.out << "\n";
 	r.out << (r.failures == 0 ? QStringLiteral("SELFCHECK OK")

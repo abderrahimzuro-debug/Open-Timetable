@@ -2373,6 +2373,10 @@ int main(int argc, char **argv)
 	QApplication qapplication(argc, argv);
 
 	// Open-Timetable: تطبيق المظهر الحديث على الواجهة كلها (لون، خط، أنماط).
+	// Open-Timetable: اسم البرنامج يُضبط دائمًا (بما في ذلك وضع الفحص الذاتي).
+	QCoreApplication::setApplicationName(QStringLiteral("Open-Timetable"));
+	QCoreApplication::setApplicationDisplayName(QStringLiteral("Open-Timetable"));
+
 	UiTheme::apply(qapplication);
 	qapplication.setWindowIcon(UiIcons::logo(64)); // شعارنا بدل شعار البرنامج الأصلي
 
@@ -2441,8 +2445,6 @@ int main(int argc, char **argv)
 				test.remove();
 		}
 
-		QCoreApplication::setApplicationName(QStringLiteral("Open-Timetable"));
-		
 		pqapplication=&qapplication;
 		FetMainForm fetMainForm;
 		pFetMainForm=&fetMainForm;

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open-Timetable — معاينة الشريط الجانبي والمظهر الداكن</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --panel: #ffffff;
+    --panel-2: #f1f4f8;
+    --text: #17202a;
+    --muted: #7a869a;
+    --border: #e3e7ed;
+    --accent: #2563eb;
+    --accent-soft: #e8efff;
+    --stroke: #334155;
+    --card: #ffffff;
+  }
+  body.dark {
+    --bg: #141a22;
+    --panel: #151b25;
+    --panel-2: #1f2836;
+    --text: #e6ebf2;
+    --muted: #7f8b9c;
+    --border: #262f3f;
+    --accent: #3b82f6;
+    --accent-soft: #1e3a8a;
+    --stroke: #e2e8f0;
+    --card: #1b232e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background .18s ease, color .18s ease;
+  }
+  .app { display: flex; min-height: 100vh; }
+
+  /* ===== الشريط الجانبي ===== */
+  .sidebar {
+    width: 230px;
+    flex: 0 0 auto;
+    background: var(--panel);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: width .18s ease;
+  }
+  .sidebar.compact { width: 66px; }
+  .sidebar.compact .label,
+  .sidebar.compact .brand-text,
+  .sidebar.compact .brand-sub,
+  .sidebar.compact .section { display: none; }
+  .sidebar.compact .nav-item { justify-content: center; padding: 10px 0; }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 12px 6px;
+  }
+  .logo { width: 26px; height: 26px; flex: 0 0 auto; }
+  .brand-text { font-weight: 700; font-size: 14px; flex: 1 1 auto; white-space: nowrap; }
+  .brand-sub { color: var(--muted); font-size: 11.5px; padding: 0 14px 10px; }
+  .icon-btn {
+    border: 1px solid transparent;
+    background: transparent;
+    border-radius: 6px;
+    padding: 4px;
+    cursor: pointer;
+    line-height: 0;
+    color: var(--stroke);
+  }
+  .icon-btn:hover { background: var(--panel-2); border-color: var(--border); }
+  .icon-btn svg { width: 18px; height: 18px; }
+
+  .nav { padding: 4px 6px; overflow-y: auto; }
+  .section { color: var(--muted); font-size: 11.5px; font-weight: 700; padding: 10px 12px 4px; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    margin: 1px 2px;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+  }
+  .nav-item:hover { background: var(--panel-2); }
+  .nav-item.active { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+  .nav-item svg { width: 20px; height: 20px; flex: 0 0 auto; stroke: var(--stroke); }
+  .nav-item.active svg { stroke: var(--accent); }
+
+  /* التلميح: يظهر اسم العنصر عند مرور المؤشّر (خصوصًا في الوضع المطوي) */
+  .nav-item .tip {
+    position: absolute;
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: #17202a;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 9px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .12s ease;
+    z-index: 5;
+  }
+  .nav-item:hover .tip { opacity: 1; }
+
+  /* ===== المحتوى ===== */
+  .content { flex: 1 1 auto; padding: 26px 30px; overflow: auto; }
+  .title { font-size: 26px; font-weight: 700; margin: 0 0 6px; }
+  .subtitle { color: var(--muted); margin: 0 0 22px; font-size: 13.5px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .card .k { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+  .card .v { font-size: 22px; font-weight: 700; }
+  .quick { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-top: 26px; }
+  .quick .btn {
+    display: flex; align-items: center; gap: 9px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 9px;
+    padding: 11px 13px; font-size: 13px; cursor: pointer; color: var(--text);
+  }
+  .quick .btn:hover { border-color: var(--accent); }
+  .quick .btn svg { width: 18px; height: 18px; stroke: var(--stroke); }
+  .hint {
+    margin-top: 28px; font-size: 12.5px; color: var(--muted);
+    border-top: 1px dashed var(--border); padding-top: 14px; line-height: 1.9;
+  }
+  code { background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="head">
+      <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="2" y="2" width="60" height="60" rx="14" fill="#2563eb"></rect>
+        <g stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".85">
+          <line x1="14" y1="22" x2="50" y2="22"></line>
+          <line x1="24" y1="14" x2="24" y2="20"></line>
+          <line x1="40" y1="14" x2="40" y2="20"></line>
+          <line x1="14" y1="34" x2="50" y2="34"></line>
+        </g>
+        <g stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none">
+          <line x1="20" y1="46" x2="28" y2="54"></line>
+          <line x1="28" y1="54" x2="44" y2="38"></line>
+        </g>
+      </svg>
+      <span class="brand-text">Open-Timetable</span>
+      <button class="icon-btn" id="themeBtn" title="تبديل المظهر الفاتح/الداكن" aria-label="تبديل المظهر">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+             stroke-linecap="round" stroke-linejoin="round" id="themeIcon">
+          <circle cx="12" cy="12" r="6.5"></circle>
+        </svg>
+      </button>
+      <button class="icon-btn" id="collapseBtn" title="طي/فتح الشريط الجانبي" aria-label="طي الشريط">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+             stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+          <line x1="9" y1="4" x2="9" y2="20"></line>
+          <line x1="15.5" y1="9" x2="12.8" y2="12"></line>
+          <line x1="12.8" y1="12" x2="15.5" y2="15"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="brand-sub">جدولة دراسية</div>
+
+    <nav class="nav" id="nav"></nav>
+  </aside>
+
+  <main class="content">
+    <h1 class="title">لوحة البداية</h1>
+    <p class="subtitle">ملخّص المشروع والإجراءات السريعة — أيقونات احترافية، بلا رموز تعبيرية.</p>
+
+    <div class="cards">
+      <div class="card"><div class="k">الأساتذة</div><div class="v">24</div></div>
+      <div class="card"><div class="k">المواد</div><div class="v">18</div></div>
+      <div class="card"><div class="k">الأقسام</div><div class="v">12</div></div>
+      <div class="card"><div class="k">القاعات</div><div class="v">9</div></div>
+      <div class="card"><div class="k">الأنشطة</div><div class="v">316</div></div>
+      <div class="card"><div class="k">القيود</div><div class="v">58</div></div>
+    </div>
+
+    <div class="quick" id="quick"></div>
+
+    <p class="hint">
+      جرّب: زر القمر/الشمس أعلى الشريط يبدّل بين المظهر الفاتح والداكن (ويُحفظ الاختيار في البرنامج)،
+      وزر الطي يجعل الشريط أيقونات فقط مع إظهار الاسم في تلميح عند المرور.
+      في البرنامج الفعلي: <code>Alt</code> غير مطلوب، والنقر على العنصر يشغّل نفس إجراء البرنامج.
+    </p>
+  </main>
+</div>
+
+<script>
+const items = [
+  ["home", "لوحة البداية", null],
+  ["section", "البيانات"],
+  ["teachers", "الأساتذة"], ["subjects", "المواد"], ["years", "الأقسام والأفواج"],
+  ["subgroups", "الفرق الفرعية"], ["rooms", "القاعات"], ["buildings", "المباني"],
+  ["activities", "الأنشطة"],
+  ["section", "القيود"],
+  ["templates", "القيود بالقوالب"], ["constraints", "كل القيود الزمنية"], ["space", "كل القيود المكانية"],
+  ["section", "التوليد والجداول"],
+  ["generate", "توليد الجدول"], ["view-teachers", "جداول الأساتذة"],
+  ["view-students", "جداول الأقسام"], ["view-rooms", "جداول القاعات"], ["conflicts", "التعارضات"],
+  ["section", "النشر"],
+  ["publish", "نشر الجداول"]
+];
+
+// نفس مسارات أيقونات ui_icons.cpp (شبكة 24×24، سماكة 1.7)
+const paths = {
+  home: '<path d="M3 11l9-7 9 7"/><path d="M5 10.5h14v10.5H5z"/><path d="M10 15h4v6h-4z"/>',
+  teachers: '<circle cx="12" cy="8" r="3.4"/><path d="M4.5 18a7.5 5.75 0 0 1 15 0"/>',
+  subjects: '<rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M12 3.5v17M6.5 8h3M14.5 8h3"/>',
+  years: '<path d="M2.5 8.5 12 4l9.5 4.5L12 13z"/><path d="M7 11v5.5M17 11v5.5M7 16.5 12 19l5-2.5"/>',
+  subgroups: '<circle cx="8.5" cy="8" r="3"/><path d="M2 17.5a6.5 5.5 0 0 1 13 0"/><circle cx="16.5" cy="9.5" r="2.4"/><path d="M12.5 17.5a5.25 4.5 0 0 1 10.5 0"/>',
+  rooms: '<rect x="4" y="3.5" width="16" height="17" rx="2"/><circle cx="15.5" cy="12" r="1.1"/>',
+  buildings: '<rect x="3.5" y="9" width="7" height="12" rx="1"/><rect x="13" y="3.5" width="7.5" height="17.5" rx="1"/><path d="M6 12.5h2M6 16h2M15.5 7.5h2.5M15.5 11.5h2.5M15.5 15.5h2.5"/>',
+  activities: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4.5M16 3v4.5M8.5 14.5 11 17l4.5-4.5"/>',
+  templates: '<path d="M3.5 20.5 13.5 10.5M11 8l5 5"/><circle cx="18.5" cy="5.5" r="1.8"/><circle cx="20.5" cy="13" r="1.3"/>',
+  constraints: '<path d="M3 7.5h18"/><circle cx="9" cy="7.5" r="2.2"/><path d="M3 16.5h18"/><circle cx="15" cy="16.5" r="2.2"/>',
+  space: '<rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/>',
+  generate: '<circle cx="12" cy="12" r="8.5"/><path d="M10 8l6 4-6 4z"/>',
+  "view-teachers": '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 18a5.5 4.5 0 0 1 12 0"/><rect x="15" y="4.5" width="6.5" height="6.5" rx="1.2"/><rect x="15" y="13" width="6.5" height="6.5" rx="1.2"/>',
+  "view-students": '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16M3 9.5h18M3 15h18"/>',
+  "view-rooms": '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="8" cy="14.5" r="1.2"/><circle cx="12" cy="14.5" r="1.2"/><circle cx="16" cy="14.5" r="1.2"/>',
+  conflicts: '<path d="M12 3.5 21 20H3zM12 9.5V14"/><circle cx="12" cy="16.6" r="1.15"/>',
+  publish: '<path d="M12 15.5v-12M7 8.5 12 3.5l5 5M4.5 14v6.5h15V14"/>',
+  moon: '<circle cx="12" cy="12" r="6.5"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.6V5M12 19v2.4M2.6 12H5M19 12h2.4M5.2 5.2 7 7M17 17l1.8 1.8M18.8 5.2 17 7M7 17l-1.8 1.8"/>'
+};
+
+const nav = document.getElementById("nav");
+const labels = {};
+items.forEach(([icon, text]) => {
+  if (icon === "section") {
+    const div = document.createElement("div");
+    div.className = "section";
+    div.textContent = text;
+    nav.appendChild(div);
+    return;
+  }
+  const a = document.createElement("a");
+  a.className = "nav-item" + (icon === "home" ? " active" : "");
+  a.innerHTML =
+    `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round"
+          stroke-linejoin="round">${paths[icon] || ""}</svg>` +
+    `<span class="label">${text}</span><span class="tip">${text}</span>`;
+  nav.appendChild(a);
+});
+
+const quick = document.getElementById("quick");
+[["templates", "القيود بالقوالب"], ["activities", "إضافة حصة"],
+ ["generate", "توليد الجدول"], ["view-teachers", "جداول الأساتذة"],
+ ["view-students", "جداول الأقسام"], ["publish", "نشر الجداول"]].forEach(([icon, text]) => {
+  const b = document.createElement("button");
+  b.className = "btn";
+  b.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round"
+                     stroke-linejoin="round">${paths[icon] || ""}</svg><span>${text}</span>`;
+  quick.appendChild(b);
+});
+
+// تبديل المظهر
+const themeBtn = document.getElementById("themeBtn");
+const themeIcon = document.getElementById("themeIcon");
+function renderThemeIcon() {
+  const dark = document.body.classList.contains("dark");
+  const name = dark ? "sun" : "moon";
+  themeIcon.innerHTML = paths[name];
+  themeBtn.title = dark ? "العودة إلى المظهر الفاتح" : "التبديل إلى المظهر الداكن";
+}
+themeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  renderThemeIcon();
+});
+renderThemeIcon();
+
+// طي الشريط
+document.getElementById("collapseBtn").addEventListener("click", () => {
+  document.getElementById("sidebar").classList.toggle("compact");
+});
+</script>
+</body>
+</html>
