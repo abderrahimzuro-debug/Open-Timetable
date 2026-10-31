@@ -224,6 +224,13 @@ void setTheme(QMainWindow* window, const QString& name)
 		UiShell::retranslate(window);
 }
 
+QString oldBrandName()
+{
+	// نُبنيه حرفًا حرفًا حتى لا يستبدله سكربت إعادة التسمية عند إعادة تشغيله:
+	// نحن نبحث عن الاسم القديم لنستبدله، لا لنُعيد تسمية أنفسنا.
+	return QString(QChar('F')) + QChar('E') + QChar('T');
+}
+
 // إخفاء كل ما يشير إلى موقع المشروع الأصلي أو اسمه التجاري
 void detachExternalBranding(QMainWindow* window)
 {
@@ -242,16 +249,16 @@ void detachExternalBranding(QMainWindow* window)
 	const QList<QAction*> actions = window->findChildren<QAction*>();
 	for (QAction* action : actions) {
 		QString text = action->text();
-		if (text.contains(QLatin1String("Open-Timetable"))) {
-			text.replace(QLatin1String("Open-Timetable"), QStringLiteral("Open-Timetable"));
+		if (text.contains(oldBrandName())) {
+			text.replace(oldBrandName(), QStringLiteral("Open-Timetable"));
 			action->setText(text);
 		}
 	}
 	const QList<QMenu*> menus = window->findChildren<QMenu*>();
 	for (QMenu* menu : menus) {
 		QString title = menu->title();
-		if (title.contains(QLatin1String("Open-Timetable"))) {
-			title.replace(QLatin1String("Open-Timetable"), QStringLiteral("Open-Timetable"));
+		if (title.contains(oldBrandName())) {
+			title.replace(oldBrandName(), QStringLiteral("Open-Timetable"));
 			menu->setTitle(title);
 		}
 	}

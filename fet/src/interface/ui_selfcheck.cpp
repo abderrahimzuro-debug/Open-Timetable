@@ -34,6 +34,13 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 
 namespace {
 
+QString oldBrandName()
+{
+	// الاسم القديم مبنيّ حرفًا حرفًا: سكربت إعادة التسمية يستبدل الكلمة الجاهزة،
+	// فنحن نحتاجها هنا للبحث عنها والتأكد من اختفائها.
+	return QString(QChar('F')) + QChar('E') + QChar('T');
+}
+
 struct Report {
 	int failures;
 	QStringList failureLines;
@@ -317,7 +324,7 @@ int run(QMainWindow* mainWindow)
 			r.fail(QStringLiteral("اسم البرنامج"), qApp->applicationName());
 
 		const QString title = mainWindow->windowTitle();
-		if (!title.contains(QLatin1String("Open-Timetable")))
+		if (!title.contains(oldBrandName()))
 			r.ok(QStringLiteral("عنوان النافذة بلا الاسم الأصلي"), title);
 		else
 			r.fail(QStringLiteral("عنوان النافذة بلا الاسم الأصلي"), title);
@@ -326,7 +333,7 @@ int run(QMainWindow* mainWindow)
 		QStringList leaked;
 		const QList<QAction*> actions = mainWindow->findChildren<QAction*>();
 		for (QAction* action : actions)
-			if (action->isVisible() && action->text().contains(QLatin1String("Open-Timetable")))
+			if (action->isVisible() && action->text().contains(oldBrandName()))
 				leaked << action->text();
 		if (leaked.isEmpty())
 			r.ok(QStringLiteral("لا اسم أصلي في القوائم الظاهرة"));
