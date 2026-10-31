@@ -337,13 +337,13 @@ void TimetableGenerateForm::start(){
 
 	if(!gt.rules.internalStructureComputed){
 		if(!gt.rules.computeInternalStructure(this)){
-			QMessageBox::warning(this, TimetableGenerateForm::tr("FET warning"), TimetableGenerateForm::tr("Data is wrong. Please correct and try again"));
+			QMessageBox::warning(this, TimetableGenerateForm::tr("Open-Timetable warning"), TimetableGenerateForm::tr("Data is wrong. Please correct and try again"));
 			return;
 		}
 	}
 
 	if(!gt.rules.initialized || gt.rules.activitiesList.isEmpty()){
-		QMessageBox::critical(this, TimetableGenerateForm::tr("FET information"),
+		QMessageBox::critical(this, TimetableGenerateForm::tr("Open-Timetable information"),
 			TimetableGenerateForm::tr("You have entered the generation with uninitialized rules or 0 activities...aborting"));
 		assert(0);
 		exit(1);
@@ -362,7 +362,7 @@ void TimetableGenerateForm::start(){
 		currentResultsTextEdit->setPlainText(TimetableGenerateForm::tr("Cannot generate - please modify your data"));
 		currentResultsTextEdit->update();
 
-		QMessageBox::information(this, TimetableGenerateForm::tr("FET information"),
+		QMessageBox::information(this, TimetableGenerateForm::tr("Open-Timetable information"),
 		 TimetableGenerateForm::tr("Your data cannot be processed - please modify it as instructed"));
 
 		return;
@@ -519,7 +519,7 @@ void TimetableGenerateForm::stop()
 	
 	TimetableExport::writeGenerationResults(this);
 
-	QString s=TimetableGenerateForm::tr("Generation interrupted! FET could not find a timetable."
+	QString s=TimetableGenerateForm::tr("Generation interrupted! Open-Timetable could not find a timetable."
 	 " Maybe you can consider relaxing the constraints.");
 
 	s+=" ";
@@ -545,7 +545,7 @@ void TimetableGenerateForm::stop()
 	s+=TimetableGenerateForm::tr("Additional information relating to the impossible to schedule activities:");
 	s+="\n\n";
 
-	s+=tr("FET managed to schedule correctly the first %1 most difficult activities."
+	s+=tr("Open-Timetable managed to schedule correctly the first %1 most difficult activities."
 	 " You can see the initial order of placing the activities in the generate dialog. The activity which might cause problems"
 	 " might be the next activity in the initial order of evaluation. This activity is listed below:")
 	 .arg(gen.maxActivitiesPlaced);
@@ -577,7 +577,7 @@ void TimetableGenerateForm::stop()
 	 "activities in the list below, which might be impossible to schedule:");
 	s+="\n\n";
 	s+=TimetableGenerateForm::tr("Here are the placed activities which led to an inconsistency, "
-	 "in order, from the first one to the last one (the last one FET failed to schedule "
+	 "in order, from the first one to the last one (the last one Open-Timetable failed to schedule "
 	 "and the last ones are most likely the difficult ones):");
 	s+="\n\n";
 	for(int i=0; i<gen.nDifficultActivities; i++){
@@ -744,7 +744,7 @@ void TimetableGenerateForm::stopHighest()
 	
 	TimetableExport::writeHighestStageResults(this);
 
-	QString s=TimetableGenerateForm::tr("Generation interrupted! FET could not find a timetable."
+	QString s=TimetableGenerateForm::tr("Generation interrupted! Open-Timetable could not find a timetable."
 	 " Maybe you can consider relaxing the constraints.");
 
 	s+=" ";
@@ -770,7 +770,7 @@ void TimetableGenerateForm::stopHighest()
 	s+=TimetableGenerateForm::tr("Additional information relating to the impossible to schedule activities:");
 	s+="\n\n";
 
-	s+=tr("FET managed to schedule correctly the first %1 most difficult activities."
+	s+=tr("Open-Timetable managed to schedule correctly the first %1 most difficult activities."
 	 " You can see the initial order of placing the activities in the generate dialog. The activity which might cause problems"
 	 " might be the next activity in the initial order of evaluation. This activity is listed below:")
 	 .arg(gen.maxActivitiesPlaced);
@@ -1162,10 +1162,10 @@ void TimetableGenerateForm::generationFinished()
 	
 	//Trick so that the message box will be silent (the only sound is thus the beep above).
 	QMessageBox msgBox(this);
-	msgBox.setWindowTitle(TimetableGenerateForm::tr("FET information"));
+	msgBox.setWindowTitle(TimetableGenerateForm::tr("Open-Timetable information"));
 	msgBox.setText(s);
 	msgBox.exec();
-	//QMessageBox::information(this, TimetableGenerateForm::tr("FET information"), s);
+	//QMessageBox::information(this, TimetableGenerateForm::tr("Open-Timetable information"), s);
 
 	pausedLabel->setVisible(false);
 
@@ -1275,7 +1275,7 @@ void TimetableGenerateForm::help()
 	 "you will get different timetables and running times each time. You can choose the best timetable from several runs");
 	s+="\n\n";
 	s+=TimetableGenerateForm::tr("Usually, there is no need to stop and restart the search."
-	 " But for very difficult timetables this can help. Sometimes in such cases FET can become stuck and cycle forever,"
+	 " But for very difficult timetables this can help. Sometimes in such cases Open-Timetable can become stuck and cycle forever,"
 	 " and restarting might produce a very fast solution.");
 	s+="\n\n";
 	s+=TimetableGenerateForm::tr("It is recommended to strengthen the constraints step by step (for"
@@ -1295,7 +1295,7 @@ void TimetableGenerateForm::help()
 	 " in text mode, along with the current data and timetable, saved as a .fet data file (with activities locked by constraints), so"
 	 " that you can open, modify and regenerate the current timetable later");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }
 
 void TimetableGenerateForm::write(){
@@ -1373,7 +1373,7 @@ void TimetableGenerateForm::write(){
 	}
 	kk.append("-single");*/
 
-	QMessageBox::information(this, TimetableGenerateForm::tr("FET information"),
+	QMessageBox::information(this, TimetableGenerateForm::tr("Open-Timetable information"),
 		TimetableGenerateForm::tr("The generation results should now be written in the directory %1 in HTML and XML mode"
 		" and the conflicts in txt mode").arg(QDir::toNativeSeparators(CURRENT_OUTPUT_DIRECTORY)));
 }
@@ -1453,7 +1453,7 @@ void TimetableGenerateForm::writeHighestStage(){
 	}
 	kk.append("-highest");*/
 
-	QMessageBox::information(this, TimetableGenerateForm::tr("FET information"),
+	QMessageBox::information(this, TimetableGenerateForm::tr("Open-Timetable information"),
 		TimetableGenerateForm::tr("Highest stage results should now be written in the directory %1 in HTML and XML mode"
 		" and the conflicts in txt mode").arg(QDir::toNativeSeparators(HIGHEST_OUTPUT_DIRECTORY)));
 }
@@ -1486,7 +1486,7 @@ void TimetableGenerateForm::seeImpossible()
 	 "activities in the list below, which might be difficult to schedule:");
 	s+="\n\n";
 	s+=TimetableGenerateForm::tr("Here are the placed activities which led to a difficulty, "
-	 "in order, from the first one to the last one (the last one FET failed to schedule "
+	 "in order, from the first one to the last one (the last one Open-Timetable failed to schedule "
 	 "and the last ones are probably difficult):");
 	s+="\n\n";
 	for(int i=0; i<gen.nDifficultActivities; i++){
@@ -1508,7 +1508,7 @@ void TimetableGenerateForm::seeImpossible()
 	//show the message in a dialog
 	QDialog dialog(this);
 	
-	dialog.setWindowTitle(tr("FET - information about difficult activities"));
+	dialog.setWindowTitle(tr("Open-Timetable - information about difficult activities"));
 
 	QVBoxLayout* vl=new QVBoxLayout(&dialog);
 	QTextEdit* te=new QTextEdit();
@@ -1572,7 +1572,7 @@ void TimetableGenerateForm::seeInitialOrder()
 	//show the message in a dialog
 	QDialog dialog(this);
 	
-	dialog.setWindowTitle(tr("FET - information about initial order of evaluation of activities"));
+	dialog.setWindowTitle(tr("Open-Timetable - information about initial order of evaluation of activities"));
 
 	QVBoxLayout* vl=new QVBoxLayout(&dialog);
 	QTextEdit* te=new QTextEdit();

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About FET - Free Timetabling Software</string>
+   <string>About Open-Timetable - Free Timetabling Software</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">

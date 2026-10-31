@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=FET
+Name=Open-Timetable
 GenericName=Timetable Generator
 GenericName[af]=Tydtabel genereerder
 GenericName[ast]=Xenerador de tables d'horariu
@@ -89,7 +89,7 @@ Comment[zh_CN]=为教育机构创建时间表
 Comment[zh_HK]=為教育機構製作時間表
 Comment[zh_TW]=為教育機構製作時間表
 Keywords=schedule;planning;school;high-school;university;education;teacher;students;
-Icon=fet
+Icon=open-timetable
 Exec=fet %f
 Terminal=false
 StartupNotify=true

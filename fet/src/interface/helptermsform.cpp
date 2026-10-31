@@ -55,7 +55,7 @@ void HelpTermsForm::setText()
 	s+="\n\n";
 	s+=tr("The main ideas:");
 	s+="\n\n";
-	s+=tr("There are nTerms (say 5) terms, and nDaysPerTerm (say 5) days each. So there are nTerms x nDaysPerTerm (say 5 x 5 = 25) FET days.");
+	s+=tr("There are nTerms (say 5) terms, and nDaysPerTerm (say 5) days each. So there are nTerms x nDaysPerTerm (say 5 x 5 = 25) Open-Timetable days.");
 	s+=" ";
 	s+=tr("The terms are in order, one after another, and one day after another.");
 	s+="\n\n";

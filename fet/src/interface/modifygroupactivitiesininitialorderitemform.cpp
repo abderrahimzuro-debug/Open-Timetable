@@ -253,12 +253,12 @@ bool ModifyGroupActivitiesInInitialOrderItemForm::filterOk(Activity* act)
 void ModifyGroupActivitiesInInitialOrderItemForm::ok()
 {
 	if(this->selectedActivitiesList.size()==0){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 			tr("Empty list of selected activities"));
 		return;
 	}
 	if(this->selectedActivitiesList.size()==1){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 			tr("Only one selected activity"));
 		return;
 	}

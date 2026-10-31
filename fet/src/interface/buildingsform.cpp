@@ -171,14 +171,14 @@ void BuildingsForm::removeBuilding()
 {
 	int ind=buildingsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected building"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected building"));
 		return;
 	}
 	
 	Building* bu=visibleBuildingsList.at(ind);
 	assert(bu!=nullptr);
 
-	if(QMessageBox::warning( this, tr("FET"),
+	if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete this building?"),
 	 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::No)
 		return;
@@ -318,7 +318,7 @@ void BuildingsForm::modifyBuilding()
 
 	int ci=buildingsListWidget->currentRow();
 	if(ci<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected building"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected building"));
 		return;
 	}
 	
@@ -343,7 +343,7 @@ void BuildingsForm::comments()
 {
 	int ind=buildingsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected building"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected building"));
 		return;
 	}
 	
@@ -405,7 +405,7 @@ void BuildingsForm::longName()
 {
 	int ind=buildingsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected building"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected building"));
 		return;
 	}
 	
@@ -467,7 +467,7 @@ void BuildingsForm::code()
 {
 	int ind=buildingsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected building"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected building"));
 		return;
 	}
 	

@@ -61,11 +61,11 @@ void ModifyStudentsYearForm::cancel()
 void ModifyStudentsYearForm::ok()
 {
 	if(nameLineEdit->text().isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		return;
 	}
 	if(this->_initialYearName!=nameLineEdit->text() && gt.rules.searchStudentsSet(nameLineEdit->text())!=nullptr){
-		QMessageBox::information(this, tr("FET information"), tr("Name existing - please choose another"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Name existing - please choose another"));
 
 		nameLineEdit->selectAll();
 		nameLineEdit->setFocus();
@@ -185,7 +185,7 @@ void ModifyStudentsYearForm::ok()
 		}
 		
 		QString message="";
-		message+=tr("FET can also try to rename the groups and the subgroups of this year. Should they be renamed?");
+		message+=tr("Open-Timetable can also try to rename the groups and the subgroups of this year. Should they be renamed?");
 		message+=QString("\n\n");
 		message+=tr("Please check the following information carefully:");
 		message+=QString("\n\n");
@@ -207,12 +207,12 @@ void ModifyStudentsYearForm::ok()
 		}
 		message=message.trimmed();
 		
-		//int result=LongTextMessageBox::largeConfirmation( this, tr("FET question"), message, tr("Yes"), tr("No"), QString(), 0 , 1 );
+		//int result=LongTextMessageBox::largeConfirmation( this, tr("Open-Timetable question"), message, tr("Yes"), tr("No"), QString(), 0 , 1 );
 		
 		/*QMessageBox msgBox(this);
 		msgBox.setTextFormat(Qt::PlainText);
-		msgBox.setWindowTitle(tr("FET question"));
-		msgBox.setText(tr("FET can also try to rename the groups and the subgroups of this year. Should they be renamed?"));
+		msgBox.setWindowTitle(tr("Open-Timetable question"));
+		msgBox.setText(tr("Open-Timetable can also try to rename the groups and the subgroups of this year. Should they be renamed?"));
 		msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
 		msgBox.setDefaultButton(QMessageBox::Yes);
 		msgBox.setEscapeButton(QMessageBox::Cancel);
@@ -235,7 +235,7 @@ void ModifyStudentsYearForm::ok()
 		
 		int result;
 		if(warningsOrRenaming){
-			result=LongTextMessageBox::largeConfirmationWithDimensionsThreeButtonsYesNoCancel( this, tr("FET question"), message, tr("Yes"), tr("No"), tr("Cancel"), 0 , 2 );
+			result=LongTextMessageBox::largeConfirmationWithDimensionsThreeButtonsYesNoCancel( this, tr("Open-Timetable question"), message, tr("Yes"), tr("No"), tr("Cancel"), 0 , 2 );
 		} else result=QMessageBox::No;
 
 		if(result==QMessageBox::Yes){

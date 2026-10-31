@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">filename.fet - FET</string>
+   <string notr="true">Untitled — Open-Timetable</string>
   </property>
   <widget class="QWidget" name="mainwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -1428,7 +1428,7 @@
   </action>
   <action name="helpAboutFETAction">
    <property name="text">
-    <string>About FET</string>
+    <string>About Open-Timetable</string>
    </property>
    <property name="shortcut">
     <string/>

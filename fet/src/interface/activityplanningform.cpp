@@ -881,7 +881,7 @@ void ActivityPlanningForm::swapTeachers(int studentsActivity1, int subjectActivi
 			tmpSet<<t;
 		}
 		if(tmpSet!=teacherSet1){
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 							 tr("Cannot change teachers, because there are different teachers in %1 %2.", "%1 is a students set name, %2 is a subject name.").arg(statisticValues.allStudentsNames[studentsActivity1]).arg(statisticValues.allSubjectsNames[subjectActivity1]));
 			return;
 		}
@@ -902,7 +902,7 @@ void ActivityPlanningForm::swapTeachers(int studentsActivity1, int subjectActivi
 			tmpSet<<t;
 		}
 		if(tmpSet!=teacherSet2){
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 							 tr("Cannot change teachers, because there are different teachers in %1 %2.", "%1 is a students set name, %2 is a subject name.").arg(statisticValues.allStudentsNames[studentsActivity2]).arg(statisticValues.allSubjectsNames[subjectActivity2]));
 			return;
 		}
@@ -1143,7 +1143,7 @@ void ActivityPlanningForm::swapStudents(int studentsActivity1, int subjectActivi
 			tmpSet<<s;
 		}
 		if(tmpSet!=studentsSet1){
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 							 tr("Cannot change students, because there are different students in %1 %2.", "%1 is a students set name. %2 is a subject name.").arg(statisticValues.allStudentsNames[studentsActivity1]).arg(statisticValues.allSubjectsNames[subjectActivity1]));
 			return;
 		}
@@ -1164,7 +1164,7 @@ void ActivityPlanningForm::swapStudents(int studentsActivity1, int subjectActivi
 			tmpSet<<s;
 		}
 		if(tmpSet!=studentsSet2){
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 							 tr("Cannot change students, because there are different students in %1 %2.", "%1 is a students set name. %2 is a subject name.").arg(statisticValues.allStudentsNames[studentsActivity2]).arg(statisticValues.allSubjectsNames[subjectActivity2]));
 			return;
 		}
@@ -1575,12 +1575,12 @@ void ActivityPlanningForm::activitiesTableHorizontalHeaderClicked(int column){
 				//items=subjectListWithQualifiedTeachers.at(subject);		//subject is -1 here
 				
 				//if(items.count()<1){
-				//	QMessageBox::information(this, tr("FET - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in FET -> Data -> Teachers."));
+				//	QMessageBox::information(this, tr("Open-Timetable - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in Open-Timetable -> Data -> Teachers."));
 					items=statisticValues.allTeachersNames;
 				//}
 				s+="\n\n";
 				s+=tr("Please choose a new teacher:");
-				QString item = QInputDialog::getItem(this, tr("FET - Select new teacher dialog"), s, items, 0, false, &ok);
+				QString item = QInputDialog::getItem(this, tr("Open-Timetable - Select new teacher dialog"), s, items, 0, false, &ok);
 				if (ok) {
 					int ret2=QMessageBox::Yes;
 					//int ret2=QMessageBox::No;
@@ -1642,12 +1642,12 @@ void ActivityPlanningForm::activitiesTableHorizontalHeaderClicked(int column){
 				items=subjectListWithQualifiedTeachers.at(subject);
 				
 				if(items.count()<1){
-					QMessageBox::information(this, tr("FET - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in FET -> Data -> Teachers."));
+					QMessageBox::information(this, tr("Open-Timetable - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in Open-Timetable -> Data -> Teachers."));
 					items=statisticValues.allTeachersNames;
 				}
 				s+="\n\n";
 				s+=tr("Please choose a new teacher:");
-				QString item = QInputDialog::getItem(this, tr("FET - Select new teacher dialog"), s, items, 0, false, &ok);
+				QString item = QInputDialog::getItem(this, tr("Open-Timetable - Select new teacher dialog"), s, items, 0, false, &ok);
 				if (ok) {
 					int ret2=QMessageBox::Yes;
 					//int ret2=QMessageBox::No;
@@ -1692,7 +1692,7 @@ void ActivityPlanningForm::activitiesTableHorizontalHeaderClicked(int column){
 			bool ok;
 			QStringList items=statisticValues.allStudentsNames;
 			QString s=tr("You have selected %1. Please select other students to swap teachers.", "%1 is a students set name.").arg(statisticValues.allStudentsNames[column]);
-			QString item = QInputDialog::getItem(this, tr("FET - Swap teachers"), s, items, 0, false, &ok);
+			QString item = QInputDialog::getItem(this, tr("Open-Timetable - Swap teachers"), s, items, 0, false, &ok);
 			if(ok){
 				for(int i=0; i<statisticValues.allSubjectsNames.count(); i++){
 					swapTeachers(column, i, statisticValues.allStudentsNames.indexOf(item), i);
@@ -1703,7 +1703,7 @@ void ActivityPlanningForm::activitiesTableHorizontalHeaderClicked(int column){
 			bool ok;
 			QStringList items=statisticValues.allSubjectsNames;
 			QString s=tr("You have selected %1. Please select other subject to swap teachers.", "%1 is a subject name.").arg(statisticValues.allSubjectsNames[column]);
-			QString item = QInputDialog::getItem(this, tr("FET - Swap teachers"), s, items, 0, false, &ok);
+			QString item = QInputDialog::getItem(this, tr("Open-Timetable - Swap teachers"), s, items, 0, false, &ok);
 			if(ok){
 				for(int i=0; i<statisticValues.allStudentsNames.count(); i++){
 					swapTeachers(i, column, i, statisticValues.allSubjectsNames.indexOf(item));
@@ -1716,7 +1716,7 @@ void ActivityPlanningForm::activitiesTableHorizontalHeaderClicked(int column){
 			bool ok;
 			QStringList items=statisticValues.allStudentsNames;
 			QString s=tr("You have selected %1. Please select other students to swap students.", "%1 is a students set name.").arg(statisticValues.allStudentsNames[column]);
-			QString item = QInputDialog::getItem(this, tr("FET - Swap students"), s, items, 0, false, &ok);
+			QString item = QInputDialog::getItem(this, tr("Open-Timetable - Swap students"), s, items, 0, false, &ok);
 			if(ok){
 				for(int i=0; i<statisticValues.allSubjectsNames.count(); i++){
 					swapStudents(column, i, statisticValues.allStudentsNames.indexOf(item), i);
@@ -1728,7 +1728,7 @@ void ActivityPlanningForm::activitiesTableHorizontalHeaderClicked(int column){
 			/*bool ok;
 			QStringList items=statisticValues.allSubjectsNames;
 			QString s=tr("You have selected %1. Please select other subject to swap students.", "%1 is a subject set name.").arg(statisticValues.allSubjectsNames[column]);
-			QString item = QInputDialog::getItem(this, tr("FET - Swap students"), s, items, 0, false, &ok);
+			QString item = QInputDialog::getItem(this, tr("Open-Timetable - Swap students"), s, items, 0, false, &ok);
 			if(ok){
 				for(int i=0; i<statisticValues.allStudentsNames.count(); i++){
 					swapStudents(i, column, i, statisticValues.allSubjectsNames.indexOf(item));
@@ -2010,12 +2010,12 @@ void ActivityPlanningForm::activitiesTableVerticalHeaderClicked(int row){
 				items=subjectListWithQualifiedTeachers.at(subject);
 				
 				if(items.count()<1){
-					QMessageBox::information(this, tr("FET - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in FET -> Data -> Teachers."));
+					QMessageBox::information(this, tr("Open-Timetable - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in Open-Timetable -> Data -> Teachers."));
 					items=statisticValues.allTeachersNames;
 				}
 				s+="\n\n";
 				s+=tr("Please choose a new teacher:");
-				QString item = QInputDialog::getItem(this, tr("FET - Select new teacher dialog"), s, items, 0, false, &ok);
+				QString item = QInputDialog::getItem(this, tr("Open-Timetable - Select new teacher dialog"), s, items, 0, false, &ok);
 				if (ok) {
 					int ret2=QMessageBox::Yes;
 					//int ret2=QMessageBox::No;
@@ -2075,12 +2075,12 @@ void ActivityPlanningForm::activitiesTableVerticalHeaderClicked(int row){
 				//items=subjectListWithQualifiedTeachers.at(subject);		//subject is -1 here!
 				
 				//if(items.count()<1){
-				//	QMessageBox::information(this, tr("FET - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in FET -> Data -> Teachers."));
+				//	QMessageBox::information(this, tr("Open-Timetable - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in Open-Timetable -> Data -> Teachers."));
 					items=statisticValues.allTeachersNames;
 				//}
 				s+="\n\n";
 				s+=tr("Please choose a new teacher:");
-				QString item = QInputDialog::getItem(this, tr("FET - Select new teacher dialog"), s, items, 0, false, &ok);
+				QString item = QInputDialog::getItem(this, tr("Open-Timetable - Select new teacher dialog"), s, items, 0, false, &ok);
 				if (ok) {
 					int ret2=QMessageBox::No;
 					if(_affectOtherStudentsOverall){
@@ -2124,7 +2124,7 @@ void ActivityPlanningForm::activitiesTableVerticalHeaderClicked(int row){
 			bool ok;
 			QStringList items=statisticValues.allSubjectsNames;
 			QString s=tr("You have selected %1. Please select other subject to swap teachers.", "%1 is a subject name.").arg(statisticValues.allSubjectsNames[row]);
-			QString item = QInputDialog::getItem(this, tr("FET - Swap teachers"), s, items, 0, false, &ok);
+			QString item = QInputDialog::getItem(this, tr("Open-Timetable - Swap teachers"), s, items, 0, false, &ok);
 			if(ok){
 				for(int i=0; i<statisticValues.allStudentsNames.count(); i++){
 					swapTeachers(i, row, i, statisticValues.allSubjectsNames.indexOf(item));
@@ -2135,7 +2135,7 @@ void ActivityPlanningForm::activitiesTableVerticalHeaderClicked(int row){
 			bool ok;
 			QStringList items=statisticValues.allStudentsNames;
 			QString s=tr("You have selected %1. Please select other students to swap teachers.", "%1 is a students set name.").arg(statisticValues.allStudentsNames[row]);
-			QString item = QInputDialog::getItem(this, tr("FET - Swap teachers"), s, items, 0, false, &ok);
+			QString item = QInputDialog::getItem(this, tr("Open-Timetable - Swap teachers"), s, items, 0, false, &ok);
 			if(ok){
 				for(int i=0; i<statisticValues.allSubjectsNames.count(); i++){
 					swapTeachers(row, i, statisticValues.allStudentsNames.indexOf(item), i);
@@ -2149,7 +2149,7 @@ void ActivityPlanningForm::activitiesTableVerticalHeaderClicked(int row){
 			/*bool ok;
 			QStringList items=statisticValues.allSubjectsNames;
 			QString s=tr("You have selected %1. Please select other subject to swap students.", "%1 is a subject name.").arg(statisticValues.allSubjectsNames[row]);
-			QString item = QInputDialog::getItem(this, tr("FET - Swap students"), s, items, 0, false, &ok);
+			QString item = QInputDialog::getItem(this, tr("Open-Timetable - Swap students"), s, items, 0, false, &ok);
 			if(ok){
 				for(int i=0; i<statisticValues.allStudentsNames.count(); i++){
 					swapStudents(i, row, i, statisticValues.allSubjectsNames.indexOf(item));
@@ -2160,7 +2160,7 @@ void ActivityPlanningForm::activitiesTableVerticalHeaderClicked(int row){
 			bool ok;
 			QStringList items=statisticValues.allStudentsNames;
 			QString s=tr("You have selected %1. Please select other students to swap students.", "%1 is a students set name.").arg(statisticValues.allStudentsNames[row]);
-			QString item = QInputDialog::getItem(this, tr("FET - Swap students"), s, items, 0, false, &ok);
+			QString item = QInputDialog::getItem(this, tr("Open-Timetable - Swap students"), s, items, 0, false, &ok);
 			if(ok){
 				for(int i=0; i<statisticValues.allSubjectsNames.count(); i++){
 					swapStudents(row, i, statisticValues.allStudentsNames.indexOf(item), i);
@@ -2303,7 +2303,7 @@ void ActivityPlanningForm::activitiesCellSelected(const QModelIndex& index){
 								_diffComputeNTotalStudents=true;
 						}
 						if(nSplit>MAX_SPLIT_OF_AN_ACTIVITY){
-							QMessageBox::warning(this, tr("FET information"),
+							QMessageBox::warning(this, tr("Open-Timetable information"),
 							 tr("Cannot modify this large activity, because it contains more than %1 activities.")
 							 .arg(MAX_SPLIT_OF_AN_ACTIVITY));
 							return;
@@ -2331,7 +2331,7 @@ void ActivityPlanningForm::activitiesCellSelected(const QModelIndex& index){
 						s2+="\n\n";
 						s2+=tr("The fields which are different are: %1").arg(s.join(translatedCommaSpace()));
 							
-						int t=QMessageBox::warning(this, tr("FET warning"), s2, tr("Abort"), tr("Continue"), QString(), 1, 0);
+						int t=QMessageBox::warning(this, tr("Open-Timetable warning"), s2, tr("Abort"), tr("Continue"), QString(), 1, 0);
 						
 						if(t==0)
 							return;*/
@@ -2604,12 +2604,12 @@ void ActivityPlanningForm::activitiesCellSelected(const QModelIndex& index){
 			items=subjectListWithQualifiedTeachers.at(subject);
 			
 			if(items.count()<1){
-				QMessageBox::information(this, tr("FET - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in FET -> Data -> Teachers."));
+				QMessageBox::information(this, tr("Open-Timetable - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in Open-Timetable -> Data -> Teachers."));
 				items=statisticValues.allTeachersNames;
 			}
 			s+="\n\n";
 			s+=tr("Please choose a new teacher:");
-			QString item = QInputDialog::getItem(this, tr("FET - Select new teacher dialog"), s, items, 0, false, &ok);
+			QString item = QInputDialog::getItem(this, tr("Open-Timetable - Select new teacher dialog"), s, items, 0, false, &ok);
 			if (ok) {
 				int retst=QMessageBox::No;
 				if(_affectOtherStudentsOverall){
@@ -2902,12 +2902,12 @@ void ActivityPlanningForm::teachersTableHorizontalHeaderClicked(int column){
 			//items=subjectListWithQualifiedTeachers.at(subject);
 			
 			//if(items.count()<1){
-			//	QMessageBox::information(this, tr("FET - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in FET -> Data -> Teachers."));
+			//	QMessageBox::information(this, tr("Open-Timetable - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in Open-Timetable -> Data -> Teachers."));
 				items=statisticValues.allTeachersNames;
 			//}
 			s+="\n\n";
 			s+=tr("Please choose a new teacher:");
-			QString item = QInputDialog::getItem(this, tr("FET - Select new teacher dialog"), s, items, 0, false, &ok);
+			QString item = QInputDialog::getItem(this, tr("Open-Timetable - Select new teacher dialog"), s, items, 0, false, &ok);
 			if (ok) {
 				int ret2=QMessageBox::No;
 				if(_affectOtherTeachersOverall){
@@ -3018,12 +3018,12 @@ void ActivityPlanningForm::teachersTableHorizontalHeaderClicked(int column){
 			//items=subjectListWithQualifiedTeachers.at(subject);
 		
 			//if(items.count()<1){
-			//	QMessageBox::information(this, tr("FET - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in FET -> Data -> Teachers."));
+			//	QMessageBox::information(this, tr("Open-Timetable - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in Open-Timetable -> Data -> Teachers."));
 				items=statisticValues.allTeachersNames;
 			//}
 			s+="\n\n";
 			s+=tr("Please choose teacher for swap:");
-			QString teacher2 = QInputDialog::getItem(this, tr("FET - Select teacher for swap dialog"), s, items, 0, false, &ok);
+			QString teacher2 = QInputDialog::getItem(this, tr("Open-Timetable - Select teacher for swap dialog"), s, items, 0, false, &ok);
 			if (ok) {
 				//care about activities of teacher2 (start)
 				QList<int> tmpID2;
@@ -3169,7 +3169,7 @@ void ActivityPlanningForm::teachersCellSelected(const QModelIndex& index){
 	int itcol=index.column();
 	if(itrow==0){
 		bool ok=false;
-		int targetHours=QInputDialog::getInt(this, tr("FET question"), tr("Please enter the target number of hours:")+" ",
+		int targetHours=QInputDialog::getInt(this, tr("Open-Timetable question"), tr("Please enter the target number of hours:")+" ",
 		 teachersTargetNumberOfHours.at(itcol), 0, gt.rules.nHoursPerDay*gt.rules.nDaysPerWeek, 1, &ok);
 		if(ok){
 			teachersTargetNumberOfHours[itcol]=targetHours;
@@ -3381,12 +3381,12 @@ void ActivityPlanningForm::teachersCellSelected(const QModelIndex& index){
 				//items=subjectListWithQualifiedTeachers.at(subject);
 				
 				//if(items.count()<1){
-				//	QMessageBox::information(this, tr("FET - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in FET -> Data -> Teachers."));
+				//	QMessageBox::information(this, tr("Open-Timetable - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in Open-Timetable -> Data -> Teachers."));
 					items=statisticValues.allTeachersNames;
 				//}
 				s+="\n\n";
 				s+=tr("Please choose a new teacher:");
-				QString item = QInputDialog::getItem(this, tr("FET - Select new teacher dialog"), s, items, 0, false, &ok);
+				QString item = QInputDialog::getItem(this, tr("Open-Timetable - Select new teacher dialog"), s, items, 0, false, &ok);
 				if (ok) {
 					int ret2=QMessageBox::No;
 					if(_affectOtherTeachersOverall){
@@ -3496,12 +3496,12 @@ void ActivityPlanningForm::teachersCellSelected(const QModelIndex& index){
 				//items=subjectListWithQualifiedTeachers.at(subject);
 			
 				//if(items.count()<1){
-				//	QMessageBox::information(this, tr("FET - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in FET -> Data -> Teachers."));
+				//	QMessageBox::information(this, tr("Open-Timetable - Information"), tr("There is no teacher qualified for this subject. You should set teachers qualified subjects in Open-Timetable -> Data -> Teachers."));
 					items=statisticValues.allTeachersNames;
 				//}
 				s+="\n\n";
 				s+=tr("Please choose teacher for swap:");
-				QString teacher2 = QInputDialog::getItem(this, tr("FET - Select teacher for swap dialog"), s, items, 0, false, &ok);
+				QString teacher2 = QInputDialog::getItem(this, tr("Open-Timetable - Select teacher for swap dialog"), s, items, 0, false, &ok);
 				if (ok) {
 					//care about activities of teacher2 (start)
 					QList<int> tmpID2;

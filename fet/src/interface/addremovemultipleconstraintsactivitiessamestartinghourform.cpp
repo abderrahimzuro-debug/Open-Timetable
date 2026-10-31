@@ -55,7 +55,7 @@ AddRemoveMultipleConstraintsActivitiesSameStartingHourForm::~AddRemoveMultipleCo
 
 void AddRemoveMultipleConstraintsActivitiesSameStartingHourForm::addAllConstraints()
 {
-	int ret=QMessageBox::warning(this, tr("FET question"), tr("Are you sure you want to add multiple constraints of type "
+	int ret=QMessageBox::warning(this, tr("Open-Timetable question"), tr("Are you sure you want to add multiple constraints of type "
 	 "activities same starting hour to your data, according to the filters you selected?"),
 	 QMessageBox::Yes | QMessageBox::Cancel);
 	if(ret==QMessageBox::Cancel)
@@ -114,7 +114,7 @@ void AddRemoveMultipleConstraintsActivitiesSameStartingHourForm::addAllConstrain
 		cnt++;
 	}
 
-	QMessageBox::information(this, tr("FET information"), tr("There were added %1 time constraints").arg(cnt));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("There were added %1 time constraints").arg(cnt));
 	
 	if(cnt>0)
 		gt.rules.addUndoPoint(tr("Added %1 time constraints of type activities same starting hour, with weight=%2%, conditions=%3.")
@@ -123,7 +123,7 @@ void AddRemoveMultipleConstraintsActivitiesSameStartingHourForm::addAllConstrain
 
 void AddRemoveMultipleConstraintsActivitiesSameStartingHourForm::removeAllConstraints()
 {
-	int ret=QMessageBox::warning(this, tr("FET question"), tr("Are you sure you want to remove all the constraints of type "
+	int ret=QMessageBox::warning(this, tr("Open-Timetable question"), tr("Are you sure you want to remove all the constraints of type "
 	 "activities same starting hour from your data?"),
 	 QMessageBox::Yes | QMessageBox::Cancel);
 	if(ret==QMessageBox::Cancel)
@@ -137,7 +137,7 @@ void AddRemoveMultipleConstraintsActivitiesSameStartingHourForm::removeAllConstr
 
 	gt.rules.removeTimeConstraints(tcl);
 	
-	QMessageBox::information(this, tr("FET information"), tr("There were removed %1 time constraints").arg(t));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("There were removed %1 time constraints").arg(t));
 
 	if(tcl.count()>0)
 		gt.rules.addUndoPoint(tr("Removed all the %1 time constraints of type activities same starting hour.")
@@ -154,5 +154,5 @@ void AddRemoveMultipleConstraintsActivitiesSameStartingHourForm::help()
 	 " and 'Same teachers' unselected (this is the default setting), and click on 'Add all constraints'. There is also a 'Remove all constraints', which"
 	 " removes all the constraints of type activities same starting hour.").arg("Imad").arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=5387.0");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable Help"), s);
 }

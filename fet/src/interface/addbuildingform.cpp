@@ -41,7 +41,7 @@ AddBuildingForm::~AddBuildingForm()
 void AddBuildingForm::addBuilding()
 {
 	if(nameLineEdit->text().isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		return;
 	}
 	Building* bu=new Building();

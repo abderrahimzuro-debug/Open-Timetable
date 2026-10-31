@@ -77,7 +77,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 	QString tmp=weight4LineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight4);
 	if(weight4<0.0 || weight4>100.0){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 		 tr("Invalid weight (percentage) for all split activities - must be real number >=0.0 and <=100.0"));
 		return;
 	}
@@ -86,7 +86,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 	tmp=weight2LineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight2);
 	if(spread2CheckBox->isChecked() && (weight2<0.0 || weight2>100.0)){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 		 tr("Invalid weight (percentage) for activities split into 2 components - must be real number >=0.0 and <=100.0"));
 		return;
 	}
@@ -95,7 +95,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 	tmp=weight3LineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight3);
 	if(spread3CheckBox->isChecked() && (weight3<0.0 || weight3>100.0)){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 		 tr("Invalid weight (percentage) for activities split into 3 components - must be real number >=0.0 and <=100.0"));
 		return;
 	}
@@ -105,8 +105,8 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 	bool spread4OrMore=spread4OrMoreCheckBox->isChecked();
 	
 	if(!spread4OrMore){
-		QMessageBox::critical(this, tr("FET bug"), tr("You found a probable bug in FET - min 1 day should be selected automatically for "
-		 "all split activities. Please report error. FET will now abort current operation"));
+		QMessageBox::critical(this, tr("Open-Timetable bug"), tr("You found a probable bug in Open-Timetable - min 1 day should be selected automatically for "
+		 "all split activities. Please report error. Open-Timetable will now abort current operation"));
 		return;
 	}
 	assert(spread4OrMore);
@@ -214,7 +214,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 			}
 		}
 		
-		int res=LongTextMessageBox::largeConfirmation(this, tr("FET warning"), s, tr("Continue"), tr("Cancel"), QString(), 0, 1);
+		int res=LongTextMessageBox::largeConfirmation(this, tr("Open-Timetable warning"), s, tr("Continue"), tr("Cancel"), QString(), 0, 1);
 		if(res==1)
 			return;
 	}
@@ -232,8 +232,8 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 			
 			for(int i=0; i<mdc->n_activities; i++){
 				if(!activityGroupIdHash.contains(mdc->activitiesIds[i])){
-					QMessageBox::critical(this, tr("FET bug"), tr("You found a probable bug in FET - constraint %1\ncontains invalid activity id %2\n"
-					 "\nPlease report error. FET will now abort current operation").arg(mdc->getDetailedDescription(gt.rules)).arg(mdc->activitiesIds[i]));
+					QMessageBox::critical(this, tr("Open-Timetable bug"), tr("You found a probable bug in Open-Timetable - constraint %1\ncontains invalid activity id %2\n"
+					 "\nPlease report error. Open-Timetable will now abort current operation").arg(mdc->getDetailedDescription(gt.rules)).arg(mdc->activitiesIds[i]));
 					return;
 				}
 				assert(activityGroupIdHash.contains(mdc->activitiesIds[i]));
@@ -301,7 +301,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 				notAloneComp2=2;
 			}
 			else{
-				QMessageBox::information(this, tr("FET information"), tr("Please select the isolated component"));
+				QMessageBox::information(this, tr("Open-Timetable information"), tr("Please select the isolated component"));
 				assert(c1!=nullptr);
 				delete c1;
 				return;
@@ -451,8 +451,8 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 	for(ConstraintMinDaysBetweenActivities* tc : std::as_const(addedConstraints)){
 		bool t=gt.rules.addTimeConstraint(tc);
 		if(!t){
-			QMessageBox::critical(this, tr("FET bug"), tr("You found a probable bug in FET - trying to add constraint %1, "
-			 "but it is already existing. Please report error. FET will now continue operation").arg(tc->getDetailedDescription(gt.rules)));
+			QMessageBox::critical(this, tr("Open-Timetable bug"), tr("You found a probable bug in Open-Timetable - trying to add constraint %1, "
+			 "but it is already existing. Please report error. Open-Timetable will now continue operation").arg(tc->getDetailedDescription(gt.rules)));
 		}
 		else{
 			if(!dataChanged){
@@ -469,7 +469,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::wasAccepted()
 	 "activities or max 0 half days between activities (in the Mornings-Afternoons mode), it is important (after the current operation) "
 	 "to apply the operation of removing constraints which are 'bad' (redundant and with weight < 100%).")
 	 +" "+tr("Read Help/Important tips - tip 2) for details.");
-	QMessageBox::information(this, tr("FET information"), s2);
+	QMessageBox::information(this, tr("Open-Timetable information"), s2);
 	
 	if(dataChanged){
 		QString su=tr("Spreaded the activities evenly over the week:");
@@ -535,7 +535,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::help()
 	" It is recommended to enable the check boxes for activities split into 2 or 3 components (not to be in consecutive days), "
 	"if your data is still possible to solve. You may use a progressive approach. Example of weights: 90.0%, 95.0%, 99.0%, 99.75%, 100.0%.");
 
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }
 
 void SpreadMinDaysConstraintsFiveDaysForm::spread2CheckBox_toggled()
@@ -556,7 +556,7 @@ void SpreadMinDaysConstraintsFiveDaysForm::spread4OrMoreCheckBox_toggled()
 	int k=spread4OrMoreCheckBox->isChecked();
 	if(!k){
 		spread4OrMoreCheckBox->setChecked(true);
-		QMessageBox::information(this, tr("FET information"), tr("This box must remain checked, so that split activities"
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("This box must remain checked, so that split activities"
 		 " are not on the same day (with the probability you write below)"));
 	}
 }

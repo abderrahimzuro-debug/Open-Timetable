@@ -55,8 +55,11 @@ private:
 	QLabel* addStatCard(QGridLayout* grid, int row, int column,
 			    const QString& label, const QString& accentColor);
 
-	// نصّ زر سريع حسب لغة الواجهة (يعتمد على اسم إجراء FET)
+	// نصّ زر سريع حسب لغة الواجهة (يعتمد على اسم الإجراء)
 	static QString quickButtonText(const QString& actionName);
+
+	// اسم الأيقونة المناسب لكل إجراء (UiIcons)
+	static QString quickButtonIcon(const QString& actionName);
 
 	// زر سريع مرتبط بإجراء FET بالاسم (يعود nullptr إذا لم يوجد الإجراء)
 	QWidget* addQuickButton(QGridLayout* grid, int row, int column,

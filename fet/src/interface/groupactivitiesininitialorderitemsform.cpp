@@ -402,7 +402,7 @@ bool GroupActivitiesInInitialOrderItemsForm::filterOk(GroupActivitiesInInitialOr
 void GroupActivitiesInInitialOrderItemsForm::moveItemUp()
 {
 	if(filterCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a 'group activities in the initial order' item up, the 'Filter' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a 'group activities in the initial order' item up, the 'Filter' check box must not be checked."));
 		return;
 	}
 	
@@ -462,7 +462,7 @@ void GroupActivitiesInInitialOrderItemsForm::moveItemUp()
 void GroupActivitiesInInitialOrderItemsForm::moveItemDown()
 {
 	if(filterCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a 'group activities in the initial order' item down, the 'Filter' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a 'group activities in the initial order' item down, the 'Filter' check box must not be checked."));
 		return;
 	}
 	
@@ -644,7 +644,7 @@ void GroupActivitiesInInitialOrderItemsForm::modifyItem()
 
 	int i=itemsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected item"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected item"));
 		return;
 	}
 	GroupActivitiesInInitialOrderItem* item=visibleItemsList[i];
@@ -671,7 +671,7 @@ void GroupActivitiesInInitialOrderItemsForm::removeItem()
 {
 	int i=itemsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected item"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected item"));
 		return;
 	}
 	GroupActivitiesInInitialOrderItem* item=visibleItemsList.at(i);
@@ -680,7 +680,7 @@ void GroupActivitiesInInitialOrderItemsForm::removeItem()
 	s+="\n\n";
 	s+=item->getDetailedDescription(gt.rules);
 	
-	switch( LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+	switch( LongTextMessageBox::confirmation( this, tr("Open-Timetable confirmation"),
 		s, tr("Yes"), tr("No"), QString(), 0, 1 ) ){
 	case 0: // The user clicked the OK button or pressed Enter
 		for(int j=0; j<gt.rules.groupActivitiesInInitialOrderList.count(); j++)
@@ -718,11 +718,11 @@ void GroupActivitiesInInitialOrderItemsForm::removeItem()
 void GroupActivitiesInInitialOrderItemsForm::help()
 {
 	QString s=tr("This option is an advanced one. It is intended for experienced users."
-	 " It is useful in cases of peculiar uses of constraints. In most cases, FET will care"
+	 " It is useful in cases of peculiar uses of constraints. In most cases, Open-Timetable will care"
 	 " automatically about a good initial order of the activities before the generation will"
-	 " begin, but in some very rare cases you can help FET. An example is: if you use constraints activities"
+	 " begin, but in some very rare cases you can help Open-Timetable. An example is: if you use constraints activities"
 	 " occupy max time slots from selection in such a way that some activities are clearly meant to be"
-	 " near each other when the generation starts, but FET is not clever enough to deduce that."
+	 " near each other when the generation starts, but Open-Timetable is not clever enough to deduce that."
 	 " Other usage might be that you want to leave some activities at the end and, in case the timetable"
 	 " cannot be found, you can use a partial one. In this case, you need to begin to generate once"
 	 " (you can interrupt generation after only a few activities were placed), see the initial order of the"
@@ -731,14 +731,14 @@ void GroupActivitiesInInitialOrderItemsForm::help()
 	s+="\n\n";
 	s+=tr("Note: Each activity id must appear at most once in all the active 'group activities in the initial order' items.");
 
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }
 
 void GroupActivitiesInInitialOrderItemsForm::activateItem()
 {
 	int i=itemsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected item"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected item"));
 		return;
 	}
 	
@@ -777,7 +777,7 @@ void GroupActivitiesInInitialOrderItemsForm::deactivateItem()
 {
 	int i=itemsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected item"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected item"));
 		return;
 	}
 	
@@ -842,7 +842,7 @@ void GroupActivitiesInInitialOrderItemsForm::itemComments()
 {
 	int i=itemsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected item"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected item"));
 		return;
 	}
 	
@@ -1000,7 +1000,7 @@ void GroupActivitiesInInitialOrderItemsForm::activateAllItems()
 {
 	QMessageBox::StandardButton ret=QMessageBox::No;
 	QString s=tr("Are you sure you want to activate all the listed items?");
-	ret=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+	ret=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
 	if(ret==QMessageBox::No){
 		itemsListWidget->setFocus();
 		return;
@@ -1025,7 +1025,7 @@ void GroupActivitiesInInitialOrderItemsForm::activateAllItems()
 		
 		filterChanged();
 		
-		QMessageBox::information(this, tr("FET information"), tr("Activated %1 group activities in the initial order items").arg(cnt));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Activated %1 group activities in the initial order items").arg(cnt));
 	}
 	
 	itemsListWidget->setFocus();
@@ -1035,7 +1035,7 @@ void GroupActivitiesInInitialOrderItemsForm::deactivateAllItems()
 {
 	QMessageBox::StandardButton ret=QMessageBox::No;
 	QString s=tr("Are you sure you want to deactivate all the listed items?");
-	ret=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+	ret=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
 	if(ret==QMessageBox::No){
 		itemsListWidget->setFocus();
 		return;
@@ -1060,7 +1060,7 @@ void GroupActivitiesInInitialOrderItemsForm::deactivateAllItems()
 		
 		filterChanged();
 		
-		QMessageBox::information(this, tr("FET information"), tr("Deactivated %1 group activities in the initial order items").arg(cnt));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Deactivated %1 group activities in the initial order items").arg(cnt));
 	}
 	
 	itemsListWidget->setFocus();

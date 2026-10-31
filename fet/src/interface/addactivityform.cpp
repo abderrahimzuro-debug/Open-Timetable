@@ -594,7 +594,7 @@ void SecondMinDaysDialog::yesPressed()
 	QString tmp=percText->text();
 	weight_sscanf(tmp, "%lf", &wt);
 	if(wt<0.0 || wt>100.0){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 			tr("Invalid weight (percentage) - must be >=0 and <=100.0"));
 		return;
 	}
@@ -613,7 +613,7 @@ void AddActivityForm::addActivity()
 	QString tmp=percentageLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);
 	if(percentageLineEdit->isEnabled() && (weight<0.0 || weight>100.0)){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 			tr("Invalid weight (percentage) for added constraint min days between activities"));
 		return;
 	}
@@ -624,7 +624,7 @@ void AddActivityForm::addActivity()
 	/*int subject_index=gt.rules.searchSubject(subject_name);
 	if(subject_index<0){*/
 	if(!found){
-		QMessageBox::warning(this, tr("FET warning"),
+		QMessageBox::warning(this, tr("Open-Timetable warning"),
 			tr("Invalid subject"));
 		return;
 	}
@@ -639,7 +639,7 @@ void AddActivityForm::addActivity()
 	//teachers
 	QStringList teachers_names;
 	if(selectedTeachersListWidget->count()<=0){
-		int t=QMessageBox::question(this, tr("FET question"),
+		int t=QMessageBox::question(this, tr("Open-Timetable question"),
 		 tr("Do you really want to add an activity without teacher(s)?"),
 		 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
@@ -658,7 +658,7 @@ void AddActivityForm::addActivity()
 	int numberOfStudents=0;
 	QStringList students_names;
 	if(selectedStudentsListWidget->count()<=0){
-		int t=QMessageBox::question(this, tr("FET question"),
+		int t=QMessageBox::question(this, tr("Open-Timetable question"),
 		 tr("Do you really want to add an activity without student set(s)?"),
 		 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
@@ -688,7 +688,7 @@ void AddActivityForm::addActivity()
 	if(splitSpinBox->value()==1){ //indivisible activity
 		int duration=dur(0)->value();
 		if(duration<0){
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 				tr("Invalid duration"));
 			return;
 		}
@@ -718,7 +718,7 @@ void AddActivityForm::addActivity()
 		}
 
 		if(already_existing){
-			/*int t=QMessageBox::question(this, tr("FET question"),
+			/*int t=QMessageBox::question(this, tr("Open-Timetable question"),
 				tr("A similar activity already exists. Do you want to insert current activity?"),
 				tr("Yes"),tr("No"));
 			assert(t==0 || t==1 || t==-1);
@@ -726,7 +726,7 @@ void AddActivityForm::addActivity()
 				return;
 			if(t==-1) //Esc pressed
 				return;*/
-			QMessageBox::StandardButton t=QMessageBox::question(this, tr("FET question"),
+			QMessageBox::StandardButton t=QMessageBox::question(this, tr("Open-Timetable question"),
 				tr("A similar activity already exists. Do you want to insert current activity?"),
 				QMessageBox::Yes | QMessageBox::No);
 			if(t==QMessageBox::No)
@@ -737,7 +737,7 @@ void AddActivityForm::addActivity()
 			students_names, duration, duration, active,
 			(nStudentsSpinBox->value()==-1), nStudentsSpinBox->value(), numberOfStudents);
 		if(tmp){
-			QMessageBox::information(this, tr("FET information"), tr("Activity added"));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Activity added"));
 			
 			gt.rules.addUndoPoint(tr("Added an activity:\nId=%1\nTeachers=%2\nSubject=%3\nActivity tags=%4\n"
 			 "Students=%5")
@@ -745,13 +745,13 @@ void AddActivityForm::addActivity()
 			 .arg(students_names.join(translatedCommaSpace())));
 		}
 		else{
-			QMessageBox::critical(this, tr("FET information"), tr("Activity NOT added - please report error"));
+			QMessageBox::critical(this, tr("Open-Timetable information"), tr("Activity NOT added - please report error"));
 		}
 	}
 	else{ //split activity
 		if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 			if(minDaysDistanceSpinBox->value()>0 && splitSpinBox->value()>gt.rules.nDaysPerWeek){
-				int t=LongTextMessageBox::largeConfirmation(this, tr("FET confirmation"),
+				int t=LongTextMessageBox::largeConfirmation(this, tr("Open-Timetable confirmation"),
 				 tr("Possible incorrect settings. Are you sure you want to add current activity? See details below:")+"\n\n"+
 				 tr("You want to add a container activity split into more than the number of days per week and also add a constraint min days between activities."
 				  " This is a very bad practice from the way the algorithm of generation works (it slows down the generation and makes it harder to find a solution).")+
@@ -780,7 +780,7 @@ void AddActivityForm::addActivity()
 		}
 		else{
 			if(!halfCheckBox->isChecked() && minDaysDistanceSpinBox->value()>0 && splitSpinBox->value()>gt.rules.nDaysPerWeek/2){
-				int t=LongTextMessageBox::largeConfirmation(this, tr("FET confirmation"),
+				int t=LongTextMessageBox::largeConfirmation(this, tr("Open-Timetable confirmation"),
 				 tr("Possible incorrect settings. Are you sure you want to add current activity? See details below:")+"\n\n"+
 				 tr("You want to add a container activity split into more than the number of real days per week and also add a constraint min days between activities."
 				  " This is a very bad practice from the way the algorithm of generation works (it slows down the generation and makes it harder to find a solution).")+
@@ -807,7 +807,7 @@ void AddActivityForm::addActivity()
 					return;
 			}
 			else if(halfCheckBox->isChecked() && minDaysDistanceSpinBox->value()>0 && splitSpinBox->value()>gt.rules.nDaysPerWeek){
-				int t=LongTextMessageBox::largeConfirmation(this, tr("FET confirmation"),
+				int t=LongTextMessageBox::largeConfirmation(this, tr("Open-Timetable confirmation"),
 				 tr("Possible incorrect settings. Are you sure you want to add current activity? See details below:")+"\n\n"+
 				 tr("You want to add a container activity split into more than the number of days per week and also add a constraint min half days between activities."
 				  " This is a very bad practice from the way the algorithm of generation works (it slows down the generation and makes it harder to find a solution).")+
@@ -891,8 +891,8 @@ void AddActivityForm::addActivity()
 				}
 			}
 		
-			QMessageBox::information(this, tr("FET information"), tr("Split activity added."
-			 " Please note that FET currently cannot check for duplicates when adding split activities"
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Split activity added."
+			 " Please note that Open-Timetable currently cannot check for duplicates when adding split activities"
 			 ". It is advisable to check the statistics after adding all the activities"));
 
 			gt.rules.addUndoPoint(tr("Added a split activity:\nFirst activity's id=%1\nTeachers=%2\nSubject=%3\nActivity tags=%4\nStudents=%5\nNumber of subactivities=%6")
@@ -900,7 +900,7 @@ void AddActivityForm::addActivity()
 			 .arg(students_names.join(translatedCommaSpace())).arg(nsplit));
 		}
 		else
-			QMessageBox::critical(this, tr("FET information"), tr("Split activity NOT added - error???"));
+			QMessageBox::critical(this, tr("Open-Timetable information"), tr("Split activity NOT added - error???"));
 	}
 
 	PlanningChanged::increasePlanningCommunicationSpinBox();
@@ -914,7 +914,7 @@ void AddActivityForm::addMultipleActivities()
 	QString tmp=percentageLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);
 	if(percentageLineEdit->isEnabled() && (weight<0.0 || weight>100.0)){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 			tr("Invalid weight (percentage) for added constraint min days between activities"));
 		return;
 	}
@@ -925,7 +925,7 @@ void AddActivityForm::addMultipleActivities()
 	/*int subject_index=gt.rules.searchSubject(subject_name);
 	if(subject_index<0){*/
 	if(!found){
-		QMessageBox::warning(this, tr("FET warning"),
+		QMessageBox::warning(this, tr("Open-Timetable warning"),
 			tr("Invalid subject"));
 		return;
 	}
@@ -940,7 +940,7 @@ void AddActivityForm::addMultipleActivities()
 	//teachers
 	QStringList teachers_names;
 	if(selectedTeachersListWidget->count()<=0){
-		int t=QMessageBox::question(this, tr("FET question"),
+		int t=QMessageBox::question(this, tr("Open-Timetable question"),
 		 tr("Do you really want to add an activity without teacher(s)?"),
 		 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
@@ -959,7 +959,7 @@ void AddActivityForm::addMultipleActivities()
 	//int numberOfStudents=0;
 	QStringList students_names;
 	if(selectedStudentsListWidget->count()<=1){
-		QMessageBox::warning(this, tr("FET warning"),
+		QMessageBox::warning(this, tr("Open-Timetable warning"),
 		 tr("If you intend to add multiple activities for students (option 'Separately' is checked), please select at least 2 students sets."));
 
 		return;
@@ -974,7 +974,7 @@ void AddActivityForm::addMultipleActivities()
 	if(splitSpinBox->value()==1){ //indivisible activity
 		int duration=dur(0)->value();
 		if(duration<0){
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 				tr("Invalid duration"));
 			return;
 		}
@@ -1014,7 +1014,7 @@ void AddActivityForm::addMultipleActivities()
 			}
 	
 			if(already_existing){
-				/*int t=QMessageBox::question(this, tr("FET question"),
+				/*int t=QMessageBox::question(this, tr("Open-Timetable question"),
 					tr("A similar activity for students set %1 already exists. Do you want to insert current activity?").arg(students_names.at(st)),
 					tr("Yes"),tr("No"));
 				assert(t==0 || t==1 ||t==-1);
@@ -1025,7 +1025,7 @@ void AddActivityForm::addMultipleActivities()
 					continue;
 				}*/
 				
-				QMessageBox::StandardButton t=QMessageBox::question(this, tr("FET question"),
+				QMessageBox::StandardButton t=QMessageBox::question(this, tr("Open-Timetable question"),
 					tr("A similar activity for students set %1 already exists. Do you want to insert current activity?").arg(students_names.at(st)),
 					QMessageBox::Yes | QMessageBox::No);
 				if(t==QMessageBox::No)
@@ -1040,7 +1040,7 @@ void AddActivityForm::addMultipleActivities()
 				activityid++;
 			}
 		}
-		QMessageBox::information(this, tr("FET information"), tr("%1 activities added").arg(cnt_act));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("%1 activities added").arg(cnt_act));
 
 		gt.rules.addUndoPoint(tr("Added multiple activities:\nFirst activity's id=%1\nTeachers=%2\nSubject=%3\nActivity tags=%4\nStudents (separately)=%5")
 		 .arg(sfid).arg(teachers_names.join(translatedCommaSpace())).arg(subject_name).arg(activity_tags_names.join(translatedCommaSpace()))
@@ -1049,7 +1049,7 @@ void AddActivityForm::addMultipleActivities()
 	else{ //split activity
 		if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 			if(minDaysDistanceSpinBox->value()>0 && splitSpinBox->value()>gt.rules.nDaysPerWeek){
-				int t=LongTextMessageBox::largeConfirmation(this, tr("FET confirmation"),
+				int t=LongTextMessageBox::largeConfirmation(this, tr("Open-Timetable confirmation"),
 				 tr("Possible incorrect settings. Are you sure you want to add current activity? See details below:")+"\n\n"+
 				 tr("You want to add a container activity split into more than the number of days per week and also add a constraint min days between activities."
 				  " This is a very bad practice from the way the algorithm of generation works (it slows down the generation and makes it harder to find a solution).")+
@@ -1078,7 +1078,7 @@ void AddActivityForm::addMultipleActivities()
 		}
 		else{
 			if(!halfCheckBox->isChecked() && minDaysDistanceSpinBox->value()>0 && splitSpinBox->value()>gt.rules.nDaysPerWeek/2){
-				int t=LongTextMessageBox::largeConfirmation(this, tr("FET confirmation"),
+				int t=LongTextMessageBox::largeConfirmation(this, tr("Open-Timetable confirmation"),
 				 tr("Possible incorrect settings. Are you sure you want to add current activity? See details below:")+"\n\n"+
 				 tr("You want to add a container activity split into more than the number of real days per week and also add a constraint min days between activities."
 				  " This is a very bad practice from the way the algorithm of generation works (it slows down the generation and makes it harder to find a solution).")+
@@ -1105,7 +1105,7 @@ void AddActivityForm::addMultipleActivities()
 					return;
 			}
 			else if(halfCheckBox->isChecked() && minDaysDistanceSpinBox->value()>0 && splitSpinBox->value()>gt.rules.nDaysPerWeek){
-				int t=LongTextMessageBox::largeConfirmation(this, tr("FET confirmation"),
+				int t=LongTextMessageBox::largeConfirmation(this, tr("Open-Timetable confirmation"),
 				 tr("Possible incorrect settings. Are you sure you want to add current activity? See details below:")+"\n\n"+
 				 tr("You want to add a container activity split into more than the number of days per week and also add a constraint min half days between activities."
 				  " This is a very bad practice from the way the algorithm of generation works (it slows down the generation and makes it harder to find a solution).")+
@@ -1229,7 +1229,7 @@ void AddActivityForm::addMultipleActivities()
 				}
 			}
 		}
-		QMessageBox::information(this, tr("FET information"), tr("%1 split activities added").arg(cnt_act));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("%1 split activities added").arg(cnt_act));
 
 		gt.rules.addUndoPoint(tr("Added multiple split activities:\nFirst activity's id=%1\nTeachers=%2\nSubject=%3\nActivity tags=%4\nStudents (separately)=%5\n"
 		 "Number of subactivities in each larger split activity=%6")
@@ -1335,10 +1335,10 @@ void AddActivityForm::help()
 	 "If you select 100%, the constraint must be respected all the time. If you select 95%, there is a small chance "
 	 "that the timetable will not respect this constraint. Recommended values are 95.0%-100.0% (maybe you could try "
 	 "with 95%, then 99.75%, or even 100.0%, but the generation time might be larger). Generally, 99.75% might be a good value. "
-	 "Note: if you put a value less than 100% and the constraint is too tough, FET is able to find that this constraint "
+	 "Note: if you put a value less than 100% and the constraint is too tough, Open-Timetable is able to find that this constraint "
 	 "is impossible and will break it. 99.75% might be better than 95% but possibly slower. The percentage is subjective "
 	 "(if you put 95% you may get 6 soft conflicts and if you put 99.75% you may get 3 soft conflicts). "
-	 "Starting with FET-5.3.6, it is possible to change this value for all constraints in one click, in constraint min days"
+	 "Starting with Open-Timetable-5.3.6, it is possible to change this value for all constraints in one click, in constraint min days"
 	 " between activities dialog.");
 
 	s+="\n\n";
@@ -1372,7 +1372,7 @@ void AddActivityForm::help()
 	//show the message in a dialog
 	QDialog dialog(this);
 	
-	dialog.setWindowTitle(tr("FET - help on adding activity(ies)"));
+	dialog.setWindowTitle(tr("Open-Timetable - help on adding activity(ies)"));
 
 	QVBoxLayout* vl=new QVBoxLayout(&dialog);
 	QTextEdit* te=new QTextEdit();

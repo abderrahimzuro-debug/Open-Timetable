@@ -136,7 +136,7 @@ DaysForm::~DaysForm()
 void DaysForm::insertDay()
 {
 	if(nDaysSpinBox->value()==nDaysSpinBox->maximum()){
-		QMessageBox::warning(this, tr("FET information"), tr("Maximum number of days reached"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Maximum number of days reached"));
 		return;
 	}
 	int i=daysListWidget->currentRow();
@@ -163,7 +163,7 @@ void DaysForm::modifyDay()
 {
 	int i=daysListWidget->currentRow();
 	if(daysListWidget->count()<=0 || i<0 || i>=daysListWidget->count()){
-		QMessageBox::warning(this, tr("FET information"), tr("Invalid selected day"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Invalid selected day"));
 		return;
 	}
 
@@ -204,7 +204,7 @@ void DaysForm::modifyRealDay()
 {
 	int i=realDaysListWidget->currentRow();
 	if(realDaysListWidget->count()<=0 || i<0 || i>=realDaysListWidget->count()){
-		QMessageBox::warning(this, tr("FET information"), tr("Invalid selected real day"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Invalid selected real day"));
 		return;
 	}
 
@@ -237,7 +237,7 @@ void DaysForm::removeDay()
 {
 	int i=daysListWidget->currentRow();
 	/*if(gt.rules.mode==MORNINGS_AFTERNOONS && daysListWidget->count()<=2){
-		QMessageBox::warning(this, tr("FET information"), tr("The number of days must be at least 2, so that the number of real days will be at least 1"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("The number of days must be at least 2, so that the number of real days will be at least 1"));
 		return;
 	}*/
 	if(i>=0 && i<daysListWidget->count() && daysListWidget->count()>=2){
@@ -262,10 +262,10 @@ void DaysForm::removeDay()
 		numberOfRealDaysChanged();
 	}
 	else if(daysListWidget->count()==1){
-		QMessageBox::warning(this, tr("FET information"), tr("The number of days must be at least 1"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("The number of days must be at least 1"));
 	}
 	else{
-		QMessageBox::warning(this, tr("FET information"), tr("Invalid selected day"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Invalid selected day"));
 	}
 }
 
@@ -333,13 +333,13 @@ void DaysForm::ok()
 		QString s=realNamesForDays.at(i);
 		
 		if(s.isEmpty()){
-			QMessageBox::warning(this, tr("FET information"), tr("Empty names not allowed (the day number %1 has an empty name).").arg(i+1));
+			QMessageBox::warning(this, tr("Open-Timetable information"), tr("Empty names not allowed (the day number %1 has an empty name).").arg(i+1));
 			return;
 		}
 		
 		if(hashDayIndex.contains(s)){
 			int j=hashDayIndex.value(s);
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 			 tr("Duplicate names not allowed (the day number %1 has the same name as the day number %2).").arg(i+1).arg(j+1));
 			return;
 		}
@@ -354,13 +354,13 @@ void DaysForm::ok()
 			QString s=realNamesForRealDays.at(i);
 			
 			if(s.isEmpty()){
-				QMessageBox::warning(this, tr("FET information"), tr("Empty names not allowed (the real day number %1 has an empty name).").arg(i+1));
+				QMessageBox::warning(this, tr("Open-Timetable information"), tr("Empty names not allowed (the real day number %1 has an empty name).").arg(i+1));
 				return;
 			}
 			
 			if(hashRealDayIndex.contains(s)){
 				int j=hashRealDayIndex.value(s);
-				QMessageBox::warning(this, tr("FET information"),
+				QMessageBox::warning(this, tr("Open-Timetable information"),
 				 tr("Duplicate names not allowed (the real day number %1 has the same name as the real day number %2).").arg(i+1).arg(j+1));
 				return;
 			}
@@ -406,7 +406,7 @@ void DaysForm::ok()
 		}
 		s+=tr("Do you want to continue?");
 
-		int res=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes|QMessageBox::Cancel);
+		int res=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes|QMessageBox::Cancel);
 		
 		if(res==QMessageBox::Cancel)
 			return;
@@ -563,7 +563,7 @@ void DaysForm::help()
 		s+=tr("You are in the Mornings-Afternoons mode. In this mode, you need to enter a number of days which is double the number of"
 		 " real days. For example, if the real week is composed of 5 real days: Monday, Tuesday, Wednesday, Thursday, Friday, you"
 		 " need to input 10 days (Monday morning, Monday afternoon, Tuesday morning, ..., Friday afternoon) and 5 real days (Monday, ...,"
-		 " Friday). You need to choose the number of days, and FET will automatically compute the number of real days = the number of days / 2.");
+		 " Friday). You need to choose the number of days, and Open-Timetable will automatically compute the number of real days = the number of days / 2.");
 	}
 	else if(gt.rules.mode==BLOCK_PLANNING){
 		s+=tr("You are in the Block planning mode. Each day represents a real teacher.");
@@ -583,5 +583,5 @@ void DaysForm::help()
 	s+=" ";
 	s+=tr("This is a very large value and probably more than enough for any scenario.");
 
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }

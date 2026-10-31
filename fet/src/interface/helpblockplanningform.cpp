@@ -57,28 +57,28 @@ void HelpBlockPlanningForm::setText()
 	s+="\n\n";
 	s+=tr("- The user %1 wanted to allocate the activities to teachers based on qualifications.", "%1 is a person").arg("Jude G");
 	s+="\n\n";
-	s+=tr("- The user %1 and then %2 suggested this: the FET days are real-life teachers, and the FET hours are real-life"
-	 " time slots. Activities with common students cannot intersect in the real-life slots, so they cannot have overlapping FET hours."
-	 " Similarly, if rooms are assigned, activities with common rooms also cannot have overlapping FET hours. Note that rooms can only"
+	s+=tr("- The user %1 and then %2 suggested this: the Open-Timetable days are real-life teachers, and the Open-Timetable hours are real-life"
+	 " time slots. Activities with common students cannot intersect in the real-life slots, so they cannot have overlapping Open-Timetable hours."
+	 " Similarly, if rooms are assigned, activities with common rooms also cannot have overlapping Open-Timetable hours. Note that rooms can only"
 	 " be assigned if \"teacher\" activities are used (see the note about speeding up timetable generation below).",
 	 "%1 and %2 are two persons").arg("Jude G").arg("ChicagoPianoTuner");
 	s+="\n\n";
 	s+=tr("- The user %1 suggested these:", "%1 is a person").arg("ChicagoPianoTuner");
 	s+="\n\n";
-	s+=tr("    FET days are real teachers.");
+	s+=tr("    Open-Timetable days are real teachers.");
 	s+="\n\n";
-	s+=tr("    FET students are real students.");
+	s+=tr("    Open-Timetable students are real students.");
 	s+="\n\n";
-	s+=tr("    FET subjects are real subjects. Subjects preferred starting day can be used to link real teachers (FET days) to subjects.");
+	s+=tr("    Open-Timetable subjects are real subjects. Subjects preferred starting day can be used to link real teachers (Open-Timetable days) to subjects.");
 	s+="\n\n";
-	s+=tr("    Each activity has 1 student. It is placed on a FET day based on its subject.");
+	s+=tr("    Each activity has 1 student. It is placed on a Open-Timetable day based on its subject.");
 	s+="\n\n";
 	s+=tr("    Constraint \"set of activities occupies max time slots from selection\" is used to make sure that activities all overlap to make a"
-	 " course. E.g. if 8 students want art (1 block, FET duration = 2), I can add all 8 art activities to the constraint and make max time"
-	 " slots = 2 (selecting only art teacher's FET day).");
+	 " course. E.g. if 8 students want art (1 block, Open-Timetable duration = 2), I can add all 8 art activities to the constraint and make max time"
+	 " slots = 2 (selecting only art teacher's Open-Timetable day).");
 	s+="\n\n";
 	s+=tr("    Constraint \"activity tags not overlapping\" (each tag = the subject) ensures that activities with different subjects aren't placed"
-	 " at the same hour on the same FET day (real teacher).");
+	 " at the same hour on the same Open-Timetable day (real teacher).");
 	s+="\n\n";
 	s+=tr("    Constraint \"activities max simultaneous from a set in selected time slots\" can be used to make sure that no section of a subject has"
 	 " too many students enrolled. My notation: a \"section\" is an instance of a subject. So the subject is \"physics\" and if there are 40 students"
@@ -111,7 +111,7 @@ void HelpBlockPlanningForm::setText()
 	 " than one subject from having those subjects placed in the same block, this may also prevent impossible activities from being placed in"
 	 " the fake/overflow block. There are at least two ways to address this: adding fake teachers, or adding additional fake/overflow slots.");
 	s+="\n\n";
-	s+=tr("    As an example of the first approach, if you have 40 distinct courses, you could add extra teacher slots (FET days) so that there"
+	s+=tr("    As an example of the first approach, if you have 40 distinct courses, you could add extra teacher slots (Open-Timetable days) so that there"
 	 " are 40 days. Then, adjust your \"A set of activities has a set of preferred starting times\" constraints (used to ensure activities are"
 	 " allocated to the correct teacher(s)) so that, for example, all S1 courses have to fall on day T1 in \"real\" blocks, or in the fake/overflow"
 	 " blocks of any other teacher.");
@@ -129,12 +129,12 @@ void HelpBlockPlanningForm::setText()
 	 " two years, and will choose 3 HL (Higher Level) courses, and 3 SL (Standard Level) courses. (HL courses require more time each week,"
 	 " but this isn't important at this stage.) Enrollment in courses will not be very uniform: for example, we may have only 5 students taking"
 	 " Music SL, but 14 students taking Geography SL, and 50 students taking Mathematics SL, so, there's only need for one section (one standard"
-	 " FET activity) for both Music SL and Geography SL, but 3 sections (3 standard FET activities) for Mathematics SL (since our class sizes are"
-	 " capped at 17). In a standard FET timetable, each of these activities would have several subactivities (without going into the details,"
+	 " Open-Timetable activity) for both Music SL and Geography SL, but 3 sections (3 standard Open-Timetable activities) for Mathematics SL (since our class sizes are"
+	 " capped at 17). In a standard Open-Timetable timetable, each of these activities would have several subactivities (without going into the details,"
 	 " SL courses would have 5, HL courses 7, in a two-week timetable).");
 	s+="\n\n";
 	s+=tr("Now if Geography SL and Music SL have no students (or teachers) in common, they can occur at the same time, on the same day"
-	 " (say, at 9am on Monday) in the standard FET timetable. However, if they have no students in common, all of their subactivities can be"
+	 " (say, at 9am on Monday) in the standard Open-Timetable timetable. However, if they have no students in common, all of their subactivities can be"
 	 " timetabled together (Tuesday at 12pm, Wednesday at 11am, etc.), which then forms a block, a group of courses that run simultaneously"
 	 " in all of their instances. The question, then, is which other courses can added to that block? Well, one section of Mathematics SL could"
 	 " also join that block, but only if that section of Mathematics SL has no students in common with Geography SL and Music SL. Because we"
@@ -146,8 +146,8 @@ void HelpBlockPlanningForm::setText()
 	 " blocks, so in block-planning I need only 7 hours per day. Geography SL is a subject, with one activity for each student enrolled in the"
 	 " course. Similarly, Mathematics SL is a subject, with one activity for each student. At this stage, then, there is no need to take into"
 	 " account the number of times a course meets in a week, etc., so one activity per student per course is all that's required. A successfully"
-	 " generated block-planning mode timetable will allow me to identify which courses should go in Block A (block-planning mode FET Hour 1),"
-	 " Block B (block-planning FET Hour 2), etc., and which students should be allocated to each section. (This actually needs to be done only for"
+	 " generated block-planning mode timetable will allow me to identify which courses should go in Block A (block-planning mode Open-Timetable Hour 1),"
+	 " Block B (block-planning Open-Timetable Hour 2), etc., and which students should be allocated to each section. (This actually needs to be done only for"
 	 " Grade 11, since students in Grade 12 can keep the same blocks they had in the previous year.)", "%1 is a person").arg("ChicagoPianoTuner");
 	s+="\n\n";
 	s+=tr("With that information, I could move to the official mode to generate the real timetable: Block A becomes an activity tag which"
@@ -169,7 +169,7 @@ void HelpBlockPlanningForm::setText()
 	s+=tr("Two approaches using block-planning to treat this case were suggested by %1 and %2:", "%1 and %2 are two persons").arg("ChicagoPianoTuner")
 	 .arg("Darren McDonald");
 	s+="\n\n";
-	s+=tr("- If, say, you have 50 distinct courses and 40 teachers, you could add 10 fake teacher slots (FET days) so that there are 50 teacher"
+	s+=tr("- If, say, you have 50 distinct courses and 40 teachers, you could add 10 fake teacher slots (Open-Timetable days) so that there are 50 teacher"
 	 " slots (in general, max(number of courses, number of teachers) teacher slots would be required). Then, adjust your \"A set of activities has"
 	 " a set of preferred starting times\" constraints (used to make sure the right teachers get the right courses) so that, for example,"
 	 " all S1 courses have to fall on day T1 in Blocks A-H or in any of the F1-F4 time slots (on any day). Then all the unsatisfiable preference"
@@ -183,12 +183,12 @@ void HelpBlockPlanningForm::setText()
 	 .arg("Volker Dirr").arg("ChicagoPianoTuner");
 	s+="\n\n";
 	s+=tr("In addition to having one activity per student choice, create one activity per teacher-section. E.g. if teacher T1 teaches"
-	 " subject S1, S2, S2, S2, and S3 (five hours, three unique subjects), create five activities, no FET students, FET teacher = real teacher,"
-	 " tag = \"teacher_activity\" or something like that, FET subject = [S1, S2, S2, S2, S3]. Use activities occupy max slots from selection to"
+	 " subject S1, S2, S2, S2, and S3 (five hours, three unique subjects), create five activities, no Open-Timetable students, Open-Timetable teacher = real teacher,"
+	 " tag = \"teacher_activity\" or something like that, Open-Timetable subject = [S1, S2, S2, S2, S3]. Use activities occupy max slots from selection to"
 	 " link each of these activities to student selections, e.g. if 15 students selected S1, then activities occupy max slots would contain"
-	 " those 15 activities, + 1 teacher activity, number of slots = 1, selected slots = real hours of FET day corresponding to real teacher."
+	 " those 15 activities, + 1 teacher activity, number of slots = 1, selected slots = real hours of Open-Timetable day corresponding to real teacher."
 	 " For S2, if 50 students requested that course, you would do 50 + 3 teacher activities, number of slots = 3, selected slots = real hours"
-	 " of FET day corresponding to real teacher.");
+	 " of Open-Timetable day corresponding to real teacher.");
 	s+="\n\n";
 	s+=tr("In my use case, I generated a timetable with a conflict score of 80 in about 40 minutes. Then I locked all activities with"
 	 " tag = \"teacher_activity,\" and then generated again. Doing this brought my conflicts from 80 down to 38, and the second generation"
@@ -197,13 +197,13 @@ void HelpBlockPlanningForm::setText()
 	s+=tr("Further instructions by %1, regarding tricks to make a two semester timetable:", "%1 is a person").arg("ChicagoPianoTuner");
 	s+=" ";
 	s+=tr("If your students have some different courses in semester 1 and semester 2, there are a few things you need to do. First, double"
-	 " the number of hours in your FET day, creating an hour for each block in semester 1, and another for semester 2, including fakes."
+	 " the number of hours in your Open-Timetable day, creating an hour for each block in semester 1, and another for semester 2, including fakes."
 	 " The structure should be A_sem1, B_sem1, ..., FAKE_1_sem1, ... A_sem2, B_sem2, FAKE_1_sem2, ... FAKE_N_sem2. Now, for subjects that"
 	 " only last one semester, you can create one activity per student choice, as you did before. If you care which semester it's in, use"
 	 " a set of activities has a set of preferred starting times and select the hours corresponding to the specific semester.");
 	s+="\n\n";
 	s+=tr("For subjects that last the entire year (both semesters), you need to create two activities for each student choice and corresponding"
-	 " teacher activity. They should already be constrained to occur on specific FET days corresponding to real teachers. If there are multiple"
+	 " teacher activity. They should already be constrained to occur on specific Open-Timetable days corresponding to real teachers. If there are multiple"
 	 " teachers for the same subject, you need to add a constraint to each student activity must occur on the same day to ensure the students"
 	 " have the same teacher for semester 1 as semester 2. If you want those activities to occur in the same block in semester 1 as semester 2"
 	 " (which you probably do to avoid confusion, but it is not strictly necessary in some cases), add two constraints for each pair of"

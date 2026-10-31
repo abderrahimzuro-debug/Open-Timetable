@@ -127,7 +127,7 @@ StudentsStatisticsForm::StudentsStatisticsForm(QWidget* parent): QDialog(parent)
 			}
 		}
 	if(!warnings.isEmpty())
-		FetMessage::warning(this, tr("FET warning"), warnings);
+		FetMessage::warning(this, tr("Open-Timetable warning"), warnings);
 	
 	//phase 1a
 	for(StudentsYear* year : std::as_const(gt.rules.yearsList)){
@@ -366,10 +366,10 @@ void StudentsStatisticsForm::helpPushButton_clicked()
 	
 	s+="\n\n";
 	
-	s+=tr("The check box '%1': it has effect only if you have overlapping groups/years, and means that FET will show the complete tree structure"
+	s+=tr("The check box '%1': it has effect only if you have overlapping groups/years, and means that Open-Timetable will show the complete tree structure"
 	 ", even if that means that some subgroups/groups will appear twice or more in the table, with the same information."
 	 " For instance, if you have year Y1, groups G1 and G2, subgroups S1, S2, S3, with structure: Y1 (G1 (S1, S2), G2 (S1, S3)),"
 	 " S1 will appear twice in the table with the same information attached").arg(tr("Show duplicates"));
 	
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }

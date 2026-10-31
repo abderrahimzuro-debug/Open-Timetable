@@ -999,7 +999,7 @@ void StudentsNotAvailableTimesTimeHorizontalForm::ok()
 		if(emptyRemoved>0)
 			s+=emptyRemovedS;
 		s.chop(1);
-		QMessageBox::information(this, tr("FET information"), s);
+		QMessageBox::information(this, tr("Open-Timetable information"), s);
 		
 		QString s2;
 		if(added>0){

@@ -480,7 +480,7 @@ void ModifyActivityForm::ok()
 	if(subject_index<0){*/
 	bool found=subjectsNamesSet.contains(subject_name);
 	if(!found){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 			tr("Invalid subject"));
 		return;
 	}
@@ -496,7 +496,7 @@ void ModifyActivityForm::ok()
 	//teachers
 	QStringList teachers_names;
 	if(selectedTeachersListWidget->count()<=0){
-		int t=QMessageBox::question(this, tr("FET question"),
+		int t=QMessageBox::question(this, tr("Open-Timetable question"),
 		 tr("Do you really want to have the activity without teacher(s)?"),
 		 QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 
@@ -515,7 +515,7 @@ void ModifyActivityForm::ok()
 	int numberOfStudents=0;
 	QStringList students_names;
 	if(selectedStudentsListWidget->count()<=0){
-		int t=QMessageBox::question(this, tr("FET question"),
+		int t=QMessageBox::question(this, tr("Open-Timetable question"),
 		 tr("Do you really want to have the activity without student set(s)?"),
 		 QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 
@@ -622,7 +622,7 @@ void ModifyActivityForm::help()
 	//show the message in a dialog
 	QDialog dialog(this);
 	
-	dialog.setWindowTitle(tr("FET - help on modifying activity(ies)"));
+	dialog.setWindowTitle(tr("Open-Timetable - help on modifying activity(ies)"));
 
 	QVBoxLayout* vl=new QVBoxLayout(&dialog);
 	QTextEdit* te=new QTextEdit();

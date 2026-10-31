@@ -80,27 +80,27 @@ void ChangeMinHalfDaysSelectivelyForm::ok()
 	QString oldWeightS=oldWeightLineEdit->text();
 	weight_sscanf(oldWeightS, "%lf", &oldWeight);
 	if(!(oldWeight==-1 || (oldWeight>=0.0 && oldWeight<=100.0))){
-		QMessageBox::warning(this, tr("FET warning"), tr("Old weight must be -1 or both >=0 and <=100"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Old weight must be -1 or both >=0 and <=100"));
 		return;
 	}
 	
 	QString newWeightS=newWeightLineEdit->text();
 	weight_sscanf(newWeightS, "%lf", &newWeight);
 	if(!(newWeight==-1 || (newWeight>=0.0 && newWeight<=100.0))){
-		QMessageBox::warning(this, tr("FET warning"), tr("New weight must be -1 or both >=0 and <=100"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("New weight must be -1 or both >=0 and <=100"));
 		return;
 	}
 	
 	if(true){
 		oldDays=oldDaysSpinBox->value();
 		if(!(oldDays==-1 || (oldDays>=1 && oldDays<=gt.rules.nDaysPerWeek))){
-			QMessageBox::warning(this, tr("FET warning"), tr("Old min half days must be -1 or both >=1 and <=n_days_per_week"));
+			QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Old min half days must be -1 or both >=1 and <=n_days_per_week"));
 			return;
 		}
 	
 		newDays=newDaysSpinBox->value();
 		if(!(newDays==-1 || (newDays>=1 && newDays<=gt.rules.nDaysPerWeek))){
-			QMessageBox::warning(this, tr("FET warning"), tr("New min half days must be -1 or both >=1 and <=n_days_per_week"));
+			QMessageBox::warning(this, tr("Open-Timetable warning"), tr("New min half days must be -1 or both >=1 and <=n_days_per_week"));
 			return;
 		}
 	}
@@ -115,7 +115,7 @@ void ChangeMinHalfDaysSelectivelyForm::ok()
 
 	oldNActs=oldNActsSpinBox->value();
 	if(!(oldNActs==-1 || oldNActs>=1)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Old n_acts must be -1 or >=1"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Old n_acts must be -1 or >=1"));
 		return;
 	}
 	

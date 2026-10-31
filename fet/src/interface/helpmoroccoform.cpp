@@ -36,7 +36,7 @@ HelpMoroccoForm::HelpMoroccoForm(QWidget* parent): QDialog(parent)
 	
 	s+=tr("This help by %1 and %2, last modified on %3.", "%1 and %2 are two persons, %3 is a date").arg("Chafik Graiguer").arg("Liviu Lalescu").arg(tr("2 July 2025"));
 	s+="\n\n";
-	s+=tr("FET mornings-afternoons with exclusive mornings/afternoons for teachers was designed for institutions in Morocco, but might be also used in other"
+	s+=tr("Open-Timetable mornings-afternoons with exclusive mornings/afternoons for teachers was designed for institutions in Morocco, but might be also used in other"
 	 " institutions working in two shifts, where teachers can work either in the morning or in the evening, but not both on the same day (with exceptions).");
 	s+="\n\n";
 	s+=QString("--------------------------------------");
@@ -50,7 +50,7 @@ HelpMoroccoForm::HelpMoroccoForm(QWidget* parent): QDialog(parent)
 	s+="\n\n";
 	s+=tr("These are the words of user %1:").arg("Chafik Graiguer");
 	s+="\n\n";
-	s+=tr("This FET version fulfills the following requirements:");
+	s+=tr("This Open-Timetable version fulfills the following requirements:");
 	s+="\n\n";
 	s+=tr("1 - Definition of a working school day:");
 	s+="\n\n";
@@ -69,7 +69,7 @@ HelpMoroccoForm::HelpMoroccoForm(QWidget* parent): QDialog(parent)
 	s+=tr("2 - Studying periods and gaps per day:");
 	s+="\n\n";
 	s+="\t";
-	s+=tr("- Students can have gaps around lunch break, i.e. before or after lunch break (official FET version cannot tolerate this !!!)");
+	s+=tr("- Students can have gaps around lunch break, i.e. before or after lunch break (official Open-Timetable version cannot tolerate this !!!)");
 	s+="\n";
 	s+="\t";
 	s+=tr("- Students and teachers must have at least 2 hours per period (Empty periods are OK.)");
@@ -91,8 +91,8 @@ HelpMoroccoForm::HelpMoroccoForm(QWidget* parent): QDialog(parent)
 	s+="\n\n";
 	s+=tr("Intelligent min hours daily for students (can have days with 0 hours).");
 	s+="\n\n";
-	s+=tr("User must input an even number of days per week. The first FET day is morning real day 1, the second"
-	 " FET day is afternoon real day 1, and so on (FET days are double than real days).");
+	s+=tr("User must input an even number of days per week. The first Open-Timetable day is morning real day 1, the second"
+	 " Open-Timetable day is afternoon real day 1, and so on (Open-Timetable days are double than real days).");
 	s+="\n\n";
 	s+=tr("A teacher can have hours in first day or second day, but not both. Same for third and fourth, fifth and sixth, and so on."
 	 " (in fact, there are 2*normal days, first is morning, second is afternoon).");
@@ -121,7 +121,7 @@ HelpMoroccoForm::HelpMoroccoForm(QWidget* parent): QDialog(parent)
 	s+="\n\n";
 	s+=tr("Constraint max days between activities considers real days.");
 	s+="\n\n";
-	s+=tr("The constraint students (set) min hours daily without allowing empty days is for real days, and for nonempty FET days (half days) "
+	s+=tr("The constraint students (set) min hours daily without allowing empty days is for real days, and for nonempty Open-Timetable days (half days) "
 	 "it respects the minimum number of hours daily.");
 
 	s+="\n\n";
@@ -137,11 +137,11 @@ HelpMoroccoForm::HelpMoroccoForm(QWidget* parent): QDialog(parent)
 	 "%1 is the name of a person").arg("bachiri401");
 	s+="\n\n";
 	s+=QCoreApplication::translate("HelpForMorningsAfternoons", "And indeed, %1 says this: I checked the code. There is no need for a new constraint. Please use a constraint min gaps between activities"
-	 " with min gaps = the number of hours per half day (the maximum FET allows). Add all the math and sport activities for a students set for your example. It is implemented"
+	 " with min gaps = the number of hours per half day (the maximum Open-Timetable allows). Add all the math and sport activities for a students set for your example. It is implemented"
 	 " efficiently for this case.", "%1 is the name of a person").arg("Liviu Lalescu");
 	s+="\n\n";
-	s+=QCoreApplication::translate("HelpForMorningsAfternoons", "Note: in FET version %1, suggested by %2, it was added a new type of constraint probably useful in this case:"
-	 " min half days between activities, so that the trick above is now no longer necessary.", "%1 is the FET version number, %2 is a person").arg("6.4.0").arg("ngoctp29121982");
+	s+=QCoreApplication::translate("HelpForMorningsAfternoons", "Note: in Open-Timetable version %1, suggested by %2, it was added a new type of constraint probably useful in this case:"
+	 " min half days between activities, so that the trick above is now no longer necessary.", "%1 is the Open-Timetable version number, %2 is a person").arg("6.4.0").arg("ngoctp29121982");
 
 	textBrowser->setText(s);
 }

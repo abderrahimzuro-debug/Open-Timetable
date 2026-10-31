@@ -342,11 +342,11 @@ bool ListOfRelatedSpaceConstraintsForm::filterOk(SpaceConstraint* ctr)
 void ListOfRelatedSpaceConstraintsForm::moveSpaceConstraintUp()
 {
 	/*if(filterCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a space constraint up, the 'Filter' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a space constraint up, the 'Filter' check box must not be checked."));
 		return;
 	}*/
 	if(sortedCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a space constraint up, the 'Sorted' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a space constraint up, the 'Sorted' check box must not be checked."));
 		return;
 	}
 	
@@ -429,11 +429,11 @@ void ListOfRelatedSpaceConstraintsForm::moveSpaceConstraintUp()
 void ListOfRelatedSpaceConstraintsForm::moveSpaceConstraintDown()
 {
 	/*if(filterCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a space constraint down, the 'Filter' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a space constraint down, the 'Filter' check box must not be checked."));
 		return;
 	}*/
 	if(sortedCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a space constraint down, the 'Sorted' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a space constraint down, the 'Sorted' check box must not be checked."));
 		return;
 	}
 	
@@ -626,7 +626,7 @@ void ListOfRelatedSpaceConstraintsForm::modifyConstraint()
 {
 	int i=constraintsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected constraint"));
 	
 		constraintsListWidget->setFocus();
 
@@ -680,7 +680,7 @@ void ListOfRelatedSpaceConstraintsForm::removeConstraints()
 				s+=tr("Note: you can add again a constraint of this type from the menu Data -> Space constraints -> "
 					"Miscellaneous -> Basic compulsory space constraints.");
 
-				wr=QMessageBox::warning(this, tr("FET warning"), s,
+				wr=QMessageBox::warning(this, tr("Open-Timetable warning"), s,
 					QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
 
 				if(wr==QMessageBox::No){
@@ -698,7 +698,7 @@ void ListOfRelatedSpaceConstraintsForm::removeConstraints()
 	s+=QString("<br />\n<br />\n");
 	for(SpaceConstraint* ctr : std::as_const(tl))
 		s+=ctr->getDetailedDescription(gt.rules, true, colorsCheckBox->isChecked())+QString("<br />\n");
-	int lres=LongTextMessageBox::confirmation(this, tr("FET confirmation"),
+	int lres=LongTextMessageBox::confirmation(this, tr("Open-Timetable confirmation"),
 		s, tr("Yes"), tr("No"), QString(), 0, 1 );
 
 	if(lres!=0){
@@ -824,7 +824,7 @@ void ListOfRelatedSpaceConstraintsForm::activateConstraints()
 	if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS){
 		QMessageBox::StandardButton ret=QMessageBox::No;
 		QString s=tr("Activate the selected space constraints?");
-		ret=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+		ret=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 		if(ret==QMessageBox::No){
 			constraintsListWidget->setFocus();
 			return;
@@ -874,7 +874,7 @@ void ListOfRelatedSpaceConstraintsForm::activateConstraints()
 		constraintsListWidget->horizontalScrollBar()->setValue(valh);
 
 		if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS)
-			QMessageBox::information(this, tr("FET information"), tr("Activated %1 space constraints").arg(cnt));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Activated %1 space constraints").arg(cnt));
 	}
 	if(recomputeSpace){
 		LockUnlock::computeLockedUnlockedActivitiesOnlySpace();
@@ -890,7 +890,7 @@ void ListOfRelatedSpaceConstraintsForm::deactivateConstraints()
 		QMessageBox::StandardButton ret=QMessageBox::No;
 		QString s=tr("Deactivate the selected space constraints? "
 		 "(Note that the basic compulsory space constraints will not be deactivated, even if they are selected.)");
-		ret=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+		ret=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 		if(ret==QMessageBox::No){
 			constraintsListWidget->setFocus();
 			return;
@@ -941,7 +941,7 @@ void ListOfRelatedSpaceConstraintsForm::deactivateConstraints()
 		constraintsListWidget->horizontalScrollBar()->setValue(valh);
 
 		if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS)
-			QMessageBox::information(this, tr("FET information"), tr("Deactivated %1 space constraints").arg(cnt));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Deactivated %1 space constraints").arg(cnt));
 	}
 	if(recomputeSpace){
 		LockUnlock::computeLockedUnlockedActivitiesOnlySpace();
@@ -955,7 +955,7 @@ void ListOfRelatedSpaceConstraintsForm::constraintComments()
 {
 	int i=constraintsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected constraint"));
 		return;
 	}
 	
@@ -1083,7 +1083,7 @@ void ListOfRelatedSpaceConstraintsForm::changeWeights()
 				cnt_unchanged++;
 		}
 	if(cnt_pre==0){
-		QMessageBox::information(this, tr("FET information"), tr("No constraints from your selection can change their weight"
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("No constraints from your selection can change their weight"
 		 " (remember that some types of constraints are allowed to have only 100% weight)."));
 		
 		return;

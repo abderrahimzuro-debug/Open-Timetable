@@ -10,6 +10,7 @@ equals(QT_MAJOR_VERSION, 5) {
 
 SOURCES += \
 	interface/ui_i18n.h \
+	interface/ui_icons.cpp \
 	interface/ui_theme.cpp \
 	interface/ui_publish.cpp \
 	interface/ui_shell.cpp \
@@ -143,6 +144,7 @@ SOURCES += \
 
 HEADERS += \
 	interface/ui_theme.h \
+	interface/ui_icons.h \
 	interface/ui_publish.h \
 	interface/ui_shell.h \
 	interface/ui_dashboard.h \
@@ -436,7 +438,7 @@ DESTDIR = ..
 TARGET = fet
 
 win32 {
-	RC_ICONS = ../icons/fet.ico
+	RC_ICONS = ../icons/open-timetable.ico
 }
 else: macx {
 	ICON = ../icons/fet.icns

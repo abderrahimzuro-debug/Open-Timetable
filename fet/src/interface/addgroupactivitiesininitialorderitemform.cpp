@@ -239,12 +239,12 @@ void AddGroupActivitiesInInitialOrderItemForm::filterChanged()
 void AddGroupActivitiesInInitialOrderItemForm::addItem()
 {
 	if(this->selectedActivitiesList.count()==0){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 			tr("Empty list of selected activities"));
 		return;
 	}
 	if(this->selectedActivitiesList.count()==1){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 			tr("Only one selected activity"));
 		return;
 	}
@@ -269,7 +269,7 @@ void AddGroupActivitiesInInitialOrderItemForm::addItem()
 	QString s=tr("Added 'group activities in the initial order' item");
 	s+="\n\n";
 	s+=item->getDetailedDescription(gt.rules);
-	LongTextMessageBox::information(this, tr("FET information"), s);
+	LongTextMessageBox::information(this, tr("Open-Timetable information"), s);
 }
 
 void AddGroupActivitiesInInitialOrderItemForm::addActivity()

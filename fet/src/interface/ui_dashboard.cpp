@@ -18,6 +18,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include "rules.h"
 #include "studentsset.h"
 #include "ui_i18n.h"
+#include "ui_icons.h"
 
 #include <QAction>
 #include <QApplication>
@@ -28,6 +29,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include <QLabel>
 #include <QMainWindow>
 #include <QPushButton>
+#include <QSize>
 #include <QShowEvent>
 #include <QHideEvent>
 #include <QTimer>
@@ -223,6 +225,10 @@ QWidget* UiDashboard::addQuickButton(QGridLayout* grid, int row, int column,
 
 	if (action != nullptr)
 		quickActions_.append(action);
+
+	// أيقونة احترافية حسب نوع الإجراء (لا إيموجي)
+	button->setIcon(UiIcons::icon(quickButtonIcon(actionName), 18));
+	button->setIconSize(QSize(18, 18));
 	grid->addWidget(button, row, column);
 	quickButtons_.append(button);
 	return button;
@@ -323,6 +329,37 @@ QString UiDashboard::quickButtonText(const QString& actionName)
 	return actionName;
 }
 
+QString UiDashboard::quickButtonIcon(const QString& actionName)
+{
+	if (actionName == QLatin1String("dataTeachersAction"))
+		return QStringLiteral("teachers");
+	if (actionName == QLatin1String("dataSubjectsAction"))
+		return QStringLiteral("subjects");
+	if (actionName == QLatin1String("dataYearsAction"))
+		return QStringLiteral("years");
+	if (actionName == QLatin1String("dataRoomsAction"))
+		return QStringLiteral("rooms");
+	if (actionName == QLatin1String("dataActivitiesAction"))
+		return QStringLiteral("activities");
+	if (actionName == QLatin1String("dataAllTimeConstraintsAction"))
+		return QStringLiteral("constraints");
+	if (actionName == QLatin1String("dataAllSpaceConstraintsAction"))
+		return QStringLiteral("space");
+	if (actionName == QLatin1String("timetableGenerateAction"))
+		return QStringLiteral("generate");
+	if (actionName == QLatin1String("timetableViewTeachersTimeHorizontalAction"))
+		return QStringLiteral("view-teachers");
+	if (actionName == QLatin1String("timetableViewStudentsTimeHorizontalAction"))
+		return QStringLiteral("view-students");
+	if (actionName == QLatin1String("timetableViewRoomsTimeHorizontalAction"))
+		return QStringLiteral("view-rooms");
+	if (actionName == QLatin1String("filePublishToShareAction"))
+		return QStringLiteral("publish");
+	if (actionName == QLatin1String("otConstraintTemplatesAction"))
+		return QStringLiteral("templates");
+	return QStringLiteral("home");
+}
+
 void UiDashboard::retranslate()
 {
 	// عناوين الأقسام
@@ -357,8 +394,11 @@ void UiDashboard::retranslate()
 		if (button == nullptr)
 			continue;
 		const QString actionName = button->property("otAction").toString();
-		if (!actionName.isEmpty())
+		if (!actionName.isEmpty()) {
 			button->setText(quickButtonText(actionName));
+			// الأيقونات تُرسم بألوان المظهر الحالي، لذا نعيد ضبطها هنا
+			button->setIcon(UiIcons::icon(quickButtonIcon(actionName), 18));
+		}
 	}
 
 	// بقية النصوص (العنوان، الحالة) تُحسب في refresh()

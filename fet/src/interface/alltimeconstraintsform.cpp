@@ -373,11 +373,11 @@ bool AllTimeConstraintsForm::filterOk(TimeConstraint* ctr)
 void AllTimeConstraintsForm::moveTimeConstraintUp()
 {
 	/*if(filterCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a time constraint up, the 'Filter' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a time constraint up, the 'Filter' check box must not be checked."));
 		return;
 	}*/
 	if(sortedCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a time constraint up, the 'Sorted' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a time constraint up, the 'Sorted' check box must not be checked."));
 		return;
 	}
 	
@@ -460,11 +460,11 @@ void AllTimeConstraintsForm::moveTimeConstraintUp()
 void AllTimeConstraintsForm::moveTimeConstraintDown()
 {
 	/*if(filterCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a time constraint down, the 'Filter' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a time constraint down, the 'Filter' check box must not be checked."));
 		return;
 	}*/
 	if(sortedCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a time constraint down, the 'Sorted' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a time constraint down, the 'Sorted' check box must not be checked."));
 		return;
 	}
 	
@@ -620,7 +620,7 @@ void AllTimeConstraintsForm::modifyConstraint()
 {
 	int i=constraintsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected constraint"));
 	
 		constraintsListWidget->setFocus();
 
@@ -635,7 +635,7 @@ void AllTimeConstraintsForm::modifyConstraint()
 
 	//185
 	if(ctr->type==CONSTRAINT_ACTIVITY_PREFERRED_DAY){
-		QMessageBox::warning(this, tr("FET warning"), tr("The constraints of type activity preferred day cannot be edited. They can only be added/removed"
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("The constraints of type activity preferred day cannot be edited. They can only be added/removed"
 		 " from the students/teachers timetable view time horizontal dialog or they can be removed from this dialog."));
 		return;
 	}
@@ -681,7 +681,7 @@ void AllTimeConstraintsForm::removeConstraints()
 				s+=tr("Note: you can add again a constraint of this type from the menu Data -> Time constraints -> "
 					"Miscellaneous -> Basic compulsory time constraints.");
 
-				wr=QMessageBox::warning(this, tr("FET warning"), s,
+				wr=QMessageBox::warning(this, tr("Open-Timetable warning"), s,
 					QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
 
 				if(wr==QMessageBox::No){
@@ -699,7 +699,7 @@ void AllTimeConstraintsForm::removeConstraints()
 	s+=QString("<br />\n<br />\n");
 	for(TimeConstraint* ctr : std::as_const(tl))
 		s+=ctr->getDetailedDescription(gt.rules, true, colorsCheckBox->isChecked())+QString("<br />\n");
-	int lres=LongTextMessageBox::confirmation(this, tr("FET confirmation"),
+	int lres=LongTextMessageBox::confirmation(this, tr("Open-Timetable confirmation"),
 		s, tr("Yes"), tr("No"), QString(), 0, 1 );
 
 	if(lres!=0){
@@ -815,7 +815,7 @@ void AllTimeConstraintsForm::activateConstraints()
 	if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS){
 		QMessageBox::StandardButton ret=QMessageBox::No;
 		QString s=tr("Activate the selected time constraints?");
-		ret=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+		ret=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 		if(ret==QMessageBox::No){
 			constraintsListWidget->setFocus();
 			return;
@@ -865,7 +865,7 @@ void AllTimeConstraintsForm::activateConstraints()
 		constraintsListWidget->horizontalScrollBar()->setValue(valh);
 		
 		if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS)
-			QMessageBox::information(this, tr("FET information"), tr("Activated %1 time constraints").arg(cnt));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Activated %1 time constraints").arg(cnt));
 	}
 	if(recomputeTime){
 		LockUnlock::computeLockedUnlockedActivitiesOnlyTime();
@@ -881,7 +881,7 @@ void AllTimeConstraintsForm::deactivateConstraints()
 		QMessageBox::StandardButton ret=QMessageBox::No;
 		QString s=tr("Deactivate the selected time constraints? "
 		 "(Note that the basic compulsory time constraints will not be deactivated, even if they are selected.)");
-		ret=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+		ret=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 		if(ret==QMessageBox::No){
 			constraintsListWidget->setFocus();
 			return;
@@ -932,7 +932,7 @@ void AllTimeConstraintsForm::deactivateConstraints()
 		constraintsListWidget->horizontalScrollBar()->setValue(valh);
 		
 		if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS)
-			QMessageBox::information(this, tr("FET information"), tr("Deactivated %1 time constraints").arg(cnt));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Deactivated %1 time constraints").arg(cnt));
 	}
 	if(recomputeTime){
 		LockUnlock::computeLockedUnlockedActivitiesOnlyTime();
@@ -946,7 +946,7 @@ void AllTimeConstraintsForm::constraintComments()
 {
 	int i=constraintsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected constraint"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected constraint"));
 		return;
 	}
 	
@@ -1074,7 +1074,7 @@ void AllTimeConstraintsForm::changeWeights()
 				cnt_unchanged++;
 		}
 	if(cnt_pre==0){
-		QMessageBox::information(this, tr("FET information"), tr("No constraints from your selection can change their weight"
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("No constraints from your selection can change their weight"
 		 " (remember that some types of constraints are allowed to have only 100% weight)."));
 		
 		return;

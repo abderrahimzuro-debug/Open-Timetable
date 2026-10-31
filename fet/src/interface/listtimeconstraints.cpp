@@ -396,7 +396,7 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 				if(gt.rules.mode==MORNINGS_AFTERNOONS)
 					firstInstructionsLabel=new QLabel(tr("If the user selects not allowed empty days, it is for real days "
 														 "(for the mornings-afternoons mode), also respecting minimum hours "
-														 "daily for FET days (half days) with allow empty FET days"));
+														 "daily for Open-Timetable days (half days) with allow empty Open-Timetable days"));
 
 				helpPushButton=new QPushButton(tr("Help"));
 
@@ -411,7 +411,7 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 				if(gt.rules.mode==MORNINGS_AFTERNOONS)
 					firstInstructionsLabel=new QLabel(tr("If the user selects not allowed empty days, it is for real days "
 														 "(for the mornings-afternoons mode), also respecting minimum hours "
-														 "daily for FET days (half days) with allow empty FET days"));
+														 "daily for Open-Timetable days (half days) with allow empty Open-Timetable days"));
 
 				studentsComboBox=new QComboBox;
 
@@ -1569,7 +1569,7 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints teachers max gaps per real day", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsTeachersMaxGapsPerRealDay");
 
-				firstInstructionsLabel=new QLabel(tr("This constraint is for a real day (2 FET days, morning and afternoon)."));
+				firstInstructionsLabel=new QLabel(tr("This constraint is for a real day (2 Open-Timetable days, morning and afternoon)."));
 
 				break;
 			}
@@ -1579,7 +1579,7 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints teacher max gaps per real day", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsTeacherMaxGapsPerRealDay");
 
-				firstInstructionsLabel=new QLabel(tr("This constraint is for a real day (2 FET days, morning and afternoon)."));
+				firstInstructionsLabel=new QLabel(tr("This constraint is for a real day (2 Open-Timetable days, morning and afternoon)."));
 
 				teachersComboBox=new QComboBox;
 
@@ -1591,7 +1591,7 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints students max gaps per real day", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsStudentsMaxGapsPerRealDay");
 
-				firstInstructionsLabel=new QLabel(tr("This constraint is for a real day (2 FET days, morning and afternoon)."));
+				firstInstructionsLabel=new QLabel(tr("This constraint is for a real day (2 Open-Timetable days, morning and afternoon)."));
 
 				break;
 			}
@@ -1601,7 +1601,7 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints students set max gaps per real day", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsStudentsSetMaxGapsPerRealDay");
 
-				firstInstructionsLabel=new QLabel(tr("This constraint is for a real day (2 FET days, morning and afternoon)."));
+				firstInstructionsLabel=new QLabel(tr("This constraint is for a real day (2 Open-Timetable days, morning and afternoon)."));
 
 				studentsComboBox=new QComboBox;
 
@@ -2021,7 +2021,7 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints teachers max gaps per week for real days", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsTeachersMaxGapsPerWeekForRealDays");
 
-				firstInstructionsLabel=new QLabel(tr("This constraint is for real days (a real day = 2 FET days, morning and afternoon)."));
+				firstInstructionsLabel=new QLabel(tr("This constraint is for real days (a real day = 2 Open-Timetable days, morning and afternoon)."));
 
 				break;
 			}
@@ -2031,7 +2031,7 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints teacher max gaps per week for real days", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsTeacherMaxGapsPerWeekForRealDays");
 
-				firstInstructionsLabel=new QLabel(tr("This constraint is for real days (a real day = 2 FET days, morning and afternoon)."));
+				firstInstructionsLabel=new QLabel(tr("This constraint is for real days (a real day = 2 Open-Timetable days, morning and afternoon)."));
 
 				teachersComboBox=new QComboBox;
 
@@ -2043,7 +2043,7 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints students max gaps per week for real days", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsStudentsMaxGapsPerWeekForRealDays");
 
-				firstInstructionsLabel=new QLabel(tr("This constraint is for real days (a real day = 2 FET days, morning and afternoon)."));
+				firstInstructionsLabel=new QLabel(tr("This constraint is for real days (a real day = 2 Open-Timetable days, morning and afternoon)."));
 
 				break;
 			}
@@ -2053,7 +2053,7 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints students set max gaps per week for real days", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsStudentsSetMaxGapsPerWeekForRealDays");
 
-				firstInstructionsLabel=new QLabel(tr("This constraint is for real days (a real day = 2 FET days, morning and afternoon)."));
+				firstInstructionsLabel=new QLabel(tr("This constraint is for real days (a real day = 2 Open-Timetable days, morning and afternoon)."));
 
 				studentsComboBox=new QComboBox;
 
@@ -2329,8 +2329,8 @@ ListTimeConstraints::ListTimeConstraints(QWidget* parent, int _type)
 		//185 is activity preferred day, which is not in the interface
 		case CONSTRAINT_ACTIVITY_PREFERRED_DAY:
 			{
-				QMessageBox::warning(dialog, tr("FET information"),
-									 tr("You have encountered a FET bug. The constraint activity preferred day should not "
+				QMessageBox::warning(dialog, tr("Open-Timetable information"),
+									 tr("You have encountered a Open-Timetable bug. The constraint activity preferred day should not "
 										"be editable in a separate dialog. The request will be ignored."));
 
 				return;
@@ -7951,7 +7951,7 @@ void ListTimeConstraints::modifyClicked()
 {
 	int i=constraintsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(dialog, tr("FET information"), tr("Invalid selected constraint"));
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Invalid selected constraint"));
 	
 		//constraintsListWidget->setFocus();
 
@@ -7993,7 +7993,7 @@ void ListTimeConstraints::modifyMultipleClicked()
 			constraintsToModify.append(visibleTimeConstraintsList.at(i));
 
 	if(constraintsToModify.isEmpty()){
-		QMessageBox::information(dialog, tr("FET information"), tr("No constraints selected"));
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("No constraints selected"));
 
 		//constraintsListWidget->setFocus();
 
@@ -8026,8 +8026,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 					else if(oldWeight>=0 && oldWeight<=100.0){
 					}
 					else{
-						QMessageBox::critical(dialog, tr("FET information"),
-						tr("FET has met a critical error - aborting current operation, please report bug (old weight is not -1 and not (>=0.0 and <=100.0))"));
+						QMessageBox::critical(dialog, tr("Open-Timetable information"),
+						tr("Open-Timetable has met a critical error - aborting current operation, please report bug (old weight is not -1 and not (>=0.0 and <=100.0))"));
 						return;
 					}
 
@@ -8036,8 +8036,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 					else if(newWeight>=0 && newWeight<=100.0){
 					}
 					else{
-						QMessageBox::critical(dialog, tr("FET information"),
-						tr("FET has met a critical error - aborting current operation, please report bug (new weight is not -1 and not (>=0.0 and <=100.0))"));
+						QMessageBox::critical(dialog, tr("Open-Timetable information"),
+						tr("Open-Timetable has met a critical error - aborting current operation, please report bug (new weight is not -1 and not (>=0.0 and <=100.0))"));
 						return;
 					}
 
@@ -8045,14 +8045,14 @@ void ListTimeConstraints::modifyMultipleClicked()
 					enum {NOCHANGE=0};
 
 					if(oldConsecutive<0 || oldConsecutive>2){
-						QMessageBox::critical(dialog, tr("FET information"),
-						tr("FET has met a critical error - aborting current operation, please report bug (old consecutive is not any, yes or no)"));
+						QMessageBox::critical(dialog, tr("Open-Timetable information"),
+						tr("Open-Timetable has met a critical error - aborting current operation, please report bug (old consecutive is not any, yes or no)"));
 						return;
 					}
 
 					if(newConsecutive<0 || newConsecutive>2){
-						QMessageBox::critical(dialog, tr("FET information"),
-						tr("FET has met a critical error - aborting current operation, please report bug (new consecutive is not no_change, yes or no)"));
+						QMessageBox::critical(dialog, tr("Open-Timetable information"),
+						tr("Open-Timetable has met a critical error - aborting current operation, please report bug (new consecutive is not no_change, yes or no)"));
 						return;
 					}
 
@@ -8062,8 +8062,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 						else if(oldDays>=1 && oldDays<=gt.rules.nDaysPerWeek){
 						}
 						else{
-							QMessageBox::critical(dialog, tr("FET information"),
-							tr("FET has met a critical error - aborting current operation, please report bug (old min days is not -1 or 1..ndaysperweek)"));
+							QMessageBox::critical(dialog, tr("Open-Timetable information"),
+							tr("Open-Timetable has met a critical error - aborting current operation, please report bug (old min days is not -1 or 1..ndaysperweek)"));
 							return;
 						}
 
@@ -8072,8 +8072,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 						else if(newDays>=1 && newDays<=gt.rules.nDaysPerWeek){
 						}
 						else{
-							QMessageBox::critical(dialog, tr("FET information"),
-							tr("FET has met a critical error - aborting current operation, please report bug (new min days is not -1 or 1..ndaysperweek)"));
+							QMessageBox::critical(dialog, tr("Open-Timetable information"),
+							tr("Open-Timetable has met a critical error - aborting current operation, please report bug (new min days is not -1 or 1..ndaysperweek)"));
 							return;
 						}
 					}
@@ -8083,8 +8083,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 						else if(oldDays>=1 && oldDays<=gt.rules.nDaysPerWeek/2){
 						}
 						else{
-							QMessageBox::critical(dialog, tr("FET information"),
-							tr("FET has met a critical error - aborting current operation, please report bug (old min days is not -1 or 1..nrealdaysperweek)"));
+							QMessageBox::critical(dialog, tr("Open-Timetable information"),
+							tr("Open-Timetable has met a critical error - aborting current operation, please report bug (old min days is not -1 or 1..nrealdaysperweek)"));
 							return;
 						}
 
@@ -8093,8 +8093,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 						else if(newDays>=1 && newDays<=gt.rules.nDaysPerWeek/2){
 						}
 						else{
-							QMessageBox::critical(dialog, tr("FET information"),
-							tr("FET has met a critical error - aborting current operation, please report bug (new min days is not -1 or 1..nrealdaysperweek)"));
+							QMessageBox::critical(dialog, tr("Open-Timetable information"),
+							tr("Open-Timetable has met a critical error - aborting current operation, please report bug (new min days is not -1 or 1..nrealdaysperweek)"));
 							return;
 						}
 					}
@@ -8104,8 +8104,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 					else if(oldNActs>=1){
 					}
 					else{
-						QMessageBox::critical(dialog, tr("FET information"),
-						tr("FET has met a critical error - aborting current operation, please report bug (old nActivities is not -1 or >=1)"));
+						QMessageBox::critical(dialog, tr("Open-Timetable information"),
+						tr("Open-Timetable has met a critical error - aborting current operation, please report bug (old nActivities is not -1 or >=1)"));
 						return;
 					}
 
@@ -8170,7 +8170,7 @@ void ListTimeConstraints::modifyMultipleClicked()
 						}
 					}
 
-					QMessageBox::information(dialog, tr("FET information"), tr("There were inspected (and possibly modified) %1 constraints min days between activities"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("There were inspected (and possibly modified) %1 constraints min days between activities"
 					" matching your criteria").arg(count)+"\n\n"+
 					tr("NOTE: If you are using constraints of type activities same starting time or activities same starting day or max 0 (half) days between activities, it is important"
 					" (after current operation) to apply the operation of removing redundant constraints.")
@@ -8237,8 +8237,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 					else if(oldWeight>=0 && oldWeight<=100.0){
 					}
 					else{
-						QMessageBox::critical(dialog, tr("FET information"),
-						tr("FET has met a critical error - aborting current operation, please report bug (old weight is not -1 and not (>=0.0 and <=100.0))"));
+						QMessageBox::critical(dialog, tr("Open-Timetable information"),
+						tr("Open-Timetable has met a critical error - aborting current operation, please report bug (old weight is not -1 and not (>=0.0 and <=100.0))"));
 						return;
 					}
 
@@ -8247,8 +8247,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 					else if(newWeight>=0 && newWeight<=100.0){
 					}
 					else{
-						QMessageBox::critical(dialog, tr("FET information"),
-						tr("FET has met a critical error - aborting current operation, please report bug (new weight is not -1 and not (>=0.0 and <=100.0))"));
+						QMessageBox::critical(dialog, tr("Open-Timetable information"),
+						tr("Open-Timetable has met a critical error - aborting current operation, please report bug (new weight is not -1 and not (>=0.0 and <=100.0))"));
 						return;
 					}
 
@@ -8256,14 +8256,14 @@ void ListTimeConstraints::modifyMultipleClicked()
 					enum {NOCHANGE=0};
 
 					if(oldConsecutive<0 || oldConsecutive>2){
-						QMessageBox::critical(dialog, tr("FET information"),
-						tr("FET has met a critical error - aborting current operation, please report bug (old consecutive is not any, yes or no)"));
+						QMessageBox::critical(dialog, tr("Open-Timetable information"),
+						tr("Open-Timetable has met a critical error - aborting current operation, please report bug (old consecutive is not any, yes or no)"));
 						return;
 					}
 
 					if(newConsecutive<0 || newConsecutive>2){
-						QMessageBox::critical(dialog, tr("FET information"),
-						tr("FET has met a critical error - aborting current operation, please report bug (new consecutive is not no_change, yes or no)"));
+						QMessageBox::critical(dialog, tr("Open-Timetable information"),
+						tr("Open-Timetable has met a critical error - aborting current operation, please report bug (new consecutive is not no_change, yes or no)"));
 						return;
 					}
 
@@ -8273,8 +8273,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 						else if(oldDays>=1 && oldDays<=gt.rules.nDaysPerWeek){
 						}
 						else{
-							QMessageBox::critical(dialog, tr("FET information"),
-							tr("FET has met a critical error - aborting current operation, please report bug (old min days is not -1 or 1..ndaysperweek)"));
+							QMessageBox::critical(dialog, tr("Open-Timetable information"),
+							tr("Open-Timetable has met a critical error - aborting current operation, please report bug (old min days is not -1 or 1..ndaysperweek)"));
 							return;
 						}
 
@@ -8283,8 +8283,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 						else if(newDays>=1 && newDays<=gt.rules.nDaysPerWeek){
 						}
 						else{
-							QMessageBox::critical(dialog, tr("FET information"),
-							tr("FET has met a critical error - aborting current operation, please report bug (new min days is not -1 or 1..ndaysperweek)"));
+							QMessageBox::critical(dialog, tr("Open-Timetable information"),
+							tr("Open-Timetable has met a critical error - aborting current operation, please report bug (new min days is not -1 or 1..ndaysperweek)"));
 							return;
 						}
 					}
@@ -8294,8 +8294,8 @@ void ListTimeConstraints::modifyMultipleClicked()
 					else if(oldNActs>=1){
 					}
 					else{
-						QMessageBox::critical(dialog, tr("FET information"),
-						tr("FET has met a critical error - aborting current operation, please report bug (old nActivities is not -1 or >=1)"));
+						QMessageBox::critical(dialog, tr("Open-Timetable information"),
+						tr("Open-Timetable has met a critical error - aborting current operation, please report bug (old nActivities is not -1 or >=1)"));
 						return;
 					}
 
@@ -8360,7 +8360,7 @@ void ListTimeConstraints::modifyMultipleClicked()
 						}
 					}
 
-					QMessageBox::information(dialog, tr("FET information"), tr("There were inspected (and possibly modified) %1 constraints min half days between activities"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("There were inspected (and possibly modified) %1 constraints min half days between activities"
 					" matching your criteria").arg(count)+"\n\n"+
 					tr("NOTE: If you are using constraints of type activities same starting time or activities same starting day or max 0 (half) days between activities, it is important"
 					" (after current operation) to apply the operation of removing redundant constraints.")
@@ -8451,7 +8451,7 @@ void ListTimeConstraints::removeClicked()
 				s+=tr("Note: you can add again a constraint of this type from the menu Data -> Time constraints -> "
 					"Miscellaneous -> Basic compulsory time constraints.");
 
-				wr=QMessageBox::warning(dialog, tr("FET warning"), s,
+				wr=QMessageBox::warning(dialog, tr("Open-Timetable warning"), s,
 					QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
 
 				if(wr==QMessageBox::No){
@@ -8469,7 +8469,7 @@ void ListTimeConstraints::removeClicked()
 	s+=QString("<br />\n<br />\n");
 	for(TimeConstraint* ctr : std::as_const(tl))
 		s+=ctr->getDetailedDescription(gt.rules, true, colorsCheckBox!=nullptr?colorsCheckBox->isChecked():false)+QString("<br />\n");
-	int lres=LongTextMessageBox::confirmation(dialog, tr("FET confirmation"),
+	int lres=LongTextMessageBox::confirmation(dialog, tr("Open-Timetable confirmation"),
 		s, tr("Yes"), tr("No"), QString(), 0, 1 );
 
 	if(lres!=0){
@@ -8551,7 +8551,7 @@ void ListTimeConstraints::helpClicked()
 				 " constraint. The correct way is to add a max 0 gaps per week constraint for students and maybe also an early max 0 beginnings at second"
 				 " hour constraint for students.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8563,7 +8563,7 @@ void ListTimeConstraints::helpClicked()
 				" Also, you don't have to do that after each added constraint, but only once after adding more constraints of this type."
 				" Please read Help/Important tips - tip number 2 for details.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8577,14 +8577,14 @@ void ListTimeConstraints::helpClicked()
 					" 'three activities grouped' related to the selected activities, make sure that the"
 					" constraints do not contradict).");
 
-				LongTextMessageBox::information(dialog, tr("FET help"), s);
+				LongTextMessageBox::information(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
 		//40
 		case CONSTRAINT_SUBACTIVITIES_PREFERRED_TIME_SLOTS:
 			{
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), tr(
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), tr(
 				 "This constraint is used to specify that for some components of a type of"
 				" activities, for instance for math activities, you need that from say 4-5"
 				" per week, at least the first 2 to be early (say in the first 4 hours).")
@@ -8608,7 +8608,7 @@ void ListTimeConstraints::helpClicked()
 		//41
 		case CONSTRAINT_SUBACTIVITIES_PREFERRED_STARTING_TIMES:
 			{
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), tr(
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), tr(
 				 "This constraint is used to specify that for some components of a type of"
 				" activities, for instance for math activities, you need that from say 4-5"
 				" per week, at least the first 2 to start early (say in the first 4 hours).")+
@@ -8655,7 +8655,7 @@ void ListTimeConstraints::helpClicked()
 				 "this step, but it doesn't hurt to do it, as a precaution. Also, you don't have to do that after each added constraint, but only once after adding more constraints "
 				 "of this type. Please read Help/Important tips - tip number 2 for details.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8665,7 +8665,7 @@ void ListTimeConstraints::helpClicked()
 				QString s=tr("To use this constraint, you need to specify a set of activities, a set of time slots, and a maximum number "
 				 "of time slots from those selected which can be occupied by the specified activities.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8675,7 +8675,7 @@ void ListTimeConstraints::helpClicked()
 				QString s=tr("To use this constraint, you need to specify a set of activities, a set of time slots, and a maximum number "
 				 "of activities from those selected which can be simultaneous in each of the selected time slots.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8685,7 +8685,7 @@ void ListTimeConstraints::helpClicked()
 				QString s=tr("To use this constraint, you need to specify a set of activities, a set of time slots, and a minimum number "
 				 "of time slots from those selected which must be occupied by the specified activities.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8703,7 +8703,7 @@ void ListTimeConstraints::helpClicked()
 				s+=tr("IMPORTANT NOTE: If you need a solution without empty slots or if a solution with empty slots does not exist, please leave the option 'Allow "
 				 "empty slots' unselected, because the generation is more efficient this way.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8731,28 +8731,28 @@ void ListTimeConstraints::helpClicked()
 				s+=QString("\n\n");
 				s+=tr("This constraint is useful to limit the number of activities in the overflow (or fake) blocks.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
 		//176
 		case CONSTRAINT_TEACHERS_MAX_THREE_CONSECUTIVE_DAYS:
 			{
-				QString s=tr("This constraint was suggested by %1, %2, and other users on this FET forum topic: %3.", "%1 and %2 are two persons, %3 is an internet link")
+				QString s=tr("This constraint was suggested by %1, %2, and other users on this Open-Timetable forum topic: %3.", "%1 and %2 are two persons, %3 is an internet link")
 				 .arg("Benahmed Abdelkrim").arg("Hiba Hadi").arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=4990.0");
 				s+="\n\n";
 				s+=tr("It was designed to disallow the teachers to have activities in two consecutive real days, morning and afternoon on both,"
 				 " which can be tiring. If you can allow the teachers to have activities only on the afternoon of a real day (half day 1), then the whole next real day"
 				 " (both morning and afternoon, half days 2 and 3), then only on the next morning (half day 4), you can select the exception option."
 				 " In this case only a succession of these four half-days: morning-afternoon-morning-afternoon is NOT allowed by the algorithm.");
-				LongTextMessageBox::information(dialog, tr("FET help"), s);
+				LongTextMessageBox::information(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
 		//177
 		case CONSTRAINT_TEACHER_MAX_THREE_CONSECUTIVE_DAYS:
 			{
-				QString s=tr("This constraint was suggested by %1, %2, and other users on this FET forum topic: %3.", "%1 and %2 are two persons, %3 is an internet link")
+				QString s=tr("This constraint was suggested by %1, %2, and other users on this Open-Timetable forum topic: %3.", "%1 and %2 are two persons, %3 is an internet link")
 				 .arg("Benahmed Abdelkrim").arg("Hiba Hadi")
 				 .arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=4990.0");
 				s+="\n\n";
@@ -8760,35 +8760,35 @@ void ListTimeConstraints::helpClicked()
 				 " which can be tiring. If you can allow the teacher to have activities only on the afternoon of a real day (half day 1), then the whole next real day"
 				 " (both morning and afternoon, half days 2 and 3), then only on the next morning (half day 4), you can select the exception option."
 				 " In this case only a succession of these four half-days: morning-afternoon-morning-afternoon is NOT allowed by the algorithm.");
-				LongTextMessageBox::information(dialog, tr("FET help"), s);
+				LongTextMessageBox::information(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
 		//182
 		case CONSTRAINT_STUDENTS_MAX_THREE_CONSECUTIVE_DAYS:
 			{
-				QString s=tr("This constraint was suggested by the user %1 on this FET forum topic: %2.").arg("Benahmed Abdelkrim")
+				QString s=tr("This constraint was suggested by the user %1 on this Open-Timetable forum topic: %2.").arg("Benahmed Abdelkrim")
 				 .arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=4990.0");
 				s+="\n\n";
 				s+=tr("It was designed to disallow the students to have activities in two consecutive real days, morning and afternoon on both,"
 				 " which can be tiring. If you can allow the students to have activities only on the afternoon of a real day (half day 1), then the whole next real day"
 				 " (both morning and afternoon, half days 2 and 3), then only on the next morning (half day 4), you can select the exception option."
 				 " In this case only a succession of these four half-days: morning-afternoon-morning-afternoon is NOT allowed by the algorithm.");
-				LongTextMessageBox::information(dialog, tr("FET help"), s);
+				LongTextMessageBox::information(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
 		//183
 		case CONSTRAINT_STUDENTS_SET_MAX_THREE_CONSECUTIVE_DAYS:
 			{
-				QString s=tr("This constraint was suggested by the user %1 on this FET forum topic: %2.").arg("Benahmed Abdelkrim")
+				QString s=tr("This constraint was suggested by the user %1 on this Open-Timetable forum topic: %2.").arg("Benahmed Abdelkrim")
 				 .arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=4990.0");
 				s+="\n\n";
 				s+=tr("It was designed to disallow a students set to have activities in two consecutive real days, morning and afternoon on both,"
 				 " which can be tiring. If you can allow the students set to have activities only on the afternoon of a real day (half day 1), then the whole next real day"
 				 " (both morning and afternoon, half days 2 and 3), then only on the next morning (half day 4), you can select the exception option."
 				 " In this case only a succession of these four half-days: morning-afternoon-morning-afternoon is NOT allowed by the algorithm.");
-				LongTextMessageBox::information(dialog, tr("FET help"), s);
+				LongTextMessageBox::information(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8810,12 +8810,12 @@ void ListTimeConstraints::helpClicked()
 				s+=" ";
 				s+=tr("For instance, if we have 5 terms per week, and activities A1, A2, and A3 scheduled respectively in the terms number 1, 2, and 4,"
 				 " the term distance between A1 and A2 is 1, the term distance between A2 and A3 is 2, and the term distance between A1 and A3 is 3."
-				 " If we specified max terms between activities for a constraint of this type = 2, this constraint is not respected, and FET will reallocate"
+				 " If we specified max terms between activities for a constraint of this type = 2, this constraint is not respected, and Open-Timetable will reallocate"
 				 " the activities. If we specified max terms between activities for a constraint of this type = 3, the constraint is respected and"
-				 " FET will allow the current schedule.",
+				 " Open-Timetable will allow the current schedule.",
 				 "'Term' here refers to the same notion as in the Terms mode.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8848,7 +8848,7 @@ void ListTimeConstraints::helpClicked()
 				 "this step, but it doesn't hurt to do it, as a precaution. Also, you don't have to do that after each added constraint, but only once after adding more constraints "
 				 "of this type. Please read Help/Important tips - tip number 2 for details.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8883,7 +8883,7 @@ void ListTimeConstraints::helpClicked()
 				 " (neglecting their days) are A1 and A4 (starting at hour 2), and the latest activity (neglecting its day) is A3 (ending after hour 5)."
 				 " The hourly span of A1, A2, A3, and A4 is thus (5 + 1) - 2 = 4.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8939,7 +8939,7 @@ void ListTimeConstraints::helpClicked()
 				 , "%1 is the person who wrote this note.").arg("Liviu Lalescu");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8959,7 +8959,7 @@ void ListTimeConstraints::helpClicked()
 				 .arg("Yush Yuen");
 				s+="\n\n";
 				s+=tr("This constraint is useful if you want to avoid small chunks of free time"
-				 " between classes. A gap is defined as a single FET hour between two"
+				 " between classes. A gap is defined as a single Open-Timetable hour between two"
 				 " activities. Select the students/teachers for whom you want this"
 				 " constraint applied to, then select the time slots where you DO NOT want gaps"
 				 " to appear. The maximum allowed number of single gaps is defaulted to zero. Increasing"
@@ -8968,7 +8968,7 @@ void ListTimeConstraints::helpClicked()
 				 " Note that two consecutive single gaps are not considered a 'gap'.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -8992,7 +8992,7 @@ void ListTimeConstraints::helpClicked()
 				 " at the same time. The unselected time slots are not subject to constraints.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9019,7 +9019,7 @@ void ListTimeConstraints::helpClicked()
 				 " not in both at the same time. The unselected time slots are not subject to constraints.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9037,7 +9037,7 @@ void ListTimeConstraints::helpClicked()
 				 " The unselected time slots are not subject to constraints.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9052,7 +9052,7 @@ void ListTimeConstraints::helpClicked()
 				 " time slots are not subject to constraints.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9078,7 +9078,7 @@ void ListTimeConstraints::helpClicked()
 				s+=tr("Note: an affected activity is not allowed to be placed overlapping more than one set of selected time slots.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9093,7 +9093,7 @@ void ListTimeConstraints::helpClicked()
 				 " starting day and hour), or are not overlapping at all (have no common time slot(s)).");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9110,7 +9110,7 @@ void ListTimeConstraints::helpClicked()
 				s+=tr("Note: an affected activity is not allowed to be placed overlapping more than one set of selected time slots.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9122,12 +9122,12 @@ void ListTimeConstraints::helpClicked()
 				//s+="\n\n";
 				s+=tr("This constraint was suggested by %1.").arg("Furkan Kızılaslan");
 				s+="\n\n";
-				s+=tr("This constraint type was added on %1.", "%1 is the date at which this constraint type was implemented in FET").arg(tr("18 October 2025"));
+				s+=tr("This constraint type was added on %1.", "%1 is the date at which this constraint type was implemented in Open-Timetable").arg(tr("18 October 2025"));
 				s+="\n\n";
 				s+=tr("To use this constraint, you need to specify a set of activities, a set of time slots, and a maximum number "
 				 "of students which can be present, considering the number of students of these activities, in these time slots.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9150,7 +9150,7 @@ void ListTimeConstraints::helpClicked()
 				 " by their activities, and the second one, labeled 'Selected', is for filtering the constraints by their activity tags.",
 				 "'Selected' refers to activity tags.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9163,7 +9163,7 @@ void ListTimeConstraints::helpClicked()
 
 				s+="\n\n";
 
-				s+=tr("This constraint specifies a set of activities and a maximum number of days. FET will place these activities over the week."
+				s+=tr("This constraint specifies a set of activities and a maximum number of days. Open-Timetable will place these activities over the week."
 				 " In the final timetable, we consider the affected activities in the ascending (or descending) order of their scheduled days, and each pair of"
 				 " adjacent activities in this order must respect the maximum days between them.");
 
@@ -9175,15 +9175,15 @@ void ListTimeConstraints::helpClicked()
 
 				s+="\n\n";
 
-				s+=tr("For instance, if the activities are A1, A2, A3, and A4, and max days is 3, over an 8 days FET 'week', an accepted solution"
+				s+=tr("For instance, if the activities are A1, A2, A3, and A4, and max days is 3, over an 8 days Open-Timetable 'week', an accepted solution"
 				 " could be: A1, empty, A2, A3, empty, empty, A4, empty.");
 				s+=" ";
 				s+=tr("(The data file could include also a constraint min 1 days 100% between these 4 activities, but this is not mandatory.)");
 
 				s+="\n\n";
 
-				s+=tr("'Circular' means that FET will also check the number of days between the last activity of the week and the first one, as if"
-				 " the FET week would be repeated without any day of pause.");
+				s+=tr("'Circular' means that Open-Timetable will also check the number of days between the last activity of the week and the first one, as if"
+				 " the Open-Timetable week would be repeated without any day of pause.");
 				s+=" ";
 				s+=tr("For instance, if the week is: Monday, Tuesday, Wednesday, Thursday, Friday, and the user selected 'Circular', if the first activity of"
 				 " the week is placed on Tuesday and the last activity of the week is placed on Friday, the number of days between these two activities is"
@@ -9191,7 +9191,7 @@ void ListTimeConstraints::helpClicked()
 
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9210,7 +9210,7 @@ void ListTimeConstraints::helpClicked()
 				 " and we count a tag change if set of tags 1 does not have any common tag with set of tags 2 (assuming, of"
 				 " course, that set of tags 1 and set of tags 2 are not empty).");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9229,7 +9229,7 @@ void ListTimeConstraints::helpClicked()
 				 " and we count a tag change if set of tags 1 does not have any common tag with set of tags 2 (assuming, of"
 				 " course, that set of tags 1 and set of tags 2 are not empty).");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9256,7 +9256,7 @@ void ListTimeConstraints::helpClicked()
 				s+="\n\n";
 				s+=tr("The number of activity tag changes per week is computed as the sum of the number of activity tag changes on each day.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9271,7 +9271,7 @@ void ListTimeConstraints::helpClicked()
 				s+="\n\n";
 				s+=tr("A single early morning gap means that on a certain real day the affected students begin their activities at the second morning hour.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9287,7 +9287,7 @@ void ListTimeConstraints::helpClicked()
 				s+=tr("A single early afternoon gap means that on a certain real day the affected students begin their afternoon activities at the"
 				 " second afternoon hour.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9305,7 +9305,7 @@ void ListTimeConstraints::helpClicked()
 				 " 2) have an activity on the penultimate morning hour, are free on the last morning hour, and have an activity"
 				 " on the first afternoon hour.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9326,7 +9326,7 @@ void ListTimeConstraints::helpClicked()
 				s+="\n\n";
 				s+=tr("A single early gap means that on a certain day the affected teacher(s)/students (set) begin their activities at the second hour.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -9413,11 +9413,11 @@ void ListTimeConstraints::constraintChanged()
 void ListTimeConstraints::moveTimeConstraintUp()
 {
 	/*if(filterCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a time constraint up, the 'Filter' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a time constraint up, the 'Filter' check box must not be checked."));
 		return;
 	}*/
 	if(sortedCheckBox->isChecked()){
-		QMessageBox::information(dialog, tr("FET information"), tr("To move a time constraint up, the 'Sorted' check box must not be checked."));
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("To move a time constraint up, the 'Sorted' check box must not be checked."));
 		return;
 	}
 	
@@ -9500,11 +9500,11 @@ void ListTimeConstraints::moveTimeConstraintUp()
 void ListTimeConstraints::moveTimeConstraintDown()
 {
 	/*if(filterCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a time constraint down, the 'Filter' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a time constraint down, the 'Filter' check box must not be checked."));
 		return;
 	}*/
 	if(sortedCheckBox->isChecked()){
-		QMessageBox::information(dialog, tr("FET information"), tr("To move a time constraint down, the 'Sorted' check box must not be checked."));
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("To move a time constraint down, the 'Sorted' check box must not be checked."));
 		return;
 	}
 	
@@ -9598,7 +9598,7 @@ void ListTimeConstraints::activateConstraints()
 	if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS){
 		QMessageBox::StandardButton ret=QMessageBox::No;
 		QString s=tr("Activate the selected time constraints?");
-		ret=QMessageBox::question(dialog, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+		ret=QMessageBox::question(dialog, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 		if(ret==QMessageBox::No){
 			//constraintsListWidget->setFocus();
 			return;
@@ -9648,7 +9648,7 @@ void ListTimeConstraints::activateConstraints()
 		constraintsListWidget->horizontalScrollBar()->setValue(valh);
 
 		if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS)
-			QMessageBox::information(dialog, tr("FET information"), tr("Activated %1 time constraints").arg(cnt));
+			QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Activated %1 time constraints").arg(cnt));
 	}
 	if(recomputeTime){
 		LockUnlock::computeLockedUnlockedActivitiesOnlyTime();
@@ -9664,7 +9664,7 @@ void ListTimeConstraints::deactivateConstraints()
 		QMessageBox::StandardButton ret=QMessageBox::No;
 		QString s=tr("Deactivate the selected time constraints? "
 		 "(Note that the basic compulsory time constraints will not be deactivated, even if they are selected.)");
-		ret=QMessageBox::question(dialog, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+		ret=QMessageBox::question(dialog, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 		if(ret==QMessageBox::No){
 			//constraintsListWidget->setFocus();
 			return;
@@ -9715,7 +9715,7 @@ void ListTimeConstraints::deactivateConstraints()
 		constraintsListWidget->horizontalScrollBar()->setValue(valh);
 
 		if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS)
-			QMessageBox::information(dialog, tr("FET information"), tr("Deactivated %1 time constraints").arg(cnt));
+			QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Deactivated %1 time constraints").arg(cnt));
 	}
 	if(recomputeTime){
 		LockUnlock::computeLockedUnlockedActivitiesOnlyTime();
@@ -9729,7 +9729,7 @@ void ListTimeConstraints::constraintComments()
 {
 	int i=constraintsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(dialog, tr("FET information"), tr("Invalid selected constraint"));
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Invalid selected constraint"));
 
 		//constraintsListWidget->setFocus();
 
@@ -9857,7 +9857,7 @@ void ListTimeConstraints::changeWeights()
 				cnt_unchanged++;
 		}
 	if(cnt_pre==0){
-		QMessageBox::information(dialog, tr("FET information"), tr("No constraints from your selection can change their weight"
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("No constraints from your selection can change their weight"
 		 " (remember that some types of constraints are allowed to have only 100% weight)."));
 
 		//constraintsListWidget->setFocus();

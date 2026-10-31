@@ -16,6 +16,7 @@ set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION
 
 qt_add_executable(fet WIN32 MACOSX_BUNDLE
     ui_i18n.h
+    ui_icons.cpp ui_icons.h
     ui_theme.cpp ui_theme.h
     ui_publish.cpp ui_publish.h
     ui_shell.cpp ui_shell.h
@@ -257,12 +258,12 @@ if(TARGET Qt::PrintSupport)
     )
 endif()
 
-set_source_files_properties("../../icons/fet.png"
+set_source_files_properties("../../icons/open-timetable.png"
     PROPERTIES QT_RESOURCE_ALIAS "images/appicon.png"
 )
 
 set(interface_images_resource_files
-    "../../icons/fet.png"
+    "../../icons/open-timetable.png"
     "images/group.png"
     "images/locked.png"
     "images/subgroup.png"

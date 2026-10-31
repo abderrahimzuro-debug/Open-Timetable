@@ -193,14 +193,14 @@ void RoomsForm::removeRoom()
 {
 	int ind=roomsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected room"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected room"));
 		return;
 	}
 	
 	Room* rm=visibleRoomsList.at(ind);
 	assert(rm!=nullptr);
 
-	if(QMessageBox::warning( this, tr("FET"),
+	if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete this room and all related constraints?"),
 	 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes ) == QMessageBox::No)
 		return;
@@ -226,7 +226,7 @@ void RoomsForm::removeRoom()
 	if(nv>0 || nvtotal>0){
 		assert(nv>0 && nvtotal>0);
 		
-		if(QMessageBox::warning( this, tr("FET"),
+		if(QMessageBox::warning( this, tr("Open-Timetable"),
 			tr("This is a real room. If you remove it, it will affect %1 virtual rooms."
 			" The real room is met %2 times overall in the lists of sets of the virtual rooms."
 			" Do you really want to remove it?").arg(nv).arg(nvtotal),
@@ -369,7 +369,7 @@ void RoomsForm::modifyRoom()
 
 	int ci=roomsListWidget->currentRow();
 	if(ci<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected room"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected room"));
 		return;
 	}
 	
@@ -394,7 +394,7 @@ void RoomsForm::comments()
 {
 	int ind=roomsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected room"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected room"));
 		return;
 	}
 	
@@ -456,7 +456,7 @@ void RoomsForm::help()
 {
 	QString s;
 	
-	s=tr("Virtual rooms were suggested by the user %1 on the FET forum (you can follow the discussion on the internet page %2)."
+	s=tr("Virtual rooms were suggested by the user %1 on the Open-Timetable forum (you can follow the discussion on the internet page %2)."
 	 " They can be useful in two situations (but you might think of more uses):")
 	 .arg("math").arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=4249.0");
 	s+="\n\n";
@@ -466,7 +466,7 @@ void RoomsForm::help()
 	s+="\n\n";
 	s+=tr("More details about defining and using virtual rooms are shown in the dialog of making/editing virtual rooms, if you click the Help button there.");
 
-	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable Help"), s);
 }
 
 void RoomsForm::makeReal()
@@ -476,14 +476,14 @@ void RoomsForm::makeReal()
 
 	int ci=roomsListWidget->currentRow();
 	if(ci<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected room"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected room"));
 		return;
 	}
 	
 	Room* rm=visibleRoomsList.at(ci);
 	
 	if(rm->isVirtual==false){
-		QMessageBox::information(this, tr("FET information"), tr("The selected room is already real."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected room is already real."));
 		return;
 	}
 	
@@ -492,7 +492,7 @@ void RoomsForm::makeReal()
 			ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*)ctr;
 			
 			if(c->roomName==rm->name && c->preferredRealRoomsNames.count()>0){
-				QMessageBox::information(this, tr("FET information"), tr("This virtual room is used in at least a constraint of type"
+				QMessageBox::information(this, tr("Open-Timetable information"), tr("This virtual room is used in at least a constraint of type"
 				 " activity preferred room, having specified a nonempty list of preferred real rooms. It cannot thus be made real"
 				 " directly. Firstly you need to edit/remove that/those constraints (converting this virtual room to a real one will"
 				 " be possible if you clear the preferred real rooms list for each such constraint)."));
@@ -500,7 +500,7 @@ void RoomsForm::makeReal()
 			}
 		}
 	
-	if(QMessageBox::warning( this, tr("FET confirmation"),
+	if(QMessageBox::warning( this, tr("Open-Timetable confirmation"),
 	 tr("Are you sure you want to make this room real? This will erase the list of sets of real rooms for this virtual room."),
 	 QMessageBox::Yes | QMessageBox::No ) == QMessageBox::No)
 		return;
@@ -541,7 +541,7 @@ void RoomsForm::makeEditVirtual()
 
 	int ci=roomsListWidget->currentRow();
 	if(ci<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected room"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected room"));
 		return;
 	}
 	
@@ -559,7 +559,7 @@ void RoomsForm::makeEditVirtual()
 						}
 						
 	if(!vlcr.isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("This real room is contained in %1 other virtual rooms, so it cannot be made virtual"
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("This real room is contained in %1 other virtual rooms, so it cannot be made virtual"
 		 " (because a virtual room can only contain real rooms).").arg(vlcr.count()));
 		return;
 	}
@@ -570,7 +570,7 @@ void RoomsForm::makeEditVirtual()
 				ConstraintActivityPreferredRoom* c=(ConstraintActivityPreferredRoom*)ctr;
 				
 				if(c->preferredRealRoomsNames.contains(rm->name)){
-					QMessageBox::information(this, tr("FET information"), tr("This real room is used in at least a constraint of type"
+					QMessageBox::information(this, tr("Open-Timetable information"), tr("This real room is used in at least a constraint of type"
 					 " activity preferred room, in the list of preferred real rooms. It cannot thus be made virtual"
 					 " directly. Firstly you need to edit/remove that/those constraints."));
 					return;
@@ -597,7 +597,7 @@ void RoomsForm::longName()
 {
 	int ind=roomsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected room"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected room"));
 		return;
 	}
 	
@@ -659,7 +659,7 @@ void RoomsForm::code()
 {
 	int ind=roomsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected room"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected room"));
 		return;
 	}
 	

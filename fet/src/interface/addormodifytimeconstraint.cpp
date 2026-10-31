@@ -845,7 +845,7 @@ AddOrModifyTimeConstraint::AddOrModifyTimeConstraint(QWidget* parent, int _type,
 					firstAddInstructionsLabel=new QLabel(tr("This represents the maximum allowed beginnings at the second available hour (in a week). "
 															"You might want to allow your students to begin in some days later, at the second available "
 															"hour, so you might put \"max beginnings at second hour\" greater than 0 (the timetable will "
-															"be easier for FET). Default 0 is given for students who need to begin all classes at the "
+															"be easier for Open-Timetable). Default 0 is given for students who need to begin all classes at the "
 															"first available hour. You might want to choose a greater value and lower it as you find new "
 															"timetables"));
 					secondAddInstructionsLabel=new QLabel(tr("You have to use weight percentage 100%, because otherwise you will get poor timetables. "
@@ -860,7 +860,7 @@ AddOrModifyTimeConstraint::AddOrModifyTimeConstraint(QWidget* parent, int _type,
 					firstModifyInstructionsLabel=new QLabel(tr("This represents the maximum allowed beginnings at the second available hour (in a week). "
 															   "You might want to allow your students to begin in some days later, at the second available "
 															   "hour, so you might put \"max beginnings at second hour\" greater than 0 (the timetable will "
-															   "be easier for FET). You might want to choose a greater value and lower it as you find new "
+															   "be easier for Open-Timetable). You might want to choose a greater value and lower it as you find new "
 															   "timetables"));
 					secondModifyInstructionsLabel=new QLabel(tr("You have to use weight percentage 100%, because otherwise you will get poor timetables. "
 																"Currently, the algorithm only accepts 100% weight percentage for this constraint (or no "
@@ -885,7 +885,7 @@ AddOrModifyTimeConstraint::AddOrModifyTimeConstraint(QWidget* parent, int _type,
 
 					firstAddInstructionsLabel=new QLabel(tr("This represents the maximum allowed beginnings at the second available hour (in a week). You might "
 															"want to allow your students to begin in some days later, at the second available hour, so you might "
-															"put \"max beginnings at second hour\" greater than 0 (the timetable will be easier for FET). Default 0 "
+															"put \"max beginnings at second hour\" greater than 0 (the timetable will be easier for Open-Timetable). Default 0 "
 															"is given for students who need to begin all classes at the first available hour. You might want to "
 															"choose a greater value and lower it as you find new timetables"));
 					secondAddInstructionsLabel=new QLabel(tr("You have to use weight percentage 100%, because otherwise you will get poor timetables. Currently, the "
@@ -898,7 +898,7 @@ AddOrModifyTimeConstraint::AddOrModifyTimeConstraint(QWidget* parent, int _type,
 
 					firstModifyInstructionsLabel=new QLabel(tr("This represents the maximum allowed beginnings at the second available hour (in a week). You might "
 															   "want to allow your students to begin in some days later, at the second available hour, so you might "
-															   "put \"max beginnings at second hour\" greater than 0 (the timetable will be easier for FET). You might "
+															   "put \"max beginnings at second hour\" greater than 0 (the timetable will be easier for Open-Timetable). You might "
 															   "want to choose a greater value and lower it as you find new timetables"));
 					secondModifyInstructionsLabel=new QLabel(tr("You have to use weight percentage 100%, because otherwise you will get poor timetables. Currently, "
 																"the algorithm only accepts 100% weight percentage for this constraint (or no constraint).\nNote: "
@@ -5860,8 +5860,8 @@ AddOrModifyTimeConstraint::AddOrModifyTimeConstraint(QWidget* parent, int _type,
 		//185 is activity preferred day, which is not in the interface
 		case CONSTRAINT_ACTIVITY_PREFERRED_DAY:
 			{
-				QMessageBox::warning(dialog, tr("FET information"),
-									 tr("You have encountered a FET bug. The constraint activity preferred day should not "
+				QMessageBox::warning(dialog, tr("Open-Timetable information"),
+									 tr("You have encountered a Open-Timetable bug. The constraint activity preferred day should not "
 										"be editable in a separate dialog. The request will be ignored."));
 
 				return;
@@ -14894,12 +14894,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 	QString tmp=weightLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100.0){
-		QMessageBox::warning(dialog, tr("FET information"), tr("Invalid weight (percentage)"));
+		QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid weight (percentage)"));
 		return;
 	}
 
 	if(!timeConstraintCanHaveAnyWeight(type) && weight!=100.0){
-		QMessageBox::warning(dialog, tr("FET information"), tr("Invalid weight (percentage) - it has to be 100%"));
+		QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid weight (percentage) - it has to be 100%"));
 		return;
 	}
 
@@ -14920,7 +14920,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 			[[fallthrough]];
 		case CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY_REAL_DAYS:
 			if(weight<100.0){
-				int t=QMessageBox::warning(dialog, tr("FET warning"),
+				int t=QMessageBox::warning(dialog, tr("Open-Timetable warning"),
 					tr("You selected a weight less than 100%. The generation algorithm is not perfectly optimized to work with such weights (even"
 					 " if in practice it might work well). It is recommended to work only with 100% weights for these constraints. Are you sure you want to continue?"),
 					 QMessageBox::Yes | QMessageBox::Cancel);
@@ -14939,7 +14939,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		QString teacher_name=teachersComboBox->currentText();
 		int teacher_ID=gt.rules.searchTeacher(teacher_name);
 		if(teacher_ID<0){
-			QMessageBox::warning(dialog, tr("FET information"), tr("Invalid teacher"));
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid teacher"));
 			return;
 		}
 	}
@@ -14949,7 +14949,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		QString students_name=studentsComboBox->currentText();
 		StudentsSet* s=gt.rules.searchStudentsSet(students_name);
 		if(s==nullptr){
-			QMessageBox::warning(dialog, tr("FET information"), tr("Invalid students set"));
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid students set"));
 			return;
 		}
 	}
@@ -14959,7 +14959,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		QString activity_tag_name=activityTagsComboBox->currentText();
 		int activityTag_ID=gt.rules.searchActivityTag(activity_tag_name);
 		if(activityTag_ID<0){
-			QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity tag"));
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity tag"));
 			return;
 		}
 	}
@@ -15048,12 +15048,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 			{
 				if(!checkBox->isChecked()){
 					if(gt.rules.mode!=MORNINGS_AFTERNOONS){
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
 							"please use the constraint teachers min days per week"));
 						return;
 					}
 					else{
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
 							"please use the constraint teachers min days per week (but the min days per week constraint is for real days. You can also use the "
 							"constraint teachers min mornings/afternoons per week.)"));
 						return;
@@ -15069,12 +15069,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 			{
 				if(!checkBox->isChecked()){
 					if(gt.rules.mode!=MORNINGS_AFTERNOONS){
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
 							"please use the constraint teacher min days per week"));
 						return;
 					}
 					else{
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
 							"please use the constraint teacher min days per week (but the min days per week constraint is for real days. You can also use the "
 							"constraints teacher min mornings/afternoons per week.)"));
 						return;
@@ -15171,7 +15171,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 			{
 				if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					if(checkBox->isChecked() && spinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty days, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty days, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}
 				}
@@ -15185,7 +15185,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 			{
 				if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					if(checkBox->isChecked() && spinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty days, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty days, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}
 				}
@@ -15200,7 +15200,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -15216,18 +15216,18 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
 				int id=activitiesList.at(i);
 
 				if(daysComboBox->currentIndex()<0 || daysComboBox->currentIndex()>gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid day"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid day"));
 					return;
 				}
 				if(hoursComboBox->currentIndex()<0 || hoursComboBox->currentIndex()>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid hour"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid hour"));
 					return;
 				}
 
@@ -15239,12 +15239,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -15293,7 +15293,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 								s+=tr("2. Current (sub)activity has id=%1 and represents %2 subactivities")
 									.arg(_id)
 									.arg(tmp);
-								QMessageBox::warning(dialog, tr("FET information"), s);
+								QMessageBox::warning(dialog, tr("Open-Timetable information"), s);
 								return;
 							}
 						}
@@ -15348,13 +15348,13 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 							s+=tr("Constraint added:");
 							s+="\n\n";
 							s+=ctr->getDetailedDescription(gt.rules);
-							LongTextMessageBox::information(dialog, tr("FET information"), s);
+							LongTextMessageBox::information(dialog, tr("Open-Timetable information"), s);
 
 							ctrs+=ctr->getDetailedDescription(gt.rules);
 							ctrs+="\n";
 						}
 						else{
-							QMessageBox::warning(dialog, tr("FET information"), tr("Constraint NOT added - please report error"));
+							QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Constraint NOT added - please report error"));
 							delete ctr;
 						}
 					}
@@ -15372,12 +15372,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -15390,18 +15390,18 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
 
 				if(spinBox->value()<=0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Invalid number of min days between activities - it must be greater than 0."));
 					return;
 				}
@@ -15416,7 +15416,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -15429,7 +15429,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -15467,7 +15467,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					assert(gt.rules.searchActivityTag(activityTag)>=0);
 
 				if(duration==-1 && teacher=="" && students=="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified all the activities. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots, this not allowed slot will"
 					  " be counted as a gap in the teachers' and students' timetable.\n\n"
@@ -15485,7 +15485,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				}
 
 				if(duration==-1 && teacher!="" && students=="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified only the teacher. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots, this not allowed slot will"
 					  " be counted as a gap in the teacher's timetable.\n\n"
@@ -15502,7 +15502,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				}
 
 				if(duration==-1 && teacher=="" && students!="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified only the students set. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots (or a not allowed slot before allowed slots),"
 					  " this not allowed slot will"
@@ -15526,7 +15526,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -15544,7 +15544,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -15557,7 +15557,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -15595,7 +15595,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					assert(gt.rules.searchActivityTag(activityTag)>=0);
 
 				if(duration==-1 && teacher=="" && students=="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified all the activities. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots, this not allowed slot will"
 					  " be counted as a gap in the teachers' and students' timetable.\n\n"
@@ -15613,7 +15613,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				}
 
 				if(duration==-1 && teacher!="" && students=="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified only the teacher. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots, this not allowed slot will"
 					  " be counted as a gap in the teacher's timetable.\n\n"
@@ -15630,7 +15630,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				}
 
 				if(duration==-1 && teacher=="" && students!="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified only the students set. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots (or a not allowed slot before allowed slots),"
 					  " this not allowed slot will"
@@ -15654,7 +15654,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -15670,12 +15670,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -15688,12 +15688,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -15708,7 +15708,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(first_activitiesComboBox!=nullptr);
 				int i=first_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid first activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid first activity"));
 					return;
 				}
 				assert(i<first_activitiesList.count());
@@ -15717,14 +15717,14 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(second_activitiesComboBox!=nullptr);
 				i=second_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid second activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid second activity"));
 					return;
 				}
 				assert(i<second_activitiesList.count());
 				int sid=second_activitiesList.at(i);
 
 				if(sid==fid){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Same activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Same activities"));
 					return;
 				}
 
@@ -15738,7 +15738,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(first_activitiesComboBox!=nullptr);
 				int i=first_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid first activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid first activity"));
 					return;
 				}
 				assert(i<first_activitiesList.count());
@@ -15747,14 +15747,14 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(second_activitiesComboBox!=nullptr);
 				i=second_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid second activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid second activity"));
 					return;
 				}
 				assert(i<second_activitiesList.count());
 				int sid=second_activitiesList.at(i);
 
 				if(sid==fid){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Same activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Same activities"));
 					return;
 				}
 
@@ -15766,12 +15766,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_MIN_GAPS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -15812,7 +15812,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -15856,7 +15856,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -15874,17 +15874,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -15899,17 +15899,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -15924,17 +15924,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -15949,17 +15949,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -15997,7 +15997,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(first_activitiesComboBox!=nullptr);
 				int i=first_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid first activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid first activity"));
 					return;
 				}
 				assert(i<first_activitiesList.count());
@@ -16006,14 +16006,14 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(second_activitiesComboBox!=nullptr);
 				i=second_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid second activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid second activity"));
 					return;
 				}
 				assert(i<second_activitiesList.count());
 				int sid=second_activitiesList.at(i);
 
 				if(sid==fid){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Same activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Same activities"));
 					return;
 				}
 
@@ -16062,7 +16062,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(first_activitiesComboBox!=nullptr);
 				int i=first_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid first activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid first activity"));
 					return;
 				}
 				assert(i<first_activitiesList.count());
@@ -16071,7 +16071,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(second_activitiesComboBox!=nullptr);
 				i=second_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid second activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid second activity"));
 					return;
 				}
 				assert(i<second_activitiesList.count());
@@ -16080,14 +16080,14 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(third_activitiesComboBox!=nullptr);
 				i=third_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid third activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid third activity"));
 					return;
 				}
 				assert(i<third_activitiesList.count());
 				int tid=third_activitiesList.at(i);
 
 				if(sid==fid || sid==tid || fid==tid){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Same activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Same activities"));
 					return;
 				}
 
@@ -16099,12 +16099,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_MAX_DAYS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -16173,15 +16173,15 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_OCCUPY_MAX_TIME_SLOTS_FROM_SELECTION:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified max occupied time slots to be 0. This is "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified max occupied time slots to be 0. This is "
 					 "not perfect from efficiency point of view, because you can use instead constraint activity(ies) preferred time slots, "
-					 "and help FET to find a timetable easier and faster, with an equivalent result. Please correct."));
+					 "and help Open-Timetable to find a timetable easier and faster, with an equivalent result. Please correct."));
 					return;
 				}
 
@@ -16197,15 +16197,15 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_MAX_SIMULTANEOUS_IN_SELECTED_TIME_SLOTS:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified max simultaneous activities to be 0. This is "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified max simultaneous activities to be 0. This is "
 					 "not perfect from efficiency point of view, because you can use instead constraint activity(ies) preferred time slots, "
-					 "and help FET to find a timetable easier and faster, with an equivalent result. Please correct."));
+					 "and help Open-Timetable to find a timetable easier and faster, with an equivalent result. Please correct."));
 					return;
 				}
 
@@ -16293,7 +16293,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(first_activitiesComboBox!=nullptr);
 				int i=first_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid first activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid first activity"));
 					return;
 				}
 				assert(i<first_activitiesList.count());
@@ -16302,14 +16302,14 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(second_activitiesComboBox!=nullptr);
 				i=second_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid second activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid second activity"));
 					return;
 				}
 				assert(i<second_activitiesList.count());
 				int sid=second_activitiesList.at(i);
 
 				if(sid==fid){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Same activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Same activities"));
 					return;
 				}
 
@@ -16323,19 +16323,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -16349,19 +16349,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -16375,19 +16375,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -16401,19 +16401,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -16425,11 +16425,11 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITY_TAGS_NOT_OVERLAPPING:
 			{
 				if(selectedActivityTagsListWidget->count()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("The list of non-overlapping activity tags is empty"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("The list of non-overlapping activity tags is empty"));
 					return;
 				}
 				if(selectedActivityTagsListWidget->count()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity tag"));
 					return;
 				}
 
@@ -16445,13 +16445,13 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_OCCUPY_MIN_TIME_SLOTS_FROM_SELECTION:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified min occupied time slots to be 0. This results in "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified min occupied time slots to be 0. This results in "
 																		 "a useless constraint. Please correct."));
 					return;
 				}
@@ -16468,19 +16468,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_MIN_SIMULTANEOUS_IN_SELECTED_TIME_SLOTS:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified min simultaneous activities to be 0. This results in "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified min simultaneous activities to be 0. This results in "
 					 "a useless constraint. Please correct."));
 					return;
 				}
 
 				if(spinBox->value()==1 && allowEmptySlotsCheckBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified min simultaneous activities to be 1 and you allow empty slots. "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified min simultaneous activities to be 1 and you allow empty slots. "
 					 "This results in a useless constraint. Please correct."));
 					return;
 				}
@@ -16497,7 +16497,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHERS_ACTIVITY_TAG_MIN_HOURS_DAILY:
 			{
 				/*if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Allow empty days is selected and min hours daily is 1, "
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Allow empty days is selected and min hours daily is 1, "
 																	   "so this would be a useless constraint."));
 					return;
 				}*/
@@ -16510,7 +16510,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHER_ACTIVITY_TAG_MIN_HOURS_DAILY:
 			{
 				/*if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Allow empty days is selected and min hours daily is 1, "
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Allow empty days is selected and min hours daily is 1, "
 																	   "so this would be a useless constraint."));
 					return;
 				}*/
@@ -16523,7 +16523,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_STUDENTS_ACTIVITY_TAG_MIN_HOURS_DAILY:
 			{
 				/*if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Allow empty days is selected and min hours daily is 1, "
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Allow empty days is selected and min hours daily is 1, "
 																	   "so this would be a useless constraint."));
 					return;
 				}*/
@@ -16536,7 +16536,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MIN_HOURS_DAILY:
 			{
 				/*if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Allow empty days is selected and min hours daily is 1, "
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Allow empty days is selected and min hours daily is 1, "
 																	   "so this would be a useless constraint."));
 					return;
 				}*/
@@ -16551,7 +16551,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -16700,7 +16700,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHER_MAX_ACTIVITY_TAGS_PER_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -16717,7 +16717,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHERS_MAX_ACTIVITY_TAGS_PER_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -16818,7 +16818,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHERS_MIN_HOURS_DAILY_REAL_DAYS:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
 						"please use the constraint teachers min days per week"));
 					return;
 				}
@@ -16831,7 +16831,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHER_MIN_HOURS_DAILY_REAL_DAYS:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for this teacher, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for this teacher, "
 						"please use the constraint teacher min days per week"));
 					return;
 				}
@@ -16858,7 +16858,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHERS_MIN_HOURS_PER_MORNING:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for the teachers, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for the teachers, "
 						"please use the constraint teachers min mornings per week."));
 					return;
 				}
@@ -16871,7 +16871,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHER_MIN_HOURS_PER_MORNING:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for a teacher, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for a teacher, "
 						"please use the constraint teacher min mornings per week."));
 					return;
 				}
@@ -16914,17 +16914,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -16939,17 +16939,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -16964,17 +16964,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -16989,17 +16989,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -17014,7 +17014,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				//if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					//2021-03-26 - I think I commented out this check because the user might combine this constraint with a min hours daily constraint.
 					/*if(allowEmptyMorningsCheckBox->isChecked() && minHoursSpinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty mornings, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty mornings, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}*/
 				//}
@@ -17029,7 +17029,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				//if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					//2021-03-26 - I think I commented out this check because the user might combine this constraint with a min hours daily constraint.
 					/*if(allowEmptyMorningsCheckBox->isChecked() && minHoursSpinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty mornings, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty mornings, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}*/
 				//}
@@ -17114,17 +17114,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -17139,17 +17139,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -17164,17 +17164,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -17189,17 +17189,17 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -17324,15 +17324,15 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_MAX_TOTAL_ACTIVITIES_FROM_SET_IN_SELECTED_TIME_SLOTS:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified max total activities to be 0. This is "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified max total activities to be 0. This is "
 					 "not perfect from efficiency point of view, because you can use instead constraint activity(ies) preferred time slots, "
-					 "and help FET to find a timetable easier and faster, with an equivalent result. Please correct."));
+					 "and help Open-Timetable to find a timetable easier and faster, with an equivalent result. Please correct."));
 					return;
 				}
 
@@ -17348,12 +17348,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_MAX_GAPS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -17366,13 +17366,13 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_MAX_IN_A_TERM:
 			{
 				if(this->selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Empty list of activities"));
 					return;
 				}
 				//we allow even only one activity
 				/*if(this->selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Only one selected activity"));
 					return;
 				}*/
@@ -17385,13 +17385,13 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_OCCUPY_MAX_TERMS:
 			{
 				if(this->selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Empty list of activities"));
 					return;
 				}
 				//we allow even only one activity
 				/*if(this->selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Only one selected activity"));
 					return;
 				}*/
@@ -17446,12 +17446,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TWO_SETS_OF_ACTIVITIES_ORDERED:
 			{
 				if(selectedActivitiesList_TwoSetsOfActivities_1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities in the first set"));
 					return;
 				}
 				if(selectedActivitiesList_TwoSetsOfActivities_2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities in the second set"));
 					return;
 				}
@@ -17520,18 +17520,18 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_MIN_HALF_DAYS_BETWEEN_ACTIVITIES:
 			{
 				if(this->selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(this->selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
 
 				if(spinBox->value()<=0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Invalid number of min half days between activities - it must be greater than 0."));
 					return;
 				}
@@ -17545,19 +17545,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_MIN_IN_A_TERM:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Empty list of activities"));
 					return;
 				}
 				//we allow even only one activity
 				/*if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Only one selected activity"));
 					return;
 				}*/
 
 				if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Min activities in a term is 1, and you allow empty terms, so this constraint would be useless."));
 					return;
 				}
@@ -17570,12 +17570,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_MAX_TERMS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -17588,7 +17588,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_STUDENTS_SET_MAX_ACTIVITY_TAGS_PER_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -17605,7 +17605,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_STUDENTS_MAX_ACTIVITY_TAGS_PER_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -17622,7 +17622,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHER_MAX_ACTIVITY_TAGS_PER_REAL_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -17639,7 +17639,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHERS_MAX_ACTIVITY_TAGS_PER_REAL_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -17656,7 +17656,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_STUDENTS_SET_MAX_ACTIVITY_TAGS_PER_REAL_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -17673,7 +17673,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_STUDENTS_MAX_ACTIVITY_TAGS_PER_REAL_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -17690,12 +17690,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_MAX_HALF_DAYS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -17710,7 +17710,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -17749,7 +17749,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -17786,7 +17786,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHERS_MIN_HOURS_PER_AFTERNOON:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for the teachers, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for the teachers, "
 						"please use the constraint teachers min afternoons per week."));
 					return;
 				}
@@ -17799,7 +17799,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TEACHER_MIN_HOURS_PER_AFTERNOON:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for a teacher, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for a teacher, "
 						"please use the constraint teacher min afternoons per week."));
 					return;
 				}
@@ -17814,7 +17814,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				//if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					//2021-03-26 - I think I commented out this check because the user might combine this constraint with a min hours daily constraint.
 					/*if(allowEmptyAfternoonsCheckBox->isChecked() && minHoursSpinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty afternoons, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty afternoons, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}*/
 				//}
@@ -17829,7 +17829,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				//if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					//2021-03-26 - I think I commented out this check because the user might combine this constraint with a min hours daily constraint.
 					/*if(allowEmptyAfternoonsCheckBox->isChecked() && minHoursSpinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty afternoons, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty afternoons, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}*/
 				//}
@@ -17842,12 +17842,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_MAX_HOURLY_SPAN:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -17862,23 +17862,23 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("If you need the maximum hours daily in the interval to be 0, please use"
 						 " the constraints of type teacher not available times or activities preferred time slots."));
 					return;
@@ -17894,23 +17894,23 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("If you need the maximum hours daily in the interval to be 0, please use"
 						 " the constraints of type teacher not available times or activities preferred time slots."));
 					return;
@@ -17926,23 +17926,23 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("If you need the maximum hours daily in the interval to be 0, please use"
 						 " the constraints of type students set not available times or activities preferred time slots."));
 					return;
@@ -17958,23 +17958,23 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("If you need the maximum hours daily in the interval to be 0, please use"
 						 " the constraints of type students set not available times or activities preferred time slots."));
 					return;
@@ -17990,19 +17990,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -18016,19 +18016,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -18042,19 +18042,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -18068,19 +18068,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -18122,19 +18122,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -18148,19 +18148,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -18174,19 +18174,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -18200,19 +18200,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -18272,29 +18272,29 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
@@ -18313,29 +18313,29 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
@@ -18354,29 +18354,29 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
@@ -18395,29 +18395,29 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
@@ -18430,12 +18430,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_TWO_SETS_OF_ACTIVITIES_SAME_SECTIONS:
 			{
 				if(selectedActivitiesList_TwoSetsOfActivities_1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities in the first set"));
 					return;
 				}
 				if(selectedActivitiesList_TwoSetsOfActivities_2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities in the second set"));
 					return;
 				}
@@ -18515,7 +18515,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -18526,7 +18526,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -18546,7 +18546,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
@@ -18565,7 +18565,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -18576,7 +18576,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -18596,7 +18596,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
@@ -18615,7 +18615,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -18626,7 +18626,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -18646,7 +18646,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
@@ -18665,7 +18665,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -18676,7 +18676,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -18696,7 +18696,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
@@ -18715,7 +18715,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -18726,7 +18726,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -18746,19 +18746,19 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
 				}
 
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				/*if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}*/
@@ -18777,40 +18777,40 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
 
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				/*if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}*/
@@ -18828,7 +18828,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -18838,7 +18838,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -18858,7 +18858,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -18868,7 +18868,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -18888,7 +18888,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -18898,7 +18898,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -18918,7 +18918,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -18928,7 +18928,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -18943,12 +18943,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_OVERLAP_COMPLETELY_OR_DO_NOT_OVERLAP:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -18961,13 +18961,13 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 						dur=act->duration;
 					}
 					else{
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("All the selected activities should have the same duration"));
 						return;
 					}
 				}
 				if(dur==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The constraint is useless, because the durations of the activities are 1"));
 					return;
 				}
@@ -18980,12 +18980,12 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_OCCUPY_MAX_SETS_OF_TIME_SLOTS_FROM_SELECTION:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
@@ -18996,7 +18996,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -19006,7 +19006,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -19023,7 +19023,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -19062,7 +19062,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -19099,15 +19099,15 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_MAX_TOTAL_NUMBER_OF_STUDENTS_IN_SELECTED_TIME_SLOTS:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified the max total number of students to be 0. This is "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified the max total number of students to be 0. This is "
 					 "not perfect from efficiency point of view, because you can use instead constraint activity(ies) preferred time slots, "
-					 "and help FET to find a timetable easier and faster, with an equivalent result. Please correct."));
+					 "and help Open-Timetable to find a timetable easier and faster, with an equivalent result. Please correct."));
 					return;
 				}
 
@@ -19123,13 +19123,13 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_ACTIVITIES_MAX_ACTIVITY_TAGS_FROM_SET_IN_SELECTED_TIME_SLOTS:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -19150,18 +19150,18 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 		case CONSTRAINT_MAX_DAYS_BETWEEN_EACH_PAIR_OF_CONSECUTIVE_ACTIVITIES:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
 
 				if(spinBox->value()<1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Max days must be at least 1."));
 					return;
 				}
@@ -19318,7 +19318,7 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 	
 	bool tmp2=gt.rules.addTimeConstraint(tc);
 	if(tmp2){
-		LongTextMessageBox::information(dialog, tr("FET information"), tr("Constraint added:")+"\n\n"+tc->getDetailedDescription(gt.rules));
+		LongTextMessageBox::information(dialog, tr("Open-Timetable information"), tr("Constraint added:")+"\n\n"+tc->getDetailedDescription(gt.rules));
 
 		gt.rules.addUndoPoint(tr("Added the constraint: %1").arg(QString("<br /><br />\n")+tc->getDetailedDescription(gt.rules, true, colorsCheckBox!=nullptr?colorsCheckBox->isChecked():false)+QString("<br />\n")));
 
@@ -19330,22 +19330,22 @@ void AddOrModifyTimeConstraint::addConstraintClicked()
 	else{
 		if(tc->type==CONSTRAINT_BASIC_COMPULSORY_TIME
 				|| tc->type==CONSTRAINT_BREAK_TIMES)
-			QMessageBox::warning(dialog, tr("FET information"), tr("Constraint NOT added - there must be another constraint of this type. Please edit that one"));
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Constraint NOT added - there must be another constraint of this type. Please edit that one"));
 		else if(tc->type==CONSTRAINT_TEACHER_NOT_AVAILABLE_TIMES)
-			QMessageBox::warning(dialog, tr("FET information"), tr("Constraint NOT added - there must be another constraint of this "
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Constraint NOT added - there must be another constraint of this "
 			 "type referring to the same teacher. Please edit that one"));
 		else if(tc->type==CONSTRAINT_STUDENTS_SET_NOT_AVAILABLE_TIMES)
-			QMessageBox::warning(dialog, tr("FET information"), tr("Constraint NOT added - there must be another constraint of this "
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Constraint NOT added - there must be another constraint of this "
 			 "type referring to the same students set. Please edit that one"));
 		else if(tc->type==CONSTRAINT_ACTIVITY_PREFERRED_STARTING_TIME)
-			QMessageBox::warning(dialog, tr("FET information"),	tr("Constraint NOT added - duplicate",
+			QMessageBox::warning(dialog, tr("Open-Timetable information"),	tr("Constraint NOT added - duplicate",
 																   "'Duplicate' means that the constraint is identical to an already existing constraint and cannot be added."));
 		else if(tc->type==CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES
 				|| tc->type==CONSTRAINT_MIN_HALF_DAYS_BETWEEN_ACTIVITIES)
-			QMessageBox::warning(dialog, tr("FET information"),	tr("Constraint NOT added - it must be a duplicate",
+			QMessageBox::warning(dialog, tr("Open-Timetable information"),	tr("Constraint NOT added - it must be a duplicate",
 																   "'Duplicate' means that the constraint is identical to an already existing constraint and cannot be added."));
 		else
-			QMessageBox::warning(dialog, tr("FET information"),	tr("Constraint NOT added - please report error"));
+			QMessageBox::warning(dialog, tr("Open-Timetable information"),	tr("Constraint NOT added - please report error"));
 		
 		delete tc;
 	}
@@ -19355,7 +19355,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 {
 	if(type==CONSTRAINT_ACTIVITY_PREFERRED_TIME_SLOTS){
 		if(showAddMultipleConstraintsPushButton){
-			QMessageBox::StandardButton res=QMessageBox::question(dialog, tr("FET confirmation"),
+			QMessageBox::StandardButton res=QMessageBox::question(dialog, tr("Open-Timetable confirmation"),
 			 tr("This operation will add multiple constraints, one for each filtered activity. Do you want to continue?"),
 			 QMessageBox::Cancel | QMessageBox::Yes);
 			if(res==QMessageBox::Cancel)
@@ -19365,7 +19365,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 			QString tmp=weightLineEdit->text();
 				weight_sscanf(tmp, "%lf", &weight);
 			if(weight<0.0 || weight>100.0){
-				QMessageBox::warning(dialog, tr("FET information"), tr("Invalid weight (percentage)"));
+				QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid weight (percentage)"));
 				return;
 			}
 			
@@ -19380,7 +19380,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -19396,7 +19396,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				ctrs+=QString("<br />\n");
 			}
 			
-			QMessageBox::information(dialog, tr("FET information"), tr("Added %1 time constraints.").arg(activitiesList.count()));
+			QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Added %1 time constraints.").arg(activitiesList.count()));
 
 			if(activitiesList.count()>0)
 				gt.rules.addUndoPoint(tr("Added %1 time constraints, one for each filtered activity:", "%1 is the number of time constraints. "
@@ -19407,7 +19407,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 		return;
 	}
 
-	QMessageBox::StandardButton res=QMessageBox::question(dialog, tr("FET confirmation"),
+	QMessageBox::StandardButton res=QMessageBox::question(dialog, tr("Open-Timetable confirmation"),
 	 tr("This operation will add multiple constraints, one for each teacher. Do you want to continue?"),
 	 QMessageBox::Cancel | QMessageBox::Yes);
 	if(res==QMessageBox::Cancel)
@@ -19417,12 +19417,12 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 	QString tmp=weightLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100.0){
-		QMessageBox::warning(dialog, tr("FET information"), tr("Invalid weight (percentage)"));
+		QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid weight (percentage)"));
 		return;
 	}
 
 	if(!timeConstraintCanHaveAnyWeight(type) && weight!=100.0){
-		QMessageBox::warning(dialog, tr("FET information"), tr("Invalid weight (percentage) - it has to be 100%"));
+		QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid weight (percentage) - it has to be 100%"));
 		return;
 	}
 
@@ -19431,7 +19431,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 			|| type==CONSTRAINT_TEACHERS_MAX_HOURS_DAILY_REAL_DAYS
 			|| type==CONSTRAINT_TEACHER_MAX_HOURS_DAILY_REAL_DAYS){
 		if(weight<100.0){
-			int t=QMessageBox::warning(dialog, tr("FET warning"),
+			int t=QMessageBox::warning(dialog, tr("Open-Timetable warning"),
 				tr("You selected a weight less than 100%. The generation algorithm is not perfectly optimized to work with such weights (even"
 				 " if in practice it might work well). It is recommended to work only with 100% weights for these constraints. Are you sure you want to continue?"),
 				 QMessageBox::Yes | QMessageBox::Cancel);
@@ -19445,7 +19445,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 		QString teacher_name=teachersComboBox->currentText();
 		int teacher_ID=gt.rules.searchTeacher(teacher_name);
 		if(teacher_ID<0){
-			QMessageBox::warning(dialog, tr("FET information"), tr("Invalid teacher"));
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid teacher"));
 			return;
 		}
 	}
@@ -19455,7 +19455,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 		QString activity_tag_name=activityTagsComboBox->currentText();
 		int activityTag_ID=gt.rules.searchActivityTag(activity_tag_name);
 		if(activityTag_ID<0){
-			QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity tag"));
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity tag"));
 			return;
 		}
 	}
@@ -19540,12 +19540,12 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 			{
 				if(!checkBox->isChecked()){
 					if(gt.rules.mode!=MORNINGS_AFTERNOONS){
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
 							"please use the constraint teachers min days per week"));
 						return;
 					}
 					else{
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
 							"please use the constraint teachers min days per week (but the min days per week constraint is for real days. You can also use the "
 							"constraint teachers min mornings/afternoons per week.)"));
 						return;
@@ -19589,17 +19589,17 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -19709,19 +19709,19 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -19743,7 +19743,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 		case CONSTRAINT_TEACHER_ACTIVITY_TAG_MIN_HOURS_DAILY:
 			{
 				/*if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Allow empty days is selected and min hours daily is 1, so "
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Allow empty days is selected and min hours daily is 1, so "
 																	   "this would be a useless constraint."));
 					return;
 				}*/
@@ -19868,7 +19868,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 		case CONSTRAINT_TEACHERS_MAX_ACTIVITY_TAGS_PER_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -19980,7 +19980,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 		case CONSTRAINT_TEACHER_MIN_HOURS_DAILY_REAL_DAYS:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
 						"please use the constraint teachers min days per week"));
 					return;
 				}
@@ -20020,7 +20020,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 		case CONSTRAINT_TEACHERS_MIN_HOURS_PER_MORNING:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for the teachers, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for the teachers, "
 						"please use the constraint teachers min mornings per week."));
 					return;
 				}
@@ -20062,17 +20062,17 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -20097,17 +20097,17 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -20266,7 +20266,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 		case CONSTRAINT_TEACHERS_MAX_ACTIVITY_TAGS_PER_REAL_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -20293,7 +20293,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 		case CONSTRAINT_TEACHERS_MIN_HOURS_PER_AFTERNOON:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for the teachers, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for the teachers, "
 						"please use the constraint teachers min afternoons per week."));
 					return;
 				}
@@ -20318,23 +20318,23 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("If you need the maximum hours daily in the interval to be 0, please use"
 						 " the constraints of type teacher not available times or activities preferred time slots."));
 					return;
@@ -20360,19 +20360,19 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -20413,19 +20413,19 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -20487,29 +20487,29 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
@@ -20575,7 +20575,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -20586,7 +20586,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -20606,7 +20606,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
@@ -20635,7 +20635,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -20645,7 +20645,7 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -20721,10 +20721,10 @@ void AddOrModifyTimeConstraint::addConstraintsClicked()
 	}
 
 	if(teachersComboBox==nullptr)
-		QMessageBox::information(dialog, tr("FET information"), tr("Added %1 time constraints. Please note that these constraints"
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Added %1 time constraints. Please note that these constraints"
 		 " will be visible as constraints for individual teachers.").arg(gt.rules.teachersList.count()));
 	else
-		QMessageBox::information(dialog, tr("FET information"), tr("Added %1 time constraints.").arg(gt.rules.teachersList.count()));
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Added %1 time constraints.").arg(gt.rules.teachersList.count()));
 
 	if(gt.rules.teachersList.count()>0)
 		gt.rules.addUndoPoint(tr("Added %1 time constraints, one for each teacher:", "%1 is the number of time constraints. After this text"
@@ -20743,12 +20743,12 @@ void AddOrModifyTimeConstraint::okClicked()
 	QString tmp=weightLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100.0){
-		QMessageBox::warning(dialog, tr("FET information"), tr("Invalid weight (percentage)"));
+		QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid weight (percentage)"));
 		return;
 	}
 
 	if(!timeConstraintCanHaveAnyWeight(type) && weight!=100.0){
-		QMessageBox::warning(dialog, tr("FET information"), tr("Invalid weight (percentage) - it has to be 100%"));
+		QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid weight (percentage) - it has to be 100%"));
 		return;
 	}
 
@@ -20769,7 +20769,7 @@ void AddOrModifyTimeConstraint::okClicked()
 			[[fallthrough]];
 		case CONSTRAINT_STUDENTS_SET_MAX_HOURS_DAILY_REAL_DAYS:
 			if(weight<100.0){
-				int t=QMessageBox::warning(dialog, tr("FET warning"),
+				int t=QMessageBox::warning(dialog, tr("Open-Timetable warning"),
 					tr("You selected a weight less than 100%. The generation algorithm is not perfectly optimized to work with such weights (even"
 					 " if in practice it might work well). It is recommended to work only with 100% weights for these constraints. Are you sure you want to continue?"),
 					 QMessageBox::Yes | QMessageBox::Cancel);
@@ -20788,7 +20788,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		QString teacher_name=teachersComboBox->currentText();
 		int teacher_ID=gt.rules.searchTeacher(teacher_name);
 		if(teacher_ID<0){
-			QMessageBox::warning(dialog, tr("FET information"), tr("Invalid teacher"));
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid teacher"));
 			return;
 		}
 	}
@@ -20798,7 +20798,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		QString students_name=studentsComboBox->currentText();
 		StudentsSet* s=gt.rules.searchStudentsSet(students_name);
 		if(s==nullptr){
-			QMessageBox::warning(dialog, tr("FET information"), tr("Invalid students set"));
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid students set"));
 			return;
 		}
 	}
@@ -20808,7 +20808,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		QString activity_tag_name=activityTagsComboBox->currentText();
 		int activityTag_ID=gt.rules.searchActivityTag(activity_tag_name);
 		if(activityTag_ID<0){
-			QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity tag"));
+			QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity tag"));
 			return;
 		}
 	}
@@ -20842,7 +20842,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				if(ctr->teacher!=teachersComboBox->currentText()){
 					QSet<ConstraintTeacherNotAvailableTimes*> cs=gt.rules.tnatHash.value(teachersComboBox->currentText(), QSet<ConstraintTeacherNotAvailableTimes*>());
 					if(!cs.isEmpty()){
-						QMessageBox::warning(dialog, tr("FET information"), tr("A constraint of this type exists for the same teacher - cannot proceed"));
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("A constraint of this type exists for the same teacher - cannot proceed"));
 						return;
 					}
 				}
@@ -20947,12 +20947,12 @@ void AddOrModifyTimeConstraint::okClicked()
 			{
 				if(!checkBox->isChecked()){
 					if(gt.rules.mode!=MORNINGS_AFTERNOONS){
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
 							"please use the constraint teachers min days per week"));
 						return;
 					}
 					else{
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
 							"please use the constraint teacher min days per week (but the min days per week constraint is for real days. You can also use the "
 							"constraints teacher min mornings/afternoons per week.)"));
 						return;
@@ -20971,12 +20971,12 @@ void AddOrModifyTimeConstraint::okClicked()
 			{
 				if(!checkBox->isChecked()){
 					if(gt.rules.mode!=MORNINGS_AFTERNOONS){
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
 							"please use the constraint teacher min days per week"));
 						return;
 					}
 					else{
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
 							"please use the constraint teacher min days per week (but the min days per week constraint is for real days. You can also use the "
 							"constraints teacher min mornings/afternoons per week.)"));
 						return;
@@ -21037,7 +21037,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				if(ctr->students!=studentsComboBox->currentText()){
 					QSet<ConstraintStudentsSetNotAvailableTimes*> cs=gt.rules.ssnatHash.value(studentsComboBox->currentText(), QSet<ConstraintStudentsSetNotAvailableTimes*>());
 					if(!cs.isEmpty()){
-						QMessageBox::warning(dialog, tr("FET information"), tr("A constraint of this type exists for the same students set - cannot proceed"));
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("A constraint of this type exists for the same students set - cannot proceed"));
 						return;
 					}
 				}
@@ -21134,7 +21134,7 @@ void AddOrModifyTimeConstraint::okClicked()
 
 				if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					if(checkBox->isChecked() && spinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty days, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty days, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}
 				}
@@ -21151,7 +21151,7 @@ void AddOrModifyTimeConstraint::okClicked()
 
 				if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					if(checkBox->isChecked() && spinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty days, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty days, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}
 				}
@@ -21170,7 +21170,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -21188,18 +21188,18 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
 				int id=activitiesList.at(i);
 
 				if(daysComboBox->currentIndex()<0 || daysComboBox->currentIndex()>gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid day"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid day"));
 					return;
 				}
 				if(hoursComboBox->currentIndex()<0 || hoursComboBox->currentIndex()>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid hour"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid hour"));
 					return;
 				}
 
@@ -21222,7 +21222,7 @@ void AddOrModifyTimeConstraint::okClicked()
 							}
 
 					if(duplicate){
-						QMessageBox::warning(dialog, tr("FET information"), tr("Cannot proceed, current constraint is equal to another one (it is duplicated)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Cannot proceed, current constraint is equal to another one (it is duplicated)"));
 						return;
 					}
 				}
@@ -21255,11 +21255,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_SAME_STARTING_TIME:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity"));
 					return;
 				}
 
@@ -21274,11 +21274,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_NOT_OVERLAPPING:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity"));
 					return;
 				}
 
@@ -21293,16 +21293,16 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_MIN_DAYS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity"));
 					return;
 				}
 
 				if(spinBox->value()<=0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Invalid number of min days between activities - it must be greater than 0."));
 					return;
 				}
@@ -21325,7 +21325,7 @@ void AddOrModifyTimeConstraint::okClicked()
 							}
 
 					if(duplicate){
-						QMessageBox::warning(dialog, tr("FET information"), tr("Cannot proceed, current constraint is equal to another one (it is duplicated)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Cannot proceed, current constraint is equal to another one (it is duplicated)"));
 						return;
 					}
 				}
@@ -21365,7 +21365,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -21378,7 +21378,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -21426,7 +21426,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					assert(gt.rules.searchActivityTag(activityTag)>=0);
 
 				if(duration==-1 && teacher=="" && students=="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified all the activities. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots, this not allowed slot will"
 					  " be counted as a gap in the teachers' and students' timetable.\n\n"
@@ -21444,7 +21444,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				}
 
 				if(duration==-1 && teacher!="" && students=="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified only the teacher. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots, this not allowed slot will"
 					  " be counted as a gap in the teacher's timetable.\n\n"
@@ -21461,7 +21461,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				}
 
 				if(duration==-1 && teacher=="" && students!="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified only the students set. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots (or a not allowed slot before allowed slots),"
 					  " this not allowed slot will"
@@ -21485,7 +21485,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -21513,7 +21513,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -21526,7 +21526,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -21574,7 +21574,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					assert(gt.rules.searchActivityTag(activityTag)>=0);
 
 				if(duration==-1 && teacher=="" && students=="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified all the activities. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots, this not allowed slot will"
 					  " be counted as a gap in the teachers' and students' timetable.\n\n"
@@ -21592,7 +21592,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				}
 
 				if(duration==-1 && teacher!="" && students=="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified only the teacher. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots, this not allowed slot will"
 					  " be counted as a gap in the teacher's timetable.\n\n"
@@ -21609,7 +21609,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				}
 
 				if(duration==-1 && teacher=="" && students!="" && subject=="" && activityTag==""){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("You specified only the students set. This might cause a minor issue: if you specify"
 					  " a not allowed slot between two allowed slots (or a not allowed slot before allowed slots),"
 					  " this not allowed slot will"
@@ -21633,7 +21633,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -21657,11 +21657,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_SAME_STARTING_HOUR:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"),	tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),	tr("Only one selected activity"));
 					return;
 				}
 
@@ -21676,11 +21676,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_SAME_STARTING_DAY:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"),	tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),	tr("Only one selected activity"));
 					return;
 				}
 
@@ -21697,7 +21697,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(first_activitiesComboBox!=nullptr);
 				int i=first_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid first activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid first activity"));
 					return;
 				}
 				assert(i<first_activitiesList.count());
@@ -21706,14 +21706,14 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(second_activitiesComboBox!=nullptr);
 				i=second_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid second activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid second activity"));
 					return;
 				}
 				assert(i<second_activitiesList.count());
 				int sid=second_activitiesList.at(i);
 
 				if(sid==fid){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Same activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Same activities"));
 					return;
 				}
 
@@ -21729,7 +21729,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(first_activitiesComboBox!=nullptr);
 				int i=first_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid first activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid first activity"));
 					return;
 				}
 				assert(i<first_activitiesList.count());
@@ -21738,14 +21738,14 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(second_activitiesComboBox!=nullptr);
 				i=second_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid second activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid second activity"));
 					return;
 				}
 				assert(i<second_activitiesList.count());
 				int sid=second_activitiesList.at(i);
 
 				if(sid==fid){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Same activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Same activities"));
 					return;
 				}
 
@@ -21759,11 +21759,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_MIN_GAPS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"),	tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),	tr("Only one selected activity"));
 					return;
 				}
 
@@ -21816,7 +21816,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -21877,7 +21877,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(n==hours_L.count());
 
 				if(n<=0){
-					int t=QMessageBox::question(dialog, tr("FET question"),
+					int t=QMessageBox::question(dialog, tr("Open-Timetable question"),
 					 tr("Warning: 0 slots selected. Are you sure?"),
 					 QMessageBox::Yes, QMessageBox::Cancel);
 
@@ -21905,17 +21905,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -21936,17 +21936,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -21966,17 +21966,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -21997,17 +21997,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -22060,7 +22060,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(first_activitiesComboBox!=nullptr);
 				int i=first_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid first activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid first activity"));
 					return;
 				}
 				assert(i<first_activitiesList.count());
@@ -22069,14 +22069,14 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(second_activitiesComboBox!=nullptr);
 				i=second_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid second activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid second activity"));
 					return;
 				}
 				assert(i<second_activitiesList.count());
 				int sid=second_activitiesList.at(i);
 
 				if(sid==fid){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Same activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Same activities"));
 					return;
 				}
 
@@ -22143,7 +22143,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(first_activitiesComboBox!=nullptr);
 				int i=first_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid first activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid first activity"));
 					return;
 				}
 				assert(i<first_activitiesList.count());
@@ -22152,7 +22152,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(second_activitiesComboBox!=nullptr);
 				i=second_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid second activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid second activity"));
 					return;
 				}
 				assert(i<second_activitiesList.count());
@@ -22161,14 +22161,14 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(third_activitiesComboBox!=nullptr);
 				i=third_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid third activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid third activity"));
 					return;
 				}
 				assert(i<third_activitiesList.count());
 				int tid=third_activitiesList.at(i);
 
 				if(sid==fid || sid==tid || fid==tid){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Same activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Same activities"));
 					return;
 				}
 
@@ -22183,11 +22183,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_MAX_DAYS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity"));
 					return;
 				}
 
@@ -22285,14 +22285,14 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_OCCUPY_MAX_TIME_SLOTS_FROM_SELECTION:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified max occupied time slots to be 0. This is "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified max occupied time slots to be 0. This is "
 					 "not perfect from efficiency point of view, because you can use instead constraint activity(ies) preferred time slots, "
-					 "and help FET to find a timetable easier and faster, with an equivalent result. Please correct."));
+					 "and help Open-Timetable to find a timetable easier and faster, with an equivalent result. Please correct."));
 					return;
 				}
 
@@ -22315,14 +22315,14 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_MAX_SIMULTANEOUS_IN_SELECTED_TIME_SLOTS:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified max simultaneous activities to be 0. This is "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified max simultaneous activities to be 0. This is "
 					 "not perfect from efficiency point of view, because you can use instead constraint activity(ies) preferred time slots, "
-					 "and help FET to find a timetable easier and faster, with an equivalent result. Please correct."));
+					 "and help Open-Timetable to find a timetable easier and faster, with an equivalent result. Please correct."));
 					return;
 				}
 
@@ -22448,7 +22448,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(first_activitiesComboBox!=nullptr);
 				int i=first_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid first activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid first activity"));
 					return;
 				}
 				assert(i<first_activitiesList.count());
@@ -22457,14 +22457,14 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(second_activitiesComboBox!=nullptr);
 				i=second_activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid second activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid second activity"));
 					return;
 				}
 				assert(i<second_activitiesList.count());
 				int sid=second_activitiesList.at(i);
 
 				if(sid==fid){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Same activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Same activities"));
 					return;
 				}
 
@@ -22484,19 +22484,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -22515,19 +22515,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -22548,19 +22548,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -22579,19 +22579,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -22606,11 +22606,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITY_TAGS_NOT_OVERLAPPING:
 			{
 				if(selectedActivityTagsListWidget->count()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("The list of non-overlapping activity tags is empty"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("The list of non-overlapping activity tags is empty"));
 					return;
 				}
 				if(selectedActivityTagsListWidget->count()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity tag"));
 					return;
 				}
 
@@ -22627,12 +22627,12 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_OCCUPY_MIN_TIME_SLOTS_FROM_SELECTION:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified min occupied time slots to be 0. This results in "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified min occupied time slots to be 0. This results in "
 																		 "a useless constraint. Please correct."));
 					return;
 				}
@@ -22656,18 +22656,18 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_MIN_SIMULTANEOUS_IN_SELECTED_TIME_SLOTS:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified min simultaneous activities to be 0. This results in "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified min simultaneous activities to be 0. This results in "
 					 "a useless constraint. Please correct."));
 					return;
 				}
 
 				if(spinBox->value()==1 && allowEmptySlotsCheckBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified min simultaneous activities to be 1 and you allow empty slots. "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified min simultaneous activities to be 1 and you allow empty slots. "
 					 "This results in a useless constraint. Please correct."));
 					return;
 				}
@@ -22692,7 +22692,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHERS_ACTIVITY_TAG_MIN_HOURS_DAILY:
 			{
 				/*if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Allow empty days is selected and min hours daily is 1, "
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Allow empty days is selected and min hours daily is 1, "
 																	   "so this would be a useless constraint."));
 					return;
 				}*/
@@ -22710,7 +22710,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHER_ACTIVITY_TAG_MIN_HOURS_DAILY:
 			{
 				/*if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Allow empty days is selected and min hours daily is 1, "
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Allow empty days is selected and min hours daily is 1, "
 																	   "so this would be a useless constraint."));
 					return;
 				}*/
@@ -22729,7 +22729,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_STUDENTS_ACTIVITY_TAG_MIN_HOURS_DAILY:
 			{
 				/*if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Allow empty days is selected and min hours daily is 1, "
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Allow empty days is selected and min hours daily is 1, "
 																	   "so this would be a useless constraint."));
 					return;
 				}*/
@@ -22747,7 +22747,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_STUDENTS_SET_ACTIVITY_TAG_MIN_HOURS_DAILY:
 			{
 				/*if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Allow empty days is selected and min hours daily is 1, "
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Allow empty days is selected and min hours daily is 1, "
 																	   "so this would be a useless constraint."));
 					return;
 				}*/
@@ -22770,7 +22770,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -22973,7 +22973,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHER_MAX_ACTIVITY_TAGS_PER_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -22994,7 +22994,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHERS_MAX_ACTIVITY_TAGS_PER_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -23130,7 +23130,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHERS_MIN_HOURS_DAILY_REAL_DAYS:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for the teachers, "
 						"please use the constraint teachers min days per week"));
 					return;
 				}
@@ -23146,7 +23146,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHER_MIN_HOURS_DAILY_REAL_DAYS:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for this teacher, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for this teacher, "
 						"please use the constraint teacher min days per week"));
 					return;
 				}
@@ -23184,7 +23184,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHERS_MIN_HOURS_PER_MORNING:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for the teachers, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for the teachers, "
 						"please use the constraint teachers min mornings per week."));
 					return;
 				}
@@ -23200,7 +23200,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHER_MIN_HOURS_PER_MORNING:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for a teacher, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for a teacher, "
 						"please use the constraint teacher min mornings per week."));
 					return;
 				}
@@ -23260,17 +23260,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -23291,17 +23291,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -23321,17 +23321,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -23352,17 +23352,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -23382,7 +23382,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				//if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					//2021-03-26 - I think I commented out this check because the user might combine this constraint with a min hours daily constraint.
 					/*if(allowEmptyMorningsCheckBox->isChecked() && minHoursSpinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty mornings, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty mornings, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}*/
 				//}
@@ -23400,7 +23400,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				//if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					//2021-03-26 - I think I commented out this check because the user might combine this constraint with a min hours daily constraint.
 					/*if(allowEmptyMorningsCheckBox->isChecked() && minHoursSpinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty mornings, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty mornings, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}*/
 				//}
@@ -23514,17 +23514,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -23545,17 +23545,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -23575,17 +23575,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -23606,17 +23606,17 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
@@ -23786,14 +23786,14 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_MAX_TOTAL_ACTIVITIES_FROM_SET_IN_SELECTED_TIME_SLOTS:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified max total activities to be 0. This is "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified max total activities to be 0. This is "
 					 "not perfect from efficiency point of view, because you can use instead constraint activity(ies) preferred time slots, "
-					 "and help FET to find a timetable easier and faster, with an equivalent result. Please correct."));
+					 "and help Open-Timetable to find a timetable easier and faster, with an equivalent result. Please correct."));
 					return;
 				}
 
@@ -23816,11 +23816,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_MAX_GAPS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"),	tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),	tr("Only one selected activity"));
 					return;
 				}
 
@@ -23838,13 +23838,13 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_MAX_IN_A_TERM:
 			{
 				if(this->selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Empty list of activities"));
 					return;
 				}
 				//we allow even only one activity
 				/*if(this->selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Only one selected activity"));
 					return;
 				}*/
@@ -23862,13 +23862,13 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_OCCUPY_MAX_TERMS:
 			{
 				if(this->selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Empty list of activities"));
 					return;
 				}
 				//we allow even only one activity
 				/*if(this->selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Only one selected activity"));
 					return;
 				}*/
@@ -23946,12 +23946,12 @@ void AddOrModifyTimeConstraint::okClicked()
 				ConstraintTwoSetsOfActivitiesOrdered* ctr=(ConstraintTwoSetsOfActivitiesOrdered*)oldtc;
 
 				if(selectedActivitiesList_TwoSetsOfActivities_1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities in the first set"));
 					return;
 				}
 				if(selectedActivitiesList_TwoSetsOfActivities_2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities in the second set"));
 					return;
 				}
@@ -24055,18 +24055,18 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_MIN_HALF_DAYS_BETWEEN_ACTIVITIES:
 			{
 				if(this->selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities"));
 					return;
 				}
 				if(this->selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Only one selected activity"));
 					return;
 				}
 
 				if(spinBox->value()<=0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Invalid number of min half days between activities - it must be greater than 0."));
 					return;
 				}
@@ -24089,7 +24089,7 @@ void AddOrModifyTimeConstraint::okClicked()
 							}
 
 					if(duplicate){
-						QMessageBox::warning(dialog, tr("FET information"), tr("Cannot proceed, current constraint is equal to another one (it is duplicated)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Cannot proceed, current constraint is equal to another one (it is duplicated)"));
 						return;
 					}
 				}
@@ -24126,19 +24126,19 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_MIN_IN_A_TERM:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Empty list of activities"));
 					return;
 				}
 				//we allow even only one activity
 				/*if(selectedActivitiesList.count()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 					 tr("Only one selected activity"));
 					return;
 				}*/
 
 				if(checkBox->isChecked() && spinBox->value()==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Min activities in a term is 1, and you allow empty terms, so this constraint would be useless."));
 					return;
 				}
@@ -24157,11 +24157,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_MAX_TERMS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"),	tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),	tr("Only one selected activity"));
 					return;
 				}
 
@@ -24179,7 +24179,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_STUDENTS_SET_MAX_ACTIVITY_TAGS_PER_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -24200,7 +24200,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_STUDENTS_MAX_ACTIVITY_TAGS_PER_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -24220,7 +24220,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHER_MAX_ACTIVITY_TAGS_PER_REAL_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -24241,7 +24241,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHERS_MAX_ACTIVITY_TAGS_PER_REAL_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -24261,7 +24261,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_STUDENTS_SET_MAX_ACTIVITY_TAGS_PER_REAL_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -24282,7 +24282,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_STUDENTS_MAX_ACTIVITY_TAGS_PER_REAL_DAY_FROM_SET:
 			{
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -24302,11 +24302,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_MAX_HALF_DAYS_BETWEEN_ACTIVITIES:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity"));
 					return;
 				}
 
@@ -24328,7 +24328,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -24379,7 +24379,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -24426,7 +24426,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHERS_MIN_HOURS_PER_AFTERNOON:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for the teachers, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for the teachers, "
 						"please use the constraint teachers min afternoons per week."));
 					return;
 				}
@@ -24442,7 +24442,7 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_TEACHER_MIN_HOURS_PER_AFTERNOON:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for a teacher, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for a teacher, "
 						"please use the constraint teacher min afternoons per week."));
 					return;
 				}
@@ -24462,7 +24462,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				//if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					//2021-03-26 - I think I commented out this check because the user might combine this constraint with a min hours daily constraint.
 					/*if(allowEmptyAfternoonsCheckBox->isChecked() && minHoursSpinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty afternoons, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty afternoons, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}*/
 				//}
@@ -24480,7 +24480,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				//if(gt.rules.mode!=MORNINGS_AFTERNOONS){
 					//2021-03-26 - I think I commented out this check because the user might combine this constraint with a min hours daily constraint.
 					/*if(allowEmptyAfternoonsCheckBox->isChecked() && minHoursSpinBox->value()<2){
-						QMessageBox::warning(dialog, tr("FET warning"), tr("If you allow empty afternoons, the min hours must be at least 2 (to make it a non-trivial constraint)"));
+						QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("If you allow empty afternoons, the min hours must be at least 2 (to make it a non-trivial constraint)"));
 						return;
 					}*/
 				//}
@@ -24498,11 +24498,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_MAX_HOURLY_SPAN:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"),	tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),	tr("Only one selected activity"));
 					return;
 				}
 
@@ -24522,23 +24522,23 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("If you need the maximum hours daily in the interval to be 0, please use"
 						 " the constraints of type teacher not available times or activities preferred time slots."));
 					return;
@@ -24559,23 +24559,23 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("If you need the maximum hours daily in the interval to be 0, please use"
 						 " the constraints of type teacher not available times or activities preferred time slots."));
 					return;
@@ -24598,23 +24598,23 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("If you need the maximum hours daily in the interval to be 0, please use"
 						 " the constraints of type students set not available times or activities preferred time slots."));
 					return;
@@ -24635,23 +24635,23 @@ void AddOrModifyTimeConstraint::okClicked()
 				int startHour=intervalStartHourComboBox->currentIndex();
 				int endHour=intervalEndHourComboBox->currentIndex();
 				if(startHour<0 || startHour>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour invalid"));
 					return;
 				}
 				if(endHour<0 || endHour>gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("End hour invalid"));
 					return;
 				}
 				if(endHour<=startHour){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Start hour cannot be greater or equal than end hour"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("If you need the maximum hours daily in the interval to be 0, please use"
 						 " the constraints of type students set not available times or activities preferred time slots."));
 					return;
@@ -24678,19 +24678,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -24709,19 +24709,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -24742,19 +24742,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -24773,19 +24773,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -24854,19 +24854,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -24885,19 +24885,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -24918,19 +24918,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -24949,19 +24949,19 @@ void AddOrModifyTimeConstraint::okClicked()
 				QString firstActivityTagName=first_activityTagsComboBox->currentText();
 				int facttagindex=gt.rules.searchActivityTag(firstActivityTagName);
 				if(facttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid first activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid first activity tag"));
 					return;
 				}
 
 				QString secondActivityTagName=second_activityTagsComboBox->currentText();
 				int sacttagindex=gt.rules.searchActivityTag(secondActivityTagName);
 				if(sacttagindex<0){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("Invalid second activity tag"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("Invalid second activity tag"));
 					return;
 				}
 
 				if(firstActivityTagName==secondActivityTagName){
-					QMessageBox::warning(dialog, tr("FET warning"), tr("The two activity tags cannot be the same"));
+					QMessageBox::warning(dialog, tr("Open-Timetable warning"), tr("The two activity tags cannot be the same"));
 					return;
 				}
 
@@ -25050,29 +25050,29 @@ void AddOrModifyTimeConstraint::okClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
@@ -25099,29 +25099,29 @@ void AddOrModifyTimeConstraint::okClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
@@ -25146,29 +25146,29 @@ void AddOrModifyTimeConstraint::okClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
@@ -25195,29 +25195,29 @@ void AddOrModifyTimeConstraint::okClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
@@ -25236,12 +25236,12 @@ void AddOrModifyTimeConstraint::okClicked()
 				ConstraintTwoSetsOfActivitiesSameSections* ctr=(ConstraintTwoSetsOfActivitiesSameSections*)oldtc;
 
 				if(selectedActivitiesList_TwoSetsOfActivities_1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities in the first set"));
 					return;
 				}
 				if(selectedActivitiesList_TwoSetsOfActivities_2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Empty list of selected activities in the second set"));
 					return;
 				}
@@ -25357,7 +25357,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -25368,7 +25368,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -25388,7 +25388,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
@@ -25415,7 +25415,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -25426,7 +25426,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -25446,7 +25446,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
@@ -25471,7 +25471,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -25482,7 +25482,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -25502,7 +25502,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
@@ -25527,7 +25527,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -25538,7 +25538,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -25558,7 +25558,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
@@ -25578,11 +25578,11 @@ void AddOrModifyTimeConstraint::okClicked()
 				ConstraintActivitiesPairOfMutuallyExclusiveSetsOfTimeSlots* ctr=(ConstraintActivitiesPairOfMutuallyExclusiveSetsOfTimeSlots*)oldtc;
 
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				/*if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity"));
 					return;
 				}*/
 
@@ -25592,7 +25592,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days1.count()==hours1.count());
 				if(days1.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the first set of time slots"));
 					return;
 				}
@@ -25603,7 +25603,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days2.count()==hours2.count());
 				if(days2.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least one time slot in the second set of time slots"));
 					return;
 				}
@@ -25623,7 +25623,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					for(const QPair<int, int>& pr : std::as_const(intersectionList))
 						cts.append(gt.rules.daysOfTheWeek[pr.first]+QString(" ")+gt.rules.hoursOfTheDay[pr.second]);
 					
-					LongTextMessageBox::information(dialog, tr("FET information"),
+					LongTextMessageBox::information(dialog, tr("Open-Timetable information"),
 						 tr("The two sets of selected time slots cannot have common time slots. The common time slots are: %1.")
 						 .arg(cts.join(translatedCommaSpace())));
 					return;
@@ -25646,11 +25646,11 @@ void AddOrModifyTimeConstraint::okClicked()
 				ConstraintActivitiesPairOfMutuallyExclusiveTimeSlots* ctr=(ConstraintActivitiesPairOfMutuallyExclusiveTimeSlots*)oldtc;
 
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				/*if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity"));
 					return;
 				}*/
 
@@ -25661,29 +25661,29 @@ void AddOrModifyTimeConstraint::okClicked()
 				int hour2=secondHourComboBox->currentIndex();
 
 				if(day1<0 || day1>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's day invalid"));
 					return;
 				}
 				if(hour1<0 || hour1>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("First time slot's hour invalid"));
 					return;
 				}
 
 				if(day2<0 || day2>=gt.rules.nDaysPerWeek){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's day invalid"));
 					return;
 				}
 				if(hour2<0 || hour2>=gt.rules.nHoursPerDay){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Second time slot's hour invalid"));
 					return;
 				}
 
 				if(day1==day2 && hour1==hour2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The two time slots are the same", "It is a user error, the two time slots should not be equal"));
 					return;
 				}
@@ -25710,7 +25710,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -25720,7 +25720,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -25747,7 +25747,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -25757,7 +25757,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -25782,7 +25782,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -25792,7 +25792,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -25819,7 +25819,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -25829,7 +25829,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -25847,11 +25847,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_OVERLAP_COMPLETELY_OR_DO_NOT_OVERLAP:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity"));
 					return;
 				}
 
@@ -25863,13 +25863,13 @@ void AddOrModifyTimeConstraint::okClicked()
 						dur=act->duration;
 					}
 					else{
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("All the selected activities should have the same duration"));
 						return;
 					}
 				}
 				if(dur==1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("The constraint is useless, because the durations of the activities are 1"));
 					return;
 				}
@@ -25884,11 +25884,11 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_OCCUPY_MAX_SETS_OF_TIME_SLOTS_FROM_SELECTION:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity"));
 					return;
 				}
 
@@ -25898,7 +25898,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				
 				assert(days.count()==hours.count());
 				if(days.count()<=1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two sets of time slots."));
 					return;
 				}
@@ -25908,7 +25908,7 @@ void AddOrModifyTimeConstraint::okClicked()
 					const QList<int>& chl=hours.at(i);
 					assert(cdl.count()==chl.count());
 					if(cdl.count()==0){
-						QMessageBox::warning(dialog, tr("FET information"),
+						QMessageBox::warning(dialog, tr("Open-Timetable information"),
 							tr("Set number %1 of selected time slots is empty - please correct this"
 							 " (the selected numbers must start from 1, and they must be continuous, without any gap between them).").arg(i+1));
 						return;
@@ -25935,7 +25935,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -25986,7 +25986,7 @@ void AddOrModifyTimeConstraint::okClicked()
 				assert(activitiesComboBox!=nullptr);
 				int i=activitiesComboBox->currentIndex();
 				if(i<0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Invalid activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid activity"));
 					return;
 				}
 				assert(i<activitiesList.count());
@@ -26033,14 +26033,14 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_MAX_TOTAL_NUMBER_OF_STUDENTS_IN_SELECTED_TIME_SLOTS:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of activities"));
 					return;
 				}
 
 				if(spinBox->value()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("You specified the max total number of students to be 0. This is "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("You specified the max total number of students to be 0. This is "
 					 "not perfect from efficiency point of view, because you can use instead constraint activity(ies) preferred time slots, "
-					 "and help FET to find a timetable easier and faster, with an equivalent result. Please correct."));
+					 "and help Open-Timetable to find a timetable easier and faster, with an equivalent result. Please correct."));
 					return;
 				}
 
@@ -26063,12 +26063,12 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_ACTIVITIES_MAX_ACTIVITY_TAGS_FROM_SET_IN_SELECTED_TIME_SLOTS:
 			{
 				if(selectedActivitiesList.count()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of activities"));
 					return;
 				}
 
 				if(selectedActivityTagsListWidget->count()<2){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Please select at least two activity tags"));
 					return;
 				}
@@ -26097,16 +26097,16 @@ void AddOrModifyTimeConstraint::okClicked()
 		case CONSTRAINT_MAX_DAYS_BETWEEN_EACH_PAIR_OF_CONSECUTIVE_ACTIVITIES:
 			{
 				if(selectedActivitiesList.size()==0){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Empty list of selected activities"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Empty list of selected activities"));
 					return;
 				}
 				if(selectedActivitiesList.size()==1){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Only one selected activity"));
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Only one selected activity"));
 					return;
 				}
 
 				if(spinBox->value()<1){
-					QMessageBox::warning(dialog, tr("FET information"),
+					QMessageBox::warning(dialog, tr("Open-Timetable information"),
 						tr("Max days must be at least 1."));
 					return;
 				}
@@ -26516,7 +26516,7 @@ void AddOrModifyTimeConstraint::helpClicked()
 				 " only the teacher specified, but this might generate problems, as possible gaps will be"
 				 " counted and you may obtain an impossible timetable.");
 
-				QMessageBox::information(dialog, tr("FET help"), s);
+				QMessageBox::information(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -26534,7 +26534,7 @@ void AddOrModifyTimeConstraint::helpClicked()
 				 " only the students set specified, but this might generate problems, as possible gaps will be"
 				 " counted and you may obtain an impossible timetable.");
 
-				QMessageBox::information(dialog, tr("FET help"), s);
+				QMessageBox::information(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -26543,12 +26543,12 @@ void AddOrModifyTimeConstraint::helpClicked()
 			{
 				QString s;
 
-				s=tr("Add multiple constraints: this is a check box. Select this if you want to input only the representatives of subactivities and FET to add multiple constraints,"
+				s=tr("Add multiple constraints: this is a check box. Select this if you want to input only the representatives of subactivities and Open-Timetable to add multiple constraints,"
 				" for all subactivities from the same larger split activity, in turn, respectively."
 				" There will be added more constraints activities same starting time, one for each corresponding tuple. The number of"
 				" subactivities must match for the representatives and be careful to the order, to be what you need");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -26570,10 +26570,10 @@ void AddOrModifyTimeConstraint::checkBoxToggled()
 				if(!k){
 					checkBox->setChecked(true);
 					if(gt.rules.mode!=MORNINGS_AFTERNOONS)
-						QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty days for the teachers,"
+						QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty days for the teachers,"
 							" please use constraint teachers min days per week"));
 					else
-						QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
+						QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
 							" please use constraint teacher min days per week (but the min days per week constraint is for real days. You can also use the "
 							"constraints teacher min mornings/afternoons per week.)"));
 				}
@@ -26588,10 +26588,10 @@ void AddOrModifyTimeConstraint::checkBoxToggled()
 				if(!k){
 					checkBox->setChecked(true);
 					if(gt.rules.mode!=MORNINGS_AFTERNOONS)
-						QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
+						QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
 							" please use constraint teacher min days per week"));
 					else
-						QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
+						QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
 							" please use constraint teacher min days per week (but the min days per week constraint is for real days. You can also use the "
 							"constraints teacher min mornings/afternoons per week.)"));
 				}
@@ -26720,7 +26720,7 @@ void AddOrModifyTimeConstraint::checkBoxToggled()
 
 				if(!k){
 					checkBox->setChecked(true);
-					QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty days for the teachers,"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty days for the teachers,"
 						" please use constraint teachers min days per week"));
 				}
 
@@ -26733,7 +26733,7 @@ void AddOrModifyTimeConstraint::checkBoxToggled()
 
 				if(!k){
 					checkBox->setChecked(true);
-					QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
 						" please use constraint teacher min days per week"));
 				}
 
@@ -26746,7 +26746,7 @@ void AddOrModifyTimeConstraint::checkBoxToggled()
 
 				if(!k){
 					checkBox->setChecked(true);
-					QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty mornings for the teachers,"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty mornings for the teachers,"
 						" please use constraint teachers min mornings per week."));
 				}
 
@@ -26759,7 +26759,7 @@ void AddOrModifyTimeConstraint::checkBoxToggled()
 
 				if(!k){
 					checkBox->setChecked(true);
-					QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty mornings for this teacher,"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty mornings for this teacher,"
 						" please use constraint teacher min mornings per week."));
 				}
 
@@ -26842,7 +26842,7 @@ void AddOrModifyTimeConstraint::checkBoxToggled()
 
 				if(!k){
 					checkBox->setChecked(true);
-					QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty afternoons for the teachers,"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty afternoons for the teachers,"
 						" please use constraint teachers min afternoons per week."));
 				}
 
@@ -26855,7 +26855,7 @@ void AddOrModifyTimeConstraint::checkBoxToggled()
 
 				if(!k){
 					checkBox->setChecked(true);
-					QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty afternoons for this teacher,"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty afternoons for this teacher,"
 						" please use constraint teacher min afternoons per week."));
 				}
 

@@ -178,7 +178,7 @@ void ActivityTagsForm::addActivityTag()
 	}
 	else{
 		if(ok){ //the user entered nothing
-			QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		}
 		delete at;// user entered nothing or pressed Cancel
 	}
@@ -188,22 +188,22 @@ void ActivityTagsForm::removeActivityTag()
 {
 	int i=activityTagsListWidget->currentRow();
 	if(activityTagsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 
 	QString text=activityTagsListWidget->currentItem()->text();
 	int activity_tag_ID=gt.rules.searchActivityTag(text);
 	if(activity_tag_ID<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 
-	/*if(QMessageBox::warning( this, tr("FET"),
+	/*if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete this activity tag?"),
 	 tr("Yes"), tr("No"), QString(), 0, 1 ) == 1)
 		return;*/
-	if(QMessageBox::warning( this, tr("FET"),
+	if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete this activity tag?"),
 	 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::No)
 		return;
@@ -230,7 +230,7 @@ void ActivityTagsForm::renameActivityTag()
 {
 	int i=activityTagsListWidget->currentRow();
 	if(activityTagsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 	
@@ -238,7 +238,7 @@ void ActivityTagsForm::renameActivityTag()
 
 	int activity_tag_ID=gt.rules.searchActivityTag(initialActivityTagName);
 	if(activity_tag_ID<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 
@@ -365,13 +365,13 @@ void ActivityTagsForm::activityTagChanged(int index)
 void ActivityTagsForm::activateActivityTag()
 {
 	if(activityTagsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 
 	QString text=activityTagsListWidget->currentItem()->text();
 	int count=gt.rules.activateActivityTag(text);
-	QMessageBox::information(this, tr("FET information"), tr("Activated a number of %1 activities").arg(count));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Activated a number of %1 activities").arg(count));
 	
 	if(count>0)
 		gt.rules.addUndoPoint(tr("Activated the activity tag %1 (%2 activities).", "%2 is the number of activated activities").arg(text).arg(count));
@@ -380,13 +380,13 @@ void ActivityTagsForm::activateActivityTag()
 void ActivityTagsForm::deactivateActivityTag()
 {
 	if(activityTagsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 
 	QString text=activityTagsListWidget->currentItem()->text();
 	int count=gt.rules.deactivateActivityTag(text);
-	QMessageBox::information(this, tr("FET information"), tr("Deactivated a number of %1 activities").arg(count));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Deactivated a number of %1 activities").arg(count));
 	
 	if(count>0)
 		gt.rules.addUndoPoint(tr("Deactivated the activity tag %1 (%2 activities).", "%2 is the number of deactivated activities").arg(text).arg(count));
@@ -395,7 +395,7 @@ void ActivityTagsForm::deactivateActivityTag()
 void ActivityTagsForm::printableActivityTag()
 {
 	if(activityTagsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 
@@ -412,7 +412,7 @@ void ActivityTagsForm::printableActivityTag()
 void ActivityTagsForm::notPrintableActivityTag()
 {
 	if(activityTagsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 
@@ -428,7 +428,7 @@ void ActivityTagsForm::notPrintableActivityTag()
 
 void ActivityTagsForm::help()
 {
-	QMessageBox::information(this, tr("FET help on activity tags"),
+	QMessageBox::information(this, tr("Open-Timetable help on activity tags"),
 	 tr("Activity tag is a field which can be used or not, depending on your wish (optional field)."
 	 " It is designed to help you with some constraints. Each activity has a list of activity tags"
 	 " (which may be empty)."));
@@ -438,7 +438,7 @@ void ActivityTagsForm::comments()
 {
 	int ind=activityTagsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 	
@@ -500,7 +500,7 @@ void ActivityTagsForm::longName()
 {
 	int ind=activityTagsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 	
@@ -562,7 +562,7 @@ void ActivityTagsForm::code()
 {
 	int ind=activityTagsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity tag"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity tag"));
 		return;
 	}
 	

@@ -71,9 +71,9 @@ void RandomSeedForm::help()
 {
 	QString s;
 	
-	s+=tr("You can set the initial state (seed) of the random number generator of FET using this option.")+"\n\n";
+	s+=tr("You can set the initial state (seed) of the random number generator of Open-Timetable using this option.")+"\n\n";
 
-	s+=tr("FET uses the random number generator named %1, authored by %2 (used with permission).", "%2 is a person")
+	s+=tr("Open-Timetable uses the random number generator named %1, authored by %2 (used with permission).", "%2 is a person")
 	 .arg("MRG32k3a").arg("Pierre L'Ecuyer")+" "
 	 +tr("(The original code was a bit modified to use 64-bit integer operations instead of the not so reliable 'double' real number format.)"
 	 , "It is indicated to keep the word 'double' as in English, but you are allowed to translate it if you consider this to be more appropriate.")
@@ -90,7 +90,7 @@ void RandomSeedForm::help()
 	 .arg("https://www.iro.umontreal.ca/~lecuyer/myftp/papers/combmrg2.c");
 	s+="\n\n";
 	s+=tr("Used with permission from the author, %1 (%2).", "%1 is the author of the used random number generator, %2 is the date of email "
-	 "correspondence when we got the permission to use it in FET.").arg("Pierre L'Ecuyer").arg(tr("9 March 2020"));
+	 "correspondence when we got the permission to use it in Open-Timetable.").arg("Pierre L'Ecuyer").arg(tr("9 March 2020"));
 	s+="\n\n";
 	
 	s+=tr("The random seed is the state of the random number generator.")+" "+tr("It has two components, each with 3 components in turn.")+" "+
@@ -102,27 +102,27 @@ void RandomSeedForm::help()
 	s+=tr("The random seed before the generation of a timetable (the %1 integer components) and the random seed after the generation are both saved on the "
 	 "disk in the corresponding timetables directory, so that you can replicate the same generation after that and verify that the random seed after the "
 	 "generation corresponds.", "%1 is the number of integer components of the random seed.").arg(6)+"\n\n";
-	s+=tr("Mode of operation: if the FET version is the same (or if the generation code did not change), if the input file is identical, and if the starting "
+	s+=tr("Mode of operation: if the Open-Timetable version is the same (or if the generation code did not change), if the input file is identical, and if the starting "
 	 "random seed is exactly the same, the generation and the results should be identical on any generation process on any computer.")+"\n\n";
 	s+=tr("If you generate multiple timetables, the generation will follow the same path, under these conditions. So, if you generate 10 timetables twice starting "
 	 "with the same random seed, the results will be the same, pairwise.")+" "
 	 +tr("Note: of course, you need exactly the same conditions to replicate the same generation (so, you need exactly the same data - activities, "
 	 "constraints, etc., in the exact same order - well, sometimes the order might be different and you can still replicate the same generation, because the "
-	 "internal representation in FET will be the same, but this will not be generally true - in other words an identical file).")+"\n\n";
-	s+=tr("Note: for different versions of FET, the behavior of generation may be totally different, even for the same data and the same random seed, "
+	 "internal representation in Open-Timetable will be the same, but this will not be generally true - in other words an identical file).")+"\n\n";
+	s+=tr("Note: for different versions of Open-Timetable, the behavior of generation may be totally different, even for the same data and the same random seed, "
 	 "due to possible changes in the generation algorithm.")+"\n\n";
-	s+=tr("The initialization of the random seed when you start FET is done using the elapsed time since the beginning of 1 January 1970, expressed in seconds and "
+	s+=tr("The initialization of the random seed when you start Open-Timetable is done using the elapsed time since the beginning of 1 January 1970, expressed in seconds and "
 	 "nanoseconds. %1 and %2 will be the number of seconds (they will be both initialized from a variable computed a single time, so they will be equal), "
 	 "%3 and %4 will be the current number of nanoseconds (modulo %5) (they might slightly differ, depending on the computer and compiler; they might slightly "
 	 "differ because they are computed one after the other, not both at exactly the same moment), and the remaining components (%6 and %7) will be %8 "
 	 "(this should not be a problem).", "%1, %2, %3, %4, %6, and %7 are components of the random seed, %5 is a number, %8 is a number.")
 	 .arg("s10").arg("s20").arg("s11").arg("s21").arg(1000000000).arg("s12").arg("s22").arg(0)
-	 +" "+tr("It is very important to note that if you open two or more instances of FET when the number of seconds since the beginning of 1 January 1970 is the same "
+	 +" "+tr("It is very important to note that if you open two or more instances of Open-Timetable when the number of seconds since the beginning of 1 January 1970 is the same "
 	 "(that is, if you start them at the same time), you should check that the initial random seeds will not be identical value-per-value, which would lead "
 	 "to the same timetable generation behavior for an identical input file (hopefully this will not happen, since the elapsed nanoseconds will probably "
-	 "be different, but please check). If you intend to generate different timetables for the same file using more FET instances, you need to ensure that "
+	 "be different, but please check). If you intend to generate different timetables for the same file using more Open-Timetable instances, you need to ensure that "
 	 "the starting random seeds are different (you can change them also manually, from the menu Settings->Advanced->Seed of random number generator).")
-	 +" "+tr("Of course, if you use the same FET instance, you don't need to "
+	 +" "+tr("Of course, if you use the same Open-Timetable instance, you don't need to "
 	 "be worried about same starting random seeds for the same input file, since the period of the random number generator is very large.")+" "
 	 +tr("After you generate (even partially), the random seed will change very much (each call of the random number generator updates the random seed "
 	 "components to the next numbers in the sequences, and there are many calls to this random number generating routine from the generate function).")+"\n\n";
@@ -130,7 +130,7 @@ void RandomSeedForm::help()
 	 "and, if available, the random seed at the end of the generation (the %1 components are saved in the timetable directory at the start and at the end "
 	 "of the generation).", "%1 is the number of components of the random seed.").arg(6);
 	
-	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable Help"), s);
 }
 
 void RandomSeedForm::ok()
@@ -222,7 +222,7 @@ void RandomSeedForm::ok()
 	}
 
 	if(!errors.isEmpty()){
-		LongTextMessageBox::largeInformation(this, tr("FET warning"), errors);
+		LongTextMessageBox::largeInformation(this, tr("Open-Timetable warning"), errors);
 		return;
 	}
 	

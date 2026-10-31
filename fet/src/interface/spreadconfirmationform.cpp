@@ -61,7 +61,7 @@ SpreadConfirmationForm::SpreadConfirmationForm(QWidget* parent): QDialog(parent)
 	s+="\n\n";
 	s+=tr("It is important for you to choose good weights percentages, suitable for your institution. A good weighting might "
 	"be values from 95.0% to 100.0% (ex.: 95.0%, 99.0%, 99.75%, 100.0%). You may want to select the check boxes for activities "
-	"split into 2 or 3 components, so that they are not in consecutive days. If you obtain a timetable too difficult for FET, "
+	"split into 2 or 3 components, so that they are not in consecutive days. If you obtain a timetable too difficult for Open-Timetable, "
 	"you might need to revert to your former data or lower weights of constraints. Note: you can use a progressive approach "
 	"in choosing good weights.");
 	

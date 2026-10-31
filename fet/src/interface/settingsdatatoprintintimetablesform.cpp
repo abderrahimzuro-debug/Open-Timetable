@@ -2692,7 +2692,7 @@ void SettingsDataToPrintInTimetablesForm::applyToAll421()
 	activitiesTimeHVRoomsLegendCheckBox->setChecked(roomsLegend);
 	activitiesTimeHVLegendCodesFirstCheckBox->setChecked(legendCodesFirst);
 	
-	QMessageBox::information(this, tr("FET information"), tr("Applied the settings from tab %1 to all tabs from 4 to 21.").arg(tabWidget->currentIndex()+1));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Applied the settings from tab %1 to all tabs from 4 to 21.").arg(tabWidget->currentIndex()+1));
 }
 
 void SettingsDataToPrintInTimetablesForm::tabIndexChanged(int index)

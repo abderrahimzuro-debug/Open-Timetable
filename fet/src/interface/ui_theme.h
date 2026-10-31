@@ -21,6 +21,10 @@ namespace UiTheme {
 	// يطبّق نمط Fusion + لوحة ألوان عصرية + ورقة أنماط (QSS) على التطبيق.
 	void apply(QApplication& app);
 
+	// يطبّق مظهرًا معيّنًا فورًا على تطبيق يعمل («light» أو «dark»).
+	// يستبدل اللوحة والألوان وورقة الأنماط، ويضبط ألوان الأيقونات لتتبع المظهر.
+	void applyTheme(QApplication& app, const QString& name);
+
 	// يعيد نص ورقة الأنماط لاسم مظهر معيّن ("light" أو "dark").
 	QString styleSheet(const QString& name = QStringLiteral("light"));
 

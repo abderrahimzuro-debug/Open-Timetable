@@ -181,18 +181,18 @@ void YearsForm::addYear()
 void YearsForm::removeYear()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	QString yearName=yearsListWidget->currentItem()->text();
 	int yearIndex=gt.rules.searchYear(yearName);
 	assert(yearIndex>=0);
 
-	/*if(QMessageBox::warning( this, tr("FET"),
+	/*if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete year %1 and all related groups, subgroups, activities and constraints?").arg(yearName),
 	 tr("Yes"), tr("No"), QString(), 0, 1 ) == 1)
 		return;*/
-	if(QMessageBox::warning( this, tr("FET"),
+	if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete year %1 and all related groups, subgroups, activities and constraints?").arg(yearName),
 	 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::No)
 		return;
@@ -321,7 +321,7 @@ void YearsForm::modifyYear()
 	int valh=yearsListWidget->horizontalScrollBar()->value();
 
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	QString yearName=yearsListWidget->currentItem()->text();
@@ -354,13 +354,13 @@ void YearsForm::modifyYear()
 void YearsForm::activateStudents()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	
 	QString yearName=yearsListWidget->currentItem()->text();
 	int count=gt.rules.activateStudents(yearName);
-	QMessageBox::information(this, tr("FET information"), tr("Activated a number of %1 activities").arg(count));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Activated a number of %1 activities").arg(count));
 
 	if(count>0)
 		gt.rules.addUndoPoint(tr("Activated the year %1 (%2 activities).", "%2 is the number of activated activities").arg(yearName).arg(count));
@@ -369,13 +369,13 @@ void YearsForm::activateStudents()
 void YearsForm::deactivateStudents()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	
 	QString yearName=yearsListWidget->currentItem()->text();
 	int count=gt.rules.deactivateStudents(yearName);
-	QMessageBox::information(this, tr("FET information"), tr("Deactivated a number of %1 activities").arg(count));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Deactivated a number of %1 activities").arg(count));
 
 	if(count>0)
 		gt.rules.addUndoPoint(tr("Deactivated year %1 (%2 activities).", "%2 is the number of deactivated activities").arg(yearName).arg(count));
@@ -384,7 +384,7 @@ void YearsForm::deactivateStudents()
 void YearsForm::divideYear()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	
@@ -399,7 +399,7 @@ void YearsForm::comments()
 {
 	int ind=yearsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	
@@ -463,7 +463,7 @@ void YearsForm::longName()
 {
 	int ind=yearsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	
@@ -527,7 +527,7 @@ void YearsForm::code()
 {
 	int ind=yearsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	

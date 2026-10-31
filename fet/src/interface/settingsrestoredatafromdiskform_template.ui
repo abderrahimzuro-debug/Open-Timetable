@@ -178,7 +178,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Note: if you update your FET version and if the data format has changed since you saved your data file+history on the disk, you will not be able to retrieve your old history (but of course your .fet data file will be safely/correctly opened). The new history, saved in the new format, will be correctly loaded after that.</string>
+      <string>Note: if you update your Open-Timetable version and if the data format has changed since you saved your data file+history on the disk, you will not be able to retrieve your old history (but of course your .fet data file will be safely/correctly opened). The new history, saved in the new format, will be correctly loaded after that.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

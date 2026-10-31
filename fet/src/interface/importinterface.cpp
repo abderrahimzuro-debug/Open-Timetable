@@ -142,7 +142,7 @@ ChooseFieldsDialog::ChooseFieldsDialog(QWidget *parent): QDialog(parent)
 {
 	assert(fields.size()>0);
 
-	this->setWindowTitle(tr("FET - Import from CSV file"));
+	this->setWindowTitle(tr("Open-Timetable - Import from CSV file"));
 	QGridLayout* chooseFieldsMainLayout=new QGridLayout(this);
 
 	QVBoxLayout* fieldBox[NUMBER_OF_FIELDS];
@@ -437,7 +437,7 @@ void ChooseFieldsDialog::chooseFieldsDialogClose(){
 
 LastWarningsDialog::LastWarningsDialog(QWidget *parent): QDialog(parent)
 {
-	this->setWindowTitle(tr("FET - import %1 comments", "The comments of the importing of the category named %1").arg(importThing));
+	this->setWindowTitle(tr("Open-Timetable - import %1 comments", "The comments of the importing of the category named %1").arg(importThing));
 	QVBoxLayout* lastWarningsMainLayout=new QVBoxLayout(this);
 
 	QTextEdit* lastWarningsText=new QTextEdit();
@@ -504,7 +504,7 @@ int Import::getFileSeparatorFieldsAndHead(QWidget* parent, QDialog* &newParent){
 		settingsName=QString("ImportActivitiesSelectSeparatorsDialog");
 	}
 
-	fileName=QFileDialog::getOpenFileName(parent, Import::tr("FET - Import %1 from CSV file").arg(importThing), IMPORT_DIRECTORY,
+	fileName=QFileDialog::getOpenFileName(parent, Import::tr("Open-Timetable - Import %1 from CSV file").arg(importThing), IMPORT_DIRECTORY,
 		Import::tr("Text Files")+" (*.csv *.dat *.txt)" + ";;" + Import::tr("All Files") + " (*)");
 	if(fileName.isEmpty()){
 		return false;
@@ -533,7 +533,7 @@ int Import::getFileSeparatorFieldsAndHead(QWidget* parent, QDialog* &newParent){
 	file.close();
 	
 	if(line.size()<=0){
-		QMessageBox::warning(parent, tr("FET warning"), tr("The first line of the file is empty. Please fix this."));
+		QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("The first line of the file is empty. Please fix this."));
 		return false;
 	}
 	
@@ -743,7 +743,7 @@ int Import::getFileSeparatorFieldsAndHead(QWidget* parent, QDialog* &newParent){
 
 	newParent=new QDialog(parent);
 	QDialog& separatorsDialog=(*newParent);
-	separatorsDialog.setWindowTitle(Import::tr("FET - Import %1 from CSV file").arg(importThing));
+	separatorsDialog.setWindowTitle(Import::tr("Open-Timetable - Import %1 from CSV file").arg(importThing));
 	QVBoxLayout* separatorsMainLayout=new QVBoxLayout(&separatorsDialog);
 
 	QHBoxLayout* top=new QHBoxLayout();
@@ -881,7 +881,7 @@ int Import::getFileSeparatorFieldsAndHead(QWidget* parent, QDialog* &newParent){
 						tmp+=textquote;
 						tmpLine.remove(0,1);
 					} else {
-						QMessageBox::critical(newParent, tr("FET warning"), Import::tr("Missing field separator or text quote in the first line. Import might be incorrect.")+"\n");
+						QMessageBox::critical(newParent, tr("Open-Timetable warning"), Import::tr("Missing field separator or text quote in the first line. Import might be incorrect.")+"\n");
 					}
 				}
 				tmpLine.remove(0,1);
@@ -890,7 +890,7 @@ int Import::getFileSeparatorFieldsAndHead(QWidget* parent, QDialog* &newParent){
 				if(tmpLine.left(1)==textquote){
 					tmpLine.remove(0,1);
 				} else {
-					QMessageBox::critical(newParent, tr("FET warning"), Import::tr("Missing closing text quote in the first line. Import might be incorrect.")+"\n");
+					QMessageBox::critical(newParent, tr("Open-Timetable warning"), Import::tr("Missing closing text quote in the first line. Import might be incorrect.")+"\n");
 					tmp+=tmpLine.left(1);
 					tmpLine.remove(0,1);
 				}
@@ -939,7 +939,7 @@ int Import::readFields(QWidget* parent){
 
 	QFile file(fileName);
 	if(fileName.isEmpty()){
-		QMessageBox::warning(parent, tr("FET warning"), tr("Empty filename."));
+		QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("Empty filename."));
 		return false;
 	}
 #if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
@@ -977,7 +977,7 @@ int Import::readFields(QWidget* parent){
 		crt+=line.length();
 		if(progress.wasCanceled()){
 			progress.setValue(size);
-			QMessageBox::warning(parent, "FET", Import::tr("Loading canceled by user."));
+			QMessageBox::warning(parent, "Open-Timetable", Import::tr("Loading canceled by user."));
 			file.close();
 			return false;
 		}
@@ -1002,7 +1002,7 @@ int Import::readFields(QWidget* parent){
 								tmp+=textquote;
 								tmpLine.remove(0,1);
 							} else
-								warnText+=Import::tr("Warning: FET expected field separator or text separator in line %1. Import might be incorrect.").arg(lineNumber)+"\n";
+								warnText+=Import::tr("Warning: Open-Timetable expected field separator or text separator in line %1. Import might be incorrect.").arg(lineNumber)+"\n";
 						}
 						tmpLine.remove(0,1);
 					}
@@ -1010,7 +1010,7 @@ int Import::readFields(QWidget* parent){
 						if(tmpLine.left(1)==textquote){
 							tmpLine.remove(0,1);
 						} else {
-							warnText+=Import::tr("Warning: FET expected closing text separator in line %1. Import might be incorrect.").arg(lineNumber)+"\n";
+							warnText+=Import::tr("Warning: Open-Timetable expected closing text separator in line %1. Import might be incorrect.").arg(lineNumber)+"\n";
 							tmp+=tmpLine.left(1);
 							tmpLine.remove(0,1);
 						}
@@ -1036,7 +1036,7 @@ int Import::readFields(QWidget* parent){
 				fields << line;
 */
 			if(numberOfFields!=fields.size()){
-				warnText+=Import::tr("Skipped line %1: FET expected %2 fields but found %3 fields.").arg(lineNumber).arg(numberOfFields).arg(fields.size())+"\n";
+				warnText+=Import::tr("Skipped line %1: Open-Timetable expected %2 fields but found %3 fields.").arg(lineNumber).arg(numberOfFields).arg(fields.size())+"\n";
 				ok=false;
 			} else {
 				for(int i=0; i<NUMBER_OF_FIELDS; i++){
@@ -1344,7 +1344,7 @@ int Import::showFieldsAndWarnings(QWidget* parent, QDialog* &newParent){
 	// Start Dialog
 	newParent=new QDialog(parent);
 	QDialog& addItemsDialog=(*newParent);
-	addItemsDialog.setWindowTitle(Import::tr("FET import %1 question",
+	addItemsDialog.setWindowTitle(Import::tr("Open-Timetable import %1 question",
 	 "A question regarding the import of '%1'. '%1' is a category of data, for instance 'years, groups and subgroups'").arg(importThing));
 	QVBoxLayout* addItemsMainLayout=new QVBoxLayout(&addItemsDialog);
 
@@ -1423,9 +1423,9 @@ FILE_STRIPPED_NAME
 	QVBoxLayout* dataWarningBox=new QVBoxLayout();
 	QLabel* dataWarningText=new QLabel();
 	/*if(dataWarning.size()==1)
-		dataWarningText->setText(Import::tr("FET noticed 1 warning with the current data."));
+		dataWarningText->setText(Import::tr("Open-Timetable noticed 1 warning with the current data."));
 	else*/
-	dataWarningText->setText(Import::tr("FET noticed %1 warnings with the current data.").arg(dataWarning.size()));
+	dataWarningText->setText(Import::tr("Open-Timetable noticed %1 warnings with the current data.").arg(dataWarning.size()));
 	dataWarningBox->addWidget(dataWarningText);
 
 	QListWidget* dataWarningItems=new QListWidget();
@@ -1544,7 +1544,7 @@ void Import::importCSVActivityTags(QWidget* parent){
 	for(int i=0; i<gt.rules.activityTagsList.size(); i++){
 		ActivityTag* a=gt.rules.activityTagsList[i];
 		if(tmpSet.contains(a->name))
-			dataWarning<<Import::tr("%1 is already in FET data.").arg(a->name);
+			dataWarning<<Import::tr("%1 is already in Open-Timetable data.").arg(a->name);
 	}
 	//check if already in memory (end)
 	QDialog* newParent2;
@@ -1571,7 +1571,7 @@ void Import::importCSVActivityTags(QWidget* parent){
 			} else count++;
 		}
 	}
-	QMessageBox::information(newParent, tr("FET information"), Import::tr("%1 activity tags added. Please check activity tags form.").arg(count));
+	QMessageBox::information(newParent, tr("Open-Timetable information"), Import::tr("%1 activity tags added. Please check activity tags form.").arg(count));
 	//add activity tags (end) - similar to teachersform.cpp by Liviu modified by Volker
 	int tmp=fileName.lastIndexOf(FILE_SEP);
 	IMPORT_DIRECTORY=fileName.left(tmp);
@@ -1652,7 +1652,7 @@ void Import::importCSVRoomsAndBuildings(QWidget* parent){
 	for(int i=0; i<gt.rules.roomsList.size(); i++){
 		Room* r=gt.rules.roomsList[i];
 		if(tmpSet.contains(r->name))
-			dataWarning<<Import::tr("%1 is already in FET data.").arg(r->name);
+			dataWarning<<Import::tr("%1 is already in Open-Timetable data.").arg(r->name);
 	}
 	//check if rooms are already in memory (end)
 
@@ -1662,7 +1662,7 @@ void Import::importCSVRoomsAndBuildings(QWidget* parent){
 		for(int i=0; i<gt.rules.buildingsList.size(); i++){
 			Building* b=gt.rules.buildingsList[i];
 			if(tmpSet.contains(b->name))
-				dataWarning<<Import::tr("%1 is already in FET data.").arg(b->name);
+				dataWarning<<Import::tr("%1 is already in Open-Timetable data.").arg(b->name);
 		}
 	}
 	//check if buildings are already in memory (end)
@@ -1720,7 +1720,7 @@ void Import::importCSVRoomsAndBuildings(QWidget* parent){
 		}
 	}
 	//add rooms (end) - similar to teachersform.cpp by Liviu modified by Volker
-	QMessageBox::information(newParent, tr("FET information"),
+	QMessageBox::information(newParent, tr("Open-Timetable information"),
 	 Import::tr("%1 buildings added. Please check buildings form.").arg(count)+"\n"+tr("%1 rooms added. Please check rooms form.").arg(countroom));
 
 	int tmp=fileName.lastIndexOf(FILE_SEP);
@@ -1775,7 +1775,7 @@ void Import::importCSVSubjects(QWidget* parent){
 	for(int i=0; i<gt.rules.subjectsList.size(); i++){
 		Subject* s=gt.rules.subjectsList[i];
 		if(tmpSet.contains(s->name))
-			dataWarning<<Import::tr("%1 is already in FET data.").arg(s->name);
+			dataWarning<<Import::tr("%1 is already in Open-Timetable data.").arg(s->name);
 	}
 	//check if already in memory (end)
 
@@ -1804,7 +1804,7 @@ void Import::importCSVSubjects(QWidget* parent){
 		}
 	}
 	//add subjects (end) - similar to teachersform.cpp by Liviu modified by Volker
-	QMessageBox::information(newParent, tr("FET information"), Import::tr("%1 subjects added. Please check subjects form.").arg(count));
+	QMessageBox::information(newParent, tr("Open-Timetable information"), Import::tr("%1 subjects added. Please check subjects form.").arg(count));
 	int tmp=fileName.lastIndexOf(FILE_SEP);
 	IMPORT_DIRECTORY=fileName.left(tmp);
 	//gt.rules.internalStructureComputed=false;
@@ -1857,7 +1857,7 @@ void Import::importCSVTeachers(QWidget* parent){
 	for(int i=0; i<gt.rules.teachersList.size(); i++){
 		Teacher* t=gt.rules.teachersList[i];
 		if(tmpSet.contains(t->name))
-			dataWarning<<Import::tr("%1 is already in FET data.").arg(t->name);
+			dataWarning<<Import::tr("%1 is already in Open-Timetable data.").arg(t->name);
 	}
 	//check if already in memory (end)
 
@@ -1887,7 +1887,7 @@ void Import::importCSVTeachers(QWidget* parent){
 			} else count++;
 		}
 	}
-	QMessageBox::information(newParent, tr("FET information"), Import::tr("%1 teachers added. Please check teachers form.").arg(count));
+	QMessageBox::information(newParent, tr("Open-Timetable information"), Import::tr("%1 teachers added. Please check teachers form.").arg(count));
 	//add teachers (end) - similar to teachersform.cpp by Liviu modified by Volker
 	int tmp=fileName.lastIndexOf(FILE_SEP);
 	IMPORT_DIRECTORY=fileName.left(tmp);
@@ -1954,7 +1954,7 @@ void Import::importCSVStudents(QWidget* parent){
 		progress.setValue(i);
 		if(progress.wasCanceled()){
 			progress.setValue(fieldList[FIELD_YEAR_NAME].size());
-			QMessageBox::warning(newParent, "FET", Import::tr("Checking CSV canceled by user."));
+			QMessageBox::warning(newParent, "Open-Timetable", Import::tr("Checking CSV canceled by user."));
 			return;
 		}
 		if(fieldNumber[FIELD_YEAR_NAME]>=0)
@@ -2015,12 +2015,12 @@ void Import::importCSVStudents(QWidget* parent){
 		kk++;
 		if(progress2.wasCanceled()){
 			progress2.setValue(fieldList[FIELD_YEAR_NAME].size());
-			QMessageBox::warning(newParent, "FET", Import::tr("Checking data canceled by user."));
+			QMessageBox::warning(newParent, "Open-Timetable", Import::tr("Checking data canceled by user."));
 			return;
 		}
 		StudentsYear* sty=gt.rules.yearsList[i];
 		if(usedCSVYearNames.contains(sty->name))
-			dataWarning<<Import::tr("Year %1 is already in FET data.").arg(sty->name);
+			dataWarning<<Import::tr("Year %1 is already in Open-Timetable data.").arg(sty->name);
 		if(usedCSVGroupNames.contains(sty->name))
 			dataWarning<<Import::tr("Can't import group %1. Name is already taken for a year.").arg(sty->name);
 		if(usedCSVSubgroupNames.contains(sty->name))
@@ -2030,7 +2030,7 @@ void Import::importCSVStudents(QWidget* parent){
 			kk++;
 			if(progress2.wasCanceled()){
 				progress2.setValue(fieldList[FIELD_YEAR_NAME].size());
-				QMessageBox::warning(newParent, "FET", Import::tr("Checking data canceled by user."));
+				QMessageBox::warning(newParent, "Open-Timetable", Import::tr("Checking data canceled by user."));
 				return;
 			}
 
@@ -2038,7 +2038,7 @@ void Import::importCSVStudents(QWidget* parent){
 			if(usedCSVYearNames.contains(stg->name))
 				dataWarning<<Import::tr("Can't import year %1. Name is already taken for a group.").arg(stg->name);
 			if(usedCSVGroupNames.contains(stg->name))
-				dataWarning<<Import::tr("Group name %1 is already in FET data (in the same or in another year).").arg(stg->name);
+				dataWarning<<Import::tr("Group name %1 is already in Open-Timetable data (in the same or in another year).").arg(stg->name);
 			if(usedCSVSubgroupNames.contains(stg->name))
 				dataWarning<<Import::tr("Can't import subgroup %1. Name is already taken for a group.").arg(stg->name);
 			for(int k=0; k<stg->subgroupsList.size(); k++){
@@ -2047,7 +2047,7 @@ void Import::importCSVStudents(QWidget* parent){
 
 				if(progress2.wasCanceled()){
 					progress2.setValue(fieldList[FIELD_YEAR_NAME].size());
-					QMessageBox::warning(newParent, "FET", Import::tr("Checking data canceled by user."));
+					QMessageBox::warning(newParent, "Open-Timetable", Import::tr("Checking data canceled by user."));
 					return;
 				}
 
@@ -2057,7 +2057,7 @@ void Import::importCSVStudents(QWidget* parent){
 				if(usedCSVGroupNames.contains(sts->name))
 					dataWarning<<Import::tr("Can't import group %1. Name is taken for a subgroup.").arg(sts->name);
 				if(usedCSVSubgroupNames.contains(sts->name))
-					dataWarning<<Import::tr("Subgroup name %1 is already in FET data (in the same or in another group).").arg(sts->name);
+					dataWarning<<Import::tr("Subgroup name %1 is already in Open-Timetable data (in the same or in another group).").arg(sts->name);
 			}
 		}
 	}
@@ -2102,7 +2102,7 @@ void Import::importCSVStudents(QWidget* parent){
 		progress3.setValue(i);
 		if(progress3.wasCanceled()){
 			progress3.setValue(fieldList[FIELD_YEAR_NAME].size());
-			QMessageBox::warning(newParent, "FET", Import::tr("Importing data canceled by user."));
+			QMessageBox::warning(newParent, "Open-Timetable", Import::tr("Importing data canceled by user."));
 			//return false;
 			ok=false;
 			goto ifUserCanceledProgress3;
@@ -2355,7 +2355,7 @@ void Import::importCSVActivities(QWidget* parent){
 	if(!ok)	return;
 
 	if(fieldNumber[FIELD_SPLIT_DURATION]==DO_NOT_IMPORT&&fieldNumber[FIELD_TOTAL_DURATION]==DO_NOT_IMPORT){
-		QMessageBox::warning(newParent, tr("FET warning"), Import::tr("FET needs to know %1 or %2 if you import %3.").arg(fieldName[FIELD_SPLIT_DURATION]).arg(fieldName[FIELD_TOTAL_DURATION]).arg(importThing));
+		QMessageBox::warning(newParent, tr("Open-Timetable warning"), Import::tr("Open-Timetable needs to know %1 or %2 if you import %3.").arg(fieldName[FIELD_SPLIT_DURATION]).arg(fieldName[FIELD_TOTAL_DURATION]).arg(importThing));
 		return;
 	}
 
@@ -2491,10 +2491,10 @@ void Import::importCSVActivities(QWidget* parent){
 				StudentsSet* ss=studentsHash.value(students[s], nullptr);
 				if(ss==nullptr){
 					if(firstWarning){
-						lastWarning+=Import::tr("FET can't import activities, because FET needs to know the structure of the "
+						lastWarning+=Import::tr("Open-Timetable can't import activities, because Open-Timetable needs to know the structure of the "
 						"students sets. You must add (or import) years, groups and subgroups first.")+"\n"+
 						tr("It is recommended to import also teachers, rooms, buildings, subjects and activity tags before "
-						"importing activities. It is not needed, because FET will automatically do it, but you can "
+						"importing activities. It is not needed, because Open-Timetable will automatically do it, but you can "
 						"check the activities CSV file by that.")+"\n";
 						firstWarning=false;
 					}
@@ -2717,7 +2717,7 @@ void Import::importCSVActivities(QWidget* parent){
 		progress4.setValue(i);
 		if(progress4.wasCanceled()){
 			progress4.setValue(fieldList[FIELD_SUBJECT_NAME].size());
-			QMessageBox::warning(newParent, "FET", Import::tr("Importing data canceled by user."));
+			QMessageBox::warning(newParent, "Open-Timetable", Import::tr("Importing data canceled by user."));
 			//return false;
 			ok=false;
 			goto ifUserCanceledProgress4;
@@ -2940,7 +2940,7 @@ void Import::importCSVActivities(QWidget* parent){
 					count2++;
 				}
 				else
-					QMessageBox::critical(newParent, tr("FET information"), tr("Activity NOT added - please report error"));
+					QMessageBox::critical(newParent, tr("Open-Timetable information"), tr("Activity NOT added - please report error"));
 			} else {
 				lastWarning+=tr("Line %1: Activity duration is lower than 1 - please correct that").arg(fieldList[FIELD_LINE_NUMBER][i])+"\n";
 			}
@@ -3020,7 +3020,7 @@ void Import::importCSVActivities(QWidget* parent){
 					count2+=nsplit;
 				}
 				else
-					QMessageBox::critical(newParent, tr("FET information"), tr("Split activity NOT added - error???"));
+					QMessageBox::critical(newParent, tr("Open-Timetable information"), tr("Split activity NOT added - error???"));
 			} else {
 				lastWarning+=tr("Line %1: Activity duration is lower than 1 - please correct that").arg(fieldList[FIELD_LINE_NUMBER][i])+"\n";
 			}
@@ -3114,7 +3114,7 @@ void Import::importCSVTeacherNotAvailable(QWidget* parent){
 	//The user can't select the rows manually anymore. There are too many! The head is fixed now.
 	//This simplifies a lot. The old "fieldNumber" variables are not needed anymore.
 
-	fileName=QFileDialog::getOpenFileName(parent, Import::tr("FET - Import %1 from CSV file").arg(tr("Teacher not available")), IMPORT_DIRECTORY,
+	fileName=QFileDialog::getOpenFileName(parent, Import::tr("Open-Timetable - Import %1 from CSV file").arg(tr("Teacher not available")), IMPORT_DIRECTORY,
 		Import::tr("Text Files")+" (*.csv *.dat *.txt)" + ";;" + Import::tr("All Files") + " (*)");
 	if(fileName.isEmpty()){
 		return;
@@ -3122,7 +3122,7 @@ void Import::importCSVTeacherNotAvailable(QWidget* parent){
 
 	QFile file(fileName);
 	if(fileName.isEmpty()){
-		QMessageBox::warning(parent, tr("FET warning"), tr("Empty filename."));
+		QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("Empty filename."));
 		return;
 	}
 #if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
@@ -3192,7 +3192,7 @@ void Import::importCSVTeacherNotAvailable(QWidget* parent){
 		crt+=line.length();
 		if(progress.wasCanceled()){
 			progress.setValue(size);
-			QMessageBox::warning(parent, "FET", Import::tr("Loading canceled by user."));
+			QMessageBox::warning(parent, "Open-Timetable", Import::tr("Loading canceled by user."));
 			file.close();
 			return;
 		}
@@ -3286,7 +3286,7 @@ void Import::importCSVTeacherNotAvailable(QWidget* parent){
 					.arg(2+gt.rules.nDaysPerWeek).arg("Comments")+"\n";
 				}
 			if(!warnings.isEmpty()){
-				warnings+=tr("You can export a CSV file from FET to check the expected format.")+"\n";
+				warnings+=tr("You can export a CSV file from Open-Timetable to check the expected format.")+"\n";
 				warnings+=tr("Invalid header format. Attempting to import anyway.")+"\n";
 			}
 		}
@@ -3306,7 +3306,7 @@ void Import::importCSVTeacherNotAvailable(QWidget* parent){
 			numberOf100ConstraintsInFET++;
 		}
 	}
-	warnings+=tr("From the current FET data will be deleted %1 constraints 'teacher - not available'.").arg(numberOf100ConstraintsInFET)+"\n";
+	warnings+=tr("From the current Open-Timetable data will be deleted %1 constraints 'teacher - not available'.").arg(numberOf100ConstraintsInFET)+"\n";
 
 	QList<TimeConstraint*> tless;
 	int numberOfLess100ConstraintsInFET=0;
@@ -3322,7 +3322,7 @@ void Import::importCSVTeacherNotAvailable(QWidget* parent){
 		}
 	}
 	assert(tless.count()==numberOfLess100ConstraintsInFET);
-	warnings+=tr("From the current FET data will be deleted %1 constraints 'activities - preferred times', which (constraints) have only the teacher specified"
+	warnings+=tr("From the current Open-Timetable data will be deleted %1 constraints 'activities - preferred times', which (constraints) have only the teacher specified"
 	 " (while the other parameters: subject, activity tag, students set, and duration, are not specified in these constraints).")
 	 .arg(numberOfLess100ConstraintsInFET)+"\n";
 
@@ -3335,12 +3335,12 @@ void Import::importCSVTeacherNotAvailable(QWidget* parent){
 		if(activateLess100Constraint[t])
 			numberOfLess100ContraintsToAdd++;
 	}
-	warnings+=tr("In the FET data there will be %1 new constraints 'teacher - not available', added from the CSV file.").arg(numberOf100ContraintsToAdd)+"\n";
+	warnings+=tr("In the Open-Timetable data there will be %1 new constraints 'teacher - not available', added from the CSV file.").arg(numberOf100ContraintsToAdd)+"\n";
 	warnings+=tr("%1 teachers will get 'activities - preferred times' constraints from the CSV file.").arg(numberOfLess100ContraintsToAdd)+"\n";
 
 	warnings+=tr("Should I delete the old constraints and import the new constraints now?")+"\n";
 
-	int result=LongTextMessageBox::confirmation(parent, tr("FET"), warnings, tr("Yes"), tr("No"), QString(), 0, 1);
+	int result=LongTextMessageBox::confirmation(parent, tr("Open-Timetable"), warnings, tr("Yes"), tr("No"), QString(), 0, 1);
 	if(result!=0){
 		return;
 	}
@@ -3408,7 +3408,7 @@ void Import::importCSVTeacherNotAvailable(QWidget* parent){
 		}
 	}
 
-	QMessageBox::information(parent, tr("FET information"),
+	QMessageBox::information(parent, tr("Open-Timetable information"),
 		Import::tr("There were removed %1 'teacher - not available' constraints.").arg(numberOf100ConstraintsInFET)+"\n"+
 		Import::tr("There were added %1 'teacher - not available' constraints.").arg(count100)+"\n"+
 		Import::tr("There were removed %1 'activities - preferred times' constraints, which (constraints) have only the teacher specified"

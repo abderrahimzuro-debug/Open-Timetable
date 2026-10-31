@@ -16,12 +16,15 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 
 #include "ui_theme.h"
 
+#include "ui_icons.h"
+
 #include <QApplication>
 #include <QFont>
 #include <QFontDatabase>
 #include <QPalette>
 #include <QColor>
 #include <QStyleFactory>
+#include <QSettings>
 #include <QStringList>
 
 namespace {
@@ -386,6 +389,22 @@ QListWidget#otNav::item:disabled {
 	background: transparent;
 }
 
+
+/* أزرار ترويسة الشريط الجانبي (الطي والمظهر) */
+QToolButton#otThemeButton, QToolButton#otCollapseButton {
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	padding: 3px;
+}
+QToolButton#otThemeButton:hover, QToolButton#otCollapseButton:hover {
+	background-color: #eef1f6;
+	border-color: #e1e6ee;
+}
+QToolButton#otThemeButton:pressed, QToolButton#otCollapseButton:pressed {
+	background-color: #e3e8f0;
+}
+
 QLabel#otDashTitle {
 	font-size: 20pt;
 	font-weight: 700;
@@ -633,6 +652,22 @@ QListWidget#otNav::item:disabled {
 	background: transparent;
 }
 
+
+/* أزرار ترويسة الشريط الجانبي (الطي والمظهر) — داكن */
+QToolButton#otThemeButton, QToolButton#otCollapseButton {
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	padding: 3px;
+}
+QToolButton#otThemeButton:hover, QToolButton#otCollapseButton:hover {
+	background-color: #222c3a;
+	border-color: #2c3748;
+}
+QToolButton#otThemeButton:pressed, QToolButton#otCollapseButton:pressed {
+	background-color: #2a3546;
+}
+
 QLabel#otDashTitle {
 	font-size: 20pt;
 	font-weight: 700;
@@ -710,6 +745,48 @@ QString UiTheme::styleSheet(const QString& name)
 	return QString::fromUtf8(LIGHT_QSS);
 }
 
+void UiTheme::applyTheme(QApplication& app, const QString& name)
+{
+	const bool dark = (name == QStringLiteral("dark"));
+
+	// أيقونات بألوان تناسب خلفية المظهر
+	UiIcons::setTone(dark ? UiIcons::OnDark : UiIcons::OnLight);
+
+	QPalette palette;
+	if (dark) {
+		palette.setColor(QPalette::Window, QColor(0x14, 0x1a, 0x22));
+		palette.setColor(QPalette::WindowText, QColor(0xe6, 0xeb, 0xf2));
+		palette.setColor(QPalette::Base, QColor(0x1b, 0x23, 0x2e));
+		palette.setColor(QPalette::AlternateBase, QColor(0x21, 0x2b, 0x38));
+		palette.setColor(QPalette::Text, QColor(0xe6, 0xeb, 0xf2));
+		palette.setColor(QPalette::Button, QColor(0x21, 0x2b, 0x38));
+		palette.setColor(QPalette::ButtonText, QColor(0xe6, 0xeb, 0xf2));
+		palette.setColor(QPalette::BrightText, QColor(0xff, 0x6b, 0x6b));
+		palette.setColor(QPalette::ToolTipBase, QColor(0x2a, 0x35, 0x44));
+		palette.setColor(QPalette::ToolTipText, QColor(0xf1, 0xf5, 0xf9));
+		palette.setColor(QPalette::Highlight, QColor(0x3b, 0x82, 0xf6));
+		palette.setColor(QPalette::HighlightedText, QColor(0xff, 0xff, 0xff));
+		palette.setColor(QPalette::Disabled, QPalette::Text, QColor(0x7d, 0x8a, 0x9a));
+		palette.setColor(QPalette::Disabled, QPalette::WindowText, QColor(0x7d, 0x8a, 0x9a));
+		palette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(0x7d, 0x8a, 0x9a));
+	}
+	else {
+		palette.setColor(QPalette::Window, QColor(0xf7, 0xf8, 0xfa));
+		palette.setColor(QPalette::WindowText, QColor(0x17, 0x20, 0x2a));
+		palette.setColor(QPalette::Base, QColor(0xff, 0xff, 0xff));
+		palette.setColor(QPalette::AlternateBase, QColor(0xfa, 0xfb, 0xfc));
+		palette.setColor(QPalette::Text, QColor(0x17, 0x20, 0x2a));
+		palette.setColor(QPalette::Button, QColor(0xff, 0xff, 0xff));
+		palette.setColor(QPalette::ButtonText, QColor(0x17, 0x20, 0x2a));
+		palette.setColor(QPalette::ToolTipBase, QColor(0x17, 0x20, 0x2a));
+		palette.setColor(QPalette::ToolTipText, QColor(0xff, 0xff, 0xff));
+		palette.setColor(QPalette::Highlight, QColor(0x25, 0x63, 0xeb));
+		palette.setColor(QPalette::HighlightedText, QColor(0xff, 0xff, 0xff));
+	}
+	app.setPalette(palette);
+	app.setStyleSheet(styleSheet(name));
+}
+
 void UiTheme::apply(QApplication& app)
 {
 	// 1) نمط Fusion: يضمن مظهرًا متسقًا على المنصّات ويحترم ورقة الأنماط بالكامل.
@@ -739,6 +816,15 @@ void UiTheme::apply(QApplication& app)
 	palette.setColor(QPalette::ToolTipText, QColor(0xff, 0xff, 0xff));
 	app.setPalette(palette);
 
-	// 4) ورقة الأنماط.
-	app.setStyleSheet(styleSheet(QStringLiteral("light")));
+	// 4) ورقة الأنماط: المظهر المحفوظ في الإعدادات (الوضع الداكن مدعوم).
+	QString saved;
+	{
+		QSettings settings(QStringLiteral("fet"), QStringLiteral("fettimetabling"));
+		saved = settings.value(QStringLiteral("OpenTimetable/theme"),
+				       QStringLiteral("light")).toString();
+	}
+	if (saved != QStringLiteral("dark"))
+		saved = QStringLiteral("light");
+
+	applyTheme(app, saved);
 }

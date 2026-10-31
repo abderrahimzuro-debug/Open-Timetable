@@ -128,7 +128,7 @@ void StatisticsExport::exportStatistics(QWidget* parent){
 	
 	PREFIX_STATISTICS=DIRECTORY_STATISTICS+FILE_SEP;
 	
-	int ok=QMessageBox::question(parent, tr("FET Question"),
+	int ok=QMessageBox::question(parent, tr("Open-Timetable Question"),
 		 StatisticsExport::tr("Do you want to export detailed statistics files into directory %1 as HTML files?").arg(QDir::toNativeSeparators(DIRECTORY_STATISTICS)), QMessageBox::Yes | QMessageBox::No);
 	if(ok==QMessageBox::No)
 		return;
@@ -136,7 +136,7 @@ void StatisticsExport::exportStatistics(QWidget* parent){
 	/* need if i use iTeachersList. Currently unneeded. please remove commented asserts in other functions if this is needed again!
 	bool tmp=gt.rules.computeInternalStructure();
 	if(!tmp){
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		StatisticsExport::tr("Incorrect data")+"\n");
 		return;
 		assert(0==1);
@@ -193,10 +193,10 @@ void StatisticsExport::exportStatistics(QWidget* parent){
 		ok=exportStatisticsStudentsSubjects(parent, sTime, statisticValues, TIMETABLE_HTML_LEVEL);
 
 	if(ok){
-		QMessageBox::information(parent, tr("FET Information"),
+		QMessageBox::information(parent, tr("Open-Timetable Information"),
 		 StatisticsExport::tr("Statistics files were exported to directory %1 as HTML files.").arg(QDir::toNativeSeparators(DIRECTORY_STATISTICS)));
 	} else {
-		QMessageBox::warning(parent, tr("FET warning"),
+		QMessageBox::warning(parent, tr("Open-Timetable warning"),
 		 StatisticsExport::tr("Statistics export incomplete")+"\n");
 	}
 	cssString2.clear();
@@ -507,7 +507,7 @@ bool StatisticsExport::exportStatisticsStylesheetCss(QWidget* parent, const QStr
 #else
 	if(!file.open(QIODevice::WriteOnly)){
 #endif
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return false;
 	}
@@ -526,14 +526,14 @@ bool StatisticsExport::exportStatisticsStylesheetCss(QWidget* parent, const QStr
 		tt=tr("unnamed");
 	tos<<"/* "<<protect3(StatisticsExport::tr("CSS Style sheet of %1", "%1 is the file name").arg(tt));
 	tos<<"\n";
-	tos<<"   "<<protect3(StatisticsExport::tr("Style sheet generated with FET %1 on %2", "%1 is FET version, %2 is date and time").arg(FET_VERSION).arg(saveTime))<<" */\n\n";
+	tos<<"   "<<protect3(StatisticsExport::tr("Style sheet generated with Open-Timetable %1 on %2", "%1 is Open-Timetable version, %2 is date and time").arg(FET_VERSION).arg(saveTime))<<" */\n\n";
 
 	tos<<cssString2;
 
 	tos<<"/* "<<protect3(StatisticsExport::tr("End of file."))<<" */\n";
 
 	if(file.error()!=QFileDevice::NoError){
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(htmlfilename).arg(file.errorString()));
 		return false;
@@ -564,7 +564,7 @@ bool StatisticsExport::exportStatisticsIndex(QWidget* parent, const QString& sav
 #else
 	if(!file.open(QIODevice::WriteOnly)){
 #endif
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return false;
 	}
@@ -655,14 +655,14 @@ bool StatisticsExport::exportStatisticsIndex(QWidget* parent, const QString& sav
 	tos<<"          <td>"<<protect2(STRING_EMPTY_SLOT_STATISTICS)<<"</td>\n";
 	tos<<"        </tr>\n";
 	//workaround begin.
-	tos<<"      <tr class=\"foot\"><td></td><td colspan=\"3\">"<<protect2(StatisticsExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))<<"</td></tr>\n";
+	tos<<"      <tr class=\"foot\"><td></td><td colspan=\"3\">"<<protect2(StatisticsExport::tr("Timetable generated with Open-Timetable %1 on %2", "%1 is Open-Timetable version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))<<"</td></tr>\n";
 	//workaround end.
 	tos<<"      </tbody>\n";
 	tos<<"    </table>\n";
 	tos<<"  </body>\n</html>\n";
 
 	if(file.error()!=QFileDevice::NoError){
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(htmlfilename).arg(file.errorString()));
 		return false;
@@ -693,7 +693,7 @@ bool StatisticsExport::exportStatisticsTeachersSubjects(QWidget* parent, const Q
 #else
 	if(!file.open(QIODevice::WriteOnly)){
 #endif
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return false;
 	}
@@ -755,7 +755,7 @@ bool StatisticsExport::exportStatisticsTeachersSubjects(QWidget* parent, const Q
 	tos<<"  </body>\n</html>\n";
 
 	if(file.error()!=QFileDevice::NoError){
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(htmlfilename).arg(file.errorString()));
 		return false;
@@ -824,7 +824,7 @@ QString StatisticsExport::exportStatisticsTeachersSubjectsHtml(QWidget* parent, 
 		//pqapplication->processEvents();
 		if(progress.wasCanceled()){
 			progress.setValue(statisticValues.allSubjectsNames.count());
-			QMessageBox::warning(parent, tr("FET warning"), tr("Canceled"));
+			QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("Canceled"));
 			return /*false*/ tmp;
 		}
 		ttt++;
@@ -1008,7 +1008,7 @@ QString StatisticsExport::exportStatisticsTeachersSubjectsHtml(QWidget* parent, 
 	}
 	tmp+="          <th></th>\n        </tr>\n";
 	//workaround begin.
-	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
+	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with Open-Timetable %1 on %2", "%1 is Open-Timetable version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
 	//workaround end.
 	tmp+="      </tbody>\n";
 	tmp+="    </table>\n";
@@ -1038,7 +1038,7 @@ bool StatisticsExport::exportStatisticsSubjectsTeachers(QWidget* parent, const Q
 #else
 	if(!file.open(QIODevice::WriteOnly)){
 #endif
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return false;
 	}
@@ -1100,7 +1100,7 @@ bool StatisticsExport::exportStatisticsSubjectsTeachers(QWidget* parent, const Q
 	tos<<"  </body>\n</html>\n";
 
 	if(file.error()!=QFileDevice::NoError){
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(htmlfilename).arg(file.errorString()));
 		return false;
@@ -1169,7 +1169,7 @@ QString StatisticsExport::exportStatisticsSubjectsTeachersHtml(QWidget* parent, 
 		//pqapplication->processEvents();
 		if(progress.wasCanceled()){
 			progress.setValue(statisticValues.allTeachersNames.count());
-			QMessageBox::warning(parent, tr("FET warning"), tr("Canceled"));
+			QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("Canceled"));
 			return /*false*/tmp;
 		}
 		ttt++;
@@ -1351,7 +1351,7 @@ QString StatisticsExport::exportStatisticsSubjectsTeachersHtml(QWidget* parent, 
 	}
 	tmp+="          <th></th>\n        </tr>\n";
 	//workaround begin.
-	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
+	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with Open-Timetable %1 on %2", "%1 is Open-Timetable version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
 	//workaround end.
 	tmp+="      </tbody>\n";
 	tmp+="    </table>\n";
@@ -1381,7 +1381,7 @@ bool StatisticsExport::exportStatisticsTeachersStudents(QWidget* parent, const Q
 #else
 	if(!file.open(QIODevice::WriteOnly)){
 #endif
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return false;
 	}
@@ -1443,7 +1443,7 @@ bool StatisticsExport::exportStatisticsTeachersStudents(QWidget* parent, const Q
 	tos<<"  </body>\n</html>\n";
 
 	if(file.error()!=QFileDevice::NoError){
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(htmlfilename).arg(file.errorString()));
 		return false;
@@ -1512,7 +1512,7 @@ QString StatisticsExport::exportStatisticsTeachersStudentsHtml(QWidget* parent, 
 		//pqapplication->processEvents();
 		if(progress.wasCanceled()){
 			progress.setValue(statisticValues.allStudentsNames.count());
-			QMessageBox::warning(parent, tr("FET warning"), tr("Canceled"));
+			QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("Canceled"));
 			return /*false*/tmp;
 		}
 		ttt++;
@@ -1696,7 +1696,7 @@ QString StatisticsExport::exportStatisticsTeachersStudentsHtml(QWidget* parent, 
 	}
 	tmp+="          <th></th>\n        </tr>\n";
 	//workaround begin.
-	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
+	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with Open-Timetable %1 on %2", "%1 is Open-Timetable version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
 	//workaround end.
 	tmp+="      </tbody>\n";
 	tmp+="    </table>\n";
@@ -1726,7 +1726,7 @@ bool StatisticsExport::exportStatisticsStudentsTeachers(QWidget* parent, const Q
 #else
 	if(!file.open(QIODevice::WriteOnly)){
 #endif
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return false;
 	}
@@ -1788,7 +1788,7 @@ bool StatisticsExport::exportStatisticsStudentsTeachers(QWidget* parent, const Q
 	tos<<"  </body>\n</html>\n";
 
 	if(file.error()!=QFileDevice::NoError){
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(htmlfilename).arg(file.errorString()));
 		return false;
@@ -1857,7 +1857,7 @@ QString StatisticsExport::exportStatisticsStudentsTeachersHtml(QWidget* parent, 
 		//pqapplication->processEvents();
 		if(progress.wasCanceled()){
 			progress.setValue(statisticValues.allTeachersNames.count());
-			QMessageBox::warning(parent, tr("FET warning"), tr("Canceled"));
+			QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("Canceled"));
 			return /*false*/tmp;
 		}
 		ttt++;
@@ -2041,7 +2041,7 @@ QString StatisticsExport::exportStatisticsStudentsTeachersHtml(QWidget* parent, 
 	}
 	tmp+="          <th></th>\n        </tr>\n";
 	//workaround begin.
-	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
+	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with Open-Timetable %1 on %2", "%1 is Open-Timetable version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
 	//workaround end.
 	tmp+="      </tbody>\n";
 	tmp+="    </table>\n";
@@ -2071,7 +2071,7 @@ bool StatisticsExport::exportStatisticsSubjectsStudents(QWidget* parent, const Q
 #else
 	if(!file.open(QIODevice::WriteOnly)){
 #endif
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return false;
 	}
@@ -2133,7 +2133,7 @@ bool StatisticsExport::exportStatisticsSubjectsStudents(QWidget* parent, const Q
 	tos<<"  </body>\n</html>\n";
 
 	if(file.error()!=QFileDevice::NoError){
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(htmlfilename).arg(file.errorString()));
 		return false;
@@ -2202,7 +2202,7 @@ QString StatisticsExport::exportStatisticsSubjectsStudentsHtml(QWidget* parent, 
 		//pqapplication->processEvents();
 		if(progress.wasCanceled()){
 			progress.setValue(statisticValues.allStudentsNames.count());
-			QMessageBox::warning(parent, tr("FET warning"), tr("Canceled"));
+			QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("Canceled"));
 			return /*false*/tmp;
 		}
 		ttt++;
@@ -2385,7 +2385,7 @@ QString StatisticsExport::exportStatisticsSubjectsStudentsHtml(QWidget* parent, 
 	}
 	tmp+="          <th></th>\n        </tr>\n";
 	//workaround begin.
-	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
+	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with Open-Timetable %1 on %2", "%1 is Open-Timetable version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
 	//workaround end.
 	tmp+="      </tbody>\n";
 	tmp+="    </table>\n";
@@ -2415,7 +2415,7 @@ bool StatisticsExport::exportStatisticsStudentsSubjects(QWidget* parent, const Q
 #else
 	if(!file.open(QIODevice::WriteOnly)){
 #endif
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(htmlfilename));
 		return false;
 	}
@@ -2476,7 +2476,7 @@ bool StatisticsExport::exportStatisticsStudentsSubjects(QWidget* parent, const Q
 	tos<<"  </body>\n</html>\n";
 
 	if(file.error()!=QFileDevice::NoError){
-		QMessageBox::critical(parent, tr("FET critical"),
+		QMessageBox::critical(parent, tr("Open-Timetable critical"),
 		 StatisticsExport::tr("Writing '%1' gave the error message '%2', which means the writing is compromised. Please check your disk's free space.",
 		 "%1 is the name of a file").arg(htmlfilename).arg(file.errorString()));
 		return false;
@@ -2545,7 +2545,7 @@ QString StatisticsExport::exportStatisticsStudentsSubjectsHtml(QWidget* parent, 
 		//pqapplication->processEvents();
 		if(progress.wasCanceled()){
 			progress.setValue(statisticValues.allSubjectsNames.count());
-			QMessageBox::warning(parent, tr("FET warning"), tr("Canceled"));
+			QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("Canceled"));
 			return /*false*/tmp;
 		}
 		ttt++;
@@ -2730,7 +2730,7 @@ QString StatisticsExport::exportStatisticsStudentsSubjectsHtml(QWidget* parent, 
 	}
 	tmp+="          <th></th>\n        </tr>\n";
 	//workaround begin.
-	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with FET %1 on %2", "%1 is FET version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
+	tmp+="      <tr class=\"foot\"><td></td><td colspan=\""+QString::number(colspan+1)+"\">"+protect2(StatisticsExport::tr("Timetable generated with Open-Timetable %1 on %2", "%1 is Open-Timetable version, %2 is the date and time of generation").arg(FET_VERSION).arg(saveTime))+"</td></tr>\n";
 	//workaround end.
 	tmp+="      </tbody>\n";
 	tmp+="    </table>\n";

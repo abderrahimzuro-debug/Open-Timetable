@@ -610,7 +610,7 @@ void ActivitiesForm::filterChanged()
 	for(int i=0; i<gt.rules.activitiesList.size(); i++){
 		progress.setValue(i);
 		if(progress.wasCanceled()){
-			LongTextMessageBox::largeInformation(this, tr("FET warning"), tr("You cancelled activity filtering - the list of activities will be incomplete.")+QString(" ")+
+			LongTextMessageBox::largeInformation(this, tr("Open-Timetable warning"), tr("You cancelled activity filtering - the list of activities will be incomplete.")+QString(" ")+
 			 tr("Note: if filtering of the activities takes too much, it might be because you are filtering on the detailed description with constraints of the activities,"
 			 " which checks each activity against each time constraint, each space constraint, and each group activities in the initial order item, which might be too much."
 			 " Please consider filtering on the description or detailed description of the activities, instead.")+QString("\n\n")+tr("Note: if you are using more filters,"
@@ -700,7 +700,7 @@ void ActivitiesForm::modifyActivity()
 {
 	int ind=activitiesListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity"));
 		return;
 	}
 	
@@ -751,7 +751,7 @@ void ActivitiesForm::modifyActivity()
 					diffComputeNTotalStudents=true;
 			}
 			if(nSplit>MAX_SPLIT_OF_AN_ACTIVITY){
-				QMessageBox::warning(this, tr("FET information"),
+				QMessageBox::warning(this, tr("Open-Timetable information"),
 				 tr("Cannot modify this large activity, because it contains more than %1 activities.")
 				 .arg(MAX_SPLIT_OF_AN_ACTIVITY));
 				return;
@@ -780,11 +780,11 @@ void ActivitiesForm::modifyActivity()
 			s2+="\n\n";
 			s2+=tr("The fields which are different are: %1").arg(s.join(translatedCommaSpace()));
 				
-			/*int t=QMessageBox::warning(this, tr("FET warning"), s2, tr("Abort"), tr("Continue"), QString(), 1, 0);
+			/*int t=QMessageBox::warning(this, tr("Open-Timetable warning"), s2, tr("Abort"), tr("Continue"), QString(), 1, 0);
 			
 			if(t==0)
 				return;*/
-			QMessageBox::StandardButton t=QMessageBox::warning(this, tr("FET warning"), s2, QMessageBox::Ok | QMessageBox::Cancel);
+			QMessageBox::StandardButton t=QMessageBox::warning(this, tr("Open-Timetable warning"), s2, QMessageBox::Ok | QMessageBox::Cancel);
 			
 			if(t==QMessageBox::Cancel)
 				return;
@@ -844,7 +844,7 @@ void ActivitiesForm::removeActivities()
 			su+=tmps;
 		}
 
-	int t=LongTextMessageBox::confirmation( this, tr("FET confirmation"),
+	int t=LongTextMessageBox::confirmation( this, tr("Open-Timetable confirmation"),
 	 s, tr("Yes"), tr("No"), QString(), 0, 1 );
 	if(t==1){
 		activitiesListWidget->setFocus();
@@ -917,13 +917,13 @@ void ActivitiesForm::help()
 	s+=tr("Above the activities list we have 2 labels, containing 4 numbers. The first label contains text: No: a / b. The first number a is the"
 		" number of active activities (we number each individual subactivity as 1), while the second number b is the number of total activities."
 		" The second label contains text: Dur: c / d. The third number c is the duration of active activities, in periods"
-		" (or FET hours), while the fourth number d is the duration of total activities, in periods (or FET hours)."
+		" (or Open-Timetable hours), while the fourth number d is the duration of total activities, in periods (or Open-Timetable hours)."
 		" So, No means number and Dur means duration.");
 	s+="\n\n";
 	s+=tr("Example: No: 100 / 102, Dur: 114 / 117. They represent: 100 - the number of active activities,"
 		" then 102 - the number of total activities,"
-		" 114 - the duration of active activities (in periods or FET hours) and 117 - the duration of total activities"
-		" (in periods or FET hours). In this example we have 2 inactive activities with their combined duration being 3 periods.");
+		" 114 - the duration of active activities (in periods or Open-Timetable hours) and 117 - the duration of total activities"
+		" (in periods or Open-Timetable hours). In this example we have 2 inactive activities with their combined duration being 3 periods.");
 	
 	s+="\n\n";
 	s+=tr("Explanation of the short description of an activity: first comes the id."
@@ -962,14 +962,14 @@ void ActivitiesForm::help()
 	s+=tr("Note that it is possible to activate/deactivate an activity in two different ways: by modifying an activity and selecting/deselecting the 'Active'"
 		" check box, or directly, by clicking the corresponding buttons in this dialog.");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable Help"), s);
 }
 
 void ActivitiesForm::activityComments()
 {
 	int ind=activitiesListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected activity"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected activity"));
 		return;
 	}
 	
@@ -1144,7 +1144,7 @@ void ActivitiesForm::activateActivities()
 	if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS){
 		QMessageBox::StandardButton ret=QMessageBox::No;
 		QString s=tr("Activate the selected activities?");
-		ret=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+		ret=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 		if(ret==QMessageBox::No){
 			activitiesListWidget->setFocus();
 			return;
@@ -1196,7 +1196,7 @@ void ActivitiesForm::activateActivities()
 		activitiesListWidget->horizontalScrollBar()->setValue(valh);
 
 		if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS)
-			QMessageBox::information(this, tr("FET information"), tr("Activated %1 activities", "%1 is the number of activated activities").arg(cnt));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Activated %1 activities", "%1 is the number of activated activities").arg(cnt));
 	}
 	
 	activitiesListWidget->setFocus();
@@ -1207,7 +1207,7 @@ void ActivitiesForm::deactivateActivities()
 	if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS){
 		QMessageBox::StandardButton ret=QMessageBox::No;
 		QString s=tr("Deactivate the selected activities?");
-		ret=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+		ret=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 		if(ret==QMessageBox::No){
 			activitiesListWidget->setFocus();
 			return;
@@ -1259,7 +1259,7 @@ void ActivitiesForm::deactivateActivities()
 		activitiesListWidget->horizontalScrollBar()->setValue(valh);
 
 		if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS)
-			QMessageBox::information(this, tr("FET information"), tr("Deactivated %1 activities", "%1 is the number of deactivated activities").arg(cnt));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Deactivated %1 activities", "%1 is the number of deactivated activities").arg(cnt));
 	}
 
 	activitiesListWidget->setFocus();
@@ -1292,7 +1292,7 @@ void ActivitiesForm::changeActivityTags()
 		}
 
 	if(tl.isEmpty()){
-		QMessageBox::warning(this, tr("FET warning"), tr("No activities selected."));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("No activities selected."));
 		
 		return;
 	}

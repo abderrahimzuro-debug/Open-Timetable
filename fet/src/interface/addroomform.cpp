@@ -56,11 +56,11 @@ AddRoomForm::~AddRoomForm()
 void AddRoomForm::addRoom()
 {
 	if(nameLineEdit->text().isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		return;
 	}
 	if(buildingsComboBox->currentIndex()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect building"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect building"));
 		return;
 	}
 	Room* rm=new Room();
@@ -95,5 +95,5 @@ void AddRoomForm::help()
 	 " have a very large room, which can hold more activities at one time, please add more rooms,"
 	 " representing this larger room");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET - help on adding room(s)"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable - help on adding room(s)"), s);
 }

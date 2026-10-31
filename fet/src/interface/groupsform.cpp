@@ -175,7 +175,7 @@ GroupsForm::~GroupsForm()
 void GroupsForm::addGroup()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	QString yearName=yearsListWidget->currentItem()->text();
@@ -196,7 +196,7 @@ void GroupsForm::addGroup()
 void GroupsForm::addExistingGroups()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	QString yearName=yearsListWidget->currentItem()->text();
@@ -230,14 +230,14 @@ void GroupsForm::addExistingGroups()
 void GroupsForm::removeGroup()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	int yearIndex=gt.rules.searchYear(yearsListWidget->currentItem()->text());
 	assert(yearIndex>=0);
 
 	if(groupsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected group"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected group"));
 		return;
 	}
 
@@ -266,12 +266,12 @@ void GroupsForm::removeGroup()
 			s+=QString("\n")+str;
 	}
 	
-	int t=LongTextMessageBox::mediumConfirmation(this, tr("FET confirmation"), s,
+	int t=LongTextMessageBox::mediumConfirmation(this, tr("Open-Timetable confirmation"), s,
 		tr("Yes"), tr("No"), QString(), 0, 1);
 	if(t==1)
 		return;
 
-	/*if(QMessageBox::warning( this, tr("FET"),
+	/*if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete group %1 and all related subgroups, activities and constraints?").arg(groupName),
 	 tr("Yes"), tr("No"), QString(), 0, 1 ) == 1)
 		return;*/
@@ -297,21 +297,21 @@ void GroupsForm::removeGroup()
 	}
 
 	/*if(gt.rules.searchStudentsSet(groupName)!=nullptr)
-		QMessageBox::information( this, tr("FET"), tr("This group still exists into another year. "
+		QMessageBox::information( this, tr("Open-Timetable"), tr("This group still exists into another year. "
 			"The related subgroups, activities and constraints were not removed"));*/
 }
 
 void GroupsForm::purgeGroup()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	int yearIndex=gt.rules.searchYear(yearsListWidget->currentItem()->text());
 	assert(yearIndex>=0);
 
 	if(groupsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected group"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected group"));
 		return;
 	}
 
@@ -339,12 +339,12 @@ void GroupsForm::purgeGroup()
 			s+=QString("\n")+str;
 	}
 	
-	int t=LongTextMessageBox::mediumConfirmation(this, tr("FET confirmation"), s,
+	int t=LongTextMessageBox::mediumConfirmation(this, tr("Open-Timetable confirmation"), s,
 		tr("Yes"), tr("No"), QString(), 0, 1);
 	if(t==1)
 		return;
 
-	/*if(QMessageBox::warning( this, tr("FET"),
+	/*if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete group %1 and all related subgroups, activities and constraints?").arg(groupName),
 	 tr("Yes"), tr("No"), QString(), 0, 1 ) == 1)
 		return;*/
@@ -370,7 +370,7 @@ void GroupsForm::purgeGroup()
 	}
 
 	/*if(gt.rules.searchStudentsSet(groupName)!=nullptr)
-		QMessageBox::information( this, tr("FET"), tr("This group still exists into another year. "
+		QMessageBox::information( this, tr("Open-Timetable"), tr("This group still exists into another year. "
 			"The related subgroups, activities and constraints were not removed"));*/
 }
 
@@ -489,7 +489,7 @@ void GroupsForm::moveGroupDown()
 void GroupsForm::sortGroups()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	int yearIndex=gt.rules.searchYear(yearsListWidget->currentItem()->text());
@@ -505,7 +505,7 @@ void GroupsForm::sortGroups()
 void GroupsForm::modifyGroup()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	
@@ -519,7 +519,7 @@ void GroupsForm::modifyGroup()
 	int valh=groupsListWidget->horizontalScrollBar()->value();
 
 	if(groupsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected group"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected group"));
 		return;
 	}
 
@@ -551,20 +551,20 @@ void GroupsForm::modifyGroup()
 void GroupsForm::activateStudents()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	int yearIndex=gt.rules.searchYear(yearsListWidget->currentItem()->text());
 	assert(yearIndex>=0);
 
 	if(groupsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected group"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected group"));
 		return;
 	}
 
 	QString groupName=groupsListWidget->currentItem()->text();
 	int count=gt.rules.activateStudents(groupName);
-	QMessageBox::information(this, tr("FET information"), tr("Activated a number of %1 activities").arg(count));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Activated a number of %1 activities").arg(count));
 
 	if(count>0)
 		gt.rules.addUndoPoint(tr("Activated the group %1 (%2 activities).", "%2 is the number of activated activities").arg(groupName).arg(count));
@@ -573,20 +573,20 @@ void GroupsForm::activateStudents()
 void GroupsForm::deactivateStudents()
 {
 	if(yearsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("The selected year is invalid"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The selected year is invalid"));
 		return;
 	}
 	int yearIndex=gt.rules.searchYear(yearsListWidget->currentItem()->text());
 	assert(yearIndex>=0);
 
 	if(groupsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected group"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected group"));
 		return;
 	}
 
 	QString groupName=groupsListWidget->currentItem()->text();
 	int count=gt.rules.deactivateStudents(groupName);
-	QMessageBox::information(this, tr("FET information"), tr("Deactivated a number of %1 activities").arg(count));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Deactivated a number of %1 activities").arg(count));
 	
 	if(count>0)
 		gt.rules.addUndoPoint(tr("Deactivated group %1 (%2 activities).", "%2 is the number of deactivated activities").arg(groupName).arg(count));
@@ -596,7 +596,7 @@ void GroupsForm::comments()
 {
 	int ind=groupsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected group"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected group"));
 		return;
 	}
 	
@@ -660,7 +660,7 @@ void GroupsForm::longName()
 {
 	int ind=groupsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected group"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected group"));
 		return;
 	}
 	
@@ -724,7 +724,7 @@ void GroupsForm::code()
 {
 	int ind=groupsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected group"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected group"));
 		return;
 	}
 	

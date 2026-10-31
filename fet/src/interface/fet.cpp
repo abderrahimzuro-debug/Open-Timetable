@@ -57,6 +57,7 @@ FetSettings fetSettings;
 extern Generate gen;
 
 #include "fetmainform.h"
+#include "ui_icons.h"
 #include "ui_theme.h"
 #include "ui_selfcheck.h"
 #include "ui_shell.h"
@@ -140,7 +141,7 @@ void writeDefaultGenerationParameters();
 
 bool generatePreMessage(QWidget* parent, const QString& s)
 {
-	QMessageBox::StandardButton b=QMessageBox::warning(parent, GeneratePreTranslate::tr("FET warning"), s, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+	QMessageBox::StandardButton b=QMessageBox::warning(parent, GeneratePreTranslate::tr("Open-Timetable warning"), s, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 	if(b!=QMessageBox::Yes)
 		return false;
 	else
@@ -283,7 +284,7 @@ void FetSettings::readGenerationParameters(QApplication& qapplication)
 	else if(s==QString("terms"))
 		gt.rules.mode=TERMS;
 	else{
-		QMessageBox::warning(nullptr, FetTranslate::tr("FET warning"), FetTranslate::tr("Incorrect startup mode read from the settings - making"
+		QMessageBox::warning(nullptr, FetTranslate::tr("Open-Timetable warning"), FetTranslate::tr("Incorrect startup mode read from the settings - making"
 		 " it %1.").arg(FetTranslate::tr("Official")));
 		gt.rules.mode=OFFICIAL;
 		//assert(0);
@@ -295,7 +296,7 @@ void FetSettings::readGenerationParameters(QApplication& qapplication)
 		if(!dir.exists(OUTPUT_DIR)){
 			bool t=dir.mkpath(OUTPUT_DIR);
 			if(!t){
-				QMessageBox::warning(nullptr, FetTranslate::tr("FET warning"), FetTranslate::tr("Output directory %1 does not exist and cannot be"
+				QMessageBox::warning(nullptr, FetTranslate::tr("Open-Timetable warning"), FetTranslate::tr("Output directory %1 does not exist and cannot be"
 				 " created - output directory will be made the default value %2")
 				 .arg(QDir::toNativeSeparators(OUTPUT_DIR)).arg(QDir::toNativeSeparators(predefDir)));
 				OUTPUT_DIR=predefDir;
@@ -323,6 +324,8 @@ void FetSettings::readGenerationParameters(QApplication& qapplication)
 		IMPORT_DIRECTORY=OUTPUT_DIR;
 	
 	checkForUpdates=settings.value("check-for-updates", "false").toBool();
+	// Open-Timetable: لا فحص تحديثات عبر موقع البرنامج الأصلي (لا اتصال خارجي)
+	checkForUpdates=false;
 
 	QString ver=settings.value("version", "-1").toString();
 	
@@ -330,7 +333,7 @@ void FetSettings::readGenerationParameters(QApplication& qapplication)
 
 	TIMETABLE_HTML_LEVEL=settings.value("html-level", "2").toInt();
 	if(TIMETABLE_HTML_LEVEL<0 || TIMETABLE_HTML_LEVEL>7){
-		QMessageBox::warning(nullptr, FetTranslate::tr("FET warning"), FetTranslate::tr("Incorrect HTML level read from the settings - making it %1.").arg(2));
+		QMessageBox::warning(nullptr, FetTranslate::tr("Open-Timetable warning"), FetTranslate::tr("Incorrect HTML level read from the settings - making it %1.").arg(2));
 		TIMETABLE_HTML_LEVEL=2;
 	}
 
@@ -2049,7 +2052,7 @@ void setLanguage(QApplication& qapplication, QWidget* parent)
 	}
 	else{
 		if(FET_LANGUAGE!="en_US"){
-			FetMessage::warning(parent, QString("FET warning"),
+			FetMessage::warning(parent, QString("Open-Timetable warning"),
 			 QString("Specified language is incorrect - making it en_US (US English)"));
 			FET_LANGUAGE="en_US";
 		}
@@ -2074,7 +2077,7 @@ void setLanguage(QApplication& qapplication, QWidget* parent)
 			if(parent!=nullptr)
 				QMessageBox::information(parent, QStringLiteral("Open-Timetable — language"), msg);
 		}
-		qWarning().noquote() << QString("FET: translation file %1 not found in %2, %3 or %4 - using en_US (US English)")
+		qWarning().noquote() << QString("Open-Timetable: translation file %1 not found in %2, %3 or %4 - using en_US (US English)")
 			.arg("fet_"+FET_LANGUAGE+".qm")
 			.arg(QDir::toNativeSeparators(s1))
 			.arg(QDir::toNativeSeparators(s2))
@@ -2371,6 +2374,7 @@ int main(int argc, char **argv)
 
 	// Open-Timetable: تطبيق المظهر الحديث على الواجهة كلها (لون، خط، أنماط).
 	UiTheme::apply(qapplication);
+	qapplication.setWindowIcon(UiIcons::logo(64)); // شعارنا بدل شعار البرنامج الأصلي
 
 	initLanguagesSet();
 
@@ -2414,7 +2418,7 @@ int main(int argc, char **argv)
 			t=dir.mkpath(OUTPUT_DIR);
 
 		if(!t){
-			QMessageBox::critical(nullptr, FetTranslate::tr("FET critical"), FetTranslate::tr("Cannot create or use %1 directory (where the results should be stored) - you can continue operation, but you might not be able to work with FET."
+			QMessageBox::critical(nullptr, FetTranslate::tr("Open-Timetable critical"), FetTranslate::tr("Cannot create or use %1 directory (where the results should be stored) - you can continue operation, but you might not be able to work with Open-Timetable."
 			 " Maybe you can try to change the output directory from the 'Settings' menu. If this is a bug - please report it.").arg(QDir::toNativeSeparators(OUTPUT_DIR)));
 		}
 		
@@ -2427,8 +2431,8 @@ int main(int argc, char **argv)
 		bool t_t=test.open(QIODevice::ReadWrite);
 #endif
 		if(!t_t){
-			QMessageBox::critical(nullptr, FetTranslate::tr("FET critical"), FetTranslate::tr("You don't have write permissions in the output directory "
-			 "(FET cannot open or create file %1) - you might not be able to work correctly with FET. Maybe you can try to change the output directory from the 'Settings' menu."
+			QMessageBox::critical(nullptr, FetTranslate::tr("Open-Timetable critical"), FetTranslate::tr("You don't have write permissions in the output directory "
+			 "(Open-Timetable cannot open or create file %1) - you might not be able to work correctly with Open-Timetable. Maybe you can try to change the output directory from the 'Settings' menu."
 			 " If this is a bug - please report it.").arg(testFileName));
 		}
 		else{
@@ -2437,7 +2441,7 @@ int main(int argc, char **argv)
 				test.remove();
 		}
 
-		QCoreApplication::setApplicationName(FetTranslate::tr("FET"));
+		QCoreApplication::setApplicationName(QStringLiteral("Open-Timetable"));
 		
 		pqapplication=&qapplication;
 		FetMainForm fetMainForm;
@@ -2458,7 +2462,7 @@ int main(int argc, char **argv)
 			QFileInfo fileinfo(fileName);
 			QString completeFileName=fileinfo.canonicalFilePath();
 			if(completeFileName.isEmpty())
-				QMessageBox::warning(&fetMainForm, FetTranslate::tr("FET warning"), FetTranslate::tr("Could not open file '%1' - not existing")
+				QMessageBox::warning(&fetMainForm, FetTranslate::tr("Open-Timetable warning"), FetTranslate::tr("Could not open file '%1' - not existing")
 				 .arg(_args.at(1)));
 			else
 				fetMainForm.openFile(completeFileName);
@@ -2471,7 +2475,7 @@ int main(int argc, char **argv)
 	else{
 		fetSettings.readGenerationParameters(qapplication); //Used only to load the language and correctly translate the strings below.
 		
-		QMessageBox::warning(nullptr, FetTranslate::tr("FET warning"), FetTranslate::tr("To start FET in the interface mode, please either do not give any"
+		QMessageBox::warning(nullptr, FetTranslate::tr("Open-Timetable warning"), FetTranslate::tr("To start Open-Timetable in the interface mode, please either do not give any"
 		 " command-line parameters, or give a single command-line parameter, which is the name of the fet data file to be loaded on startup."));
 		
 		return 1;

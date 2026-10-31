@@ -96,8 +96,8 @@ RestoreDataStateForm::RestoreDataStateForm(QWidget* parent): QDialog(parent)
 
 		if(!dt.first.isValid() || !dt.second.isValid()){
 			s+=tr("Corrupted date/time read from the memory or from the disk (but your data might be valid)")
-			 +QString(" ")+tr("If the problem is caused by the history file saved on the disk, you might want to exit FET, remove the corresponding history file"
-			 " ending in '%1', open FET again, and open your .fet data file again. Or just ignore the problem, until the history will be replaced with new, valid entries.")
+			 +QString(" ")+tr("If the problem is caused by the history file saved on the disk, you might want to exit Open-Timetable, remove the corresponding history file"
+			 " ending in '%1', open Open-Timetable again, and open your .fet data file again. Or just ignore the problem, until the history will be replaced with new, valid entries.")
 			 .arg(SUFFIX_FILENAME_SAVE_HISTORY);
 		}
 		else{
@@ -169,8 +169,8 @@ void RestoreDataStateForm::restoreDataStateListWidgetSelectionChanged()
 		//We need this compatibility for the disk history, where the user might have saved the history on disk from a different Qt version.
 		if(descriptionBA.isEmpty()){
 			restoreDataStateTextEdit->setText(tr("Corrupted operation details read from the memory or from the disk (but your data might be valid).")
-			 +QString("\n\n")+tr("If the problem is caused by the history file saved on the disk, you might want to exit FET, remove the corresponding history file"
-			 " ending in '%1', open FET again, and open your .fet data file again. Or just ignore the problem, until the history will be replaced with new, valid entries.")
+			 +QString("\n\n")+tr("If the problem is caused by the history file saved on the disk, you might want to exit Open-Timetable, remove the corresponding history file"
+			 " ending in '%1', open Open-Timetable again, and open your .fet data file again. Or just ignore the problem, until the history will be replaced with new, valid entries.")
 			 .arg(SUFFIX_FILENAME_SAVE_HISTORY));
 		}
 		else{
@@ -190,17 +190,17 @@ void RestoreDataStateForm::ok()
 {
 	int i=restoreDataStateListWidget->currentRow();
 	if(i<0 || i>=restoreDataStateListWidget->count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Invalid restore data point selected."));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Invalid restore data point selected."));
 		return;
 	}
 
 	int itb=cntUndoRedoStackIterator-i-1;
 	if(itb==0){
-		QMessageBox::information(this, tr("FET information"), tr("You selected to restore to the same state as the current one. Nothing will be done."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("You selected to restore to the same state as the current one. Nothing will be done."));
 	}
 	else{
 		/*if(INPUT_FILENAME_XML!=fileNames.at(i))
-			QMessageBox::information(this, tr("FET information"), tr("Note: the name of your current file will be changed from %1 to %2.")
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Note: the name of your current file will be changed from %1 to %2.")
 			 .arg(INPUT_FILENAME_XML.isEmpty() ? QString("Untitled") : QDir::toNativeSeparators(INPUT_FILENAME_XML))
 			 .arg(fileNames.at(i).isEmpty() ? QString("Untitled") : QDir::toNativeSeparators(fileNames.at(i))));*/
 		gt.rules.restoreState(this, itb);

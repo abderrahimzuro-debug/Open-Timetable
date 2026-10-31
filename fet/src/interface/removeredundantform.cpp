@@ -435,7 +435,7 @@ void RemoveRedundantForm::removeRedundantCheckBox_toggled()
 	int k=removeRedundantCheckBox->isChecked();
 	if(!k){
 		removeRedundantCheckBox->setChecked(true);
-		QMessageBox::information(this, tr("FET information"), tr("This box must remain checked, so that you can remove"
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("This box must remain checked, so that you can remove"
 		 " redundant constraints of type min days between activities"));
 	}
 }
@@ -445,7 +445,7 @@ void RemoveRedundantForm::removeRedundantHalfCheckBox_toggled()
 	int k=removeRedundantHalfCheckBox->isChecked();
 	if(!k){
 		removeRedundantHalfCheckBox->setChecked(true);
-		QMessageBox::information(this, tr("FET information"), tr("This box must remain checked, so that you can remove"
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("This box must remain checked, so that you can remove"
 		 " redundant constraints of type min half days between activities"));
 	}
 }

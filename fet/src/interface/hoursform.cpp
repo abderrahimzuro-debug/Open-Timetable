@@ -132,7 +132,7 @@ HoursForm::~HoursForm()
 void HoursForm::insertHour()
 {
 	if(nHoursSpinBox->value()==nHoursSpinBox->maximum()){
-		QMessageBox::warning(this, tr("FET information"), tr("Maximum number of hours reached"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Maximum number of hours reached"));
 		return;
 	}
 	int i=hoursListWidget->currentRow();
@@ -159,7 +159,7 @@ void HoursForm::modifyHour()
 {
 	int i=hoursListWidget->currentRow();
 	if(hoursListWidget->count()<=0 || i<0 || i>=hoursListWidget->count()){
-		QMessageBox::warning(this, tr("FET information"), tr("Invalid selected hour"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Invalid selected hour"));
 		return;
 	}
 	
@@ -191,7 +191,7 @@ void HoursForm::modifyRealHour()
 {
 	int i=realHoursListWidget->currentRow();
 	if(realHoursListWidget->count()<=0 || i<0 || i>=realHoursListWidget->count()){
-		QMessageBox::warning(this, tr("FET information"), tr("Invalid selected real hour"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Invalid selected real hour"));
 		return;
 	}
 
@@ -244,10 +244,10 @@ void HoursForm::removeHour()
 		numberOfRealHoursChanged();
 	}
 	else if(hoursListWidget->count()==1){
-		QMessageBox::warning(this, tr("FET information"), tr("The number of hours must be at least 1"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("The number of hours must be at least 1"));
 	}
 	else{
-		QMessageBox::warning(this, tr("FET information"), tr("Invalid selected hour"));
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Invalid selected hour"));
 	}
 }
 
@@ -315,13 +315,13 @@ void HoursForm::ok()
 		QString s=realNamesForHours.at(i);
 
 		if(s.isEmpty()){
-			QMessageBox::warning(this, tr("FET information"), tr("Empty names not allowed (the hour number %1 has an empty name).").arg(i+1));
+			QMessageBox::warning(this, tr("Open-Timetable information"), tr("Empty names not allowed (the hour number %1 has an empty name).").arg(i+1));
 			return;
 		}
 
 		if(hashHourIndex.contains(s)){
 			int j=hashHourIndex.value(s);
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 			 tr("Duplicate names not allowed (the hour number %1 has the same name as the hour number %2).").arg(i+1).arg(j+1));
 			return;
 		}
@@ -336,13 +336,13 @@ void HoursForm::ok()
 			QString s=realNamesForRealHours.at(i);
 			
 			if(s.isEmpty()){
-				QMessageBox::warning(this, tr("FET information"), tr("Empty names not allowed (the real hour number %1 has an empty name).").arg(i+1));
+				QMessageBox::warning(this, tr("Open-Timetable information"), tr("Empty names not allowed (the real hour number %1 has an empty name).").arg(i+1));
 				return;
 			}
 			
 			if(hashRealHourIndex.contains(s)){
 				int j=hashRealHourIndex.value(s);
-				QMessageBox::warning(this, tr("FET information"),
+				QMessageBox::warning(this, tr("Open-Timetable information"),
 				 tr("Duplicate names not allowed (the real hour number %1 has the same name as the real hour number %2).").arg(i+1).arg(j+1));
 				return;
 			}
@@ -388,7 +388,7 @@ void HoursForm::ok()
 		}
 		s+=tr("Do you want to continue?");
 
-		int res=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes|QMessageBox::Cancel);
+		int res=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes|QMessageBox::Cancel);
 		
 		if(res==QMessageBox::Cancel)
 			return;
@@ -544,7 +544,7 @@ void HoursForm::help()
 	else if(gt.rules.mode==MORNINGS_AFTERNOONS){
 		s+=tr("You are in the Mornings-Afternoons mode. In this mode, you need to enter a number of hours which is half the number of real"
 		 " hours. For example, if the number of real hours is 8 (4 in the morning and 4 in the afternoon), you need to enter"
-		 " 4 hours. FET will automatically compute the number of real hours = the number of hours x 2.");
+		 " 4 hours. Open-Timetable will automatically compute the number of real hours = the number of hours x 2.");
 	}
 	else if(gt.rules.mode==BLOCK_PLANNING){
 		s+=tr("You are in the Block planning mode. Each hour represents a real life time slot. So, if you have 5 real days and 8 real hours,"
@@ -565,5 +565,5 @@ void HoursForm::help()
 	s+=" ";
 	s+=tr("This is a very large value and probably more than enough for any scenario.");
 
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }

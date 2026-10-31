@@ -228,16 +228,16 @@ void NotificationCommandForm::help()
 {
 	QString s;
 	
-	s+=tr("You can choose to make FET execute an external command at the end of each single or multiple generation, in addition to or as an alternative"
+	s+=tr("You can choose to make Open-Timetable execute an external command at the end of each single or multiple generation, in addition to or as an alternative"
 	 " to the system beep.");
 	s+=" ";
-	s+=tr("Also, you can choose to make FET issue a system beep and/or execute an external command after each successful timetable in a multiple generation.");
+	s+=tr("Also, you can choose to make Open-Timetable issue a system beep and/or execute an external command after each successful timetable in a multiple generation.");
 	//s+="\n\n";
 	//s+=tr("This external command can be terminated and/or killed after a respective specified time (expressed in seconds).");
 	/*s+=tr("1) If the notification command is not detached, it can be terminated and/or killed after a respective specified time (expressed in seconds)."
-	 " Also, it will be killed if you quit FET.");
+	 " Also, it will be killed if you quit Open-Timetable.");
 	s+="\n\n";
-	s+=tr("2) If the notification command is detached, it won't be killed if you quit FET.");*/
+	s+=tr("2) If the notification command is detached, it won't be killed if you quit Open-Timetable.");*/
 
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }

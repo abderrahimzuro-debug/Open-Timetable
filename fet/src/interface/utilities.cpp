@@ -392,7 +392,7 @@ void setRulesUnmodifiedAndOtherThings(Rules* rules)
 
 void showWarningForInvisibleSubgroupConstraint(QWidget* parent, const QString& initialSubgroupName)
 {
-	QString title=QCoreApplication::translate("VariousGlobalWarningMessages", "FET warning");
+	QString title=QCoreApplication::translate("VariousGlobalWarningMessages", "Open-Timetable warning");
 
 	QString message=QCoreApplication::translate("VariousGlobalWarningMessages", "Subgroups are invisible in combo boxes, by a global setting which you activated."
 	 " The current constraint is referring to subgroup %1, so the constraint is displayed incorrectly with a void subgroup here.")
@@ -405,7 +405,7 @@ void showWarningForInvisibleSubgroupConstraint(QWidget* parent, const QString& i
 
 void showWarningCannotModifyConstraintInvisibleSubgroupConstraint(QWidget* parent, const QString& initialSubgroupName)
 {
-	QString title=QCoreApplication::translate("VariousGlobalWarningMessages", "FET warning");
+	QString title=QCoreApplication::translate("VariousGlobalWarningMessages", "Open-Timetable warning");
 
 	QString message=QCoreApplication::translate("VariousGlobalWarningMessages", "Subgroups are invisible in combo boxes, by a global setting which you activated."
 	 " You are trying to modify a constraint, leaving it to refer to the original subgroup %1, which is invisible in the combo box - but this is impossible.")
@@ -418,7 +418,7 @@ void showWarningCannotModifyConstraintInvisibleSubgroupConstraint(QWidget* paren
 
 void showWarningForInvisibleSubgroupActivity(QWidget* parent, const QString& initialSubgroupName)
 {
-	QString title=QCoreApplication::translate("VariousGlobalWarningMessages", "FET warning");
+	QString title=QCoreApplication::translate("VariousGlobalWarningMessages", "Open-Timetable warning");
 
 	QString message=QCoreApplication::translate("VariousGlobalWarningMessages", "Subgroups are invisible in combo boxes, by a global setting which you activated."
 	 " The current activity is referring to subgroup %1, so the activity is displayed incorrectly with a void subgroup here.")

@@ -80,7 +80,7 @@
          <item>
           <widget class="QCheckBox" name="fetVersionCheckBox">
            <property name="text">
-            <string>FET version</string>
+            <string>Open-Timetable version</string>
            </property>
           </widget>
          </item>

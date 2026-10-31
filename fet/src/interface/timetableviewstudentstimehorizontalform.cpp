@@ -274,7 +274,7 @@ TimetableViewStudentsTimeHorizontalForm::TimetableViewStudentsTimeHorizontalForm
 ///////////
 
 	/*if(gt.rules.nInternalTeachers!=gt.rules.teachersList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
 		return;
 	}*/
 
@@ -602,7 +602,7 @@ void TimetableViewStudentsTimeHorizontalForm::newTimetableGenerated()
 ///////////
 
 	/*if(gt.rules.nInternalTeachers!=gt.rules.teachersList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
 		return;
 	}*/
 
@@ -903,14 +903,14 @@ void TimetableViewStudentsTimeHorizontalForm::resizeRowsAfterShow()
 
 void TimetableViewStudentsTimeHorizontalForm::updateStudentsTimetableTable(){
 	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable "
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable "
 		"or close the timetable view students dialog"));
 		return;
 	}
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -1202,19 +1202,19 @@ void TimetableViewStudentsTimeHorizontalForm::detailActivity(QTableWidgetItem* i
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
 		return;
 	}
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	if(item->row()>=usedStudentsList.count() || item->column()>=gt.rules.nDaysPerWeek*gt.rules.nHoursPerDay){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable "
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable "
 		"or close the timetable view students dialog"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 	
@@ -1224,7 +1224,7 @@ void TimetableViewStudentsTimeHorizontalForm::detailActivity(QTableWidgetItem* i
 	int t=item->row();
 	
 	/*if(gt.rules.nInternalTeachers!=gt.rules.teachersList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
 		return;
 	}*/
 
@@ -1234,7 +1234,7 @@ void TimetableViewStudentsTimeHorizontalForm::detailActivity(QTableWidgetItem* i
 	int sbg=-1;
 	
 	if(!gt.rules.studentsHash.contains(usedStudentsList.at(t))){
-		QMessageBox::warning(this, tr("FET warning"), tr("The students set is invalid - please close this dialog and open a new view students timetable"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("The students set is invalid - please close this dialog and open a new view students timetable"));
 		return;
 	}
 	assert(gt.rules.studentsHash.contains(usedStudentsList.at(t)));
@@ -1275,7 +1275,7 @@ void TimetableViewStudentsTimeHorizontalForm::detailActivity(QTableWidgetItem* i
 
 	/*int teacher=gt.rules.searchTeacher(gt.rules.internalTeachersList[t]->name);
 	if(teacher<0){
-		QMessageBox::warning(this, tr("FET warning"), tr("The teacher is invalid - please close this dialog and open a new view teachers timetable"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("The teacher is invalid - please close this dialog and open a new view teachers timetable"));
 		return;
 	}*/
 	QString s = "";
@@ -1384,19 +1384,19 @@ void TimetableViewStudentsTimeHorizontalForm::lockTimeSpace()
 void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace)
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
 		return;
 	}
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -1444,7 +1444,7 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 		assert(t<studentsTimetableTable->rowCount());
 
 		/*if(!gt.rules.studentsHash.contains(usedStudentsList.at(t))){
-			QMessagebox::warning(this, tr("FET warning"), tr("The students set is invalid - please close this dialog and open a new view students timetable"));
+			QMessagebox::warning(this, tr("Open-Timetable warning"), tr("The students set is invalid - please close this dialog and open a new view students timetable"));
 			return;
 		}*/
 
@@ -1519,7 +1519,7 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 						count++;
 						if(c->permanentlyLocked){
 							if(idsOfLockedTime.contains(c->activityId) || !idsOfPermanentlyLockedTime.contains(c->activityId)){
-								QMessageBox::warning(this, tr("FET warning"), tr("Small problem detected")
+								QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Small problem detected")
 									+"\n\n"+tr("A possible problem might be that you have 2 or more constraints of type activity preferred starting time with weight 100% related to activity id %1, please leave only one of them").arg(act->id)
 									+"\n\n"+tr("A possible problem might be synchronization - so maybe try to close the timetable view dialog and open it again")
 									+"\n\n"+tr("Please report possible bug")
@@ -1533,7 +1533,7 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 						}
 						else{
 							if(!idsOfLockedTime.contains(c->activityId) || idsOfPermanentlyLockedTime.contains(c->activityId)){
-								QMessageBox::warning(this, tr("FET warning"), tr("Small problem detected")
+								QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Small problem detected")
 									+"\n\n"+tr("A possible problem might be that you have 2 or more constraints of type activity preferred starting time with weight 100% related to activity id %1, please leave only one of them").arg(act->id)
 									+"\n\n"+tr("A possible problem might be synchronization - so maybe try to close the timetable view dialog and open it again")
 									+"\n\n"+tr("Please report possible bug")
@@ -1559,13 +1559,13 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 					else{
 						delete ctr;
 						
-						QMessageBox::warning(this, tr("FET warning"), tr("You may have a problem, because FET expected to add 1 constraint, but this is not possible. "
+						QMessageBox::warning(this, tr("Open-Timetable warning"), tr("You may have a problem, because Open-Timetable expected to add 1 constraint, but this is not possible. "
 						 "Please report possible bug"));
 					}
 				}
 				else if(count>=1 && (unlockRadioButton->isChecked() || toggleRadioButton->isChecked())){
 					if(count>=2)
-						QMessageBox::warning(this, tr("FET warning"), tr("You may have a problem, because FET expected to delete 1 constraint, but will delete %1 constraints").arg(tmptc.size()));
+						QMessageBox::warning(this, tr("Open-Timetable warning"), tr("You may have a problem, because Open-Timetable expected to delete 1 constraint, but will delete %1 constraints").arg(tmptc.size()));
 
 					for(TimeConstraint* deltc : std::as_const(tmptc)){
 						s+=tr("The following constraint will be deleted:")+"\n"+deltc->getDetailedDescription(gt.rules)+"\n";
@@ -1580,13 +1580,13 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 
 				if(report){
 					/*int k;
-					k=QMessageBox::information(this, tr("FET information"), s,
+					k=QMessageBox::information(this, tr("Open-Timetable information"), s,
 						tr("Skip information"), tr("See next"), QString(), 1, 0 );
 
 					if(k==0)
 						report=false;*/
 					QMessageBox::StandardButton k;
-					k=QMessageBox::information(this, tr("FET information"), s, QMessageBox::YesToAll | QMessageBox::Ok);
+					k=QMessageBox::information(this, tr("Open-Timetable information"), s, QMessageBox::YesToAll | QMessageBox::Ok);
 					
 					if(k==QMessageBox::YesToAll)
 						report=false;
@@ -1609,7 +1609,7 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 						count++;
 						if(c->permanentlyLocked){
 							if(idsOfLockedSpace.contains(c->activityId) || !idsOfPermanentlyLockedSpace.contains(c->activityId)){
-								QMessageBox::warning(this, tr("FET warning"), tr("Small problem detected")
+								QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Small problem detected")
 									+"\n\n"+tr("A possible problem might be that you have 2 or more constraints of type activity preferred room with weight 100% related to activity id %1, please leave only one of them").arg(act->id)
 									+"\n\n"+tr("A possible problem might be synchronization - so maybe try to close the timetable view dialog and open it again")
 									+"\n\n"+tr("Please report possible bug")
@@ -1623,7 +1623,7 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 						}
 						else{
 							if(!idsOfLockedSpace.contains(c->activityId) || idsOfPermanentlyLockedSpace.contains(c->activityId)){
-								QMessageBox::warning(this, tr("FET warning"), tr("Small problem detected")
+								QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Small problem detected")
 									+"\n\n"+tr("A possible problem might be that you have 2 or more constraints of type activity preferred room with weight 100% related to activity id %1, please leave only one of them").arg(act->id)
 									+"\n\n"+tr("A possible problem might be synchronization - so maybe try to close the timetable view dialog and open it again")
 									+"\n\n"+tr("Please report possible bug")
@@ -1658,13 +1658,13 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 					else{
 						delete ctr;
 						
-						QMessageBox::warning(this, tr("FET warning"), tr("You may have a problem, because FET expected to add 1 constraint, but this is not possible. "
+						QMessageBox::warning(this, tr("Open-Timetable warning"), tr("You may have a problem, because Open-Timetable expected to add 1 constraint, but this is not possible. "
 						 "Please report possible bug"));
 					}
 				}
 				else if(count>=1 && (unlockRadioButton->isChecked() || toggleRadioButton->isChecked())){
 					if(count>=2)
-						QMessageBox::warning(this, tr("FET warning"), tr("You may have a problem, because FET expected to delete 1 constraint, but will delete %1 constraints").arg(tmpsc.size()));
+						QMessageBox::warning(this, tr("Open-Timetable warning"), tr("You may have a problem, because Open-Timetable expected to delete 1 constraint, but will delete %1 constraints").arg(tmpsc.size()));
 
 					for(SpaceConstraint* delsc : std::as_const(tmpsc)){
 						s+=tr("The following constraint will be deleted:")+"\n"+delsc->getDetailedDescription(gt.rules)+"\n";
@@ -1679,13 +1679,13 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 			
 				if(report){
 					/*int k;
-					k=QMessageBox::information(this, tr("FET information"), s,
+					k=QMessageBox::information(this, tr("Open-Timetable information"), s,
 						tr("Skip information"), tr("See next"), QString(), 1, 0 );
 						
 					if(k==0)
 						report=false;*/
 					QMessageBox::StandardButton k;
-					k=QMessageBox::information(this, tr("FET information"), s, QMessageBox::YesToAll | QMessageBox::Ok);
+					k=QMessageBox::information(this, tr("Open-Timetable information"), s, QMessageBox::YesToAll | QMessageBox::Ok);
 					
 					if(k==QMessageBox::YesToAll)
 						report=false;
@@ -1766,7 +1766,7 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 	QString s=all.join("\n\n");
 	if(s.isEmpty())
 		s=QCoreApplication::translate("TimetableViewForm", "No locking constraints added or removed.");
-	QMessageBox::information(this, tr("FET information"), s);
+	QMessageBox::information(this, tr("Open-Timetable information"), s);
 
 	if(addedT>0 || addedS>0 || unlockedT>0 || unlockedS>0)
 		gt.rules.addUndoPoint(tr("Locked/unlocked/toggled a selection of activities in the"
@@ -1797,19 +1797,19 @@ void TimetableViewStudentsTimeHorizontalForm::lock(bool lockTime, bool lockSpace
 void TimetableViewStudentsTimeHorizontalForm::unlockDays()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
 		return;
 	}
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -1852,7 +1852,7 @@ void TimetableViewStudentsTimeHorizontalForm::unlockDays()
 		assert(t<studentsTimetableTable->rowCount());
 
 		/*if(!gt.rules.studentsHash.contains(usedStudentsList.at(t))){
-			QMessagebox::warning(this, tr("FET warning"), tr("The students set is invalid - please close this dialog and open a new view students timetable"));
+			QMessagebox::warning(this, tr("Open-Timetable warning"), tr("The students set is invalid - please close this dialog and open a new view students timetable"));
 			return;
 		}*/
 
@@ -1926,7 +1926,7 @@ void TimetableViewStudentsTimeHorizontalForm::unlockDays()
 	gt.rules.removeTimeConstraints(tmptc);
 	tmptc.clear();
 
-	QMessageBox::information(this, tr("FET information"), tr("There were removed %1 constraints").arg(nUnlocked));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("There were removed %1 constraints").arg(nUnlocked));
 
 	if(nUnlocked>0)
 		gt.rules.addUndoPoint(tr("Unlocked from days a selection of activities in the"
@@ -1938,19 +1938,19 @@ void TimetableViewStudentsTimeHorizontalForm::unlockDays()
 void TimetableViewStudentsTimeHorizontalForm::unlockAllDays()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
 		return;
 	}
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -1967,7 +1967,7 @@ void TimetableViewStudentsTimeHorizontalForm::unlockAllDays()
 	gt.rules.removeTimeConstraints(tmptc);
 	tmptc.clear();
 
-	QMessageBox::information(this, tr("FET information"), tr("There were removed %1 constraints").arg(nUnlocked));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("There were removed %1 constraints").arg(nUnlocked));
 
 	if(nUnlocked>0)
 		gt.rules.addUndoPoint(tr("Unlocked from days all the activities in the"
@@ -1979,19 +1979,19 @@ void TimetableViewStudentsTimeHorizontalForm::unlockAllDays()
 void TimetableViewStudentsTimeHorizontalForm::lockDays()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
 		return;
 	}
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -1999,7 +1999,7 @@ void TimetableViewStudentsTimeHorizontalForm::lockDays()
 	QString tmp=lockToDaysWeightLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100.0){
-		QMessageBox::warning(this, tr("FET information"),
+		QMessageBox::warning(this, tr("Open-Timetable information"),
 			tr("Invalid weight (percentage)"));
 		return;
 	}
@@ -2043,7 +2043,7 @@ void TimetableViewStudentsTimeHorizontalForm::lockDays()
 		assert(t<studentsTimetableTable->rowCount());
 
 		/*if(!gt.rules.studentsHash.contains(usedStudentsList.at(t))){
-			QMessagebox::warning(this, tr("FET warning"), tr("The students set is invalid - please close this dialog and open a new view students timetable"));
+			QMessagebox::warning(this, tr("Open-Timetable warning"), tr("The students set is invalid - please close this dialog and open a new view students timetable"));
 			return;
 		}*/
 
@@ -2137,11 +2137,11 @@ void TimetableViewStudentsTimeHorizontalForm::lockDays()
 		QString lt=tr("These activities ids are already locked not permanently in time: %1.").arg(st);
 		QString ld=tr("These activities ids are already locked to days: %1.").arg(sd);
 		if(!lockedNotPermanentlyTimeActivities.isEmpty() && !lockedDaysActivities.isEmpty())
-			QMessageBox::warning(this, tr("FET warning"), lt+"\n\n"+ld);
+			QMessageBox::warning(this, tr("Open-Timetable warning"), lt+"\n\n"+ld);
 		else if(!lockedNotPermanentlyTimeActivities.isEmpty())
-			QMessageBox::warning(this, tr("FET warning"), lt);
+			QMessageBox::warning(this, tr("Open-Timetable warning"), lt);
 		else if(!lockedDaysActivities.isEmpty())
-			QMessageBox::warning(this, tr("FET warning"), ld);
+			QMessageBox::warning(this, tr("Open-Timetable warning"), ld);
 		else
 			assert(0);
 		return;
@@ -2165,7 +2165,7 @@ void TimetableViewStudentsTimeHorizontalForm::lockDays()
 		}
 	}
 
-	QMessageBox::information(this, tr("FET information"), tr("There were added %1 time constraints").arg(nLocked));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("There were added %1 time constraints").arg(nLocked));
 
 	if(nLocked>0)
 		gt.rules.addUndoPoint(tr("Locked to days a selection of activities in the"
@@ -2231,7 +2231,7 @@ void TimetableViewStudentsTimeHorizontalForm::help()
 		"as possible remain on the same day on which they were scheduled (placed), so that - for example - the scheduled tests do not need to change "
 		"their initially scheduled day.", "%1 and %2 are two users").arg("Vangelis Karafillidis").arg("Alexey Chernous");
 
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }
 
 void TimetableViewStudentsTimeHorizontalForm::constraints()
@@ -2242,14 +2242,14 @@ void TimetableViewStudentsTimeHorizontalForm::constraints()
 void TimetableViewStudentsTimeHorizontalForm::studentsTime()
 {
 	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable "
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable "
 		"or close the timetable view students dialog"));
 		return;
 	}
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -2266,7 +2266,7 @@ void TimetableViewStudentsTimeHorizontalForm::studentsTime()
 	}
 
 	if(sstd.isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Please select at least one students set (one table cell)"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please select at least one students set (one table cell)"));
 		return;
 	}
 
@@ -2292,14 +2292,14 @@ void TimetableViewStudentsTimeHorizontalForm::studentsTime()
 void TimetableViewStudentsTimeHorizontalForm::studentsSpace()
 {
 	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable "
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable "
 		"or close the timetable view students dialog"));
 		return;
 	}
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -2316,7 +2316,7 @@ void TimetableViewStudentsTimeHorizontalForm::studentsSpace()
 	}
 
 	if(sstd.isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Please select at least one students set (one table cell)"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please select at least one students set (one table cell)"));
 		return;
 	}
 
@@ -2342,19 +2342,19 @@ void TimetableViewStudentsTimeHorizontalForm::studentsSpace()
 void TimetableViewStudentsTimeHorizontalForm::activitiesTime()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
 		return;
 	}
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -2458,7 +2458,7 @@ void TimetableViewStudentsTimeHorizontalForm::activitiesTime()
 	}
 
 	if(actl.isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Please select at least one activity (one nonempty table cell)"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please select at least one activity (one nonempty table cell)"));
 		return;
 	}
 
@@ -2486,19 +2486,19 @@ void TimetableViewStudentsTimeHorizontalForm::activitiesTime()
 void TimetableViewStudentsTimeHorizontalForm::activitiesSpace()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready)){
-		QMessageBox::warning(this, tr("FET warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Timetable not available in view students timetable dialog - please generate a new timetable"));
 		return;
 	}
 	assert(students_schedule_ready && teachers_schedule_ready);
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -2602,7 +2602,7 @@ void TimetableViewStudentsTimeHorizontalForm::activitiesSpace()
 	}
 
 	if(actl.isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Please select at least one activity (one nonempty table cell)"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please select at least one activity (one nonempty table cell)"));
 		return;
 	}
 

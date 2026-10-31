@@ -214,13 +214,13 @@ void SplitYearForm::addClicked()
 		return;
 
 	bool ok;
-	QString text=QInputDialog::getText(this, tr("FET - Add division to category %1").arg(i+1),
+	QString text=QInputDialog::getText(this, tr("Open-Timetable - Add division to category %1").arg(i+1),
 	 tr("Please input division name:"), QLineEdit::Normal, QString(""), &ok);
 	if(ok && !text.isEmpty()){
 		for(int k=0; k<categoriesSpinBox->value(); k++)
 			for(int j=0; j<listWidgets[k]->count(); j++)
 				if(listWidgets[k]->item(j)->text()==text){
-					QMessageBox::information(this, tr("FET information"), tr("Duplicate names are not allowed (the current string is found in category number %1, division number %2).")
+					QMessageBox::information(this, tr("Open-Timetable information"), tr("Duplicate names are not allowed (the current string is found in category number %1, division number %2).")
 					 .arg(k+1).arg(j+1));
 					return;
 				}
@@ -248,14 +248,14 @@ void SplitYearForm::modifyDoubleClicked(int i)
 		QString ts=listWidgets[i]->currentItem()->text();
 
 		bool ok;
-		QString text=QInputDialog::getText(this, tr("FET - Modify division to category %1").arg(i+1),
+		QString text=QInputDialog::getText(this, tr("Open-Timetable - Modify division to category %1").arg(i+1),
 		 tr("Please input the new division name:"), QLineEdit::Normal, ts, &ok);
 		if(ok && !text.isEmpty()){
 			if(text!=ts){
 				for(int k=0; k<categoriesSpinBox->value(); k++)
 					for(int j=0; j<listWidgets[k]->count(); j++)
 						if(listWidgets[k]->item(j)->text()==text){
-							QMessageBox::information(this, tr("FET information"), tr("Duplicate names are not allowed (the current string is found in category number %1, division number %2).")
+							QMessageBox::information(this, tr("Open-Timetable information"), tr("Duplicate names are not allowed (the current string is found in category number %1, division number %2).")
 							 .arg(k+1).arg(j+1));
 							return;
 						}
@@ -343,7 +343,7 @@ void SplitYearForm::removeClicked()
 		return;
 
 	if(listWidgets[i]->currentRow()>=0 && listWidgets[i]->currentRow()<listWidgets[i]->count()){
-		QMessageBox::StandardButton ret=QMessageBox::question(this, tr("FET confirmation"),
+		QMessageBox::StandardButton ret=QMessageBox::question(this, tr("Open-Timetable confirmation"),
 		 tr("Do you want to remove division %1 from category %2?").arg(listWidgets[i]->currentItem()->text())
 		 .arg(i+1), QMessageBox::Yes|QMessageBox::Cancel);
 		if(ret==QMessageBox::Cancel)
@@ -371,7 +371,7 @@ void SplitYearForm::removeAllClicked()
 	if(i<0 || i>=tabWidget->count())
 		return;
 
-	QMessageBox::StandardButton ret=QMessageBox::question(this, tr("FET confirmation"),
+	QMessageBox::StandardButton ret=QMessageBox::question(this, tr("Open-Timetable confirmation"),
 	 tr("Do you really want to remove all divisions from category %1?").arg(i+1),
 	 QMessageBox::Yes|QMessageBox::Cancel);
 	if(ret==QMessageBox::Cancel)
@@ -386,7 +386,7 @@ void SplitYearForm::removeAllClicked()
 void SplitYearForm::ok()
 {
 	if(categoriesSpinBox->value()>4){
-		QMessageBox::StandardButton ret=QMessageBox::warning(this, tr("FET warning"),
+		QMessageBox::StandardButton ret=QMessageBox::warning(this, tr("Open-Timetable warning"),
 		 tr("You want to divide the year into %1 categories. The recommended number of categories"
 		 " is 2, 3 or at most 4 (to ensure that solving the timetable will be quick and feasible). Are you sure?")
 		 .arg(categoriesSpinBox->value()),
@@ -401,7 +401,7 @@ void SplitYearForm::ok()
 		product*=listWidgets[i]->count();
 
 		if(product>MAX_SUBGROUPS_PER_YEAR){
-			QMessageBox::information(this, tr("FET information"), tr("The current number of subgroups for this year is too large"
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("The current number of subgroups for this year is too large"
 			 " (the maximum allowed value is %1, but computing up to category %2 gives %3 subgroups)")
 			 .arg(MAX_SUBGROUPS_PER_YEAR).arg(i+1).arg(product));
 			return;
@@ -409,7 +409,7 @@ void SplitYearForm::ok()
 	}
 	
 	if(product==0){
-		QMessageBox::information(this, tr("FET information"), tr("Each category must contain at least one division"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Each category must contain at least one division"));
 		return;
 	}
 	
@@ -435,7 +435,7 @@ void SplitYearForm::ok()
 	}
 	int totalEstimated=tmpSet.count()+int(product);
 	if(totalEstimated>MAX_TOTAL_SUBGROUPS){
-		QMessageBox::StandardButton ret=QMessageBox::warning(this, tr("FET warning"),
+		QMessageBox::StandardButton ret=QMessageBox::warning(this, tr("Open-Timetable warning"),
 		 tr("Please note that the current configuration will lead you to %1 total number of subgroups."
 		 " The file format supports any number of students sets, but for the timetable generation to be"
 		 " possible the maximum allowed total number of subgroups is %2.").arg(totalEstimated).arg(MAX_TOTAL_SUBGROUPS)
@@ -452,13 +452,13 @@ void SplitYearForm::ok()
 		for(int j=0; j<listWidgets[i]->count(); j++){
 			QString ts=listWidgets[i]->item(j)->text();
 			if(tmp.contains(ts)){
-				QMessageBox::information(this, tr("FET information"), tr("Duplicate names not allowed (%1 appears a second time in category number %2, division number %3).",
+				QMessageBox::information(this, tr("Open-Timetable information"), tr("Duplicate names not allowed (%1 appears a second time in category number %2, division number %3).",
 				 "%1 is the name of a division (of a year).")
 				 .arg(ts).arg(i+1).arg(j+1));
 				return;
 			}
 			else if(ts.isEmpty()){
-				QMessageBox::information(this, tr("FET information"), tr("Empty names not allowed (the entry in category number %1, division number %2 has an empty name).").arg(i+1).arg(j+1));
+				QMessageBox::information(this, tr("Open-Timetable information"), tr("Empty names not allowed (the entry in category number %1, division number %2 has an empty name).").arg(i+1).arg(j+1));
 				return;
 			}
 			tmp.insert(ts);
@@ -484,7 +484,7 @@ void SplitYearForm::ok()
 	for(int j=0; j<listWidgets[0]->count(); j++){
 		QString ts=year+separator+listWidgets[0]->item(j)->text();
 		if(existingNames.contains(ts)){
-			QMessageBox::information(this, tr("FET information"), tr("Cannot add group %1, because a set with the same name exists."
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Cannot add group %1, because a set with the same name exists."
 			 " Please choose another name or remove the old set").arg(ts));
 			return;
 		}
@@ -497,7 +497,7 @@ void SplitYearForm::ok()
 				for(int j=0; j<listWidgets[i]->count(); j++){
 					QString ts=year+separator+listWidgets[0]->item(fc)->text()+separator+listWidgets[i]->item(j)->text();
 					if(existingNames.contains(ts)){
-						QMessageBox::information(this, tr("FET information"), tr("Cannot add group %1, because a set with the same name exists."
+						QMessageBox::information(this, tr("Open-Timetable information"), tr("Cannot add group %1, because a set with the same name exists."
 						 " Please choose another name or remove the old set").arg(ts));
 						return;
 					}
@@ -511,7 +511,7 @@ void SplitYearForm::ok()
 		for(int j=0; j<listWidgets[i]->count(); j++){
 			QString ts=year+separator+listWidgets[i]->item(j)->text();
 			if(existingNames.contains(ts)){
-				QMessageBox::information(this, tr("FET information"), tr("Cannot add group %1, because a set with the same name exists."
+				QMessageBox::information(this, tr("Open-Timetable information"), tr("Cannot add group %1, because a set with the same name exists."
 				 " Please choose another name or remove the old set").arg(ts));
 				return;
 			}
@@ -532,7 +532,7 @@ void SplitYearForm::ok()
 			for(int i=0; i<categoriesSpinBox->value(); i++)
 				sb+=separator+listWidgets[i]->item(b[i])->text();
 			if(existingNames.contains(sb)){
-				QMessageBox::information(this, tr("FET information"), tr("Cannot add subgroup %1, because a set with the same name exists. "
+				QMessageBox::information(this, tr("Open-Timetable information"), tr("Cannot add subgroup %1, because a set with the same name exists. "
 				 "Please choose another name or remove the old set").arg(sb));
 				return;
 			}
@@ -559,7 +559,7 @@ again_here_1:
 		QString ts=year+separator+listWidgets[0]->item(fc)->text();
 		
 		if(alreadyExistingNewSets.contains(ts)){
-			QMessageBox::information(this, tr("FET information"), tr("Cannot add the group %1, because it would have the same name as another set in this same year."
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Cannot add the group %1, because it would have the same name as another set in this same year."
 			 " Please review your divisions' names and consider that each final group and subgroup must have different names.").arg(ts));
 			return;
 		}
@@ -572,7 +572,7 @@ again_here_1:
 					QString ts2=year+separator+listWidgets[0]->item(fc)->text()+separator+listWidgets[i]->item(j)->text();
 
 					if(alreadyExistingNewSets.contains(ts2)){
-						QMessageBox::information(this, tr("FET information"), tr("Cannot add the group %1, because it would have the same name as another set in this same year."
+						QMessageBox::information(this, tr("Open-Timetable information"), tr("Cannot add the group %1, because it would have the same name as another set in this same year."
 						 " Please review your divisions' names and consider that each final group and subgroup must have different names.").arg(ts2));
 						return;
 					}
@@ -588,7 +588,7 @@ again_here_1:
 				QString ts=year+separator+listWidgets[i]->item(j)->text();
 
 			if(alreadyExistingNewSets.contains(ts)){
-				QMessageBox::information(this, tr("FET information"), tr("Cannot add the group %1, because it would have the same name as another set in this same year."
+				QMessageBox::information(this, tr("Open-Timetable information"), tr("Cannot add the group %1, because it would have the same name as another set in this same year."
 				 " Please review your divisions' names and consider that each final group and subgroup must have different names.").arg(ts));
 				return;
 			}
@@ -608,7 +608,7 @@ again_here_1:
 				sbn+=separator+listWidgets[i]->item(b[i])->text();
 
 			if(alreadyExistingNewSets.contains(sbn)){
-				QMessageBox::information(this, tr("FET information"), tr("Cannot add the subgroup %1, because it would have the same name as another set in this same year."
+				QMessageBox::information(this, tr("Open-Timetable information"), tr("Cannot add the subgroup %1, because it would have the same name as another set in this same year."
 				 " Please review your divisions' names and consider that each final group and subgroup must have different names.").arg(sbn));
 				return;
 			}
@@ -711,13 +711,13 @@ again_here_2:
 	}
 	
 	if(!description.isEmpty()){
-		int lres=LongTextMessageBox::largeConfirmation(this, tr("FET confirmation"),
+		int lres=LongTextMessageBox::largeConfirmation(this, tr("Open-Timetable confirmation"),
 		 description, tr("Yes"), tr("No"), QString(), 0, 1);
 		if(lres!=0){
 			return;
 		}
 		
-		QMessageBox::StandardButton t=QMessageBox::warning(this, tr("FET warning"), tr("Year %1 will be split again."
+		QMessageBox::StandardButton t=QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Year %1 will be split again."
 		 " All groups and subgroups of this year which will no longer exist (listed before) and the associated activities and constraints"
 		 " will be removed. Are you absolutely sure?").arg(year), QMessageBox::Yes|QMessageBox::Cancel);
 		
@@ -941,7 +941,7 @@ again_here_4:
 		assert(nGroupActivitiesInInitialOrderItemsBefore==nGroupActivitiesInInitialOrderItemsAfter);
 	}
 	
-	QMessageBox::information(this, tr("FET information"), tr("The year was split successfully. Please check the groups and subgroups"
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("The year was split successfully. Please check the groups and subgroups"
 	 " of the year to make sure that everything is OK!")+s);
 	
 	//saving page
@@ -1005,7 +1005,7 @@ void SplitYearForm::help()
 	QString s;
 
 	s+=tr("You might first want to consider if dividing a year is necessary and on what options. Please remember"
-	 " that FET can handle activities with multiple teachers/students sets. If you have say students set 9a, which is split"
+	 " that Open-Timetable can handle activities with multiple teachers/students sets. If you have say students set 9a, which is split"
 	 " into 2 parts: English (teacher TE) and French (teacher TF), and language activities must be simultaneous, then you might not want to divide"
 	 " according to this category, but add more larger activities, with students set 9a and teachers TE+TF.");
 	
@@ -1062,13 +1062,13 @@ void SplitYearForm::help()
 	s+=" ";
 	s+=tr("For instance, by reducing the total number of subgroups from 10000 to 100 the generation time might decrease 100 times!");
 	s+="\n";
-	s+=tr("Maybe an alternative to dividing a year into many categories/subgroups would be to enter individual students as FET subgroups and add into"
-		" each group the corresponding subgroups. But this is hard to do from the FET interface - maybe a solution would be to use an automatic"
+	s+=tr("Maybe an alternative to dividing a year into many categories/subgroups would be to enter individual students as Open-Timetable subgroups and add into"
+		" each group the corresponding subgroups. But this is hard to do from the Open-Timetable interface - maybe a solution would be to use an automatic"
 		" tool to convert your institution data into a file in .fet format.");
 	s+=" ";
-	s+=tr("Or you might use the FET feature to import students sets from comma separated values (CSV) files.");
+	s+=tr("Or you might use the Open-Timetable feature to import students sets from comma separated values (CSV) files.");
 	s+=" ";
-	s+=tr("In such cases (individual students as FET subgroups), remember that a smaller number of total subgroups means faster generation time, so"
+	s+=tr("In such cases (individual students as Open-Timetable subgroups), remember that a smaller number of total subgroups means faster generation time, so"
 		" you might want to consider a single subgroup for two or more students who have the exact same activities and constraints.");
 	
 	s+="\n\n";
@@ -1078,7 +1078,7 @@ void SplitYearForm::help()
 	//show the message in a dialog
 	QDialog dialog(this);
 	
-	dialog.setWindowTitle(tr("FET - help on dividing a year"));
+	dialog.setWindowTitle(tr("Open-Timetable - help on dividing a year"));
 
 	QVBoxLayout* vl=new QVBoxLayout(&dialog);
 	QTextEdit* te=new QTextEdit();
@@ -1103,7 +1103,7 @@ void SplitYearForm::help()
 
 void SplitYearForm::reset() //reset to defaults
 {
-	QMessageBox::StandardButton ret=QMessageBox::question(this, tr("FET confirmation"),
+	QMessageBox::StandardButton ret=QMessageBox::question(this, tr("Open-Timetable confirmation"),
 	 tr("Do you really want to reset the form values to defaults (empty)?"),
 	 QMessageBox::Yes|QMessageBox::Cancel);
 	if(ret==QMessageBox::Cancel)

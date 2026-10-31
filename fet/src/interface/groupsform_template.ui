@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string extracomment="The title of the form which lists the students groups">FET - groups of students</string>
+   <string extracomment="The title of the form which lists the students groups">Open-Timetable - groups of students</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">

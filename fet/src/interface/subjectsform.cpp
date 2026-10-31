@@ -174,7 +174,7 @@ void SubjectsForm::addSubject()
 	}
 	else{
 		if(ok){ //the user entered nothing
-			QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		}
 		delete sbj;// user entered nothing or pressed Cancel
 	}
@@ -184,22 +184,22 @@ void SubjectsForm::removeSubject()
 {
 	int i=subjectsListWidget->currentRow();
 	if(subjectsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subject"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subject"));
 		return;
 	}
 
 	QString text=subjectsListWidget->currentItem()->text();
 	int subject_ID=gt.rules.searchSubject(text);
 	if(subject_ID<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subject"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subject"));
 		return;
 	}
 
-	/*if(QMessageBox::warning( this, tr("FET"),
+	/*if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete this subject and all related activities and constraints?"),
 	 tr("Yes"), tr("No"), QString(), 0, 1 ) == 1)
 		return;*/
-	if(QMessageBox::warning( this, tr("FET"),
+	if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete this subject and all related activities and constraints?"),
 	 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::No)
 		return;
@@ -226,7 +226,7 @@ void SubjectsForm::renameSubject()
 {
 	int i=subjectsListWidget->currentRow();
 	if(subjectsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subject"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subject"));
 		return;
 	}
 	
@@ -234,7 +234,7 @@ void SubjectsForm::renameSubject()
 
 	int subject_ID=gt.rules.searchSubject(initialSubjectName);
 	if(subject_ID<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subject"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subject"));
 		return;
 	}
 
@@ -361,14 +361,14 @@ void SubjectsForm::subjectChanged(int index)
 void SubjectsForm::activateSubject()
 {
 	if(subjectsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subject"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subject"));
 		return;
 	}
 	
 	QString subjectName=subjectsListWidget->currentItem()->text();
 	
 	int count=gt.rules.activateSubject(subjectName);
-	QMessageBox::information(this, tr("FET information"), tr("Activated a number of %1 activities").arg(count));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Activated a number of %1 activities").arg(count));
 
 	if(count>0)
 		gt.rules.addUndoPoint(tr("Activated the subject %1 (%2 activities).", "%2 is the number of activated activities").arg(subjectName).arg(count));
@@ -377,14 +377,14 @@ void SubjectsForm::activateSubject()
 void SubjectsForm::deactivateSubject()
 {
 	if(subjectsListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subject"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subject"));
 		return;
 	}
 	
 	QString subjectName=subjectsListWidget->currentItem()->text();
 	
 	int count=gt.rules.deactivateSubject(subjectName);
-	QMessageBox::information(this, tr("FET information"), tr("Deactivated a number of %1 activities").arg(count));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Deactivated a number of %1 activities").arg(count));
 
 	if(count>0)
 		gt.rules.addUndoPoint(tr("Deactivated subject %1 (%2 activities).", "%2 is the number of deactivated activities").arg(subjectName).arg(count));
@@ -394,7 +394,7 @@ void SubjectsForm::comments()
 {
 	int ind=subjectsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subject"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subject"));
 		return;
 	}
 	
@@ -456,7 +456,7 @@ void SubjectsForm::longName()
 {
 	int ind=subjectsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subject"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subject"));
 		return;
 	}
 	
@@ -518,7 +518,7 @@ void SubjectsForm::code()
 {
 	int ind=subjectsListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subject"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subject"));
 		return;
 	}
 	

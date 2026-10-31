@@ -52,11 +52,11 @@ void ModifyBuildingForm::cancel()
 void ModifyBuildingForm::ok()
 {
 	if(nameLineEdit->text().isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		return;
 	}
 	if(this->_initialBuildingName!=nameLineEdit->text() && gt.rules.searchBuilding(nameLineEdit->text())>=0){
-		QMessageBox::information(this, tr("FET information"), tr("Name existing - please choose another"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Name existing - please choose another"));
 		return;
 	}
 	

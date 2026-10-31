@@ -63,7 +63,7 @@ void CommentsForm::ok()
 		gt.rules.addUndoPoint(tr("Changed the comments from %1 to %2.").arg(oc).arg(gt.rules.comments));
 	}
 	else{
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Cannot update the comments during generation."
 			" Please stop the generation before this."));
 		return;

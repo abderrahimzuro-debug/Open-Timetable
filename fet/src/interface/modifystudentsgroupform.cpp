@@ -59,16 +59,16 @@ void ModifyStudentsGroupForm::cancel()
 void ModifyStudentsGroupForm::ok()
 {
 	if(nameLineEdit->text().isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		return;
 	}
 	//QString yearName=yearNameLineEdit->text();
 	QString groupName=nameLineEdit->text();
 	
 	if(this->_initialGroupName!=groupName && gt.rules.searchStudentsSet(groupName)!=nullptr){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 		 tr("Name exists. If you would like to make more years to contain a group (overlapping years),"
-		 " please remove current group (FET will unfortunately remove all related activities and constraints)"
+		 " please remove current group (Open-Timetable will unfortunately remove all related activities and constraints)"
 		 " and add a new group with desired name in current year."
 		 " I know this is not an elegant procedure, I'll try to fix that in the future."));
 

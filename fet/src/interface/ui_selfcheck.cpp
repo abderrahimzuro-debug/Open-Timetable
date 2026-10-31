@@ -13,6 +13,8 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 
 #include "ui_dashboard.h"
 #include "ui_constraints.h"
+#include "ui_icons.h"
+#include "ui_theme.h"
 #include "ui_i18n.h"
 #include "ui_shell.h"
 
@@ -21,6 +23,7 @@ of the GNU Affero General Public License version 3 (see LICENSE).
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QToolButton>
 #include <QTranslator>
 #include <QListWidget>
 #include <QMainWindow>
@@ -105,10 +108,67 @@ int run(QMainWindow* mainWindow)
 		r.fail(QStringLiteral("قائمة التنقّل موجودة"));
 
 	QStackedWidget* stack = splitter->findChild<QStackedWidget*>();
-	if (stack != nullptr)
-		r.ok(QStringLiteral("الصفحات موجودة"), QStringLiteral("%1 صفحات").arg(stack->count()));
-	else
+	if (stack != nullptr) {
+		if (stack->count() == 1)
+			r.ok(QStringLiteral("الواجهة الكلاسيكية أُزيلت"), QStringLiteral("صفحة واحدة فقط"));
+		else
+			r.fail(QStringLiteral("الواجهة الكلاسيكية أُزيلت"),
+			       QStringLiteral("%1 صفحة").arg(stack->count()));
+	}
+	else {
 		r.fail(QStringLiteral("الصفحات موجودة"));
+	}
+
+	// ---- الطي والمظهر والأيقونات ----
+	{
+		QToolButton* themeButton = mainWindow->findChild<QToolButton*>(QStringLiteral("otThemeButton"));
+		QToolButton* collapseButton = mainWindow->findChild<QToolButton*>(QStringLiteral("otCollapseButton"));
+		if (themeButton != nullptr)
+			r.ok(QStringLiteral("زر المظهر موجود"));
+		else
+			r.fail(QStringLiteral("زر المظهر موجود"));
+		if (collapseButton != nullptr)
+			r.ok(QStringLiteral("زر طي الشريط موجود"));
+		else
+			r.fail(QStringLiteral("زر طي الشريط موجود"));
+
+		const QStringList iconNames = UiIcons::names();
+		int drawn = 0;
+		for (const QString& name : iconNames)
+			if (!UiIcons::icon(name, 20).isNull())
+				++drawn;
+		if (drawn == iconNames.count() && drawn >= 18)
+			r.ok(QStringLiteral("الأيقونات مرسومة"), QStringLiteral("%1 أيقونة").arg(drawn));
+		else
+			r.fail(QStringLiteral("الأيقونات مرسومة"),
+			       QStringLiteral("%1/%2").arg(drawn).arg(iconNames.count()));
+
+		if (!UiIcons::logo().isNull())
+			r.ok(QStringLiteral("شعار البرنامج جاهز"));
+		else
+			r.fail(QStringLiteral("شعار البرنامج جاهز"));
+
+		// لا نصوص إيموجي في عناصر التنقّل
+		if (nav != nullptr) {
+			int withIcon = 0;
+			int items = 0;
+			for (int i = 0; i < nav->count(); ++i) {
+				const QListWidgetItem* item = nav->item(i);
+				if (item->data(Qt::UserRole + 1).toString().isEmpty()
+				    && !item->data(Qt::UserRole + 2).isValid())
+					continue; // عنوان قسم
+				++items;
+				if (!item->icon().isNull())
+					++withIcon;
+			}
+			if (items > 0 && withIcon == items)
+				r.ok(QStringLiteral("كل عناصر التنقّل لها أيقونة"),
+				     QStringLiteral("%1/%1").arg(items));
+			else
+				r.fail(QStringLiteral("كل عناصر التنقّل لها أيقونة"),
+				       QStringLiteral("%1/%2").arg(withIcon).arg(items));
+		}
+	}
 
 	// ---- 4) لوحة البداية ----
 	UiDashboard* dashboard = splitter->findChild<UiDashboard*>();
@@ -230,6 +290,75 @@ int run(QMainWindow* mainWindow)
 			r.ok(QStringLiteral("نصوص الواجهة تتبع اللغة"), QStringLiteral("عربي: %1").arg(arabic));
 		else
 			r.ok(QStringLiteral("نصوص الواجهة تتبع اللغة"), QStringLiteral("إنجليزي: %1").arg(arabic));
+	}
+
+	// ---- 6.5) المظهر الداكن ثم الفاتح ----
+	{
+		const QString before = qApp->styleSheet();
+		UiTheme::applyTheme(*qApp, QStringLiteral("dark"));
+		const QString dark = qApp->styleSheet();
+		UiTheme::applyTheme(*qApp, QStringLiteral("light"));
+		const QString light = qApp->styleSheet();
+
+		if (!dark.isEmpty() && dark != light)
+			r.ok(QStringLiteral("المظهر الداكن يعمل"), QStringLiteral("%1 حرفًا").arg(dark.size()));
+		else
+			r.fail(QStringLiteral("المظهر الداكن يعمل"));
+		Q_UNUSED(before);
+	}
+
+	// ---- 6.7) هوية المنتج: لا ذكر للاسم/الموقع/الشعار الأصلي ----
+	{
+		if (qApp->applicationName() == QLatin1String("Open-Timetable"))
+			r.ok(QStringLiteral("اسم البرنامج"), qApp->applicationName());
+		else
+			r.fail(QStringLiteral("اسم البرنامج"), qApp->applicationName());
+
+		const QString title = mainWindow->windowTitle();
+		if (!title.contains(QLatin1String("Open-Timetable")))
+			r.ok(QStringLiteral("عنوان النافذة بلا الاسم الأصلي"), title);
+		else
+			r.fail(QStringLiteral("عنوان النافذة بلا الاسم الأصلي"), title);
+
+		// لا إجراء ظاهر يحمل اسم البرنامج الأصلي
+		QStringList leaked;
+		const QList<QAction*> actions = mainWindow->findChildren<QAction*>();
+		for (QAction* action : actions)
+			if (action->isVisible() && action->text().contains(QLatin1String("Open-Timetable")))
+				leaked << action->text();
+		if (leaked.isEmpty())
+			r.ok(QStringLiteral("لا اسم أصلي في القوائم الظاهرة"));
+		else
+			r.fail(QStringLiteral("لا اسم أصلي في القوائم الظاهرة"),
+			       leaked.mid(0, 3).join(QStringLiteral(" | ")));
+
+		// روابط موقع البرنامج الأصلي مخفيّة
+		const QStringList online = { QStringLiteral("helpHomepageAction"),
+					     QStringLiteral("helpForumAction"),
+					     QStringLiteral("helpAddressesAction") };
+		int visibleOnline = 0;
+		for (const QString& name : online)
+			if (QAction* action = mainWindow->findChild<QAction*>(name))
+				if (action->isVisible())
+					++visibleOnline;
+		if (visibleOnline == 0)
+			r.ok(QStringLiteral("روابط الموقع الأصلي مخفيّة"));
+		else
+			r.fail(QStringLiteral("روابط الموقع الأصلي مخفيّة"),
+			       QStringLiteral("%1 ظاهر").arg(visibleOnline));
+
+		// الواجهة الكلاسيكية لم تعد معروضة
+		bool classicVisible = false;
+		const QList<QWidget*> widgets = mainWindow->findChildren<QWidget*>();
+		for (QWidget* widget : widgets)
+			if (widget->isVisible() && widget->objectName() == QLatin1String("mainwidget")) {
+				classicVisible = true;
+				break;
+			}
+		if (!classicVisible)
+			r.ok(QStringLiteral("الواجهة الكلاسيكية غير معروضة"));
+		else
+			r.fail(QStringLiteral("الواجهة الكلاسيكية غير معروضة"));
 	}
 
 	// ---- 7) العودة إلى لوحة البداية تعمل ----

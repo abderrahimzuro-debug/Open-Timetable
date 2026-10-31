@@ -113,7 +113,7 @@ void SettingsAutosaveForm::chooseDirectory()
 void SettingsAutosaveForm::ok()
 {
 	if(!QDir(QDir::fromNativeSeparators(directoryLineEdit->text())).exists()){
-		QMessageBox::information(this, tr("FET information"), tr("The chosen directory does not exist."
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The chosen directory does not exist."
 		 " Please choose an existing directory or let its name be empty (in that case, the autosave will"
 		 " happen in the working directory)."));
 		return;

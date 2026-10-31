@@ -37,13 +37,13 @@ HelpAlgeriaForm::HelpAlgeriaForm(QWidget* parent): QDialog(parent)
 	s+=tr("This help by %1, last modified on %2.", "%1 is a person").arg("Liviu Lalescu").arg(tr("2 July 2025"));
 	s+="\n\n";
 
-	s+=tr("FET mornings-afternoons with unrestricted mornings/afternoons for teachers was originally designed for Algerian schools (as requested by the user %1)"
+	s+=tr("Open-Timetable mornings-afternoons with unrestricted mornings/afternoons for teachers was originally designed for Algerian schools (as requested by the user %1)"
 	 ", but it can be used in other institutions working in two shifts where teachers can work both in the morning and in the evening on the same day.").arg("aissa");
 
 	s+="\n\n";
 
-	s+=tr("Please define days in FET to be double of the real days, that is if your week has "
-	 "5 days, define 10 FET days. First day is for morning, second day is for afternoon, and so on.");
+	s+=tr("Please define days in Open-Timetable to be double of the real days, that is if your week has "
+	 "5 days, define 10 Open-Timetable days. First day is for morning, second day is for afternoon, and so on.");
 
 	s+="\n\n";
 
@@ -75,7 +75,7 @@ HelpAlgeriaForm::HelpAlgeriaForm(QWidget* parent): QDialog(parent)
 	s+=tr("Constraint max days between activities considers real days.");
 	s+="\n\n";
 
-	s+=tr("The constraint students (set) min hours daily without allowing empty days is for real days, and for nonempty FET days (half days)"
+	s+=tr("The constraint students (set) min hours daily without allowing empty days is for real days, and for nonempty Open-Timetable days (half days)"
 	 " it respects the minimum number of hours daily.");
 	
 	s+="\n\n";
@@ -91,11 +91,11 @@ HelpAlgeriaForm::HelpAlgeriaForm(QWidget* parent): QDialog(parent)
 	 "%1 is the name of a person").arg("bachiri401");
 	s+="\n\n";
 	s+=QCoreApplication::translate("HelpForMorningsAfternoons", "And indeed, %1 says this: I checked the code. There is no need for a new constraint. Please use a constraint min gaps between activities"
-	 " with min gaps = the number of hours per half day (the maximum FET allows). Add all the math and sport activities for a students set for your example. It is implemented"
+	 " with min gaps = the number of hours per half day (the maximum Open-Timetable allows). Add all the math and sport activities for a students set for your example. It is implemented"
 	 " efficiently for this case.", "%1 is the name of a person").arg("Liviu Lalescu");
 	s+="\n\n";
-	s+=QCoreApplication::translate("HelpForMorningsAfternoons", "Note: in FET version %1, suggested by %2, it was added a new type of constraint probably useful in this case:"
-	 " min half days between activities, so that the trick above is now no longer necessary.", "%1 is the FET version number, %2 is a person").arg("6.4.0").arg("ngoctp29121982");
+	s+=QCoreApplication::translate("HelpForMorningsAfternoons", "Note: in Open-Timetable version %1, suggested by %2, it was added a new type of constraint probably useful in this case:"
+	 " min half days between activities, so that the trick above is now no longer necessary.", "%1 is the Open-Timetable version number, %2 is a person").arg("6.4.0").arg("ngoctp29121982");
 	
 	textBrowser->setText(s);
 }

@@ -52,9 +52,9 @@ void HelpInstructionsForm::setText()
 	s+=tr("These are some small instructions which you have to follow in order to input a solvable data set.");
 	s+="\n\n";
 	s+=tr("If you get an impossible timetable and your institution allows beginning later for students, please reconsider your students (set) early "
-		"constraints to allow more beginnings at second hour. Also, removing or weakening other constraints might help. If FET cannot find "
-		"a good timetable for your school, make sure to report this, as FET needs to be improved. Maybe small changes to your data file "
-		"can bring good solutions, or maybe there are aspects which have to be changed in FET.");
+		"constraints to allow more beginnings at second hour. Also, removing or weakening other constraints might help. If Open-Timetable cannot find "
+		"a good timetable for your school, make sure to report this, as Open-Timetable needs to be improved. Maybe small changes to your data file "
+		"can bring good solutions, or maybe there are aspects which have to be changed in Open-Timetable.");
 	s+="\n\n";
 	s+=tr("An impossible timetable might also be caused by incorrect years division. Please check statistics/students for all subgroups, "
 		"each subgroup should have the necessary hours, not less. If you have for instance some subgroups with less than say 20 hours per "
@@ -66,7 +66,7 @@ void HelpInstructionsForm::setText()
 		"number of hours (periods) per day to your required needs, not larger. It is a good practice to choose a value for the number "
 		"of days and number of hours from the beginning (you can change their names anytime you want afterwards).");
 	s+="\n\n";
-	s+=tr("1) To say that component activities of a larger split activity are not on the same day, FET automatically adds a "
+	s+=tr("1) To say that component activities of a larger split activity are not on the same day, Open-Timetable automatically adds a "
 		"constraint min days between activities with default 95% weight. If you want to ensure no two activities of same type "
 		"are on the same day, you will have to modify the weight from 95% to higher values (see these constraints in the Time constraints "
 		"menu->Activities->Min days between a set of activities constraints. You have there a powerful filter to change many "
@@ -81,7 +81,7 @@ void HelpInstructionsForm::setText()
 		"new min days 2, maybe also raise weight percentage to 100%).");
 	s+="\n\n";
 	s+=tr("You can use for the constraint min days the weight you want. It can be 95%, 99.75% or even 100%. If you specify a value below "
-		"100% (even 99.75% or more) for an impossible constraint, FET will be able to detect that it is impossible and obtain a "
+		"100% (even 99.75% or more) for an impossible constraint, Open-Timetable will be able to detect that it is impossible and obtain a "
 		"timetable in the end, so the weight is subjective. So, the best way would be to choose a 99.75% for all constraints, "
 		"but the time of generation might be larger than with 95%. You could try at first the 95% minimum recommended value, then "
 		"heighten the weight percentage up to maybe 99.75% or 100%. I am not sure here, I have not enough sample files (please contribute with advice).");
@@ -108,13 +108,13 @@ void HelpInstructionsForm::setText()
 		"not available and/or constraint activity(ies) preferred time slots or preferred starting times to specify impossible slots, "
 		"in addition to possible use of students (set) or teacher(s) max hours daily, whenever it is possible. For instance, "
 		"if you know that year 5 will only have hours from 8:00 to 13:00, it is better to add students set not available in "
-		"addition to students set max hours daily. So, if possible, try to follow this advice. This trick helps guide FET better towards a solution.");
+		"addition to students set max hours daily. So, if possible, try to follow this advice. This trick helps guide Open-Timetable better towards a solution.");
 	s+="\n\n";
 	s+=tr("Each constraint of type not available or preferred times which filters out impossible slots might bring an improvement in speed.");
 	s+="\n\n";
 	s+=tr("4) Constraint students (set) early: if you input only partial data, you might get impossible timetables (see FAQ for details).");
 	s+="\n\n";
-	s+=tr("5) For teacher(s) gaps: please note that FET will take care of teacher(s) gaps only if you tell it so, by adding constraint "
+	s+=tr("5) For teacher(s) gaps: please note that Open-Timetable will take care of teacher(s) gaps only if you tell it so, by adding constraint "
 		"teacher(s) max gaps per week. It is normal to add such constraint(s) after you saw that the data is solvable, using for max "
 		"gaps a value which seems acceptable, lowering it as you find timetables.");
 	s+="\n\n";

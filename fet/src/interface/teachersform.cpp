@@ -209,7 +209,7 @@ void TeachersForm::addTeacher()
 	}
 	else{
 		if(ok){ //the user entered nothing
-			QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		}
 		delete tch;// user entered nothing or pressed Cancel
 	}*/
@@ -235,22 +235,22 @@ void TeachersForm::removeTeacher()
 {
 	int i=teachersListWidget->currentRow();
 	if(teachersListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 
 	QString text=teachersListWidget->currentItem()->text();
 	int teacher_ID=gt.rules.searchTeacher(text);
 	if(teacher_ID<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 
-	/*if(QMessageBox::warning( this, tr("FET"),
+	/*if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete this teacher and all related activities and constraints?"),
 	 tr("Yes"), tr("No"), QString(), 0, 1 ) == 1)
 	 return;*/
-	if(QMessageBox::warning( this, tr("FET"),
+	if(QMessageBox::warning( this, tr("Open-Timetable"),
 	 tr("Are you sure you want to delete this teacher and all related activities and constraints?"),
 	 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::No)
 		return;
@@ -280,14 +280,14 @@ void TeachersForm::modifyTeacher()
 {
 	/*int i=teachersListWidget->currentRow();
 	if(teachersListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 
 	QString initialTeacherName=teachersListWidget->currentItem()->text();
 	int teacher_ID=gt.rules.searchTeacher(initialTeacherName);
 	if(teacher_ID<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 
@@ -314,7 +314,7 @@ void TeachersForm::modifyTeacher()
 
 	int i=teachersListWidget->currentRow();
 	if(teachersListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 	
@@ -336,14 +336,14 @@ void TeachersForm::modifyTeacher()
 void TeachersForm::targetNumberOfHours()
 {
 	if(teachersListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 
 	QString teacherName=teachersListWidget->currentItem()->text();
 	int teacher_ID=gt.rules.searchTeacher(teacherName);
 	if(teacher_ID<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 	
@@ -371,14 +371,14 @@ void TeachersForm::targetNumberOfHours()
 void TeachersForm::qualifiedSubjects()
 {
 	if(teachersListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 
 	QString teacherName=teachersListWidget->currentItem()->text();
 	int teacher_ID=gt.rules.searchTeacher(teacherName);
 	if(teacher_ID<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 	
@@ -393,7 +393,7 @@ void TeachersForm::qualifiedSubjects()
 
 void TeachersForm::importQualifiedSubjects()
 {
-	QMessageBox::StandardButton res=QMessageBox::question(this, tr("FET confirmation"),
+	QMessageBox::StandardButton res=QMessageBox::question(this, tr("Open-Timetable confirmation"),
 	 tr("Are you sure you want to import all the subject qualifications for teachers from the current activities list?"), QMessageBox::Cancel | QMessageBox::Ok);
 	if(res==QMessageBox::Cancel)
 		return;
@@ -571,13 +571,13 @@ void TeachersForm::teacherChanged(int index)
 void TeachersForm::activateTeacher()
 {
 	if(teachersListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 
 	QString teacherName=teachersListWidget->currentItem()->text();
 	int count=gt.rules.activateTeacher(teacherName);
-	QMessageBox::information(this, tr("FET information"), tr("Activated a number of %1 activities").arg(count));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Activated a number of %1 activities").arg(count));
 
 	if(count>0)
 		gt.rules.addUndoPoint(tr("Activated the teacher %1 (%2 activities).", "%2 is the number of activated activities").arg(teacherName).arg(count));
@@ -586,13 +586,13 @@ void TeachersForm::activateTeacher()
 void TeachersForm::deactivateTeacher()
 {
 	if(teachersListWidget->currentRow()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 
 	QString teacherName=teachersListWidget->currentItem()->text();
 	int count=gt.rules.deactivateTeacher(teacherName);
-	QMessageBox::information(this, tr("FET information"), tr("Deactivated a number of %1 activities").arg(count));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("Deactivated a number of %1 activities").arg(count));
 
 	if(count>0)
 		gt.rules.addUndoPoint(tr("Deactivated teacher %1 (%2 activities).", "%2 is the number of deactivated activities").arg(teacherName).arg(count));
@@ -602,7 +602,7 @@ void TeachersForm::comments()
 {
 	int ind=teachersListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 	
@@ -664,7 +664,7 @@ void TeachersForm::longName()
 {
 	int ind=teachersListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 	
@@ -726,7 +726,7 @@ void TeachersForm::code()
 {
 	int ind=teachersListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected teacher"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected teacher"));
 		return;
 	}
 	

@@ -209,7 +209,7 @@ void AdvancedLockUnlockForm::lockDays(QWidget* parent)
 			}
 		
 		if(!atLeastOneDaySelected){
-			QMessageBox::information(&dialog, tr("FET information"), tr("Please select at least one day!"));
+			QMessageBox::information(&dialog, tr("Open-Timetable information"), tr("Please select at least one day!"));
 		}
 		else{
 			bool lockTime=timeCheckBox->isChecked();
@@ -409,7 +409,7 @@ void AdvancedLockUnlockForm::lockDays(QWidget* parent)
 			}
 			notAddedSpaceConstraints.clear();
 
-			QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were added %1 locking time constraints and"
+			QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were added %1 locking time constraints and"
 				" %2 locking space constraints. There were not added %3 locking time constraints and %4 locking space constraints, because"
 				" these activities were already locked").arg(addedTime).arg(addedSpace).arg(notAddedTime).arg(notAddedSpace));
 
@@ -440,7 +440,7 @@ void AdvancedLockUnlockForm::lockDays(QWidget* parent)
 
 	//New Dialog
 	QDialog taDialog(parent);
-	taDialog.setWindowTitle(tr("FET - Unlock activities of a day"));
+	taDialog.setWindowTitle(tr("Open-Timetable - Unlock activities of a day"));
 
 	QVBoxLayout* taMainLayout=new QVBoxLayout(&taDialog);
 
@@ -551,7 +551,7 @@ void AdvancedLockUnlockForm::lockDays(QWidget* parent)
 				assert(aid==c->activityId);
 				if(c->weightPercentage==100.0 && c->day>=0 && c->hour>=0){
 //					if(c->day!=selectedDayInt){
-						//QMessageBox::warning(&taDialog, tr("FET warning"), tr("Incorrect data - time constraint is incorrect - please regenerate the timetable. Please report possible bug."));
+						//QMessageBox::warning(&taDialog, tr("Open-Timetable warning"), tr("Incorrect data - time constraint is incorrect - please regenerate the timetable. Please report possible bug."));
 						//above test is not good???
 //					}
 					//assert(c->day==selectedDayInt);
@@ -683,7 +683,7 @@ void AdvancedLockUnlockForm::lockDays(QWidget* parent)
 	removedSpaceConstraints.clear();
 	notRemovedSpaceConstraints.clear();
 
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were removed %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were removed %1 locking time constraints and"
 		" %2 locking space constraints. There were not removed %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were permanently locked").arg(removedTime).arg(removedSpace).arg(notRemovedTime).arg(notRemovedSpace));
 	
@@ -699,7 +699,7 @@ void AdvancedLockUnlockForm::lockEndStudentsDay(QWidget* parent)
 	
 	//New Dialog
 	QDialog taDialog(parent);
-	taDialog.setWindowTitle(tr("FET - Lock all activities which end each students set's day"));
+	taDialog.setWindowTitle(tr("Open-Timetable - Lock all activities which end each students set's day"));
 
 	QVBoxLayout* taMainLayout=new QVBoxLayout(&taDialog);
 
@@ -989,7 +989,7 @@ void AdvancedLockUnlockForm::lockEndStudentsDay(QWidget* parent)
 	}
 	notAddedSpaceConstraints.clear();
 	
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were added %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were added %1 locking time constraints and"
 		" %2 locking space constraints. There were not added %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were already locked").arg(addedTime).arg(addedSpace).arg(notAddedTime).arg(notAddedSpace));
 
@@ -1009,7 +1009,7 @@ void AdvancedLockUnlockForm::unlockEndStudentsDay(QWidget* parent)
 	
 	//New Dialog
 	QDialog taDialog(parent);
-	taDialog.setWindowTitle(tr("FET - Unlock all activities which end each students set's day"));
+	taDialog.setWindowTitle(tr("Open-Timetable - Unlock all activities which end each students set's day"));
 
 	QVBoxLayout* taMainLayout=new QVBoxLayout(&taDialog);
 
@@ -1249,7 +1249,7 @@ void AdvancedLockUnlockForm::unlockEndStudentsDay(QWidget* parent)
 	removedSpaceConstraints.clear();
 	notRemovedSpaceConstraints.clear();
 
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were removed %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were removed %1 locking time constraints and"
 		" %2 locking space constraints. There were not removed %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were permanently locked").arg(removedTime).arg(removedSpace).arg(notRemovedTime).arg(notRemovedSpace));
 
@@ -1269,7 +1269,7 @@ void AdvancedLockUnlockForm::lockAll(QWidget* parent)
 	
 	//New Dialog
 	QDialog taDialog(parent);
-	taDialog.setWindowTitle(tr("FET - Lock all activities in the timetable"));
+	taDialog.setWindowTitle(tr("Open-Timetable - Lock all activities in the timetable"));
 
 	QVBoxLayout* taMainLayout=new QVBoxLayout(&taDialog);
 
@@ -1528,7 +1528,7 @@ void AdvancedLockUnlockForm::lockAll(QWidget* parent)
 	}
 	notAddedSpaceConstraints.clear();
 	
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were added %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were added %1 locking time constraints and"
 		" %2 locking space constraints. There were not added %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were already locked").arg(addedTime).arg(addedSpace).arg(notAddedTime).arg(notAddedSpace));
 
@@ -1550,7 +1550,7 @@ void AdvancedLockUnlockForm::lockAll(QWidget* parent)
 	
 	//New Dialog
 	QDialog taDialog(parent);
-	taDialog.setWindowTitle(tr("FET - Unlock all activities of the current timetable"));
+	taDialog.setWindowTitle(tr("Open-Timetable - Unlock all activities of the current timetable"));
 
 	QVBoxLayout* taMainLayout=new QVBoxLayout(&taDialog);
 
@@ -1770,7 +1770,7 @@ void AdvancedLockUnlockForm::lockAll(QWidget* parent)
 	removedSpaceConstraints.clear();
 	notRemovedSpaceConstraints.clear();
 
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were removed %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were removed %1 locking time constraints and"
 		" %2 locking space constraints. There were not removed %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were permanently locked").arg(removedTime).arg(removedSpace).arg(notRemovedTime).arg(notRemovedSpace));
 	
@@ -1793,7 +1793,7 @@ void AdvancedLockUnlockForm::unlockAllWithoutTimetable(QWidget* parent)
 	
 	//New Dialog
 	QDialog taDialog(parent);
-	taDialog.setWindowTitle(tr("FET - Unlock all activities without a generated timetable"));
+	taDialog.setWindowTitle(tr("Open-Timetable - Unlock all activities without a generated timetable"));
 
 	QVBoxLayout* taMainLayout=new QVBoxLayout(&taDialog);
 
@@ -2026,7 +2026,7 @@ void AdvancedLockUnlockForm::unlockAllWithoutTimetable(QWidget* parent)
 	removedSpaceConstraints.clear();
 	notRemovedSpaceConstraints.clear();
 
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were removed %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were removed %1 locking time constraints and"
 		" %2 locking space constraints. There were not removed %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were permanently locked").arg(removedTime).arg(removedSpace).arg(notRemovedTime).arg(notRemovedSpace));
 
@@ -2137,7 +2137,7 @@ void AdvancedLockUnlockForm::unlockDaysWithoutTimetable(QWidget* parent)
 			}
 		
 		if(!atLeastOneDaySelected){
-			QMessageBox::information(&dialog, tr("FET information"), tr("Please select at least one day!"));
+			QMessageBox::information(&dialog, tr("Open-Timetable information"), tr("Please select at least one day!"));
 		}
 		else{
 			bool unlockTime=timeCheckBox->isChecked();
@@ -2322,7 +2322,7 @@ void AdvancedLockUnlockForm::unlockDaysWithoutTimetable(QWidget* parent)
 			removedSpaceConstraints.clear();
 			notRemovedSpaceConstraints.clear();
 
-			QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were removed %1 locking time constraints and"
+			QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were removed %1 locking time constraints and"
 				" %2 locking space constraints. There were not removed %3 locking time constraints and %4 locking space constraints, because"
 				" these activities were permanently locked").arg(removedTime).arg(removedSpace).arg(notRemovedTime).arg(notRemovedSpace));
 
@@ -2351,15 +2351,15 @@ void AdvancedLockUnlockForm::lockActivityTag(QWidget* parent)
 	for(ActivityTag* at : std::as_const(gt.rules.activityTagsList))
 		activityTags.append(at->name);
 	if(activityTags.size()==0){
-		QMessageBox::warning(parent, tr("FET warning"), tr("You entered this dialog, but you have no activity tags. This should not happen."
-		 " Please report possible bug. Now FET will abandon the current operation and return to the main dialog, so that you don't lose data."));
+		QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("You entered this dialog, but you have no activity tags. This should not happen."
+		 " Please report possible bug. Now Open-Timetable will abandon the current operation and return to the main dialog, so that you don't lose data."));
 		return;
 	}
 	assert(activityTags.size()!=0);
 
 	//New Dialog
 	QDialog taDialog(parent);
-	taDialog.setWindowTitle(tr("FET - Lock activities which have attached a certain activity tag"));
+	taDialog.setWindowTitle(tr("Open-Timetable - Lock activities which have attached a certain activity tag"));
 
 	QVBoxLayout* taMainLayout=new QVBoxLayout(&taDialog);
 
@@ -2630,7 +2630,7 @@ void AdvancedLockUnlockForm::lockActivityTag(QWidget* parent)
 	}
 	notAddedSpaceConstraints.clear();
 	
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were added %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were added %1 locking time constraints and"
 		" %2 locking space constraints. There were not added %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were already locked").arg(addedTime).arg(addedSpace).arg(notAddedTime).arg(notAddedSpace));
 
@@ -2653,15 +2653,15 @@ void AdvancedLockUnlockForm::lockActivityTag(QWidget* parent)
 	for(ActivityTag* at : std::as_const(gt.rules.activityTagsList))
 		activityTags.append(at->name);
 	if(activityTags.size()==0){
-		QMessageBox::warning(parent, tr("FET warning"), tr("You entered this dialog, but you have no activity tags. This should not happen."
-		 " Please report possible bug. Now FET will abandon the current operation and return to the main dialog, so that you don't lose data."));
+		QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("You entered this dialog, but you have no activity tags. This should not happen."
+		 " Please report possible bug. Now Open-Timetable will abandon the current operation and return to the main dialog, so that you don't lose data."));
 		return;
 	}
 	assert(activityTags.size()!=0);
 
 	//New Dialog
 	QDialog taDialog(parent);
-	taDialog.setWindowTitle(tr("FET - Unlock activities which have attached a certain activity tag"));
+	taDialog.setWindowTitle(tr("Open-Timetable - Unlock activities which have attached a certain activity tag"));
 
 	QVBoxLayout* taMainLayout=new QVBoxLayout(&taDialog);
 
@@ -2899,7 +2899,7 @@ void AdvancedLockUnlockForm::lockActivityTag(QWidget* parent)
 	removedSpaceConstraints.clear();
 	notRemovedSpaceConstraints.clear();
 
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were removed %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were removed %1 locking time constraints and"
 		" %2 locking space constraints. There were not removed %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were permanently locked").arg(removedTime).arg(removedSpace).arg(notRemovedTime).arg(notRemovedSpace));
 	
@@ -2924,15 +2924,15 @@ void AdvancedLockUnlockForm::unlockActivityTagWithoutTimetable(QWidget* parent)
 	for(ActivityTag* at : std::as_const(gt.rules.activityTagsList))
 		activityTags.append(at->name);
 	if(activityTags.size()==0){
-		QMessageBox::warning(parent, tr("FET warning"), tr("You entered this dialog, but you have no activity tags. This should not happen."
-		 " Please report possible bug. Now FET will abandon the current operation and return to the main dialog, so that you don't lose data."));
+		QMessageBox::warning(parent, tr("Open-Timetable warning"), tr("You entered this dialog, but you have no activity tags. This should not happen."
+		 " Please report possible bug. Now Open-Timetable will abandon the current operation and return to the main dialog, so that you don't lose data."));
 		return;
 	}
 	assert(activityTags.size()!=0);
 
 	//New Dialog
 	QDialog taDialog(parent);
-	taDialog.setWindowTitle(tr("FET - Unlock activities which have attached a certain activity tag"));
+	taDialog.setWindowTitle(tr("Open-Timetable - Unlock activities which have attached a certain activity tag"));
 
 	QVBoxLayout* taMainLayout=new QVBoxLayout(&taDialog);
 
@@ -3180,7 +3180,7 @@ void AdvancedLockUnlockForm::unlockActivityTagWithoutTimetable(QWidget* parent)
 	removedSpaceConstraints.clear();
 	notRemovedSpaceConstraints.clear();
 
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were removed %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were removed %1 locking time constraints and"
 		" %2 locking space constraints. There were not removed %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were permanently locked").arg(removedTime).arg(removedSpace).arg(notRemovedTime).arg(notRemovedSpace));
 
@@ -3196,7 +3196,7 @@ void AdvancedLockUnlockForm::unlockActivityTagWithoutTimetable(QWidget* parent)
 
 LockAdvancedDialog::LockAdvancedDialog(QWidget* parent) : QDialog(parent)
 {
-	setWindowTitle(tr("FET - Lock the activities which correspond to the selected advanced filter"));
+	setWindowTitle(tr("Open-Timetable - Lock the activities which correspond to the selected advanced filter"));
 	
 	numberLabel=new QLabel(QString("No: 1000 / 1000"));
 	numberLabel->setAlignment(Qt::AlignCenter);
@@ -3442,7 +3442,7 @@ void LockAdvancedDialog::filterChanged()
 	for(int i=0; i<gt.rules.nInternalActivities; i++){
 		progress.setValue(i);
 		if(progress.wasCanceled()){
-			LongTextMessageBox::largeInformation(this, tr("FET warning"), tr("You cancelled activity filtering - the list of activities will be incomplete.")+QString(" ")+
+			LongTextMessageBox::largeInformation(this, tr("Open-Timetable warning"), tr("You cancelled activity filtering - the list of activities will be incomplete.")+QString(" ")+
 			 tr("Note: if filtering of the activities takes too much, it might be because you are filtering on the detailed description with constraints of the activities,"
 			 " which checks each activity against each time constraint, each space constraint, and each group activities in the initial order item, which might be too much."
 			 " Please consider filtering on the description or detailed description of the activities, instead.")+QString("\n\n")+tr("Note: if you are using more filters,"
@@ -3550,15 +3550,15 @@ void LockAdvancedDialog::help()
 	s+=tr("Above the activities list we have 2 labels, containing 4 numbers. The first label contains text: No: a / b. The first number a is the"
 		" number of active activities (we number each individual subactivity as 1), while the second number b is the number of total activities."
 		" The second label contains text: Dur: c / d. The third number c is the duration of active activities, in periods"
-		" (or FET hours), while the fourth number d is the duration of total activities, in periods (or FET hours)."
+		" (or Open-Timetable hours), while the fourth number d is the duration of total activities, in periods (or Open-Timetable hours)."
 		" So, No means number and Dur means duration.");
 	s+="\n\n";
 	s+=tr("Example: No: 100 / 102, Dur: 114 / 117. They represent: 100 - the number of active activities,"
 		" then 102 - the number of total activities,"
-		" 114 - the duration of active activities (in periods or FET hours) and 117 - the duration of total activities"
-		" (in periods or FET hours). In this example we have 2 inactive activities with their combined duration being 3 periods.");
+		" 114 - the duration of active activities (in periods or Open-Timetable hours) and 117 - the duration of total activities"
+		" (in periods or Open-Timetable hours). In this example we have 2 inactive activities with their combined duration being 3 periods.");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable Help"), s);
 }
 
 void AdvancedLockUnlockForm::lockAdvancedFilter(QWidget* parent)
@@ -3772,7 +3772,7 @@ void AdvancedLockUnlockForm::lockAdvancedFilter(QWidget* parent)
 	}
 	notAddedSpaceConstraints.clear();
 	
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were added %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were added %1 locking time constraints and"
 		" %2 locking space constraints. There were not added %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were already locked").arg(addedTime).arg(addedSpace).arg(notAddedTime).arg(notAddedSpace));
 	
@@ -3786,7 +3786,7 @@ void AdvancedLockUnlockForm::lockAdvancedFilter(QWidget* parent)
 
 UnlockAdvancedDialog::UnlockAdvancedDialog(QWidget* parent) : QDialog(parent)
 {
-	setWindowTitle(tr("FET - Unlock the activities which correspond to the selected advanced filter"));
+	setWindowTitle(tr("Open-Timetable - Unlock the activities which correspond to the selected advanced filter"));
 
 	QVBoxLayout* taMainLayout=new QVBoxLayout(this);
 
@@ -4032,7 +4032,7 @@ void UnlockAdvancedDialog::filterChanged()
 	for(int i=0; i<gt.rules.activitiesList.size(); i++){
 		progress.setValue(i);
 		if(progress.wasCanceled()){
-			LongTextMessageBox::largeInformation(this, tr("FET warning"), tr("You cancelled activity filtering - the list of activities will be incomplete.")+QString(" ")+
+			LongTextMessageBox::largeInformation(this, tr("Open-Timetable warning"), tr("You cancelled activity filtering - the list of activities will be incomplete.")+QString(" ")+
 			 tr("Note: if filtering of the activities takes too much, it might be because you are filtering on the detailed description with constraints of the activities,"
 			 " which checks each activity against each time constraint, each space constraint, and each group activities in the initial order item, which might be too much."
 			 " Please consider filtering on the description or detailed description of the activities, instead.")+QString("\n\n")+tr("Note: if you are using more filters,"
@@ -4136,15 +4136,15 @@ void UnlockAdvancedDialog::help()
 	s+=tr("Above the activities list we have 2 labels, containing 4 numbers. The first label contains text: No: a / b. The first number a is the"
 		" number of active activities (we number each individual subactivity as 1), while the second number b is the number of total activities."
 		" The second label contains text: Dur: c / d. The third number c is the duration of active activities, in periods"
-		" (or FET hours), while the fourth number d is the duration of total activities, in periods (or FET hours)."
+		" (or Open-Timetable hours), while the fourth number d is the duration of total activities, in periods (or Open-Timetable hours)."
 		" So, No means number and Dur means duration.");
 	s+="\n\n";
 	s+=tr("Example: No: 100 / 102, Dur: 114 / 117. They represent: 100 - the number of active activities,"
 		" then 102 - the number of total activities,"
-		" 114 - the duration of active activities (in periods or FET hours) and 117 - the duration of total activities"
-		" (in periods or FET hours). In this example we have 2 inactive activities with their combined duration being 3 periods.");
+		" 114 - the duration of active activities (in periods or Open-Timetable hours) and 117 - the duration of total activities"
+		" (in periods or Open-Timetable hours). In this example we have 2 inactive activities with their combined duration being 3 periods.");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable Help"), s);
 }
 
 void AdvancedLockUnlockForm::unlockAdvancedFilterWithoutTimetable(QWidget* parent)
@@ -4339,7 +4339,7 @@ void AdvancedLockUnlockForm::unlockAdvancedFilterWithoutTimetable(QWidget* paren
 	removedSpaceConstraints.clear();
 	notRemovedSpaceConstraints.clear();
 
-	QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were removed %1 locking time constraints and"
+	QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were removed %1 locking time constraints and"
 		" %2 locking space constraints. There were not removed %3 locking time constraints and %4 locking space constraints, because"
 		" these activities were permanently locked").arg(removedTime).arg(removedSpace).arg(notRemovedTime).arg(notRemovedSpace));
 	

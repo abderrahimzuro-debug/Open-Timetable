@@ -59,7 +59,7 @@ AddRemoveMultipleConstraintsActivitiesOccupyMaxDifferentRoomsForm::~AddRemoveMul
 
 void AddRemoveMultipleConstraintsActivitiesOccupyMaxDifferentRoomsForm::addAllConstraints()
 {
-	int ret=QMessageBox::warning(this, tr("FET question"), tr("Are you sure you want to add multiple constraints of type "
+	int ret=QMessageBox::warning(this, tr("Open-Timetable question"), tr("Are you sure you want to add multiple constraints of type "
 	 "activities occupy max different rooms to your data, according to the filters you selected?"),
 	 QMessageBox::Yes | QMessageBox::Cancel);
 	if(ret==QMessageBox::Cancel)
@@ -118,7 +118,7 @@ void AddRemoveMultipleConstraintsActivitiesOccupyMaxDifferentRoomsForm::addAllCo
 		cnt++;
 	}
 
-	QMessageBox::information(this, tr("FET information"), tr("There were added %1 space constraints").arg(cnt));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("There were added %1 space constraints").arg(cnt));
 	
 	if(cnt>0)
 		gt.rules.addUndoPoint(tr("Added %1 space constraints of type activities occupy max different rooms, with weight=%2%, conditions=%3, max different rooms=%4.")
@@ -127,7 +127,7 @@ void AddRemoveMultipleConstraintsActivitiesOccupyMaxDifferentRoomsForm::addAllCo
 
 void AddRemoveMultipleConstraintsActivitiesOccupyMaxDifferentRoomsForm::removeAllConstraints()
 {
-	int ret=QMessageBox::warning(this, tr("FET question"), tr("Are you sure you want to remove all the constraints of type "
+	int ret=QMessageBox::warning(this, tr("Open-Timetable question"), tr("Are you sure you want to remove all the constraints of type "
 	 "activities occupy max different rooms from your data?"),
 	 QMessageBox::Yes | QMessageBox::Cancel);
 	if(ret==QMessageBox::Cancel)
@@ -141,7 +141,7 @@ void AddRemoveMultipleConstraintsActivitiesOccupyMaxDifferentRoomsForm::removeAl
 
 	gt.rules.removeSpaceConstraints(scl);
 	
-	QMessageBox::information(this, tr("FET information"), tr("There were removed %1 space constraints").arg(t));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("There were removed %1 space constraints").arg(t));
 
 	if(scl.count()>0)
 		gt.rules.addUndoPoint(tr("Removed all the %1 space constraints of type activities occupy max different rooms.")
@@ -159,5 +159,5 @@ void AddRemoveMultipleConstraintsActivitiesOccupyMaxDifferentRoomsForm::help()
 	 " There is also a button 'Remove all constraints', which removes all the constraints of type activities occupy max different rooms.")
 	 .arg("Imad").arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=5387.0");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable Help"), s);
 }

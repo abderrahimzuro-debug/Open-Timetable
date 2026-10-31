@@ -79,14 +79,14 @@ void SettingsTimetableHtmlLevelForm::ok()
 	else if(level7RadioButton->isChecked())
 		level=7;
 	else{
-		QMessageBox::warning(this, tr("FET warning"), tr("No level selected"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("No level selected"));
 		return;
 	}
 	
 	assert(level>=0);
 
 	/*if(level>=3){
-		int t=QMessageBox::information(this, tr("FET information"), tr("This level might generate very large timetables, maybe 1 MB per file"
+		int t=QMessageBox::information(this, tr("Open-Timetable information"), tr("This level might generate very large timetables, maybe 1 MB per file"
 		 " and 20 MB for all files of a timetable or even more."
 		 " Are you sure you have enough disk space?"),
 		 QMessageBox::Yes, QMessageBox::Cancel);

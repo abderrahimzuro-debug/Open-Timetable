@@ -51,7 +51,7 @@ AddStudentsSubgroupForm::~AddStudentsSubgroupForm()
 void AddStudentsSubgroupForm::addStudentsSubgroup()
 {
 	if(nameLineEdit->text().isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		return;
 	}
 	QString subgroupName=nameLineEdit->text();
@@ -89,7 +89,7 @@ void AddStudentsSubgroupForm::addStudentsSubgroup()
 	}
 	if(ss!=nullptr){ //already existing subgroup, but in other group. Several groups share the same subgroup.
 		assert(ss->type==STUDENTS_SUBGROUP);
-		/*if(QMessageBox::warning( this, tr("FET"),
+		/*if(QMessageBox::warning( this, tr("Open-Timetable"),
 			tr("This subgroup already exists, but in another group. "
 			"If you insert current subgroup to current group, that "
 			"means that some groups share the same subgroup (overlap). "
@@ -103,7 +103,7 @@ void AddStudentsSubgroupForm::addStudentsSubgroup()
 
 			return;
 		}*/
-		if(QMessageBox::warning( this, tr("FET"),
+		if(QMessageBox::warning( this, tr("Open-Timetable"),
 			tr("This subgroup already exists, but in another group. "
 			"If you insert current subgroup to current group, that "
 			"means that some groups share the same subgroup (overlap). "

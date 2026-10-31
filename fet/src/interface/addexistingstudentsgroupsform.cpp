@@ -172,5 +172,5 @@ void AddExistingStudentsGroupsForm::help()
 	s+=QString(" ");
 	s+=tr("A group must be created firstly by adding it manually in a year, but then to add it in other years you can use this simple dialog.");
 
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }

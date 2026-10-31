@@ -556,7 +556,7 @@ void SubactivitiesForm::filterChanged()
 	for(int i=0; i<gt.rules.activitiesList.size(); i++){
 		progress.setValue(i);
 		if(progress.wasCanceled()){
-			LongTextMessageBox::largeInformation(this, tr("FET warning"), tr("You cancelled subactivity filtering - the list of subactivities will be incomplete.")
+			LongTextMessageBox::largeInformation(this, tr("Open-Timetable warning"), tr("You cancelled subactivity filtering - the list of subactivities will be incomplete.")
 			 +QString(" ")+tr("Note: if filtering of the subactivities takes too much, it might be because you are filtering on the detailed description with constraints"
 			 " of the subactivities, which checks each subactivity against each time constraint, each space constraint, and each group activities in the initial order item,"
 			 " which might be too much. Please consider filtering on the description or detailed description of the subactivities, instead.")+QString("\n\n")
@@ -616,7 +616,7 @@ void SubactivitiesForm::modifySubactivity()
 {
 	int ind=subactivitiesListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subactivity"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subactivity"));
 		return;
 	}
 	
@@ -682,13 +682,13 @@ void SubactivitiesForm::help()
 	s+=tr("Above the (sub)activities list we have 2 labels, containing 4 numbers. The first label contains text: No: a / b. The first number a is the"
 		" number of active (sub)activities (we number each individual subactivity as 1), while the second number b is the number of total (sub)activities."
 		" The second label contains text: Dur: c / d. The third number c is the duration of active (sub)activities, in periods"
-		" (or FET hours), while the fourth number d is the duration of total (sub)activities, in periods (or FET hours)."
+		" (or Open-Timetable hours), while the fourth number d is the duration of total (sub)activities, in periods (or Open-Timetable hours)."
 		" So, No means number and Dur means duration.");
 	s+="\n\n";
 	s+=tr("Example: No: 100 / 102, Dur: 114 / 117. They represent: 100 - the number of active (sub)activities,"
 		" then 102 - the number of total (sub)activities,"
-		" 114 - the duration of active (sub)activities (in periods or FET hours) and 117 - the duration of total (sub)activities"
-		" (in periods or FET hours). In this example we have 2 inactive (sub)activities with their combined duration being 3 periods.");
+		" 114 - the duration of active (sub)activities (in periods or Open-Timetable hours) and 117 - the duration of total (sub)activities"
+		" (in periods or Open-Timetable hours). In this example we have 2 inactive (sub)activities with their combined duration being 3 periods.");
 
 	s+="\n\n";
 	s+=tr("Explanation of the short description of a (sub)activity: first comes the id."
@@ -725,14 +725,14 @@ void SubactivitiesForm::help()
 	s+=tr("Note that it is possible to activate/deactivate a subactivity in two different ways: by modifying a subactivity and selecting/deselecting the 'Active'"
 		" check box, or directly, by clicking the corresponding buttons in this dialog.");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable Help"), s);
 }
 
 void SubactivitiesForm::subactivityComments()
 {
 	int ind=subactivitiesListWidget->currentRow();
 	if(ind<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subactivity"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subactivity"));
 		return;
 	}
 	
@@ -901,7 +901,7 @@ void SubactivitiesForm::activateSubactivity()
 {
 	int i=subactivitiesListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subactivity"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subactivity"));
 	
 		subactivitiesListWidget->setFocus();
 
@@ -963,7 +963,7 @@ void SubactivitiesForm::deactivateSubactivity()
 {
 	int i=subactivitiesListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected subactivity"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected subactivity"));
 	
 		subactivitiesListWidget->setFocus();
 
@@ -1027,7 +1027,7 @@ void SubactivitiesForm::activateAllSubactivities()
 {
 	QMessageBox::StandardButton ret=QMessageBox::No;
 	QString s=tr("Are you sure you want to activate all the listed subactivities?");
-	ret=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+	ret=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
 	if(ret==QMessageBox::No){
 		subactivitiesListWidget->setFocus();
 		return;
@@ -1057,7 +1057,7 @@ void SubactivitiesForm::activateAllSubactivities()
 		
 		filterChanged();
 		
-		QMessageBox::information(this, tr("FET information"), tr("Activated %1 subactivities").arg(cnt));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Activated %1 subactivities").arg(cnt));
 	}
 	
 	subactivitiesListWidget->setFocus();
@@ -1067,7 +1067,7 @@ void SubactivitiesForm::deactivateAllSubactivities()
 {
 	QMessageBox::StandardButton ret=QMessageBox::No;
 	QString s=tr("Are you sure you want to deactivate all the listed subactivities?");
-	ret=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+	ret=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
 	if(ret==QMessageBox::No){
 		subactivitiesListWidget->setFocus();
 		return;
@@ -1097,7 +1097,7 @@ void SubactivitiesForm::deactivateAllSubactivities()
 		
 		filterChanged();
 		
-		QMessageBox::information(this, tr("FET information"), tr("Deactivated %1 subactivities").arg(cnt));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Deactivated %1 subactivities").arg(cnt));
 	}
 
 	subactivitiesListWidget->setFocus();

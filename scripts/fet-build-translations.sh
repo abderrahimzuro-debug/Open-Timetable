@@ -66,6 +66,9 @@ for lang in "${LANGS[@]}"; do
     exit 1
   fi
 
+  # اسم برنامجنا بدل الاسم الأصلي، حتى تبقى الترجمات مطابقة لنصوص الواجهة
+  python3 "$ROOT/scripts/rebrand-strings.py" "$WORK/fet_${lang}.ts" >/dev/null
+
   echo "== $lang: lrelease =="
   "$LRELEASE" -silent "$WORK/fet_${lang}.ts" -qm "$OUT/fet_${lang}.qm"
   ls -lh "$OUT/fet_${lang}.qm"

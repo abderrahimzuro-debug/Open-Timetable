@@ -44,7 +44,7 @@ RemoveRedundantConfirmationForm::RemoveRedundantConfirmationForm(QWidget* parent
 	s+=tr("This function is intended to be used after you inputted all data or after you used the advanced function "
 	 "of spreading the activities evenly over the week. This function will automatically remove the redundant constraints of "
 	 "type min days between activities (and min half days between activities, if you use the Mornings-Afternoons mode), "
-	 "so that your data is more correct and the timetable easier for FET to find.");
+	 "so that your data is more correct and the timetable easier for Open-Timetable to find.");
 	s+="\n\n";
 	s+=tr("This function is only useful if you have redundant constraints with weight < 100%. The redundant constraints "
 	 "with weight 100% are actually useful for the generation algorithm, and should not be removed. They are expected to help avoiding "

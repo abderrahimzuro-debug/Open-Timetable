@@ -958,18 +958,18 @@ void ModifyTimeConstraints::okClicked()
 	QString tmp=weightLineEdit->text();
 	weight_sscanf(tmp, "%lf", &weight);
 	if(weight<0.0 || weight>100.0){
-		QMessageBox::warning(dialog, tr("FET information"), tr("Invalid weight (percentage)"));
+		QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid weight (percentage)"));
 		return;
 	}
 
 	if(!timeConstraintCanHaveAnyWeight(type) && weight!=100.0){
-		QMessageBox::warning(dialog, tr("FET information"), tr("Invalid weight (percentage) - it has to be 100%"));
+		QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Invalid weight (percentage) - it has to be 100%"));
 		return;
 	}
 
 	if(type==CONSTRAINT_TEACHER_MAX_HOURS_DAILY || type==CONSTRAINT_TEACHER_MAX_HOURS_DAILY_REAL_DAYS){
 		if(weight<100.0){
-			int t=QMessageBox::warning(dialog, tr("FET warning"),
+			int t=QMessageBox::warning(dialog, tr("Open-Timetable warning"),
 				tr("You selected a weight less than 100%. The generation algorithm is not perfectly optimized to work with such weights (even"
 				 " if in practice it might work well). It is recommended to work only with 100% weights for these constraints. Are you sure you want to continue?"),
 				 QMessageBox::Yes | QMessageBox::Cancel);
@@ -1062,12 +1062,12 @@ void ModifyTimeConstraints::okClicked()
 			{
 				if(!checkBox->isChecked()){
 					if(gt.rules.mode!=MORNINGS_AFTERNOONS){
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
 							"please use the constraint teacher min days per week"));
 						return;
 					}
 					else{
-						QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
+						QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for a teacher, "
 							"please use the constraint teacher min days per week (but the min days per week constraint is for real days. You can also use the "
 							"constraints teacher min mornings/afternoons per week.)"));
 						return;
@@ -1277,7 +1277,7 @@ void ModifyTimeConstraints::okClicked()
 		case CONSTRAINT_TEACHER_MIN_HOURS_DAILY_REAL_DAYS:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for this teacher, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty days check box must be checked. If you need to not allow empty days for this teacher, "
 						"please use the constraint teacher min days per week"));
 					return;
 				}
@@ -1322,7 +1322,7 @@ void ModifyTimeConstraints::okClicked()
 		case CONSTRAINT_TEACHER_MIN_HOURS_PER_MORNING:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for a teacher, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty mornings check box must be checked. If you need to not allow empty mornings for a teacher, "
 						"please use the constraint teacher min mornings per week."));
 					return;
 				}
@@ -1421,7 +1421,7 @@ void ModifyTimeConstraints::okClicked()
 		case CONSTRAINT_TEACHER_MIN_HOURS_PER_AFTERNOON:
 			{
 				if(!checkBox->isChecked()){
-					QMessageBox::warning(dialog, tr("FET information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for a teacher, "
+					QMessageBox::warning(dialog, tr("Open-Timetable information"), tr("Allow empty afternoons check box must be checked. If you need to not allow empty afternoons for a teacher, "
 						"please use the constraint teacher min afternoons per week."));
 					return;
 				}
@@ -1509,10 +1509,10 @@ void ModifyTimeConstraints::checkBoxToggled()
 				if(!k){
 					checkBox->setChecked(true);
 					if(gt.rules.mode!=MORNINGS_AFTERNOONS)
-						QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
+						QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
 							" please use constraint teacher min days per week"));
 					else
-						QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
+						QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
 							" please use constraint teacher min days per week (but the min days per week constraint is for real days. You can also use the "
 							"constraints teacher min mornings/afternoons per week.)"));
 				}
@@ -1533,7 +1533,7 @@ void ModifyTimeConstraints::checkBoxToggled()
 
 				if(!k){
 					checkBox->setChecked(true);
-					QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty days for this teacher,"
 						" please use constraint teacher min days per week"));
 				}
 
@@ -1546,7 +1546,7 @@ void ModifyTimeConstraints::checkBoxToggled()
 
 				if(!k){
 					checkBox->setChecked(true);
-					QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty mornings for this teacher,"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty mornings for this teacher,"
 						" please use constraint teacher min mornings per week."));
 				}
 
@@ -1559,7 +1559,7 @@ void ModifyTimeConstraints::checkBoxToggled()
 
 				if(!k){
 					checkBox->setChecked(true);
-					QMessageBox::information(dialog, tr("FET information"), tr("This check box must remain checked. If you really need to not allow empty afternoons for this teacher,"
+					QMessageBox::information(dialog, tr("Open-Timetable information"), tr("This check box must remain checked. If you really need to not allow empty afternoons for this teacher,"
 						" please use constraint teacher min afternoons per week."));
 				}
 

@@ -58,7 +58,7 @@ void ActivitiesTagsForm::addActivityTag()
 	QString activityTagName=activityTagsComboBox->currentText();
 	int acttagindex=gt.rules.searchActivityTag(activityTagName);
 	if(acttagindex<0){
-		QMessageBox::warning(this, tr("FET warning"), tr("Invalid selected activity tag."));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Invalid selected activity tag."));
 		return;
 	}
 	
@@ -68,7 +68,7 @@ void ActivitiesTagsForm::addActivityTag()
 			cnt++;
 	
 	if(cnt>0){
-		QMessageBox::StandardButton res=QMessageBox::question(this, tr("FET confirmation"),
+		QMessageBox::StandardButton res=QMessageBox::question(this, tr("Open-Timetable confirmation"),
 		 tr("Add the activity tag %1 to %2 selected (sub)activities which do not have it?", "%1 is an activity tag, %2 is the count of the affected (sub)activities")
 		 .arg(activityTagName).arg(cnt),
 		 QMessageBox::Cancel | QMessageBox::Ok);
@@ -94,7 +94,7 @@ void ActivitiesTagsForm::addActivityTag()
 		rooms_buildings_schedule_ready=false;
 	}
 	else{
-		QMessageBox::information(this, tr("FET information"), tr("All the selected (sub)activities have the activity tag %1.").arg(activityTagName));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("All the selected (sub)activities have the activity tag %1.").arg(activityTagName));
 	}
 }
 
@@ -103,7 +103,7 @@ void ActivitiesTagsForm::removeActivityTag()
 	QString activityTagName=activityTagsComboBox->currentText();
 	int acttagindex=gt.rules.searchActivityTag(activityTagName);
 	if(acttagindex<0){
-		QMessageBox::warning(this, tr("FET warning"), tr("Invalid selected activity tag."));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Invalid selected activity tag."));
 		return;
 	}
 	
@@ -113,7 +113,7 @@ void ActivitiesTagsForm::removeActivityTag()
 			cnt++;
 	
 	if(cnt>0){
-		QMessageBox::StandardButton res=QMessageBox::question(this, tr("FET confirmation"),
+		QMessageBox::StandardButton res=QMessageBox::question(this, tr("Open-Timetable confirmation"),
 		 tr("Remove the activity tag %1 from %2 selected (sub)activities which have it?", "%1 is an activity tag, %2 is the count of the affected (sub)activities")
 		 .arg(activityTagName).arg(cnt),
 		 QMessageBox::Cancel | QMessageBox::Ok);
@@ -140,6 +140,6 @@ void ActivitiesTagsForm::removeActivityTag()
 		rooms_buildings_schedule_ready=false;
 	}
 	else{
-		QMessageBox::information(this, tr("FET information"), tr("None of the selected (sub)activities have the activity tag %1.").arg(activityTagName));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("None of the selected (sub)activities have the activity tag %1.").arg(activityTagName));
 	}
 }

@@ -79,7 +79,7 @@ void HelpTipsForm::setText()
 	 "The correct way in this case (if the weights of the min days between activities constraints is < 100%) is to leave only the "
 	 "constraints referring to the first group of activities (A). You will have a much faster generation (maybe 10 times faster or more). "
 	 "But if the weights of the min days between activities constraints are equal with 100%, then it is better to keep all of them, even "
-	 "if they are redundant, because in this case FET will reject earlier the incorrect placements.");
+	 "if they are redundant, because in this case Open-Timetable will reject earlier the incorrect placements.");
 	s+="\n\n";
 	s+=tr("PS: Suppose there are 2 constraints for activities A1,2,3 and 2 constraints for activities B1,2,3 and 2 "
 	 "constraints for activities C1,2,3. If A and B and C are simultaneous, remove only the constraints referring to B "
@@ -87,7 +87,7 @@ void HelpTipsForm::setText()
 	s+="\n\n";
 	s+=tr("More details: the combination of 2 or more redundant constraints min (half) days between activities with weights < 100% implies "
 	 "a much stronger constraint. From 3 redundant constraints with 95%, you get one with 100%-5%*5%*5%=99.9875%, which is not what you want. "
-	 "But if the weights of the min (half) days between activities constraints are 100%, this useful redundancy will help guide FET faster "
+	 "But if the weights of the min (half) days between activities constraints are 100%, this useful redundancy will help guide Open-Timetable faster "
 	 "towards a solution.");
 	s+="\n\n";
 	s+=tr("Do not consider redundant constraints with the same activities but different number of days "

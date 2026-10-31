@@ -72,12 +72,12 @@ SettingsStyleAndColorSchemeForm::~SettingsStyleAndColorSchemeForm()
 void SettingsStyleAndColorSchemeForm::ok()
 {
 	if(stylesComboBox->currentIndex()<0){
-		QMessageBox::warning(this, tr("FET warning"), tr("Please select a style."));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Please select a style."));
 		return;
 	}
 
 	if(!automaticRadioButton->isChecked() && !lightRadioButton->isChecked() && !darkRadioButton->isChecked()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Please select a color scheme."));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Please select a color scheme."));
 		return;
 	}
 

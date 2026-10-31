@@ -119,11 +119,11 @@ void RoomMakeEditVirtualForm::removeSet()
 {
 	int ind=setsListWidget->currentRow();
 	if(ind<0 || ind>=setsListWidget->count()){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected set."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected set."));
 		return;
 	}
 	
-	QMessageBox::StandardButton t=QMessageBox::question(this, tr("FET confirmation"), tr("Are you sure you want to remove the set number %1?").arg(ind+1)+"\n\n"+
+	QMessageBox::StandardButton t=QMessageBox::question(this, tr("Open-Timetable confirmation"), tr("Are you sure you want to remove the set number %1?").arg(ind+1)+"\n\n"+
 	 tr("Note: The sets after the removed one will be renamed, so that all the sets are numbered from 1 to the number of sets."),
 	 QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 	if(t==QMessageBox::No)
@@ -154,7 +154,7 @@ void RoomMakeEditVirtualForm::removeRoom()
 {
 	int ind=selectedRealRoomsListWidget->currentRow();
 	if(ind<0 || ind>=selectedRealRoomsListWidget->count()){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected real room."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected real room."));
 		return;
 	}
 
@@ -189,7 +189,7 @@ void RoomMakeEditVirtualForm::addRoom()
 {
 	int ind=allRealRoomsListWidget->currentRow();
 	if(ind<0 || ind>=allRealRoomsListWidget->count()){
-		QMessageBox::information(this, tr("FET information"), tr("Invalid selected real room."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Invalid selected real room."));
 		return;
 	}
 
@@ -245,13 +245,13 @@ void RoomMakeEditVirtualForm::cancel()
 void RoomMakeEditVirtualForm::ok()
 {
 	if(sets.count()<2){
-		QMessageBox::information(this, tr("FET information"), tr("You must input at least two sets of real rooms, otherwise you wouldn't need this virtual room."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("You must input at least two sets of real rooms, otherwise you wouldn't need this virtual room."));
 		return;
 	}
 	int i=0;
 	for(const QStringList& tl : std::as_const(sets)){
 		if(tl.count()==0){
-			QMessageBox::information(this, tr("FET information"), tr("The set of real rooms number %1 has no real rooms - incorrect,"
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("The set of real rooms number %1 has no real rooms - incorrect,"
 			 " because each set must be nonvoid.").arg(i+1));
 			return;
 		}
@@ -287,7 +287,7 @@ void RoomMakeEditVirtualForm::help()
 {
 	QString s;
 	
-	s=tr("Virtual rooms were suggested by the user %1 on the FET forum (you can follow the discussion on the internet page %2)."
+	s=tr("Virtual rooms were suggested by the user %1 on the Open-Timetable forum (you can follow the discussion on the internet page %2)."
 	 " They can be useful in two situations (but you might think of more uses):")
 	 .arg("math").arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=4249.0");
 	s+="\n\n";
@@ -296,7 +296,7 @@ void RoomMakeEditVirtualForm::help()
 	s+=tr("2) If you want an activity to take place, say, either in a large real room or in three smaller real rooms.");
 	s+="\n\n";
 	s+=tr("How does this work: Each virtual room has a SET of sets of real rooms. If an activity is placed in this virtual room,"
-	 " FET will choose for the SET a real room from each set. The chosen real rooms must all be different.",
+	 " Open-Timetable will choose for the SET a real room from each set. The chosen real rooms must all be different.",
 	 "Explanation for the translators: the SET incompases more sets. Use capital letters for"
 	 " 'SET' and lowercase letters for 'set'");
 	s+=" ";
@@ -324,7 +324,7 @@ void RoomMakeEditVirtualForm::help()
 	s+=tr("Note that the order of sets in a virtual room's SET or the order of real rooms in each set does not matter."
 	 " So, in this dialog, if you remove a set, the sets after it will be renamed"
 	 " so that the sets are always Set 1... Set n, retaining their rooms (if you have for example Set 1, Set 2, Set 3, and Set 4, and you remove Set 2,"
-	 " FET will keep Set 1, and rename Set 3 to Set 2 (keeping the real rooms of Set 3) and Set 4 to Set 3 (keeping the real rooms of Set 4)).");
+	 " Open-Timetable will keep Set 1, and rename Set 3 to Set 2 (keeping the real rooms of Set 3) and Set 4 to Set 3 (keeping the real rooms of Set 4)).");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable Help"), s);
 }

@@ -52,7 +52,7 @@ void AddStudentsGroupForm::addStudentsGroup()
 	StudentsGroup* sg;
 
 	if(nameLineEdit->text().isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		return;
 	}
 	QString yearName=yearNameLineEdit->text();
@@ -88,7 +88,7 @@ void AddStudentsGroupForm::addStudentsGroup()
 	}
 	if(ss!=nullptr){ //already existing group, but in other year. It is the same group.
 		assert(ss->type==STUDENTS_GROUP);
-		/*if(QMessageBox::warning( this, tr("FET"),
+		/*if(QMessageBox::warning( this, tr("Open-Timetable"),
 			tr("This group already exists, but in another year. "
 			"If you insert current group to current year, that "
 			"means that some years share the same group (overlap). "
@@ -102,7 +102,7 @@ void AddStudentsGroupForm::addStudentsGroup()
 
 			return;
 		}*/
-		if(QMessageBox::warning( this, tr("FET"),
+		if(QMessageBox::warning( this, tr("Open-Timetable"),
 			tr("This group already exists, but in another year. "
 			"If you insert current group to current year, that "
 			"means that some years share the same group (overlap). "

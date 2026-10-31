@@ -174,5 +174,5 @@ void AddExistingStudentsSubgroupsForm::help()
 	s+=tr("A subgroup must be created firstly by adding it manually in a group, but then to add it in other groups from the same year you "
 	 "can use this simple dialog.");
 
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }

@@ -63,7 +63,7 @@ void ModifyStudentsSubgroupForm::cancel()
 void ModifyStudentsSubgroupForm::ok()
 {
 	if(nameLineEdit->text().isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		return;
 	}
 	QString subgroupName=nameLineEdit->text();
@@ -71,9 +71,9 @@ void ModifyStudentsSubgroupForm::ok()
 	//QString groupName=groupNameLineEdit->text();
 	
 	if(this->_initialSubgroupName!=subgroupName && gt.rules.searchStudentsSet(subgroupName)!=nullptr){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 		 tr("Name exists. If you would like to make more groups to contain a subgroup (overlapping groups),"
- 		 " please remove current subgroup (FET will unfortunately remove all related activities and constraints)"
+ 		 " please remove current subgroup (Open-Timetable will unfortunately remove all related activities and constraints)"
 		 " and add a new subgroup with desired name in current group."
  		 " I know this is not an elegant procedure, I'll try to fix that in the future."));
 		

@@ -114,13 +114,13 @@ void ModifyTeacherForm::ok()
 {
 	QString tn=teacherNameLineEdit->text();
 	if(tn.isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		return;
 	}
 	
 	QString oldName=tch->name;
 	if(tn!=oldName && gt.rules.searchTeacher(tn)>=0){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name - another teacher has this name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name - another teacher has this name"));
 		return;
 	}
 	
@@ -149,7 +149,7 @@ void ModifyTeacherForm::ok()
 			newMab=TEACHER_FIVE_DAYS_EXCEPTION;
 		}
 		else{
-			QMessageBox::information(this, tr("FET warning"), tr("Please select an option for the mornings-afternoons behavior.")+QString(" ")+
+			QMessageBox::information(this, tr("Open-Timetable warning"), tr("Please select an option for the mornings-afternoons behavior.")+QString(" ")+
 			 tr("You can press the Help button to read the information on how to correctly choose this option."));
 			return;
 		}
@@ -214,8 +214,8 @@ void ModifyTeacherForm::help()
 		s+=QCoreApplication::translate("MorningsAfternoonsTeacherBehavior", "To allow the teacher to work both in the morning and afternoon on each day, use the option 'Unrestricted'.");
 	}
 	else{
-		s+=tr("Since you are not using the mornings-afternoons mode of FET, you need to simply input a non-existing teacher name.");
+		s+=tr("Since you are not using the mornings-afternoons mode of Open-Timetable, you need to simply input a non-existing teacher name.");
 	}
 
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }

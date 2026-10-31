@@ -77,15 +77,15 @@ void ModifyRoomForm::cancel()
 void ModifyRoomForm::ok()
 {
 	if(nameLineEdit->text().isEmpty()){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect name"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect name"));
 		return;
 	}
 	if(buildingsComboBox->currentIndex()<0){
-		QMessageBox::information(this, tr("FET information"), tr("Incorrect building"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Incorrect building"));
 		return;
 	}
 	if(this->_initialRoomName!=nameLineEdit->text() && gt.rules.searchRoom(nameLineEdit->text())>=0){
-		QMessageBox::information(this, tr("FET information"), tr("Name existing - please choose another"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Name existing - please choose another"));
 		return;
 	}
 	

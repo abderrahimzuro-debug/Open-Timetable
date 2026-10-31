@@ -160,7 +160,7 @@ void StartTimetablePrint::startTimetablePrint(QWidget* parent)
 		tpfd.exec();
 
 	} else {
-		QMessageBox::warning(parent, tr("FET warning"),
+		QMessageBox::warning(parent, tr("Open-Timetable warning"),
 		 tr("Printing is currently not possible, because you modified the dataset. Please generate a new timetable before printing."));
 	}
 }
@@ -1742,7 +1742,7 @@ QString TimetablePrintForm::updateHtmlPrintString(bool printAll){
 
 void TimetablePrintForm::print(){
 #ifdef QT_NO_PRINTER
-	QMessageBox::warning(this, tr("FET warning"), tr("FET is compiled without printer support "
+	QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Open-Timetable is compiled without printer support "
 	 "- it is impossible to print from this dialog. Please open the HTML timetables from the results directory"));
 #else
 	QPrinter printer(QPrinter::HighResolution);
@@ -1762,7 +1762,7 @@ void TimetablePrintForm::print(){
 	printerMargins.setTop(topPageMargin->value());
 	if(!printer.setPageMargins(printerMargins, QPageLayout::Millimeter)){
 		printerMargins=printer.pageLayout().minimumMargins();
-		QMessageBox::warning(this, tr("FET warning"), tr("No margins set, because at least one value is too small. "
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("No margins set, because at least one value is too small. "
 		"You need to enter at least:\nLeft: %1\nRight: %2\nTop: %3\nBottom: %4")
 		.arg(printerMargins.left()).arg(printerMargins.right()).arg(printerMargins.top()).arg(printerMargins.bottom()));
 	}
@@ -1787,7 +1787,7 @@ void TimetablePrintForm::print(){
 
 void TimetablePrintForm::printPreviewFull(){
 #ifdef QT_NO_PRINTER
-	QMessageBox::warning(this, tr("FET warning"), tr("FET is compiled without printer support "
+	QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Open-Timetable is compiled without printer support "
 	 "- it is impossible to print from this dialog. Please open the HTML timetables from the results directory"));
 #else
 	QPrinter printer(QPrinter::HighResolution);
@@ -1807,7 +1807,7 @@ void TimetablePrintForm::printPreviewFull(){
 	printerMargins.setTop(topPageMargin->value());
 	if(!printer.setPageMargins(printerMargins, QPageLayout::Millimeter)){
 		printerMargins=printer.pageLayout().minimumMargins();
-		QMessageBox::warning(this, tr("FET warning"), tr("No margins set, because at least one value is too small. "
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("No margins set, because at least one value is too small. "
 		"You need to enter at least:\nLeft: %1\nRight: %2\nTop: %3\nBottom: %4")
 		.arg(printerMargins.left()).arg(printerMargins.right()).arg(printerMargins.top()).arg(printerMargins.bottom()));
 	}
@@ -1827,7 +1827,7 @@ void TimetablePrintForm::updatePreviewFull(QPrinter* printer){
 #ifdef QT_NO_PRINTER
 	Q_UNUSED(printer);
 
-	QMessageBox::warning(this, tr("FET warning"), tr("FET is compiled without printer support "
+	QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Open-Timetable is compiled without printer support "
 	 "- it is impossible to print from this dialog. Please open the HTML timetables from the results directory"));
 #else
 	QTextDocument textDocument;
@@ -1840,7 +1840,7 @@ void TimetablePrintForm::updatePreviewFull(QPrinter* printer){
 
 void TimetablePrintForm::printPreviewSmall(){
 #ifdef QT_NO_PRINTER
-	QMessageBox::warning(this, tr("FET warning"), tr("FET is compiled without printer support "
+	QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Open-Timetable is compiled without printer support "
 	 "- it is impossible to print from this dialog. Please open the HTML timetables from the results directory"));
 #else
 	QPrinter printer(QPrinter::HighResolution);
@@ -1861,7 +1861,7 @@ void TimetablePrintForm::printPreviewSmall(){
 	printerMargins.setTop(topPageMargin->value());
 	if(!printer.setPageMargins(printerMargins, QPageLayout::Millimeter)){
 		printerMargins=printer.pageLayout().minimumMargins();
-		QMessageBox::warning(this, tr("FET warning"), tr("No margins set, because at least one value is too small. "
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("No margins set, because at least one value is too small. "
 		"You need to enter at least:\nLeft: %1\nRight: %2\nTop: %3\nBottom: %4")
 		.arg(printerMargins.left()).arg(printerMargins.right()).arg(printerMargins.top()).arg(printerMargins.bottom()));
 	}
@@ -1881,7 +1881,7 @@ void TimetablePrintForm::updatePreviewSmall(QPrinter* printer){
 #ifdef QT_NO_PRINTER
 	Q_UNUSED(printer);
 
-	QMessageBox::warning(this, tr("FET warning"), tr("FET is compiled without printer support "
+	QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Open-Timetable is compiled without printer support "
 	 "- it is impossible to print from this dialog. Please open the HTML timetables from the results directory"));
 #else
 	QTextDocument textDocument;

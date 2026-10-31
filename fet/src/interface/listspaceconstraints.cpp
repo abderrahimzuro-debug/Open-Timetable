@@ -855,7 +855,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 
 				firstInstructionsLabel=new QLabel(tr("This constraint ensures that the specified room does not have more than the specified number "
 													 "of activity tags from those selected, on any day."));
-				secondInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, the specified room must be real (not virtual), "
+				secondInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, the specified room must be real (not virtual), "
 													  "and should not be found in any set of real rooms of any virtual room."));
 
 				roomsComboBox=new QComboBox;
@@ -872,7 +872,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 
 				firstInstructionsLabel=new QLabel(tr("This constraint ensures that the specified room does not have more than the specified number of "
 													 "activity tags from those selected, on any real day."));
-				secondInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, the specified room must be real (not virtual), "
+				secondInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, the specified room must be real (not virtual), "
 													  "and should not be found in any set of real rooms of any virtual room."));
 
 				roomsComboBox=new QComboBox;
@@ -889,7 +889,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 
 				firstInstructionsLabel=new QLabel(tr("This constraint ensures that the specified room does not have more than the specified number of "
 													 "activity tags from those selected, throughout the week."));
-				secondInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, the specified room must be real (not virtual), "
+				secondInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, the specified room must be real (not virtual), "
 													  "and should not be found in any set of real rooms of any virtual room."));
 
 				roomsComboBox=new QComboBox;
@@ -904,7 +904,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints room pair of mutually exclusive time slots", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsRoomPairOfMutuallyExclusiveTimeSlots");
 
-				firstInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, the specified room must be real (not virtual), "
+				firstInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, the specified room must be real (not virtual), "
 													  "and should not be found in any set of real rooms of any virtual room."));
 
 				roomsComboBox=new QComboBox;
@@ -919,7 +919,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints room pair of mutually exclusive sets of time slots", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsRoomPairOfMutuallyExclusiveSetsOfTimeSlots");
 
-				firstInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, the specified room must be real (not virtual), "
+				firstInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, the specified room must be real (not virtual), "
 													  "and should not be found in any set of real rooms of any virtual room."));
 
 				roomsComboBox=new QComboBox;
@@ -936,7 +936,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints room occupies max sets of time slots from selection", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsRoomOccupiesMaxSetsOfTimeSlotsFromSelection");
 
-				firstInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, the specified room must be real (not virtual), "
+				firstInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, the specified room must be real (not virtual), "
 													  "and should not be found in any set of real rooms of any virtual room."));
 
 				roomsComboBox=new QComboBox;
@@ -955,7 +955,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 
 				firstInstructionsLabel=new QLabel(tr("This constraint ensures that all the rooms do not have more than the specified number "
 													 "of activity tags from those selected, on any day."));
-				secondInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, your data set should not define any virtual room."));
+				secondInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, your data set should not define any virtual room."));
 
 				activityTagsComboBox=new QComboBox;
 
@@ -969,7 +969,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 
 				firstInstructionsLabel=new QLabel(tr("This constraint ensures that all the rooms do not have more than the specified number of "
 													 "activity tags from those selected, on any real day."));
-				secondInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, your data set should not contain any virtual room."));
+				secondInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, your data set should not contain any virtual room."));
 
 				activityTagsComboBox=new QComboBox;
 
@@ -983,7 +983,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 
 				firstInstructionsLabel=new QLabel(tr("This constraint ensures that all the rooms do not have more than the specified number of "
 													 "activity tags from those selected, throughout the week."));
-				secondInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, your data set should not use any virtual room."));
+				secondInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, your data set should not use any virtual room."));
 
 				activityTagsComboBox=new QComboBox;
 
@@ -995,7 +995,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints rooms pair of mutually exclusive time slots", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsRoomsPairOfMutuallyExclusiveTimeSlots");
 
-				firstInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, your data set should not have any virtual room."));
+				firstInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, your data set should not have any virtual room."));
 
 				helpPushButton=new QPushButton(tr("Help"));
 
@@ -1007,7 +1007,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints rooms pair of mutually exclusive sets of time slots", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsRoomsPairOfMutuallyExclusiveSetsOfTimeSlots");
 
-				firstInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, your data set should not include any virtual room."));
+				firstInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, your data set should not include any virtual room."));
 
 				helpPushButton=new QPushButton(tr("Help"));
 
@@ -1021,7 +1021,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				dialogTitle=tr("Constraints rooms occupy max sets of time slots from selection", "The title of the dialog to list the constraints of this type");
 				dialogName=QString("ConstraintsRoomsOccupyMaxSetsOfTimeSlotsFromSelection");
 
-				firstInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, your data set should not include any virtual room."));
+				firstInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, your data set should not include any virtual room."));
 
 				helpPushButton=new QPushButton(tr("Help"));
 
@@ -1036,7 +1036,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				dialogName=QString("ConstraintsBuildingMinOneActivityInEachAvailableTimeSlot");
 
 				//firstInstructionsLabel=new QLabel(tr("This constraint is for exam timetables in certain countries.")+QString(" ")+tr("Please click the Help button for details!"));
-				firstInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, you need to respect these conditions:")+"\n"
+				firstInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, you need to respect these conditions:")+"\n"
 													//+tr("- each building must have this constraint")+"\n"
 													//+tr("- all the activities must have duration 1")+"\n"
 													+tr("- all the rooms must be real (not virtual)")+"\n"
@@ -1057,7 +1057,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				dialogName=QString("ConstraintsBuildingsMinOneActivityInEachAvailableTimeSlot");
 
 				//firstInstructionsLabel=new QLabel(tr("This constraint is for exam timetables in certain countries.")+QString(" ")+tr("Please click the Help button for details!"));
-				firstInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, you need to respect these conditions:")+"\n"
+				firstInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, you need to respect these conditions:")+"\n"
 													//+tr("- each building must have this constraint")+"\n"
 													//+tr("- all the activities must have duration 1")+"\n"
 													+tr("- all the rooms must be real (not virtual)")+"\n"
@@ -1078,7 +1078,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				//firstInstructionsLabel=new QLabel(tr("This constraint is for exam timetables in certain countries.")+QString(" ")+tr("Please click the Help button for details!"));
 				firstInstructionsLabel=new QLabel(tr("This room will respect the maximum number of activities for each teacher over the whole week."));
 
-				secondInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, you need to respect this condition:")+"\n"
+				secondInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, you need to respect this condition:")+"\n"
 													+tr("- all the rooms must be real (not virtual)")
 												  );
 
@@ -1097,7 +1097,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				//firstInstructionsLabel=new QLabel(tr("This constraint is for exam timetables in certain countries.")+QString(" ")+tr("Please click the Help button for details!"));
 				firstInstructionsLabel=new QLabel(tr("All rooms will respect the maximum number of activities for each teacher over the whole week."));
 
-				secondInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, you need to respect this condition:")+"\n"
+				secondInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, you need to respect this condition:")+"\n"
 													+tr("- all the rooms must be real (not virtual)")
 												  );
 
@@ -1114,7 +1114,7 @@ ListSpaceConstraints::ListSpaceConstraints(QWidget* parent, int _type)
 				//firstInstructionsLabel=new QLabel(tr("This constraint is for exam timetables in certain countries.")+QString(" ")+tr("Please click the Help button for details!"));
 				firstInstructionsLabel=new QLabel(tr("This teacher will respect the maximum number of activities in this room over the whole week."));
 
-				secondInstructionsLabel=new QLabel(tr("Note: For FET to be able to start the generation, you need to respect this condition:")+"\n"
+				secondInstructionsLabel=new QLabel(tr("Note: For Open-Timetable to be able to start the generation, you need to respect this condition:")+"\n"
 													+tr("- all the rooms must be real (not virtual)")
 												  );
 
@@ -2679,7 +2679,7 @@ void ListSpaceConstraints::modifyClicked()
 {
 	int i=constraintsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(dialog, tr("FET information"), tr("Invalid selected constraint"));
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Invalid selected constraint"));
 
 		//constraintsListWidget->setFocus();
 
@@ -2735,7 +2735,7 @@ void ListSpaceConstraints::removeClicked()
 				s+=tr("Note: you can add again a constraint of this type from the menu Data -> Space constraints -> "
 					"Miscellaneous -> Basic compulsory space constraints.");
 
-				wr=QMessageBox::warning(dialog, tr("FET warning"), s,
+				wr=QMessageBox::warning(dialog, tr("Open-Timetable warning"), s,
 					QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
 
 				if(wr==QMessageBox::No){
@@ -2753,7 +2753,7 @@ void ListSpaceConstraints::removeClicked()
 	s+=QString("<br />\n<br />\n");
 	for(SpaceConstraint* ctr : std::as_const(tl))
 		s+=ctr->getDetailedDescription(gt.rules, true, colorsCheckBox!=nullptr?colorsCheckBox->isChecked():false)+QString("<br />\n");
-	int lres=LongTextMessageBox::confirmation(dialog, tr("FET confirmation"),
+	int lres=LongTextMessageBox::confirmation(dialog, tr("Open-Timetable confirmation"),
 		s, tr("Yes"), tr("No"), QString(), 0, 1 );
 
 	if(lres!=0){
@@ -2821,7 +2821,7 @@ void ListSpaceConstraints::helpClicked()
 				 "This constraint may be used for instance to constrain all activities of type Physics of a certain students set to be in the same room "
 				 "throughout the week, by adding all Physics activities for this students set and making max different rooms = 1.");
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -2836,7 +2836,7 @@ void ListSpaceConstraints::helpClicked()
 				 " slots are not subject to constraints.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -2851,7 +2851,7 @@ void ListSpaceConstraints::helpClicked()
 				 " slots are not subject to constraints.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -2868,7 +2868,7 @@ void ListSpaceConstraints::helpClicked()
 				s+=tr("Note: an affected activity is not allowed to be placed overlapping more than one set of selected time slots.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -2883,7 +2883,7 @@ void ListSpaceConstraints::helpClicked()
 				 " slots are not subject to constraints.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -2898,7 +2898,7 @@ void ListSpaceConstraints::helpClicked()
 				 " slots are not subject to constraints.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -2915,7 +2915,7 @@ void ListSpaceConstraints::helpClicked()
 				s+=tr("Note: an affected activity is not allowed to be placed overlapping more than one set of selected time slots.");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -2933,14 +2933,14 @@ void ListSpaceConstraints::helpClicked()
 				s+=tr("Note that a building is not available in a time slot if there is a constraint break in that time slot, or if all the rooms in that building"
 				 " are not available in that time slot with a weight of 100% (not lower).");
 				s+="\n\n";
-				s+=tr("You have some examples in the %1 directory of the FET examples, and you can read more on these"
-				 " two FET forum links: %2 and %3.")
+				s+=tr("You have some examples in the %1 directory of the Open-Timetable examples, and you can read more on these"
+				 " two Open-Timetable forum links: %2 and %3.")
 				 .arg("exams")
 				 .arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=4448.0")
 				 .arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=6772.0");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -2966,14 +2966,14 @@ void ListSpaceConstraints::helpClicked()
 				s+=tr("If you select the option 'Keep same room in a building' then, for each teacher who has activities in a certain building,"
 				 " the affected room(s) must be kept the same over the whole week (the room is constant for the teacher and the building).");
 				s+="\n\n";
-				s+=tr("You have some examples in the %1 directory of the FET examples, and you can read more on these"
-				 " two FET forum links: %2 and %3.")
+				s+=tr("You have some examples in the %1 directory of the Open-Timetable examples, and you can read more on these"
+				 " two Open-Timetable forum links: %2 and %3.")
 				 .arg("exams")
 				 .arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=4448.0")
 				 .arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=6772.0");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -2992,7 +2992,7 @@ void ListSpaceConstraints::helpClicked()
 				 " the affected room(s) must be kept the same over the whole week (the room is constant for the teacher and the building).");
 				s+="\n";
 
-				LongTextMessageBox::largeInformation(dialog, tr("FET help"), s);
+				LongTextMessageBox::largeInformation(dialog, tr("Open-Timetable help"), s);
 
 				break;
 			}
@@ -3075,11 +3075,11 @@ void ListSpaceConstraints::constraintChanged()
 void ListSpaceConstraints::moveSpaceConstraintUp()
 {
 	/*if(filterCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a space constraint up, the 'Filter' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a space constraint up, the 'Filter' check box must not be checked."));
 		return;
 	}*/
 	if(sortedCheckBox->isChecked()){
-		QMessageBox::information(dialog, tr("FET information"), tr("To move a space constraint up, the 'Sorted' check box must not be checked."));
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("To move a space constraint up, the 'Sorted' check box must not be checked."));
 		return;
 	}
 	
@@ -3162,11 +3162,11 @@ void ListSpaceConstraints::moveSpaceConstraintUp()
 void ListSpaceConstraints::moveSpaceConstraintDown()
 {
 	/*if(filterCheckBox->isChecked()){
-		QMessageBox::information(this, tr("FET information"), tr("To move a space constraint down, the 'Filter' check box must not be checked."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("To move a space constraint down, the 'Filter' check box must not be checked."));
 		return;
 	}*/
 	if(sortedCheckBox->isChecked()){
-		QMessageBox::information(dialog, tr("FET information"), tr("To move a space constraint down, the 'Sorted' check box must not be checked."));
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("To move a space constraint down, the 'Sorted' check box must not be checked."));
 		return;
 	}
 	
@@ -3260,7 +3260,7 @@ void ListSpaceConstraints::activateConstraints()
 	if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS){
 		QMessageBox::StandardButton ret=QMessageBox::No;
 		QString s=tr("Activate the selected space constraints?");
-		ret=QMessageBox::question(dialog, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+		ret=QMessageBox::question(dialog, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 		if(ret==QMessageBox::No){
 			//constraintsListWidget->setFocus();
 			return;
@@ -3310,7 +3310,7 @@ void ListSpaceConstraints::activateConstraints()
 		constraintsListWidget->horizontalScrollBar()->setValue(valh);
 
 		if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS)
-			QMessageBox::information(dialog, tr("FET information"), tr("Activated %1 space constraints").arg(cnt));
+			QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Activated %1 space constraints").arg(cnt));
 	}
 	if(recomputeSpace){
 		LockUnlock::computeLockedUnlockedActivitiesOnlySpace();
@@ -3326,7 +3326,7 @@ void ListSpaceConstraints::deactivateConstraints()
 		QMessageBox::StandardButton ret=QMessageBox::No;
 		QString s=tr("Deactivate the selected space constraints? "
 		 "(Note that the basic compulsory space constraints will not be deactivated, even if they are selected.)");
-		ret=QMessageBox::question(dialog, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+		ret=QMessageBox::question(dialog, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
 		if(ret==QMessageBox::No){
 			//constraintsListWidget->setFocus();
 			return;
@@ -3377,7 +3377,7 @@ void ListSpaceConstraints::deactivateConstraints()
 		constraintsListWidget->horizontalScrollBar()->setValue(valh);
 
 		if(CONFIRM_ACTIVATE_DEACTIVATE_ACTIVITIES_CONSTRAINTS)
-			QMessageBox::information(dialog, tr("FET information"), tr("Deactivated %1 space constraints").arg(cnt));
+			QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Deactivated %1 space constraints").arg(cnt));
 	}
 	if(recomputeSpace){
 		LockUnlock::computeLockedUnlockedActivitiesOnlySpace();
@@ -3391,7 +3391,7 @@ void ListSpaceConstraints::constraintComments()
 {
 	int i=constraintsListWidget->currentRow();
 	if(i<0){
-		QMessageBox::information(dialog, tr("FET information"), tr("Invalid selected constraint"));
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("Invalid selected constraint"));
 
 		//constraintsListWidget->setFocus();
 
@@ -3519,7 +3519,7 @@ void ListSpaceConstraints::changeWeights()
 				cnt_unchanged++;
 		}
 	if(cnt_pre==0){
-		QMessageBox::information(dialog, tr("FET information"), tr("No constraints from your selection can change their weight"
+		QMessageBox::information(dialog, tr("Open-Timetable information"), tr("No constraints from your selection can change their weight"
 		 " (remember that some types of constraints are allowed to have only 100% weight)."));
 
 		//constraintsListWidget->setFocus();

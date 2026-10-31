@@ -250,7 +250,7 @@ QString buildLandingPage(const QString& dirPath, const QFileInfoList& htmlFiles,
 		"</main>\n"
 		"<footer>\n"
 		"  <p>لطباعة جدول: افتحه ثم <strong>Ctrl+P</strong>. الصفحة مهيّأة للطباعة وتخفي الأشرطة عند الطباعة.</p>\n"
-		"  <p>نظام Open-Timetable — يعتمد محرّك FET (AGPL-3.0).</p>\n"
+		"  <p>نظام Open-Timetable — يعتمد محرّك Open-Timetable (AGPL-3.0).</p>\n"
 		"</footer>\n"
 		"</body>\n"
 		"</html>\n");

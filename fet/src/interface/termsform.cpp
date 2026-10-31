@@ -101,7 +101,7 @@ void TermsForm::ok()
 		s+=QString(" ");
 		s+=tr("Do you want to continue?");
 
-		int res=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes|QMessageBox::Cancel);
+		int res=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes|QMessageBox::Cancel);
 	
 		if(res==QMessageBox::Cancel)
 			return;

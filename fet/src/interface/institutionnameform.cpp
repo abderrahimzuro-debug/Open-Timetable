@@ -61,7 +61,7 @@ void InstitutionNameForm::ok()
 		gt.rules.addUndoPoint(tr("Changed the institution name from %1 to %2.").arg(oin).arg(gt.rules.institutionName));
 	}
 	else{
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Cannot update institution name during generation."
 			" Please stop the generation before this."));
 		return;

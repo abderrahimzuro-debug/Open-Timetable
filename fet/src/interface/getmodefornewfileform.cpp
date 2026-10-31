@@ -65,19 +65,19 @@ void GetModeForNewFileForm::help()
 	s+=tr("Mode: official. This is the usual mode for timetabling. The week has days and hours, and you allocate activities with a subject, teacher(s), students to"
 	 " time slots and rooms");
 	s+="\n\n";
-	s+=tr("Mode: mornings-afternoons. This mode assumes that the number of FET days is the double of the real number of days per week, such that the first FET day"
-	 " is the morning of the first real day, the second FET day is the afternoon of the first real day, the third FET day is the morning of the second real day,"
-	 " and so on. This mode was developed with suggestions from the users of FET from Morocco and Algeria. It may be used in other countries as well.");
+	s+=tr("Mode: mornings-afternoons. This mode assumes that the number of Open-Timetable days is the double of the real number of days per week, such that the first Open-Timetable day"
+	 " is the morning of the first real day, the second Open-Timetable day is the afternoon of the first real day, the third Open-Timetable day is the morning of the second real day,"
+	 " and so on. This mode was developed with suggestions from the users of Open-Timetable from Morocco and Algeria. It may be used in other countries as well.");
 	s+="\n\n";
-	s+=tr("Mode: block-planning. This mode assigns activities with a subject and students to FET hours (real-life time slots, day and hour) and to FET days"
+	s+=tr("Mode: block-planning. This mode assigns activities with a subject and students to Open-Timetable hours (real-life time slots, day and hour) and to Open-Timetable days"
 	 " (real-life teachers). Be careful, the basic time and space constraints are much stronger, and each students set may have a single occupied column from"
 	 " all the columns of a row.");
 	s+="\n\n";
-	s+=tr("Mode: terms. This mode was developed with suggestions from the users of FET from Finland, but it might be used in other countries as well. The data"
+	s+=tr("Mode: terms. This mode was developed with suggestions from the users of Open-Timetable from Finland, but it might be used in other countries as well. The data"
 	 " has a number of terms and a number of days in each term. The total number of days must be the product of these two numbers. The week begins with the first term's days,"
 	 " continues with the second term, and so on.");
 
-	LongTextMessageBox::largeInformation(this, tr("FET Help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable Help"), s);
 }
 
 void GetModeForNewFileForm::ok()
@@ -89,13 +89,13 @@ void GetModeForNewFileForm::ok()
 		mode=MORNINGS_AFTERNOONS;
 	}
 	else if(blockPlanningRadioButton->isChecked()){
-		QString s=tr("WARNING: In the block-planning mode, the basic time and space constraints are modified to consider that the FET hours are real-life time slots."
-		 " Consequently, they are much stronger and each row (FET hour, real-life time slot) for a students subgroup / room may have a single occupied slot out of all"
-		 " the FET days (real-life teachers). This might result in an impossible timetable if you intend to do usual timetabling.");
+		QString s=tr("WARNING: In the block-planning mode, the basic time and space constraints are modified to consider that the Open-Timetable hours are real-life time slots."
+		 " Consequently, they are much stronger and each row (Open-Timetable hour, real-life time slot) for a students subgroup / room may have a single occupied slot out of all"
+		 " the Open-Timetable days (real-life teachers). This might result in an impossible timetable if you intend to do usual timetabling.");
 		s+="\n\n";
 		s+=tr("Are you sure you want to continue?");
 		
-		QMessageBox::StandardButton ret=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Yes|QMessageBox::Cancel);
+		QMessageBox::StandardButton ret=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Yes|QMessageBox::Cancel);
 		if(ret==QMessageBox::Cancel)
 			return;
 		
@@ -105,7 +105,7 @@ void GetModeForNewFileForm::ok()
 		mode=TERMS;
 	}
 	else{
-		QMessageBox::warning(this, tr("FET warning"), tr("Please select a mode."));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Please select a mode."));
 		return;
 	}
 	

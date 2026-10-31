@@ -56,6 +56,7 @@
 #include "statisticsprintform.h"
 
 #include "exportinterface.h"
+#include "ui_icons.h"
 #include "ui_publish.h"
 #include "ui_shell.h"
 #include "importinterface.h"
@@ -1046,7 +1047,7 @@ bool FetMainForm::openHistory()
 #else
 		if(!file.open(QIODevice::ReadOnly)){
 #endif
-			QMessageBox::critical(this, tr("FET critical"),
+			QMessageBox::critical(this, tr("Open-Timetable critical"),
 			 tr("Cannot open %1 for reading the history ... please check the reading permissions of the selected directory. Reading of the history file aborted.").arg(QFileInfo(filename).fileName()));
 
 			return false;
@@ -1054,16 +1055,16 @@ bool FetMainForm::openHistory()
 		
 		QDataStream tos(&file);
 		
-		//tos<<QString("FET history file")<<QString("\n")
+		//tos<<QString("Open-Timetable history file")<<QString("\n")
 		// <<QString("Data format version=")<<FET_DATA_FORMAT_VERSION<<QString("\n")
-		// <<QString("FET version=")<<FET_VERSION<<QString("\n");
+		// <<QString("Open-Timetable version=")<<FET_VERSION<<QString("\n");
 		QString s1, s2, s3, s4, s5, s6, s7, s8;
 		tos>>s1>>s2>>s3>>s4>>s5>>s6>>s7>>s8;
-		if(s1!=QString("FET history file") || s2!=QString("\n")
+		if(s1!=QString("Open-Timetable history file") || s2!=QString("\n")
 		 || s3!=QString("Data format version=") || s5!=QString("\n")
-		 || s6!=QString("FET version=") || s8!=QString("\n")){
-			QMessageBox::information(this, tr("FET information"), tr("The history will not be loaded from the disk for this data file,"
-			 " because the history file header is invalid. (Starting with FET version %1 the history file header changed.)")
+		 || s6!=QString("Open-Timetable version=") || s8!=QString("\n")){
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("The history will not be loaded from the disk for this data file,"
+			 " because the history file header is invalid. (Starting with Open-Timetable version %1 the history file header changed.)")
 			 .arg("6.16.0")
 			 +QString("\n\n")
 			 +tr("There should be nothing else to worry about. Your .fet data file will be safely/correctly opened and the disk history will be"
@@ -1074,9 +1075,9 @@ bool FetMainForm::openHistory()
 			return false;
 		}
 		if(s4!=FET_DATA_FORMAT_VERSION){
-			QMessageBox::information(this, tr("FET information"), tr("The history for this file cannot be loaded from the disk, because the data structure"
-			 " has changed (you are using a different FET version, in which the data format was changed).")+QString(" ")
-			 +tr("The history file data format version=%1, your FET data format version=%2.").arg(s4).arg(FET_DATA_FORMAT_VERSION)
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("The history for this file cannot be loaded from the disk, because the data structure"
+			 " has changed (you are using a different Open-Timetable version, in which the data format was changed).")+QString(" ")
+			 +tr("The history file data format version=%1, your Open-Timetable data format version=%2.").arg(s4).arg(FET_DATA_FORMAT_VERSION)
 			 +QString("\n\n")
 			 +tr("This was explained in the disk history settings dialog, and there should be nothing else to worry about. Your .fet data file will be"
 			 " safely/correctly opened and the disk history will be updated/corrected when you will save your data file."));
@@ -1174,7 +1175,7 @@ bool FetMainForm::saveHistory()
 #else
 			if(!file.open(QIODevice::WriteOnly | QIODevice::Truncate)){
 #endif
-				QMessageBox::critical(this, tr("FET critical"),
+				QMessageBox::critical(this, tr("Open-Timetable critical"),
 				 tr("Cannot open %1 for writing of the history ... please check the write permissions of the selected directory and your disk's free space. Saving of the file aborted.").arg(QFileInfo(filename).fileName()));
 
 				return false;
@@ -1182,9 +1183,9 @@ bool FetMainForm::saveHistory()
 
 			QDataStream tos(&file);
 
-			tos<<QString("FET history file")<<QString("\n")
+			tos<<QString("Open-Timetable history file")<<QString("\n")
 			 <<QString("Data format version=")<<FET_DATA_FORMAT_VERSION<<QString("\n")
-			 <<QString("FET version=")<<FET_VERSION<<QString("\n");
+			 <<QString("Open-Timetable version=")<<FET_VERSION<<QString("\n");
 
 			int stepsToSave=std::min(UNDO_REDO_STEPS_SAVE, savedStateIterator);
 			tos<<stepsToSave;
@@ -1200,7 +1201,7 @@ bool FetMainForm::saveHistory()
 			}
 
 			if(file.error()!=QFileDevice::NoError){
-				QMessageBox::critical(this, tr("FET critical"),
+				QMessageBox::critical(this, tr("Open-Timetable critical"),
 				 tr("Saving the history file gave the error message '%1', which means the saving is compromised. Please check your disk's free space.")
 				 .arg(file.errorString()));
 			}
@@ -1269,8 +1270,10 @@ FetMainForm::FetMainForm()
 
 	createActionsForConstraints();
 	
-	QIcon appIcon(":/images/appicon.png");
+	// Open-Timetable: شعارنا الخاص بدل شعار البرنامج الأصلي
+	QIcon appIcon = UiIcons::logo(64);
 	pqapplication->setWindowIcon(appIcon);
+	this->setWindowIcon(appIcon);
 	
 	this->statusBar()->addPermanentWidget(&modeLabel);
 	dataAvailable=false;
@@ -1356,7 +1359,7 @@ FetMainForm::FetMainForm()
 	
 	updateRecentFileActions();
 	
-	//statusBar()->showMessage(tr("FET started", "This is a message written in the status bar, saying that FET was started"), STATUS_BAR_MILLISECONDS);
+	//statusBar()->showMessage(tr("Open-Timetable started", "This is a message written in the status bar, saying that Open-Timetable was started"), STATUS_BAR_MILLISECONDS);
 	statusBar()->showMessage("", STATUS_BAR_MILLISECONDS); //to get the correct centralWidget for the logo, so we need status bar existing.
 	
 	INPUT_FILENAME_XML=QString("");
@@ -1520,31 +1523,10 @@ FetMainForm::FetMainForm()
 	settingsDuplicateVerticalNamesAction->setCheckable(true);
 	settingsDuplicateVerticalNamesAction->setChecked(TIMETABLE_HTML_REPEAT_NAMES);
 	
-	if(checkForUpdates){
-		//After setGeometry(rect), so that we know the position of the main form, used for the parent 'this' of the QMessageBox below.
-		if(!QSslSocket::supportsSsl()){
-			QMessageBox::warning(this, tr("FET warning"), tr("SSL is not available (this might be caused by missing SSL libraries)."
-			 " Because of this, FET cannot check for updates on startup (it cannot get the file %1).")
-			 .arg("https://lalescu.ro/liviu/fet/crtversion/crtversion.txt"));
-		}
-		else{
-			networkManager=new QNetworkAccessManager(this);
-			connect(networkManager, &QNetworkAccessManager::finished, this, &FetMainForm::replyFinished);
-			QUrl url("https://lalescu.ro/liviu/fet/crtversion/crtversion.txt");
-			if(VERBOSE){
-				std::cout<<"New version checking host: "<<qPrintable(url.host())<<std::endl;
-				std::cout<<"New version checking path: "<<qPrintable(url.path())<<std::endl;
-			}
-			QNetworkRequest req=QNetworkRequest(url);
-			//As on https://stackoverflow.com/questions/14416786/webpage-returning-http-406-error-only-when-connecting-from-qt
-			//and http://amin-ahmadi.com/2016/06/13/fix-modsecurity-issues-in-qt-network-module-download-functionality/ ,
-			//to avoid code 406 from the server.
-			req.setHeader(QNetworkRequest::UserAgentHeader, QString("FET")+QString(" ")+FET_VERSION+
-			 QString(" (Qt ")+QString(qVersion())+QString("; ")+QSysInfo::prettyProductName()+QString("; ")+QSysInfo::currentCpuArchitecture()+QString(")"));
-			networkManager->get(req);
-		}
-	}
-	
+	// Open-Timetable: أُزيل فحص التحديثات عبر موقع البرنامج الأصلي (لا اتصال
+	// خارجي عند بدء التشغيل). يبقى الإصدار ظاهرًا في نافذة «عن البرنامج».
+	Q_UNUSED(checkForUpdates);
+
 	settingsShowVirtualRoomsInTimetablesAction->setCheckable(true);
 	settingsShowVirtualRoomsInTimetablesAction->setChecked(SHOW_VIRTUAL_ROOMS_IN_TIMETABLES);
 
@@ -5137,7 +5119,7 @@ void FetMainForm::overwriteSingleGenerationFilesToggled(bool checked)
 		s+=tr("Please note that, on each new single generation, the previously generated timetable files will be overwritten"
 			  " (the new results will be saved in the same fixed directory, whose name is derived from your data file name). Are you sure?");
 
-		QMessageBox::StandardButton b=QMessageBox::question(this, tr("FET question"), s, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+		QMessageBox::StandardButton b=QMessageBox::question(this, tr("Open-Timetable question"), s, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
 		if(b!=QMessageBox::Yes){
 			disconnect(overwriteSingleGenerationFilesAction, &QAction::toggled, this, &FetMainForm::overwriteSingleGenerationFilesToggled);
@@ -5154,18 +5136,18 @@ void FetMainForm::checkForUpdatesToggled(bool checked)
 {
 	if(checked==true){
 		QString s;
-		s+=tr("Please note that, by enabling the option to search for updates on startup, each time you start FET it will get the file %1 from"
-			" the FET homepage, so the request for this file will be visible on the server, along with your IP address and access time.")
+		s+=tr("Please note that, by enabling the option to search for updates on startup, each time you start Open-Timetable it will get the file %1 from"
+			" the Open-Timetable homepage, so the request for this file will be visible on the server, along with your IP address and access time.")
 			.arg("https://lalescu.ro/liviu/fet/crtversion/crtversion.txt");
 		s+=" ";
-		s+=tr("Also, there will be visible on the server your current FET version, your current Qt version (the C++ toolkit used by FET), "
+		s+=tr("Also, there will be visible on the server your current Open-Timetable version, your current Qt version (the C++ toolkit used by Open-Timetable), "
 			"your operating system name and version, and your processor architecture type.");
 		s+=" ";
-		s+=tr("Thus, it could be deduced if and when you use FET.");
+		s+=tr("Thus, it could be deduced if and when you use Open-Timetable.");
 		s+="\n\n";
 		s+=tr("Do you agree?");
 
-		QMessageBox::StandardButton b=QMessageBox::question(this, tr("FET question"), s, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+		QMessageBox::StandardButton b=QMessageBox::question(this, tr("Open-Timetable question"), s, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
 		if(b!=QMessageBox::Yes){
 			disconnect(checkForUpdatesAction, &QAction::toggled, this, &FetMainForm::checkForUpdatesToggled);
@@ -5186,7 +5168,7 @@ void FetMainForm::showSubgroupsInComboBoxesToggled(bool checked)
 		//s+="\n\n";
 		//s+=tr("Continue only if you know what you are doing.");
 	
-		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
 	
 		if(b!=QMessageBox::Ok){
 			disconnect(settingsShowSubgroupsInComboBoxesAction, &QAction::toggled, this, &FetMainForm::showSubgroupsInComboBoxesToggled);
@@ -5207,7 +5189,7 @@ void FetMainForm::showSubgroupsInActivityPlanningToggled(bool checked)
 		//s+="\n\n";
 		//s+=tr("Continue only if you know what you are doing.");
 	
-		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
 	
 		if(b!=QMessageBox::Ok){
 			disconnect(settingsShowSubgroupsInActivityPlanningAction, &QAction::toggled, this, &FetMainForm::showSubgroupsInActivityPlanningToggled);
@@ -5232,7 +5214,7 @@ void FetMainForm::settingsFontIsUserSelectableAction_toggled()
 void FetMainForm::settingsFontAction_triggered()
 {
 	if(!fontIsUserSelectable){
-		QMessageBox::warning(this, tr("FET warning"), tr("You are not allowed to select the font, because the check box 'The font is user selectable' is unchecked."
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("You are not allowed to select the font, because the check box 'The font is user selectable' is unchecked."
 		 " Please select that option, firstly. You can find that option immediately above the 'Font' entry."));
 		return;
 	}
@@ -5285,7 +5267,7 @@ void FetMainForm::settingsStyleAndColorSchemeAction_triggered()
 		setCurrentColorScheme();
 	}
 #else
-	QMessageBox::information(this, tr("FET information"), tr("This option works only with Qt version %1 or later.").arg("6.8.0"));
+	QMessageBox::information(this, tr("Open-Timetable information"), tr("This option works only with Qt version %1 or later.").arg("6.8.0"));
 	
 	return;
 #endif
@@ -5378,7 +5360,7 @@ void FetMainForm::modeOfficialAction_triggered()
 		modeMorningsAfternoonsAction->setChecked(currentMode==MORNINGS_AFTERNOONS);
 		modeBlockPlanningAction->setChecked(currentMode==BLOCK_PLANNING);
 		modeTermsAction->setChecked(currentMode==TERMS);
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -5404,7 +5386,7 @@ void FetMainForm::modeOfficialAction_triggered()
 	}
 	else
 		assert(0);
-	int ok=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Cancel | QMessageBox::Ok);
+	int ok=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Cancel | QMessageBox::Ok);
 	if(ok==QMessageBox::Cancel){
 		modeOfficialAction->setChecked(false);
 		return;
@@ -5432,7 +5414,7 @@ void FetMainForm::modeMorningsAfternoonsAction_triggered()
 		modeMorningsAfternoonsAction->setChecked(currentMode==MORNINGS_AFTERNOONS);
 		modeBlockPlanningAction->setChecked(currentMode==BLOCK_PLANNING);
 		modeTermsAction->setChecked(currentMode==TERMS);
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -5461,7 +5443,7 @@ void FetMainForm::modeMorningsAfternoonsAction_triggered()
 	}
 	else
 		assert(0);
-	int ok=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Cancel | QMessageBox::Ok);
+	int ok=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Cancel | QMessageBox::Ok);
 	if(ok==QMessageBox::Cancel){
 		modeMorningsAfternoonsAction->setChecked(false);
 		return;
@@ -5491,7 +5473,7 @@ void FetMainForm::modeBlockPlanningAction_triggered()
 		modeMorningsAfternoonsAction->setChecked(currentMode==MORNINGS_AFTERNOONS);
 		modeBlockPlanningAction->setChecked(currentMode==BLOCK_PLANNING);
 		modeTermsAction->setChecked(currentMode==TERMS);
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -5519,11 +5501,11 @@ void FetMainForm::modeBlockPlanningAction_triggered()
 		assert(0);
 	s+="\n\n";
 	
-	s+=tr("WARNING: In the block-planning mode, the basic time and space constraints are modified to consider that the FET hours are real-life time slots."
-	  " Consequently, they are much stronger and each row (FET hour, real-life time slot) for a students subgroup / room may have a single occupied slot out of all"
-	  " the FET days (real-life teachers). This might result in an impossible timetable if you intend to do usual timetabling.");
+	s+=tr("WARNING: In the block-planning mode, the basic time and space constraints are modified to consider that the Open-Timetable hours are real-life time slots."
+	  " Consequently, they are much stronger and each row (Open-Timetable hour, real-life time slot) for a students subgroup / room may have a single occupied slot out of all"
+	  " the Open-Timetable days (real-life teachers). This might result in an impossible timetable if you intend to do usual timetabling.");
 
-	int ok=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Cancel | QMessageBox::Ok);
+	int ok=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Cancel | QMessageBox::Ok);
 	if(ok==QMessageBox::Cancel){
 		modeBlockPlanningAction->setChecked(false);
 		return;
@@ -5551,7 +5533,7 @@ void FetMainForm::modeTermsAction_triggered()
 		modeMorningsAfternoonsAction->setChecked(currentMode==MORNINGS_AFTERNOONS);
 		modeBlockPlanningAction->setChecked(currentMode==BLOCK_PLANNING);
 		modeTermsAction->setChecked(currentMode==TERMS);
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -5577,7 +5559,7 @@ void FetMainForm::modeTermsAction_triggered()
 	}
 	else
 		assert(0);
-	int ok=QMessageBox::question(this, tr("FET confirmation"), s, QMessageBox::Cancel | QMessageBox::Ok);
+	int ok=QMessageBox::question(this, tr("Open-Timetable confirmation"), s, QMessageBox::Cancel | QMessageBox::Ok);
 	if(ok==QMessageBox::Cancel){
 		modeTermsAction->setChecked(false);
 		return;
@@ -5603,13 +5585,13 @@ void FetMainForm::dataTermsAction_triggered()
 	assert(gt.rules.mode==TERMS);
 	
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -5797,11 +5779,11 @@ bool FetMainForm::getLastConfirmation(int newMode, int &ntm, int& nsm, int* nMin
 	}
 
 	if(nMinMaxDaysModified!=nullptr)
-		QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were removed %1 time constraints and"
+		QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were removed %1 time constraints and"
 		 " %2 space constraints.").arg(removedTime).arg(removedSpace)+QString(" ")+
 		 tr("There were modified %1 time constraints of type min/max days between activities.").arg(*nMinMaxDaysModified));
 	else
-		QMessageBox::information(&lastConfirmationDialog, tr("FET information"), tr("There were removed %1 time constraints and"
+		QMessageBox::information(&lastConfirmationDialog, tr("Open-Timetable information"), tr("There were removed %1 time constraints and"
 		 " %2 space constraints.").arg(removedTime).arg(removedSpace));
 
 	QString ms;
@@ -5897,7 +5879,7 @@ void FetMainForm::settingsDuplicateVerticalNamesAction_toggled()
 void FetMainForm::timetablesToWriteOnDiskAction_triggered()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -5910,7 +5892,7 @@ void FetMainForm::timetablesToWriteOnDiskAction_triggered()
 void FetMainForm::studentsComboBoxesStyleAction_triggered()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -5928,10 +5910,10 @@ void FetMainForm::replyFinished(QNetworkReply* networkReply)
 		s+=QString("\n\n");
 		s+=tr("Searching for file %1.").arg("https://lalescu.ro/liviu/fet/crtversion/crtversion.txt");
 		s+=QString("\n\n");
-		s+=tr("Possible actions: check your network connection, try again later, try to visit FET homepage: %1, or"
-		 " try to search for the new FET page on the internet (maybe it has changed).").arg("https://lalescu.ro/liviu/fet/");
+		s+=tr("Possible actions: check your network connection, try again later, try to visit Open-Timetable homepage: %1, or"
+		 " try to search for the new Open-Timetable page on the internet (maybe it has changed).").arg("https://lalescu.ro/liviu/fet/");
 
-		QMessageBox::warning(this, tr("FET warning"), s);
+		QMessageBox::warning(this, tr("Open-Timetable warning"), s);
 	}
 	else{
 		QString internetVersion;
@@ -5941,14 +5923,14 @@ void FetMainForm::replyFinished(QNetworkReply* networkReply)
 		QRegularExpressionMatch match=regExp.match(QString(networkReply->readAll()));
 		if(!match.hasMatch()){
 			QString s=QString("");
-			s+=tr("The file %1 from the FET homepage, indicating the current FET version, is incorrect.").arg("https://lalescu.ro/liviu/fet/crtversion/crtversion.txt");
+			s+=tr("The file %1 from the Open-Timetable homepage, indicating the current Open-Timetable version, is incorrect.").arg("https://lalescu.ro/liviu/fet/crtversion/crtversion.txt");
 			s+=QString("\n\n");
-			s+=tr("Maybe the FET homepage has some temporary problems, so try again later."
-			 " Or maybe the current structure on FET homepage was changed. You may visit FET homepage: %1, and get latest version or,"
-			 " if it does not work, try to search for the new FET page on the internet (maybe it has changed).")
+			s+=tr("Maybe the Open-Timetable homepage has some temporary problems, so try again later."
+			 " Or maybe the current structure on Open-Timetable homepage was changed. You may visit Open-Timetable homepage: %1, and get latest version or,"
+			 " if it does not work, try to search for the new Open-Timetable page on the internet (maybe it has changed).")
 			  .arg("https://lalescu.ro/liviu/fet/");
 
-			QMessageBox::warning(this, tr("FET warning"), s);
+			QMessageBox::warning(this, tr("Open-Timetable warning"), s);
 		}
 		else{
 			internetVersion=match.captured(1);
@@ -5961,20 +5943,20 @@ void FetMainForm::replyFinished(QNetworkReply* networkReply)
 				std::cout<<qPrintable(internetVersion)<<"'"<<std::endl;
 			}
 			if(internetVersion!=FET_VERSION){
-				QString s=tr("Another version: %1, is available on the FET homepage: %2", "%1 is new version, %2 is FET homepage").arg(internetVersion).arg("https://lalescu.ro/liviu/fet/");
+				QString s=tr("Another version: %1, is available on the Open-Timetable homepage: %2", "%1 is new version, %2 is Open-Timetable homepage").arg(internetVersion).arg("https://lalescu.ro/liviu/fet/");
 				s+=QString("\n\n");
-				s+=tr("You have to manually download and install.")+QString(" ")+tr("You may need to hit Refresh in your web browser.")+QString("\n\n")+tr("Would you like to open the FET homepage now?");
+				s+=tr("You have to manually download and install.")+QString(" ")+tr("You may need to hit Refresh in your web browser.")+QString("\n\n")+tr("Would you like to open the Open-Timetable homepage now?");
 				if(!additionalComments.isEmpty()){
 					s+=QString("\n\n");
 					s+=tr("Additional comments: %1").arg(additionalComments);
 				}
 			
-				QMessageBox::StandardButton button=QMessageBox::information(this, tr("FET information"), s, QMessageBox::Yes|QMessageBox::No);
+				QMessageBox::StandardButton button=QMessageBox::information(this, tr("Open-Timetable information"), s, QMessageBox::Yes|QMessageBox::No);
 				
 				if(button==QMessageBox::Yes){
 					bool tds=QDesktopServices::openUrl(QUrl("https://lalescu.ro/liviu/fet/"));
 					if(!tds){
-						QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default internet browser (trying to open the link %1)."
+						QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Could not start the default internet browser (trying to open the link %1)."
 							" Maybe you can try to manually start your browser and open this link.").arg("https://lalescu.ro/liviu/fet/"));
 					}
 				}
@@ -6003,7 +5985,7 @@ void FetMainForm::closeEvent(QCloseEvent* event)
 	MAIN_FORM_SHORTCUTS_TAB_POSITION=tabWidget->currentIndex();
 	
 	if(gt.rules.initialized && gt.rules.modified){
-		QMessageBox::StandardButton res=QMessageBox::question( this, tr("FET question"),
+		QMessageBox::StandardButton res=QMessageBox::question( this, tr("Open-Timetable question"),
 		 tr("Your data file has been modified - do you want to save it?"), QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
 
 		if(res==QMessageBox::Yes){
@@ -6822,7 +6804,7 @@ FetMainForm::~FetMainForm()
 void FetMainForm::fileQuitAction_triggered()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -6852,7 +6834,8 @@ void FetMainForm::setCurrentFile(const QString& fileName)
 		updateRecentFileActions();
 	}
 	
-	setWindowTitle(tr("%1[*] - FET", "The title of the main window, %1 is the name of the current file. "
+	// Open-Timetable: عنوان النافذة باسم برنامجنا (لا اسم البرنامج الأصلي)
+	setWindowTitle(tr("%1[*] — Open-Timetable", "The title of the main window, %1 is the name of the current file. "
 	 "Please keep the string [*] unmodified (three characters) - it is used to make the difference between modified files and unmodified files.")
 	 .arg(shownName));
 }
@@ -6883,7 +6866,7 @@ void FetMainForm::updateRecentFileActions()
 void FetMainForm::fileClearRecentFilesListAction_triggered()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -6895,7 +6878,7 @@ void FetMainForm::fileClearRecentFilesListAction_triggered()
 void FetMainForm::fileNewAction_triggered()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -6905,7 +6888,7 @@ void FetMainForm::fileNewAction_triggered()
 	if(gt.rules.initialized && gt.rules.modified){
 		switch( QMessageBox::question(
 		 this,
-		 tr("FET application"),
+		 tr("Open-Timetable application"),
 		 tr("Your current data file has been modified. Are you sure you want to reset to new empty data?"),
 		 QMessageBox::Yes|QMessageBox::No
 		 ) ){
@@ -6998,7 +6981,7 @@ void FetMainForm::fileOpenAction_triggered()
 void FetMainForm::openFile(const QString& fileName)
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -7008,7 +6991,7 @@ void FetMainForm::openFile(const QString& fileName)
 	if(gt.rules.initialized && gt.rules.modified){
 		switch( QMessageBox::question(
 		 this,
-		 tr("FET application"),
+		 tr("Open-Timetable application"),
 		 tr("Your current data file has been modified. Are you sure you want to open another data file?"),
 		 QMessageBox::Yes|QMessageBox::No
 		 ) ){
@@ -7032,8 +7015,8 @@ void FetMainForm::openFile(const QString& fileName)
 		if(s.isNull()){
 			s = QFileDialog::getOpenFileName(this, tr("Choose a file to open"),
 			 WORKING_DIRECTORY,
-			 tr("FET XML files", "Instructions for translators: FET XML is a type of file format (using text mode). "
-			 "So this field means files in the FET XML format")+" (*.fet)"+";;"+tr("All files")+" (*)");
+			 tr("Open-Timetable XML files", "Instructions for translators: Open-Timetable XML is a type of file format (using text mode). "
+			 "So this field means files in the Open-Timetable XML format")+" (*.fet)"+";;"+tr("All files")+" (*)");
 
 			if(s.isNull())
 				return;
@@ -7044,9 +7027,9 @@ void FetMainForm::openFile(const QString& fileName)
 		
 		if(s2.length()>=1){
 			if(s2.at(0).isSpace()){
-				QMessageBox::warning(this, tr("FET information"),
+				QMessageBox::warning(this, tr("Open-Timetable information"),
 				 tr("Please do not use a filename starting with white space(s), the HTML CSS code does not work."
-				  " File was not loaded. Please rename it, removing the white space(s) from the beginning and open it after that with FET."));
+				  " File was not loaded. Please rename it, removing the white space(s) from the beginning and open it after that with Open-Timetable."));
 				return;
 			}
 		}
@@ -7057,33 +7040,33 @@ void FetMainForm::openFile(const QString& fileName)
 			s3=s2;
 		if(s3.length()>=1){
 			if(s3.at(s3.length()-1).isSpace()){
-				QMessageBox::warning(this, tr("FET information"),
+				QMessageBox::warning(this, tr("Open-Timetable information"),
 				 tr("Please do not use a filename ending with white space(s) before the '.fet' termination or at the end of the filename,"
 				 " problems might arise. File was not loaded. Please rename it, removing the white space(s) at the end and open it after"
-				 " that with FET."));
+				 " that with Open-Timetable."));
 				return;
 			}
 		}
 		if(s2.indexOf("\"") >= 0){
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 			 tr("Please do not use quotation marks \" in filename, the HTML CSS code does not work."
-			  " File was not loaded. Please rename it, removing not allowed characters and open it after that with FET."));
+			  " File was not loaded. Please rename it, removing not allowed characters and open it after that with Open-Timetable."));
 			return;
 		}
 		if(s2.indexOf(";") >= 0){
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 			 tr("Please do not use semicolon ; in filename, the HTML CSS code does not work."
-			  " File was not loaded. Please rename it, removing not allowed characters and open it after that with FET."));
+			  " File was not loaded. Please rename it, removing not allowed characters and open it after that with Open-Timetable."));
 			return;
 		}
 		if(s2.indexOf("#") >= 0){
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 			 tr("Please do not use # in filename, the HTML CSS code does not work."
-			  " File was not loaded. Please rename it, removing not allowed characters and open it after that with FET."));
+			  " File was not loaded. Please rename it, removing not allowed characters and open it after that with Open-Timetable."));
 			return;
 		}
 		/*if(s2.indexOf("(") >= 0 || s2.indexOf(")")>=0){
-			QMessageBox::information(this, tr("FET information"), tr("Please do not use parentheses () in filename, the HTML CSS code does not work"));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Please do not use parentheses () in filename, the HTML CSS code does not work"));
 			return;
 		}*/
 		else{
@@ -7129,14 +7112,14 @@ void FetMainForm::openFile(const QString& fileName)
 				s2+=QString(" ");
 				s2+=tr("This might help you recover at least some of the inputted data.");
 				s2+=QString(" ");
-				s2+=tr("(In case of further errors, you can always choose to create a new file, from the FET menu.)");
+				s2+=tr("(In case of further errors, you can always choose to create a new file, from the Open-Timetable menu.)");
 				s2+=QString("\n\n");
 				s2+=tr("Note: If you enabled autosave, you could try to open the filename_AUTOSAVE.fet file.", "Keep the words 'filename_AUTOSAVE.fet' untranslated");
 				s2+=QString("\n\n");
 				s2+=tr("Note: If you enabled save/restore history to/from disk, you might have success, after accepting this partial data, to restore your data "
 				 "to a correct and complete previous state, recorded in the history.");
 				
-				QMessageBox::StandardButton b=QMessageBox::critical(this, tr("FET critical"), s2, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+				QMessageBox::StandardButton b=QMessageBox::critical(this, tr("Open-Timetable critical"), s2, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 				if(b==QMessageBox::Yes){
 					teachers_schedule_ready=false;
 					students_schedule_ready=false;
@@ -7215,7 +7198,7 @@ void FetMainForm::openFile(const QString& fileName)
 bool FetMainForm::fileSaveAs()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return false;
 	}
@@ -7225,8 +7208,8 @@ bool FetMainForm::fileSaveAs()
 		predefFileName=WORKING_DIRECTORY+FILE_SEP+QString("untitled.fet");
 
 	QString s = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"),
-		predefFileName, tr("FET XML files", "Instructions for translators: FET XML is a type of file format (using text mode). "
-		"So this field means files in the FET XML format")+" (*.fet)"+";;"+tr("All files")+" (*)",
+		predefFileName, tr("Open-Timetable XML files", "Instructions for translators: Open-Timetable XML is a type of file format (using text mode). "
+		"So this field means files in the Open-Timetable XML format")+" (*.fet)"+";;"+tr("All files")+" (*)",
 		nullptr, QFileDialog::DontConfirmOverwrite);
 	if(s==QString())
 		return false;
@@ -7236,7 +7219,7 @@ bool FetMainForm::fileSaveAs()
 	
 	if(s2.length()>=1){
 		if(s2.at(0).isSpace()){
-			QMessageBox::warning(this, tr("FET information"),
+			QMessageBox::warning(this, tr("Open-Timetable information"),
 			 tr("Please do not use a filename starting with white space(s), the HTML CSS code does not work.")
 			 +"\n\n"+tr("File was not saved."));
 			return false;
@@ -7255,28 +7238,28 @@ bool FetMainForm::fileSaveAs()
 	if(s3.length()>=1){
 		if(s3.at(s3.length()-1).isSpace()){
 			if(ewf)
-				QMessageBox::warning(this, tr("FET information"),
+				QMessageBox::warning(this, tr("Open-Timetable information"),
 				 tr("Please do not use a filename ending with white space(s) before the '.fet' termination, problems might arise.")
 				 +"\n\n"+tr("File was not saved."));
 			else
-				QMessageBox::warning(this, tr("FET information"),
+				QMessageBox::warning(this, tr("Open-Timetable information"),
 				 tr("Please do not use a filename ending with white space(s), problems might arise.")
 				 +"\n\n"+tr("File was not saved."));
 			return false;
 		}
 	}
 	if(s2.indexOf("\"") >= 0){
-		QMessageBox::warning(this, tr("FET information"), tr("Please do not use quotation marks \" in filename, the HTML CSS code does not work")
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Please do not use quotation marks \" in filename, the HTML CSS code does not work")
 		 +"\n\n"+tr("File was not saved."));
 		return false;
 	}
 	if(s2.indexOf(";") >= 0){
-		QMessageBox::warning(this, tr("FET information"), tr("Please do not use semicolon ; in filename, the HTML CSS code does not work")
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Please do not use semicolon ; in filename, the HTML CSS code does not work")
 		 +"\n\n"+tr("File was not saved."));
 		return false;
 	}
 	if(s2.indexOf("#") >= 0){
-		QMessageBox::warning(this, tr("FET information"), tr("Please do not use # in filename, the HTML CSS code does not work")
+		QMessageBox::warning(this, tr("Open-Timetable information"), tr("Please do not use # in filename, the HTML CSS code does not work")
 		 +"\n\n"+tr("File was not saved."));
 		return false;
 	}
@@ -7288,7 +7271,7 @@ bool FetMainForm::fileSaveAs()
 	WORKING_DIRECTORY=s.left(tmp);
 
 	if(QFile::exists(s))
-		if(QMessageBox::warning( this, tr("FET"),
+		if(QMessageBox::warning( this, tr("Open-Timetable"),
 		 tr("File %1 exists - are you sure you want to overwrite it?").arg(s),
 		 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
 		 	return false;
@@ -7324,7 +7307,7 @@ void FetMainForm::fileSaveAsAction_triggered()
 void FetMainForm::settingsHistoryMemoryAction_triggered()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -7337,13 +7320,13 @@ void FetMainForm::settingsHistoryMemoryAction_triggered()
 void FetMainForm::settingsHistoryDiskAction_triggered()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
 
 	if(!USE_UNDO_REDO){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Saving/restoring history to/from the memory is disabled. Please enable memory history before enabling disk history.",
 			 "Memory history is the history saved in the computer memory, and disk history is the history saved on the computer disk."));
 		return;
@@ -7357,19 +7340,19 @@ void FetMainForm::settingsHistoryDiskAction_triggered()
 void FetMainForm::restoreDataStateAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing the history."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
 
 	if(!USE_UNDO_REDO){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("History saving and restoring is disabled from the History settings. Please enable it to proceed."));
 		return;
 	}
@@ -7383,13 +7366,13 @@ void FetMainForm::restoreDataStateAction_triggered()
 void FetMainForm::fileImportCSVRoomsBuildingsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -7399,13 +7382,13 @@ void FetMainForm::fileImportCSVRoomsBuildingsAction_triggered()
 void FetMainForm::fileImportCSVSubjectsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -7415,13 +7398,13 @@ void FetMainForm::fileImportCSVSubjectsAction_triggered()
 void FetMainForm::fileImportCSVTeachersAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -7431,13 +7414,13 @@ void FetMainForm::fileImportCSVTeachersAction_triggered()
 void FetMainForm::fileImportCSVActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -7453,13 +7436,13 @@ void FetMainForm::fileImportCSVActivitiesAction_triggered()
 void FetMainForm::fileImportCSVActivityTagsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -7469,13 +7452,13 @@ void FetMainForm::fileImportCSVActivityTagsAction_triggered()
 void FetMainForm::fileImportCSVYearsGroupsSubgroupsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -7485,13 +7468,13 @@ void FetMainForm::fileImportCSVYearsGroupsSubgroupsAction_triggered()
 void FetMainForm::fileImportCSVTeacherNotAvailableAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -7507,13 +7490,13 @@ void FetMainForm::fileImportCSVTeacherNotAvailableAction_triggered()
 void FetMainForm::fileExportCSVAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -7524,13 +7507,13 @@ void FetMainForm::fileExportCSVAction_triggered()
 void FetMainForm::timetableSaveTimetableAsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!students_schedule_ready || !teachers_schedule_ready || !rooms_buildings_schedule_ready){
-		QMessageBox::warning(this, tr("FET - Warning"), tr("You have not yet generated a timetable - please generate firstly"));
+		QMessageBox::warning(this, tr("Open-Timetable - Warning"), tr("You have not yet generated a timetable - please generate firstly"));
 		return;
 	}
 
@@ -7540,7 +7523,7 @@ void FetMainForm::timetableSaveTimetableAsAction_triggered()
 		//Activity* act=&gt.rules.internalActivitiesList[ai];
 		int time=tc->times[ai];
 		if(time==UNALLOCATED_TIME){
-			QMessageBox::warning(this, tr("FET - Warning"), tr("It seems that you have an incomplete timetable."
+			QMessageBox::warning(this, tr("Open-Timetable - Warning"), tr("It seems that you have an incomplete timetable."
 			 " Saving of timetable does not work for incomplete timetables. Please generate a complete timetable"));
 			 //.arg(act->id));
 			return;
@@ -7548,7 +7531,7 @@ void FetMainForm::timetableSaveTimetableAsAction_triggered()
 		
 		int ri=tc->rooms[ai];
 		if(ri==UNALLOCATED_SPACE){
-			QMessageBox::warning(this, tr("FET - Warning"), tr("It seems that you have an incomplete timetable."
+			QMessageBox::warning(this, tr("Open-Timetable - Warning"), tr("It seems that you have an incomplete timetable."
 			 " Saving of timetable does not work for incomplete timetables. Please generate a complete timetable"));
 			 //.arg(act->id));
 			return;
@@ -7585,8 +7568,8 @@ void FetMainForm::timetableSaveTimetableAsAction_triggered()
 
 		for(;;){
 			s = QFileDialog::getSaveFileName(parent, tr("Choose a filename for data and timetable"),
-				INPUT_FILENAME_XML, tr("FET XML files", "Instructions for translators: FET XML is a type of file format (using text mode). "
-				"So this field means files in the FET XML format")+" (*.fet)"+";;"+tr("All files")+" (*)",
+				INPUT_FILENAME_XML, tr("Open-Timetable XML files", "Instructions for translators: Open-Timetable XML is a type of file format (using text mode). "
+				"So this field means files in the Open-Timetable XML format")+" (*.fet)"+";;"+tr("All files")+" (*)",
 				nullptr, QFileDialog::DontConfirmOverwrite);
 			if(s==QString())
 				return;
@@ -7596,7 +7579,7 @@ void FetMainForm::timetableSaveTimetableAsAction_triggered()
 				
 			if(s2.length()>=1){
 				if(s2.at(0).isSpace()){
-					QMessageBox::warning(this, tr("FET information"),
+					QMessageBox::warning(this, tr("Open-Timetable information"),
 					 tr("Please do not use a filename starting with white space(s), the HTML CSS code does not work.")
 					 +"\n\n"+tr("File was not saved."));
 					return;
@@ -7615,28 +7598,28 @@ void FetMainForm::timetableSaveTimetableAsAction_triggered()
 			if(s3.length()>=1){
 				if(s3.at(s3.length()-1).isSpace()){
 					if(ewf)
-						QMessageBox::warning(this, tr("FET information"),
+						QMessageBox::warning(this, tr("Open-Timetable information"),
 						 tr("Please do not use a filename ending with white space(s) before the '.fet' termination, problems might arise.")
 						 +"\n\n"+tr("File was not saved."));
 					else
-						QMessageBox::warning(this, tr("FET information"),
+						QMessageBox::warning(this, tr("Open-Timetable information"),
 						 tr("Please do not use a filename ending with white space(s), problems might arise.")
 						 +"\n\n"+tr("File was not saved."));
 					return;
 				}
 			}
 			if(s2.indexOf("\"") >= 0){
-				QMessageBox::warning(parent, tr("FET information"), tr("Please do not use quotation marks \" in filename, the HTML CSS code does not work")
+				QMessageBox::warning(parent, tr("Open-Timetable information"), tr("Please do not use quotation marks \" in filename, the HTML CSS code does not work")
 				 +"\n\n"+tr("File was not saved."));
 				return;
 			}
 			if(s2.indexOf(";") >= 0){
-				QMessageBox::warning(parent, tr("FET information"), tr("Please do not use semicolon ; in filename, the HTML CSS code does not work")
+				QMessageBox::warning(parent, tr("Open-Timetable information"), tr("Please do not use semicolon ; in filename, the HTML CSS code does not work")
 				 +"\n\n"+tr("File was not saved."));
 				return;
 			}
 			if(s2.indexOf("#") >= 0){
-				QMessageBox::warning(parent, tr("FET information"), tr("Please do not use # in filename, the HTML CSS code does not work")
+				QMessageBox::warning(parent, tr("Open-Timetable information"), tr("Please do not use # in filename, the HTML CSS code does not work")
 				 +"\n\n"+tr("File was not saved."));
 				return;
 			}
@@ -7655,7 +7638,7 @@ void FetMainForm::timetableSaveTimetableAsAction_triggered()
 				t+="\n\n";
 				t+=tr("Please choose a non-existing name");
 		
-				QMessageBox::warning( parent, tr("FET warning"), t);
+				QMessageBox::warning( parent, tr("Open-Timetable warning"), t);
 			}
 			else
 				break;
@@ -7785,7 +7768,7 @@ void FetMainForm::timetableSaveTimetableAsAction_triggered()
 			}
 		}
 
-		LongTextMessageBox::largeInformation(parent, tr("FET information"), tr("Added %1 locking time constraints and %2 locking space constraints to saved file,"
+		LongTextMessageBox::largeInformation(parent, tr("Open-Timetable information"), tr("Added %1 locking time constraints and %2 locking space constraints to saved file,"
 		" ignored %3 activities which were already fixed in time and %4 activities which were already fixed in space.").arg(addedTime).arg(addedSpace).arg(duplicatesTime).arg(duplicatesSpace)
 		+QString("\n\n")+tr("Detailed information about each locking constraint which was added or not (if already existing) to the saved file:")+QString("\n")+constraintsString
 		+QString("\n")+tr("Your current data file remained untouched (no locking constraints were added), so you can save it also, or generate different timetables."));
@@ -7848,13 +7831,13 @@ void FetMainForm::timetableSaveTimetableAsAction_triggered()
 void FetMainForm::timetableSaveFileOfASelectionOfDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!students_schedule_ready || !teachers_schedule_ready || !rooms_buildings_schedule_ready){
-		QMessageBox::warning(this, tr("FET - Warning"), tr("You have not yet generated a timetable - please generate firstly"));
+		QMessageBox::warning(this, tr("Open-Timetable - Warning"), tr("You have not yet generated a timetable - please generate firstly"));
 		return;
 	}
 	
@@ -7915,7 +7898,7 @@ void FetMainForm::timetableSaveFileOfASelectionOfDaysAction_triggered()
 			}
 		
 		if(!atLeastOneDaySelected){
-			QMessageBox::information(this, tr("FET information"), tr("Please select at least one day!"));
+			QMessageBox::information(this, tr("Open-Timetable information"), tr("Please select at least one day!"));
 		}
 		else{
 			Solution* tc=&best_solution;
@@ -7924,8 +7907,8 @@ void FetMainForm::timetableSaveFileOfASelectionOfDaysAction_triggered()
 
 			for(;;){
 				s = QFileDialog::getSaveFileName(this, tr("Choose a filename for the chosen data:"),
-					INPUT_FILENAME_XML, tr("FET XML files", "Instructions for translators: FET XML is a type of file format (using text mode). "
-					"So this field means files in the FET XML format")+" (*.fet)"+";;"+tr("All files")+" (*)",
+					INPUT_FILENAME_XML, tr("Open-Timetable XML files", "Instructions for translators: Open-Timetable XML is a type of file format (using text mode). "
+					"So this field means files in the Open-Timetable XML format")+" (*.fet)"+";;"+tr("All files")+" (*)",
 					nullptr, QFileDialog::DontConfirmOverwrite);
 				if(s==QString())
 					return;
@@ -7935,7 +7918,7 @@ void FetMainForm::timetableSaveFileOfASelectionOfDaysAction_triggered()
 
 				if(s2.length()>=1){
 					if(s2.at(0).isSpace()){
-						QMessageBox::warning(this, tr("FET information"),
+						QMessageBox::warning(this, tr("Open-Timetable information"),
 						tr("Please do not use a filename starting with white space(s), the HTML CSS code does not work.")
 						+"\n\n"+tr("File was not saved."));
 						return;
@@ -7954,28 +7937,28 @@ void FetMainForm::timetableSaveFileOfASelectionOfDaysAction_triggered()
 				if(s3.length()>=1){
 					if(s3.at(s3.length()-1).isSpace()){
 						if(ewf)
-							QMessageBox::warning(this, tr("FET information"),
+							QMessageBox::warning(this, tr("Open-Timetable information"),
 							tr("Please do not use a filename ending with white space(s) before the '.fet' termination, problems might arise.")
 							+"\n\n"+tr("File was not saved."));
 						else
-							QMessageBox::warning(this, tr("FET information"),
+							QMessageBox::warning(this, tr("Open-Timetable information"),
 							tr("Please do not use a filename ending with white space(s), problems might arise.")
 							+"\n\n"+tr("File was not saved."));
 						return;
 					}
 				}
 				if(s2.indexOf("\"") >= 0){
-					QMessageBox::warning(this, tr("FET information"), tr("Please do not use quotation marks \" in filename, the HTML CSS code does not work")
+					QMessageBox::warning(this, tr("Open-Timetable information"), tr("Please do not use quotation marks \" in filename, the HTML CSS code does not work")
 					+"\n\n"+tr("File was not saved."));
 					return;
 				}
 				if(s2.indexOf(";") >= 0){
-					QMessageBox::warning(this, tr("FET information"), tr("Please do not use semicolon ; in filename, the HTML CSS code does not work")
+					QMessageBox::warning(this, tr("Open-Timetable information"), tr("Please do not use semicolon ; in filename, the HTML CSS code does not work")
 					+"\n\n"+tr("File was not saved."));
 					return;
 				}
 				if(s2.indexOf("#") >= 0){
-					QMessageBox::warning(this, tr("FET information"), tr("Please do not use # in filename, the HTML CSS code does not work")
+					QMessageBox::warning(this, tr("Open-Timetable information"), tr("Please do not use # in filename, the HTML CSS code does not work")
 					+"\n\n"+tr("File was not saved."));
 					return;
 				}
@@ -7994,7 +7977,7 @@ void FetMainForm::timetableSaveFileOfASelectionOfDaysAction_triggered()
 					t+="\n\n";
 					t+=tr("Please choose a non-existing name!");
 
-					QMessageBox::warning( this, tr("FET warning"), t);
+					QMessageBox::warning( this, tr("Open-Timetable warning"), t);
 				}
 				else
 					break;
@@ -8299,7 +8282,7 @@ void FetMainForm::timetableSaveFileOfASelectionOfDaysAction_triggered()
 				}
 			}
 
-			LongTextMessageBox::largeInformation(this, tr("FET information"), tr("Added %1 locking time constraints and %2 locking space constraints to saved file,"
+			LongTextMessageBox::largeInformation(this, tr("Open-Timetable information"), tr("Added %1 locking time constraints and %2 locking space constraints to saved file,"
 			 " ignored %3 activities which were already fixed in time and %4 activities which were already fixed in space.").arg(addedTime).arg(addedSpace).arg(duplicatesTime).arg(duplicatesSpace)
 			 +QString("\n\n")+tr("Detailed information about each locking constraint which was added or not (if already existing) to the saved file:")+QString("\n")+constraintsString
 			 +QString("\n")+tr("Note that some constraints might have been updated or even removed in the saved file, because some days might have been removed in the saved file.")
@@ -8377,7 +8360,7 @@ void FetMainForm::timetableSaveFileOfASelectionOfDaysAction_triggered()
 bool FetMainForm::fileSave()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return false;
 	}
@@ -8415,13 +8398,13 @@ void FetMainForm::fileSaveAction_triggered()
 void FetMainForm::dataInstitutionNameAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8434,13 +8417,13 @@ void FetMainForm::dataInstitutionNameAction_triggered()
 void FetMainForm::dataCommentsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8453,13 +8436,13 @@ void FetMainForm::dataCommentsAction_triggered()
 void FetMainForm::dataDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8472,13 +8455,13 @@ void FetMainForm::dataDaysAction_triggered()
 void FetMainForm::dataHoursAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8491,13 +8474,13 @@ void FetMainForm::dataHoursAction_triggered()
 void FetMainForm::dataTeachersAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8510,7 +8493,7 @@ void FetMainForm::dataTeachersAction_triggered()
 void FetMainForm::dataTeachersStatisticsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -8523,13 +8506,13 @@ void FetMainForm::dataTeachersStatisticsAction_triggered()
 void FetMainForm::dataSubjectsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8542,7 +8525,7 @@ void FetMainForm::dataSubjectsAction_triggered()
 void FetMainForm::dataSubjectsStatisticsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -8555,13 +8538,13 @@ void FetMainForm::dataSubjectsStatisticsAction_triggered()
 void FetMainForm::dataActivityTagsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8574,13 +8557,13 @@ void FetMainForm::dataActivityTagsAction_triggered()
 void FetMainForm::dataYearsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8593,13 +8576,13 @@ void FetMainForm::dataYearsAction_triggered()
 void FetMainForm::dataGroupsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8612,13 +8595,13 @@ void FetMainForm::dataGroupsAction_triggered()
 void FetMainForm::dataSubgroupsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8631,7 +8614,7 @@ void FetMainForm::dataSubgroupsAction_triggered()
 void FetMainForm::dataStudentsStatisticsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -8644,7 +8627,7 @@ void FetMainForm::dataStudentsStatisticsAction_triggered()
 void FetMainForm::dataActivitiesRoomsStatisticsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -8657,7 +8640,7 @@ void FetMainForm::dataActivitiesRoomsStatisticsAction_triggered()
 void FetMainForm::dataTeachersSubjectsQualificationsStatisticsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -8702,7 +8685,7 @@ void FetMainForm::dataTeachersSubjectsQualificationsStatisticsAction_triggered()
 		s=tr("All the teachers are qualified to teach their activities.");
 	s+="\n";
 
-	LongTextMessageBox::largeInformation(this, tr("FET information"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable information"), s);
 }
 
 void FetMainForm::helpSettingsAction_triggered()
@@ -8769,7 +8752,7 @@ void FetMainForm::helpSettingsAction_triggered()
 	
 	s+="\n\n";
 	s+=tr("Order activities by tags in timetables: in each cell of a table, there can be one or more activities. If you enable this option,"
-		" FET will order the activities in each cell ascending by their printable activity tags.");
+		" Open-Timetable will order the activities in each cell ascending by their printable activity tags.");
 	s+=" ";
 	s+="(";
 	s+=tr("This feature was suggested by %1.", "%1 is the name of a person").arg("Benahmed Abdelkrim");
@@ -8786,9 +8769,9 @@ void FetMainForm::helpSettingsAction_triggered()
 	s+="\n";
 	s+=tr("Advantages of enabling this setting: importing the HTML files into other office tools will be better, as most of these external"
 		" tools do not read the extra CSS file; after enabling this setting, the CSS code will be embedded in the HTML files, so these"
-		" tools can also import the design/appearance of the FET HTML files.");
+		" tools can also import the design/appearance of the Open-Timetable HTML files.");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET information"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable information"), s);
 }
 
 void FetMainForm::dataHelpOnStatisticsAction_triggered()
@@ -8822,7 +8805,7 @@ void FetMainForm::dataHelpOnStatisticsAction_triggered()
 	
 	s+="\n\n";
 	s+=tr("Students' statistics form contains a check box named '%1'"
-	 ". This has effect only if you have overlapping groups/years, and means that FET will show the complete tree structure"
+	 ". This has effect only if you have overlapping groups/years, and means that Open-Timetable will show the complete tree structure"
 	 ", even if that means that some subgroups/groups will appear twice or more in the table, with the same information."
 	 " For instance, if you have year Y1, groups G1 and G2, subgroups S1, S2, S3, with structure: Y1 (G1 (S1, S2), G2 (S1, S3)),"
 	 " S1 will appear twice in the table").arg(tr("Show duplicates"));
@@ -8835,19 +8818,19 @@ void FetMainForm::dataHelpOnStatisticsAction_triggered()
 	 " sets are not affected by home rooms constraints, you need to have preferred rooms constraints for such activities to ensure"
 	 " they will not end up in an unspecified room).");
 	
-	LongTextMessageBox::largeInformation(this, tr("FET - information about statistics"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable - information about statistics"), s);
 }
 
 void FetMainForm::dataActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8860,13 +8843,13 @@ void FetMainForm::dataActivitiesAction_triggered()
 void FetMainForm::dataSubactivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8879,13 +8862,13 @@ void FetMainForm::dataSubactivitiesAction_triggered()
 void FetMainForm::dataRoomsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8898,13 +8881,13 @@ void FetMainForm::dataRoomsAction_triggered()
 void FetMainForm::dataBuildingsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8917,13 +8900,13 @@ void FetMainForm::dataBuildingsAction_triggered()
 void FetMainForm::dataAllTimeConstraintsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8936,13 +8919,13 @@ void FetMainForm::dataAllTimeConstraintsAction_triggered()
 void FetMainForm::dataAllSpaceConstraintsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8955,13 +8938,13 @@ void FetMainForm::dataAllSpaceConstraintsAction_triggered()
 void FetMainForm::dataTimeConstraintsTwoActivitiesConsecutiveAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8975,13 +8958,13 @@ void FetMainForm::dataTimeConstraintsTwoActivitiesConsecutiveAction_triggered()
 void FetMainForm::dataTimeConstraintsTwoActivitiesGroupedAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -8995,13 +8978,13 @@ void FetMainForm::dataTimeConstraintsTwoActivitiesGroupedAction_triggered()
 void FetMainForm::dataTimeConstraintsThreeActivitiesGroupedAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9015,13 +8998,13 @@ void FetMainForm::dataTimeConstraintsThreeActivitiesGroupedAction_triggered()
 void FetMainForm::dataTimeConstraintsTwoActivitiesOrderedAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9035,13 +9018,13 @@ void FetMainForm::dataTimeConstraintsTwoActivitiesOrderedAction_triggered()
 void FetMainForm::dataTimeConstraintsTwoSetsOfActivitiesOrderedAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9055,13 +9038,13 @@ void FetMainForm::dataTimeConstraintsTwoSetsOfActivitiesOrderedAction_triggered(
 void FetMainForm::dataTimeConstraintsTwoActivitiesOrderedIfSameDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9075,13 +9058,13 @@ void FetMainForm::dataTimeConstraintsTwoActivitiesOrderedIfSameDayAction_trigger
 void FetMainForm::dataTimeConstraintsActivitiesPreferredTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9095,13 +9078,13 @@ void FetMainForm::dataTimeConstraintsActivitiesPreferredTimeSlotsAction_triggere
 void FetMainForm::dataTimeConstraintsActivitiesPreferredStartingTimesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9115,13 +9098,13 @@ void FetMainForm::dataTimeConstraintsActivitiesPreferredStartingTimesAction_trig
 void FetMainForm::dataTimeConstraintsSubactivitiesPreferredTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9135,13 +9118,13 @@ void FetMainForm::dataTimeConstraintsSubactivitiesPreferredTimeSlotsAction_trigg
 void FetMainForm::dataTimeConstraintsSubactivitiesPreferredStartingTimesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9155,13 +9138,13 @@ void FetMainForm::dataTimeConstraintsSubactivitiesPreferredStartingTimesAction_t
 void FetMainForm::dataTimeConstraintsActivityEndsStudentsDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9175,13 +9158,13 @@ void FetMainForm::dataTimeConstraintsActivityEndsStudentsDayAction_triggered()
 void FetMainForm::dataTimeConstraintsActivitiesEndStudentsDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9195,13 +9178,13 @@ void FetMainForm::dataTimeConstraintsActivitiesEndStudentsDayAction_triggered()
 void FetMainForm::dataTimeConstraintsActivityEndsTeachersDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9215,13 +9198,13 @@ void FetMainForm::dataTimeConstraintsActivityEndsTeachersDayAction_triggered()
 void FetMainForm::dataTimeConstraintsActivitiesEndTeachersDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9235,13 +9218,13 @@ void FetMainForm::dataTimeConstraintsActivitiesEndTeachersDayAction_triggered()
 void FetMainForm::dataTimeConstraintsActivityBeginsStudentsDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9255,13 +9238,13 @@ void FetMainForm::dataTimeConstraintsActivityBeginsStudentsDayAction_triggered()
 void FetMainForm::dataTimeConstraintsActivitiesBeginStudentsDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9275,13 +9258,13 @@ void FetMainForm::dataTimeConstraintsActivitiesBeginStudentsDayAction_triggered(
 void FetMainForm::dataTimeConstraintsActivityBeginsTeachersDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9295,13 +9278,13 @@ void FetMainForm::dataTimeConstraintsActivityBeginsTeachersDayAction_triggered()
 void FetMainForm::dataTimeConstraintsActivitiesBeginTeachersDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9315,13 +9298,13 @@ void FetMainForm::dataTimeConstraintsActivitiesBeginTeachersDayAction_triggered(
 void FetMainForm::dataTimeConstraintsActivityBeginsOrEndsStudentsDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9335,13 +9318,13 @@ void FetMainForm::dataTimeConstraintsActivityBeginsOrEndsStudentsDayAction_trigg
 void FetMainForm::dataTimeConstraintsActivitiesBeginOrEndStudentsDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9355,13 +9338,13 @@ void FetMainForm::dataTimeConstraintsActivitiesBeginOrEndStudentsDayAction_trigg
 void FetMainForm::dataTimeConstraintsActivityBeginsOrEndsTeachersDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9375,13 +9358,13 @@ void FetMainForm::dataTimeConstraintsActivityBeginsOrEndsTeachersDayAction_trigg
 void FetMainForm::dataTimeConstraintsActivitiesBeginOrEndTeachersDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9395,13 +9378,13 @@ void FetMainForm::dataTimeConstraintsActivitiesBeginOrEndTeachersDayAction_trigg
 void FetMainForm::dataTimeConstraintsActivitiesSameStartingTimeAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9415,13 +9398,13 @@ void FetMainForm::dataTimeConstraintsActivitiesSameStartingTimeAction_triggered(
 void FetMainForm::dataTimeConstraintsActivitiesSameStartingHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9435,13 +9418,13 @@ void FetMainForm::dataTimeConstraintsActivitiesSameStartingHourAction_triggered(
 void FetMainForm::dataTimeConstraintsActivitiesSameStartingDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9455,13 +9438,13 @@ void FetMainForm::dataTimeConstraintsActivitiesSameStartingDayAction_triggered()
 void FetMainForm::dataTimeConstraintsTwoSetsOfActivitiesSameSectionsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9475,13 +9458,13 @@ void FetMainForm::dataTimeConstraintsTwoSetsOfActivitiesSameSectionsAction_trigg
 void FetMainForm::dataTimeConstraintsActivitiesMaxTotalNumberOfStudentsInSelectedTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9495,13 +9478,13 @@ void FetMainForm::dataTimeConstraintsActivitiesMaxTotalNumberOfStudentsInSelecte
 void FetMainForm::dataTimeConstraintsActivitiesOccupyMaxTimeSlotsFromSelectionAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9515,13 +9498,13 @@ void FetMainForm::dataTimeConstraintsActivitiesOccupyMaxTimeSlotsFromSelectionAc
 void FetMainForm::dataTimeConstraintsActivitiesOccupyMinTimeSlotsFromSelectionAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9535,13 +9518,13 @@ void FetMainForm::dataTimeConstraintsActivitiesOccupyMinTimeSlotsFromSelectionAc
 void FetMainForm::dataTimeConstraintsActivitiesMaxSimultaneousInSelectedTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9555,13 +9538,13 @@ void FetMainForm::dataTimeConstraintsActivitiesMaxSimultaneousInSelectedTimeSlot
 void FetMainForm::dataTimeConstraintsActivitiesMinSimultaneousInSelectedTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9575,13 +9558,13 @@ void FetMainForm::dataTimeConstraintsActivitiesMinSimultaneousInSelectedTimeSlot
 void FetMainForm::dataTimeConstraintsActivitiesMaxActivityTagsFromSetInSelectedTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9595,13 +9578,13 @@ void FetMainForm::dataTimeConstraintsActivitiesMaxActivityTagsFromSetInSelectedT
 void FetMainForm::dataTimeConstraintsActivitiesOverlapCompletelyOrDoNotOverlapAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9615,13 +9598,13 @@ void FetMainForm::dataTimeConstraintsActivitiesOverlapCompletelyOrDoNotOverlapAc
 void FetMainForm::dataTimeConstraintsMaxDaysBetweenEachPairOfConsecutiveActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9635,13 +9618,13 @@ void FetMainForm::dataTimeConstraintsMaxDaysBetweenEachPairOfConsecutiveActiviti
 void FetMainForm::dataTimeConstraintsMaxTotalActivitiesFromSetInSelectedTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9655,13 +9638,13 @@ void FetMainForm::dataTimeConstraintsMaxTotalActivitiesFromSetInSelectedTimeSlot
 void FetMainForm::dataTimeConstraintsTeacherNotAvailableTimesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9675,13 +9658,13 @@ void FetMainForm::dataTimeConstraintsTeacherNotAvailableTimesAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersNotAvailableTimesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9694,13 +9677,13 @@ void FetMainForm::dataTimeConstraintsTeachersNotAvailableTimesAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsNotAvailableTimesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9713,13 +9696,13 @@ void FetMainForm::dataTimeConstraintsStudentsNotAvailableTimesAction_triggered()
 void FetMainForm::dataTimeConstraintsBasicCompulsoryTimeAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9733,13 +9716,13 @@ void FetMainForm::dataTimeConstraintsBasicCompulsoryTimeAction_triggered()
 void FetMainForm::dataSpaceConstraintsBasicCompulsorySpaceAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9753,13 +9736,13 @@ void FetMainForm::dataSpaceConstraintsBasicCompulsorySpaceAction_triggered()
 void FetMainForm::dataSpaceConstraintsRoomNotAvailableTimesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9773,13 +9756,13 @@ void FetMainForm::dataSpaceConstraintsRoomNotAvailableTimesAction_triggered()
 void FetMainForm::dataSpaceConstraintsRoomMaxActivitiesPerTeacherAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9793,13 +9776,13 @@ void FetMainForm::dataSpaceConstraintsRoomMaxActivitiesPerTeacherAction_triggere
 void FetMainForm::dataSpaceConstraintsRoomsMaxActivitiesPerTeacherAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9813,13 +9796,13 @@ void FetMainForm::dataSpaceConstraintsRoomsMaxActivitiesPerTeacherAction_trigger
 void FetMainForm::dataSpaceConstraintsTeacherMaxActivitiesInRoomAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9833,13 +9816,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxActivitiesInRoomAction_triggered
 void FetMainForm::dataSpaceConstraintsBuildingMinOneActivityInEachAvailableTimeSlotAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9853,13 +9836,13 @@ void FetMainForm::dataSpaceConstraintsBuildingMinOneActivityInEachAvailableTimeS
 void FetMainForm::dataSpaceConstraintsBuildingsMinOneActivityInEachAvailableTimeSlotAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9873,13 +9856,13 @@ void FetMainForm::dataSpaceConstraintsBuildingsMinOneActivityInEachAvailableTime
 void FetMainForm::dataSpaceConstraintsTeacherRoomNotAvailableTimesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9893,13 +9876,13 @@ void FetMainForm::dataSpaceConstraintsTeacherRoomNotAvailableTimesAction_trigger
 void FetMainForm::dataSpaceConstraintsActivityPreferredRoomAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9913,13 +9896,13 @@ void FetMainForm::dataSpaceConstraintsActivityPreferredRoomAction_triggered()
 void FetMainForm::dataSpaceConstraintsActivityPreferredRoomsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9933,13 +9916,13 @@ void FetMainForm::dataSpaceConstraintsActivityPreferredRoomsAction_triggered()
 void FetMainForm::dataSpaceConstraintsSubjectPreferredRoomAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9953,13 +9936,13 @@ void FetMainForm::dataSpaceConstraintsSubjectPreferredRoomAction_triggered()
 void FetMainForm::dataSpaceConstraintsSubjectPreferredRoomsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9973,13 +9956,13 @@ void FetMainForm::dataSpaceConstraintsSubjectPreferredRoomsAction_triggered()
 void FetMainForm::dataSpaceConstraintsSubjectActivityTagPreferredRoomAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -9993,13 +9976,13 @@ void FetMainForm::dataSpaceConstraintsSubjectActivityTagPreferredRoomAction_trig
 void FetMainForm::dataSpaceConstraintsSubjectActivityTagPreferredRoomsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10014,13 +9997,13 @@ void FetMainForm::dataSpaceConstraintsSubjectActivityTagPreferredRoomsAction_tri
 void FetMainForm::dataSpaceConstraintsActivityTagPreferredRoomAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10034,13 +10017,13 @@ void FetMainForm::dataSpaceConstraintsActivityTagPreferredRoomAction_triggered()
 void FetMainForm::dataSpaceConstraintsActivityTagPreferredRoomsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10055,13 +10038,13 @@ void FetMainForm::dataSpaceConstraintsActivityTagPreferredRoomsAction_triggered(
 void FetMainForm::dataSpaceConstraintsStudentsSetHomeRoomAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10075,13 +10058,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetHomeRoomAction_triggered()
 void FetMainForm::dataSpaceConstraintsStudentsSetHomeRoomsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10095,13 +10078,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetHomeRoomsAction_triggered()
 void FetMainForm::dataSpaceConstraintsStudentsSetMaxBuildingChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10115,13 +10098,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxBuildingChangesPerDayAction_
 void FetMainForm::dataSpaceConstraintsStudentsMaxBuildingChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10136,12 +10119,12 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxBuildingChangesPerWeekAction
 {
 	if(generation_running || generation_running_multi){
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10155,13 +10138,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxBuildingChangesPerWeekAction
 void FetMainForm::dataSpaceConstraintsStudentsMaxBuildingChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10175,13 +10158,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMaxBuildingChangesPerWeekAction_tr
 void FetMainForm::dataSpaceConstraintsStudentsSetMinGapsBetweenBuildingChangesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10195,13 +10178,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMinGapsBetweenBuildingChangesAc
 void FetMainForm::dataSpaceConstraintsStudentsMinGapsBetweenBuildingChangesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10215,13 +10198,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMinGapsBetweenBuildingChangesActio
 void FetMainForm::dataSpaceConstraintsTeacherMaxBuildingChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10235,13 +10218,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxBuildingChangesPerDayAction_trig
 void FetMainForm::dataSpaceConstraintsTeachersMaxBuildingChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10255,13 +10238,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMaxBuildingChangesPerDayAction_tri
 void FetMainForm::dataSpaceConstraintsTeacherMaxBuildingChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10275,13 +10258,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxBuildingChangesPerWeekAction_tri
 void FetMainForm::dataSpaceConstraintsTeachersMaxBuildingChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10295,13 +10278,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMaxBuildingChangesPerWeekAction_tr
 void FetMainForm::dataSpaceConstraintsTeacherMinGapsBetweenBuildingChangesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10315,13 +10298,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMinGapsBetweenBuildingChangesAction
 void FetMainForm::dataSpaceConstraintsTeachersMinGapsBetweenBuildingChangesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10335,13 +10318,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMinGapsBetweenBuildingChangesActio
 void FetMainForm::dataSpaceConstraintsStudentsSetMaxRoomChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10355,13 +10338,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxRoomChangesPerDayAction_trig
 void FetMainForm::dataSpaceConstraintsStudentsMaxRoomChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10375,13 +10358,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMaxRoomChangesPerDayAction_trigger
 void FetMainForm::dataSpaceConstraintsStudentsSetMaxRoomChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10395,13 +10378,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxRoomChangesPerWeekAction_tri
 void FetMainForm::dataSpaceConstraintsStudentsMaxRoomChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10415,13 +10398,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMaxRoomChangesPerWeekAction_trigge
 void FetMainForm::dataSpaceConstraintsStudentsSetMinGapsBetweenRoomChangesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10435,13 +10418,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMinGapsBetweenRoomChangesAction
 void FetMainForm::dataSpaceConstraintsStudentsMinGapsBetweenRoomChangesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10455,13 +10438,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMinGapsBetweenRoomChangesAction_tr
 void FetMainForm::dataSpaceConstraintsTeacherMaxRoomChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10474,13 +10457,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxRoomChangesPerDayAction_triggere
 void FetMainForm::dataSpaceConstraintsTeachersMaxRoomChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10494,13 +10477,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMaxRoomChangesPerDayAction_trigger
 void FetMainForm::dataSpaceConstraintsTeacherMaxRoomChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10514,13 +10497,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxRoomChangesPerWeekAction_trigger
 void FetMainForm::dataSpaceConstraintsTeachersMaxRoomChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10534,13 +10517,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMaxRoomChangesPerWeekAction_trigge
 void FetMainForm::dataSpaceConstraintsTeacherMinGapsBetweenRoomChangesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10554,13 +10537,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMinGapsBetweenRoomChangesAction_tri
 void FetMainForm::dataSpaceConstraintsTeachersMinGapsBetweenRoomChangesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10574,13 +10557,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMinGapsBetweenRoomChangesAction_tr
 void FetMainForm::dataSpaceConstraintsTeacherHomeRoomAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10594,13 +10577,13 @@ void FetMainForm::dataSpaceConstraintsTeacherHomeRoomAction_triggered()
 void FetMainForm::dataSpaceConstraintsTeacherHomeRoomsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10614,13 +10597,13 @@ void FetMainForm::dataSpaceConstraintsTeacherHomeRoomsAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsSetNotAvailableTimesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10634,13 +10617,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetNotAvailableTimesAction_triggere
 void FetMainForm::dataTimeConstraintsBreakTimesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10654,13 +10637,13 @@ void FetMainForm::dataTimeConstraintsBreakTimesAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10674,13 +10657,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxDaysPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10694,13 +10677,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxDaysPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherMaxHoursPerTermAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10714,13 +10697,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxHoursPerTermAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxHoursPerTermAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10734,13 +10717,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxHoursPerTermAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherMinDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10754,13 +10737,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinDaysPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMinDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10774,13 +10757,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinDaysPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10794,13 +10777,13 @@ void FetMainForm::dataTimeConstraintsTeacherIntervalMaxDaysPerWeekAction_trigger
 void FetMainForm::dataTimeConstraintsTeachersIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10814,13 +10797,13 @@ void FetMainForm::dataTimeConstraintsTeachersIntervalMaxDaysPerWeekAction_trigge
 void FetMainForm::dataTimeConstraintsStudentsSetMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10834,13 +10817,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxDaysPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10854,13 +10837,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxDaysPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsSetIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10874,13 +10857,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetIntervalMaxDaysPerWeekAction_tri
 void FetMainForm::dataTimeConstraintsStudentsIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10894,13 +10877,13 @@ void FetMainForm::dataTimeConstraintsStudentsIntervalMaxDaysPerWeekAction_trigge
 void FetMainForm::dataTimeConstraintsTeachersMaxHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10914,13 +10897,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxHoursDailyAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxHoursDailyInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10934,13 +10917,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxHoursDailyInIntervalAction_trigg
 void FetMainForm::dataTimeConstraintsTeacherMaxActivityTagChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10954,13 +10937,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxActivityTagChangesPerDayAction_tr
 void FetMainForm::dataTimeConstraintsTeachersMaxActivityTagChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10974,13 +10957,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxActivityTagChangesPerDayAction_t
 void FetMainForm::dataTimeConstraintsTeacherMaxActivityTagChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -10994,13 +10977,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxActivityTagChangesPerWeekAction_t
 void FetMainForm::dataTimeConstraintsTeachersMaxActivityTagChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11014,13 +10997,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxActivityTagChangesPerWeekAction_
 void FetMainForm::dataTimeConstraintsStudentsSetMaxActivityTagChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11034,13 +11017,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxActivityTagChangesPerDayActio
 void FetMainForm::dataTimeConstraintsStudentsMaxActivityTagChangesPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11054,13 +11037,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxActivityTagChangesPerDayAction_t
 void FetMainForm::dataTimeConstraintsStudentsSetMaxActivityTagChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11074,13 +11057,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxActivityTagChangesPerWeekActi
 void FetMainForm::dataTimeConstraintsStudentsMaxActivityTagChangesPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11094,13 +11077,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxActivityTagChangesPerWeekAction_
 void FetMainForm::dataTimeConstraintsTeacherMaxHoursDailyInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11114,13 +11097,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxHoursDailyInIntervalAction_trigge
 void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursDailyInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11134,13 +11117,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursDailyInIntervalAction_tr
 void FetMainForm::dataTimeConstraintsStudentsMaxHoursDailyInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11154,13 +11137,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxHoursDailyInIntervalAction_trigg
 void FetMainForm::dataTimeConstraintsTeacherPairOfMutuallyExclusiveTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11171,13 +11154,13 @@ void FetMainForm::dataTimeConstraintsTeacherPairOfMutuallyExclusiveTimeSlotsActi
 void FetMainForm::dataTimeConstraintsTeachersPairOfMutuallyExclusiveTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11188,13 +11171,13 @@ void FetMainForm::dataTimeConstraintsTeachersPairOfMutuallyExclusiveTimeSlotsAct
 void FetMainForm::dataTimeConstraintsStudentsSetPairOfMutuallyExclusiveTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11205,13 +11188,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetPairOfMutuallyExclusiveTimeSlots
 void FetMainForm::dataTimeConstraintsStudentsPairOfMutuallyExclusiveTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11222,13 +11205,13 @@ void FetMainForm::dataTimeConstraintsStudentsPairOfMutuallyExclusiveTimeSlotsAct
 void FetMainForm::dataSpaceConstraintsRoomPairOfMutuallyExclusiveTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11239,13 +11222,13 @@ void FetMainForm::dataSpaceConstraintsRoomPairOfMutuallyExclusiveTimeSlotsAction
 void FetMainForm::dataSpaceConstraintsRoomPairOfMutuallyExclusiveSetsOfTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11256,13 +11239,13 @@ void FetMainForm::dataSpaceConstraintsRoomPairOfMutuallyExclusiveSetsOfTimeSlots
 void FetMainForm::dataSpaceConstraintsRoomOccupiesMaxSetsOfTimeSlotsFromSelectionAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11273,13 +11256,13 @@ void FetMainForm::dataSpaceConstraintsRoomOccupiesMaxSetsOfTimeSlotsFromSelectio
 void FetMainForm::dataSpaceConstraintsRoomsPairOfMutuallyExclusiveTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11290,13 +11273,13 @@ void FetMainForm::dataSpaceConstraintsRoomsPairOfMutuallyExclusiveTimeSlotsActio
 void FetMainForm::dataSpaceConstraintsRoomsPairOfMutuallyExclusiveSetsOfTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11307,13 +11290,13 @@ void FetMainForm::dataSpaceConstraintsRoomsPairOfMutuallyExclusiveSetsOfTimeSlot
 void FetMainForm::dataSpaceConstraintsRoomsOccupyMaxSetsOfTimeSlotsFromSelectionAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11324,13 +11307,13 @@ void FetMainForm::dataSpaceConstraintsRoomsOccupyMaxSetsOfTimeSlotsFromSelection
 void FetMainForm::dataTimeConstraintsTeacherPairOfMutuallyExclusiveSetsOfTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11341,13 +11324,13 @@ void FetMainForm::dataTimeConstraintsTeacherPairOfMutuallyExclusiveSetsOfTimeSlo
 void FetMainForm::dataTimeConstraintsTeachersPairOfMutuallyExclusiveSetsOfTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11358,13 +11341,13 @@ void FetMainForm::dataTimeConstraintsTeachersPairOfMutuallyExclusiveSetsOfTimeSl
 void FetMainForm::dataTimeConstraintsStudentsSetPairOfMutuallyExclusiveSetsOfTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11375,13 +11358,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetPairOfMutuallyExclusiveSetsOfTim
 void FetMainForm::dataTimeConstraintsStudentsPairOfMutuallyExclusiveSetsOfTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11392,13 +11375,13 @@ void FetMainForm::dataTimeConstraintsStudentsPairOfMutuallyExclusiveSetsOfTimeSl
 void FetMainForm::dataTimeConstraintsTeacherOccupiesMaxSetsOfTimeSlotsFromSelectionAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11409,13 +11392,13 @@ void FetMainForm::dataTimeConstraintsTeacherOccupiesMaxSetsOfTimeSlotsFromSelect
 void FetMainForm::dataTimeConstraintsTeachersOccupyMaxSetsOfTimeSlotsFromSelectionAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11426,13 +11409,13 @@ void FetMainForm::dataTimeConstraintsTeachersOccupyMaxSetsOfTimeSlotsFromSelecti
 void FetMainForm::dataTimeConstraintsStudentsSetOccupiesMaxSetsOfTimeSlotsFromSelectionAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11443,13 +11426,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetOccupiesMaxSetsOfTimeSlotsFromSe
 void FetMainForm::dataTimeConstraintsStudentsOccupyMaxSetsOfTimeSlotsFromSelectionAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11460,13 +11443,13 @@ void FetMainForm::dataTimeConstraintsStudentsOccupyMaxSetsOfTimeSlotsFromSelecti
 void FetMainForm::dataTimeConstraintsActivitiesOccupyMaxSetsOfTimeSlotsFromSelectionAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11477,13 +11460,13 @@ void FetMainForm::dataTimeConstraintsActivitiesOccupyMaxSetsOfTimeSlotsFromSelec
 void FetMainForm::dataTimeConstraintsActivitiesPairOfMutuallyExclusiveTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11494,13 +11477,13 @@ void FetMainForm::dataTimeConstraintsActivitiesPairOfMutuallyExclusiveTimeSlotsA
 void FetMainForm::dataTimeConstraintsActivitiesPairOfMutuallyExclusiveSetsOfTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11511,13 +11494,13 @@ void FetMainForm::dataTimeConstraintsActivitiesPairOfMutuallyExclusiveSetsOfTime
 void FetMainForm::dataTimeConstraintsTeacherMaxHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11531,13 +11514,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxHoursDailyAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxHoursContinuouslyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11551,13 +11534,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxHoursContinuouslyAction_triggere
 void FetMainForm::dataTimeConstraintsTeacherMaxHoursContinuouslyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11571,13 +11554,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxHoursContinuouslyAction_triggered
 void FetMainForm::dataTimeConstraintsTeachersActivityTagMaxHoursContinuouslyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11591,13 +11574,13 @@ void FetMainForm::dataTimeConstraintsTeachersActivityTagMaxHoursContinuouslyActi
 void FetMainForm::dataTimeConstraintsTeacherActivityTagMaxHoursContinuouslyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11611,13 +11594,13 @@ void FetMainForm::dataTimeConstraintsTeacherActivityTagMaxHoursContinuouslyActio
 void FetMainForm::dataTimeConstraintsTeachersActivityTagMaxHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11631,13 +11614,13 @@ void FetMainForm::dataTimeConstraintsTeachersActivityTagMaxHoursDailyAction_trig
 void FetMainForm::dataTimeConstraintsTeacherActivityTagMaxHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11651,13 +11634,13 @@ void FetMainForm::dataTimeConstraintsTeacherActivityTagMaxHoursDailyAction_trigg
 void FetMainForm::dataTimeConstraintsTeachersActivityTagMinHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11671,13 +11654,13 @@ void FetMainForm::dataTimeConstraintsTeachersActivityTagMinHoursDailyAction_trig
 void FetMainForm::dataTimeConstraintsTeacherActivityTagMinHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11691,13 +11674,13 @@ void FetMainForm::dataTimeConstraintsTeacherActivityTagMinHoursDailyAction_trigg
 void FetMainForm::dataTimeConstraintsTeachersMinHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11711,13 +11694,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinHoursDailyAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherMinHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11731,13 +11714,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinHoursDailyAction_triggered()
 void FetMainForm::dataTimeConstraintsActivityPreferredStartingTimeAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11751,13 +11734,13 @@ void FetMainForm::dataTimeConstraintsActivityPreferredStartingTimeAction_trigger
 void FetMainForm::dataTimeConstraintsStudentsSetMaxGapsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11771,13 +11754,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxGapsPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsMaxGapsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11792,13 +11775,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxGapsPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsActivitiesMaxInATermAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11812,13 +11795,13 @@ void FetMainForm::dataTimeConstraintsActivitiesMaxInATermAction_triggered()
 void FetMainForm::dataTimeConstraintsActivitiesMinInATermAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11832,13 +11815,13 @@ void FetMainForm::dataTimeConstraintsActivitiesMinInATermAction_triggered()
 void FetMainForm::dataTimeConstraintsActivitiesOccupyMaxTermsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11853,13 +11836,13 @@ void FetMainForm::dataTimeConstraintsActivitiesOccupyMaxTermsAction_triggered()
 void FetMainForm::dataSpaceConstraintsStudentsSetMaxBuildingChangesPerDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11873,13 +11856,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxBuildingChangesPerDayInInter
 void FetMainForm::dataSpaceConstraintsStudentsMaxBuildingChangesPerDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11893,13 +11876,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMaxBuildingChangesPerDayInInterval
 void FetMainForm::dataSpaceConstraintsTeacherMaxBuildingChangesPerDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11913,13 +11896,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxBuildingChangesPerDayInIntervalA
 void FetMainForm::dataSpaceConstraintsTeachersMaxBuildingChangesPerDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11933,13 +11916,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMaxBuildingChangesPerDayInInterval
 void FetMainForm::dataSpaceConstraintsStudentsSetMaxBuildingChangesPerRealDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11953,13 +11936,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxBuildingChangesPerRealDayInI
 void FetMainForm::dataSpaceConstraintsStudentsMaxBuildingChangesPerRealDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11973,13 +11956,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMaxBuildingChangesPerRealDayInInte
 void FetMainForm::dataSpaceConstraintsTeacherMaxBuildingChangesPerRealDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -11993,13 +11976,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxBuildingChangesPerRealDayInInter
 void FetMainForm::dataSpaceConstraintsTeachersMaxBuildingChangesPerRealDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12014,13 +11997,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMaxBuildingChangesPerRealDayInInte
 void FetMainForm::dataSpaceConstraintsStudentsSetMaxRoomChangesPerDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12034,13 +12017,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxRoomChangesPerDayInIntervalA
 void FetMainForm::dataSpaceConstraintsStudentsMaxRoomChangesPerDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12054,13 +12037,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMaxRoomChangesPerDayInIntervalActi
 void FetMainForm::dataSpaceConstraintsTeacherMaxRoomChangesPerDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12074,13 +12057,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxRoomChangesPerDayInIntervalActio
 void FetMainForm::dataSpaceConstraintsTeachersMaxRoomChangesPerDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12094,13 +12077,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMaxRoomChangesPerDayInIntervalActi
 void FetMainForm::dataSpaceConstraintsStudentsSetMaxRoomChangesPerRealDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12114,13 +12097,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxRoomChangesPerRealDayInInter
 void FetMainForm::dataSpaceConstraintsStudentsMaxRoomChangesPerRealDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12134,13 +12117,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMaxRoomChangesPerRealDayInInterval
 void FetMainForm::dataSpaceConstraintsTeacherMaxRoomChangesPerRealDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12154,13 +12137,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxRoomChangesPerRealDayInIntervalA
 void FetMainForm::dataSpaceConstraintsTeachersMaxRoomChangesPerRealDayInIntervalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12174,13 +12157,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMaxRoomChangesPerRealDayInInterval
 void FetMainForm::groupActivitiesInInitialOrderAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12192,7 +12175,7 @@ void FetMainForm::groupActivitiesInInitialOrderAction_triggered()
 		s+=" ";
 		s+=tr("The feature must be used with caution, by experienced users.");
 
-		QMessageBox::information(this, tr("FET information"), s);
+		QMessageBox::information(this, tr("Open-Timetable information"), s);
 
 		return;
 	}
@@ -12205,13 +12188,13 @@ void FetMainForm::groupActivitiesInInitialOrderAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsSetMaxGapsPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12225,13 +12208,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxGapsPerDayAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsMaxGapsPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12245,13 +12228,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxGapsPerDayAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsSetMaxSingleGapsInSelectedTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12265,13 +12248,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxSingleGapsInSelectedTimeSlots
 void FetMainForm::dataTimeConstraintsStudentsMaxSingleGapsInSelectedTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12285,13 +12268,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxSingleGapsInSelectedTimeSlotsAct
 void FetMainForm::dataTimeConstraintsTeacherMaxSingleGapsInSelectedTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12305,13 +12288,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxSingleGapsInSelectedTimeSlotsActi
 void FetMainForm::dataTimeConstraintsTeachersMaxSingleGapsInSelectedTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12325,13 +12308,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxSingleGapsInSelectedTimeSlotsAct
 void FetMainForm::dataTimeConstraintsStudentsSetMaxSingleEarlyGapsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12345,13 +12328,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxSingleEarlyGapsAction_trigger
 void FetMainForm::dataTimeConstraintsStudentsMaxSingleEarlyGapsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12365,13 +12348,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxSingleEarlyGapsAction_triggered(
 void FetMainForm::dataTimeConstraintsTeacherMaxSingleEarlyGapsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12385,13 +12368,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxSingleEarlyGapsAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxSingleEarlyGapsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12405,13 +12388,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxSingleEarlyGapsAction_triggered(
 void FetMainForm::dataTimeConstraintsStudentsSetMaxSingleEarlyMorningGapsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12425,13 +12408,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxSingleEarlyMorningGapsAction_
 void FetMainForm::dataTimeConstraintsStudentsMaxSingleEarlyMorningGapsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12445,13 +12428,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxSingleEarlyMorningGapsAction_tri
 void FetMainForm::dataTimeConstraintsStudentsSetMaxSingleEarlyAfternoonGapsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12465,13 +12448,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxSingleEarlyAfternoonGapsActio
 void FetMainForm::dataTimeConstraintsStudentsMaxSingleEarlyAfternoonGapsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12485,13 +12468,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxSingleEarlyAfternoonGapsAction_t
 void FetMainForm::dataTimeConstraintsStudentsSetMaxSingleGapsBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12505,13 +12488,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxSingleGapsBetweenMorningAndAf
 void FetMainForm::dataTimeConstraintsStudentsMaxSingleGapsBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12525,13 +12508,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxSingleGapsBetweenMorningAndAfter
 void FetMainForm::dataTimeConstraintsTeachersMaxGapsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12545,13 +12528,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxGapsPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherMaxGapsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12565,13 +12548,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxGapsPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxGapsPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12585,13 +12568,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxGapsPerDayAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherMaxGapsPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12605,13 +12588,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxGapsPerDayAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxGapsPerMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12625,13 +12608,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxGapsPerMorningAndAfternoonAction
 void FetMainForm::dataTimeConstraintsTeacherMaxGapsPerMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12645,13 +12628,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxGapsPerMorningAndAfternoonAction_
 void FetMainForm::dataTimeConstraintsStudentsEarlyMaxBeginningsAtSecondHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12665,13 +12648,13 @@ void FetMainForm::dataTimeConstraintsStudentsEarlyMaxBeginningsAtSecondHourActio
 void FetMainForm::dataTimeConstraintsStudentsSetEarlyMaxBeginningsAtSecondHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12685,13 +12668,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetEarlyMaxBeginningsAtSecondHourAc
 void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12705,13 +12688,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursDailyAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsMaxHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12725,13 +12708,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxHoursDailyAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursContinuouslyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12745,13 +12728,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursContinuouslyAction_trigg
 void FetMainForm::dataTimeConstraintsStudentsMaxHoursContinuouslyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12765,13 +12748,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxHoursContinuouslyAction_triggere
 void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursContinuouslyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12785,13 +12768,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursContinuouslyRealDaysActi
 void FetMainForm::dataTimeConstraintsStudentsMaxHoursContinuouslyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12805,13 +12788,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxHoursContinuouslyRealDaysAction_
 void FetMainForm::dataTimeConstraintsStudentsSetActivityTagMaxHoursContinuouslyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12825,13 +12808,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetActivityTagMaxHoursContinuouslyA
 void FetMainForm::dataTimeConstraintsStudentsActivityTagMaxHoursContinuouslyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12845,13 +12828,13 @@ void FetMainForm::dataTimeConstraintsStudentsActivityTagMaxHoursContinuouslyActi
 void FetMainForm::dataTimeConstraintsStudentsSetActivityTagMaxHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12865,13 +12848,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetActivityTagMaxHoursDailyAction_t
 void FetMainForm::dataTimeConstraintsStudentsActivityTagMaxHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12885,13 +12868,13 @@ void FetMainForm::dataTimeConstraintsStudentsActivityTagMaxHoursDailyAction_trig
 void FetMainForm::dataTimeConstraintsStudentsSetActivityTagMinHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12905,13 +12888,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetActivityTagMinHoursDailyAction_t
 void FetMainForm::dataTimeConstraintsStudentsActivityTagMinHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12925,13 +12908,13 @@ void FetMainForm::dataTimeConstraintsStudentsActivityTagMinHoursDailyAction_trig
 void FetMainForm::dataTimeConstraintsStudentsSetMinHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12945,13 +12928,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinHoursDailyAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsMinHoursDailyAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12965,13 +12948,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinHoursDailyAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenOrderedPairOfActivityTagsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -12985,13 +12968,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenOrderedPairOfActiv
 void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenOrderedPairOfActivityTagsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13005,13 +12988,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenOrderedPairOfActivity
 void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenOrderedPairOfActivityTagsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13025,13 +13008,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenOrderedPairOfActivityT
 void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenOrderedPairOfActivityTagsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13046,13 +13029,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenOrderedPairOfActivity
 void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenActivityTagAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13066,13 +13049,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenActivityTagAction_
 void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenActivityTagAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13086,13 +13069,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenActivityTagAction_tri
 void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenActivityTagAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13106,13 +13089,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenActivityTagAction_trig
 void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenActivityTagAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13128,13 +13111,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenActivityTagAction_tri
 void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenOrderedPairOfActivityTagsPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13148,13 +13131,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenOrderedPairOfActiv
 void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenOrderedPairOfActivityTagsPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13168,13 +13151,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenOrderedPairOfActivity
 void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenOrderedPairOfActivityTagsPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13188,13 +13171,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenOrderedPairOfActivityT
 void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenOrderedPairOfActivityTagsPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13208,13 +13191,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenOrderedPairOfActivity
 void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenActivityTagPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13228,13 +13211,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenActivityTagPerReal
 void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenActivityTagPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13248,13 +13231,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenActivityTagPerRealDay
 void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenActivityTagPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13268,13 +13251,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenActivityTagPerRealDayA
 void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenActivityTagPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13290,13 +13273,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenActivityTagPerRealDay
 void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenOrderedPairOfActivityTagsBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13310,13 +13293,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenOrderedPairOfActiv
 void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenOrderedPairOfActivityTagsBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13330,13 +13313,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenOrderedPairOfActivity
 void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenOrderedPairOfActivityTagsBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13350,13 +13333,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenOrderedPairOfActivityT
 void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenOrderedPairOfActivityTagsBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13370,13 +13353,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenOrderedPairOfActivity
 void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenActivityTagBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13390,13 +13373,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinGapsBetweenActivityTagBetween
 void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenActivityTagBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13410,13 +13393,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinGapsBetweenActivityTagBetweenMor
 void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenActivityTagBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13430,13 +13413,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinGapsBetweenActivityTagBetweenMorn
 void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenActivityTagBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13451,13 +13434,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinGapsBetweenActivityTagBetweenMor
 void FetMainForm::dataTimeConstraintsActivitiesNotOverlappingAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13471,13 +13454,13 @@ void FetMainForm::dataTimeConstraintsActivitiesNotOverlappingAction_triggered()
 void FetMainForm::dataTimeConstraintsActivityTagsNotOverlappingAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13491,13 +13474,13 @@ void FetMainForm::dataTimeConstraintsActivityTagsNotOverlappingAction_triggered(
 void FetMainForm::dataTimeConstraintsMinDaysBetweenActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13511,13 +13494,13 @@ void FetMainForm::dataTimeConstraintsMinDaysBetweenActivitiesAction_triggered()
 void FetMainForm::dataTimeConstraintsMinHalfDaysBetweenActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13531,13 +13514,13 @@ void FetMainForm::dataTimeConstraintsMinHalfDaysBetweenActivitiesAction_triggere
 void FetMainForm::dataTimeConstraintsMaxDaysBetweenActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13551,13 +13534,13 @@ void FetMainForm::dataTimeConstraintsMaxDaysBetweenActivitiesAction_triggered()
 void FetMainForm::dataTimeConstraintsActivitiesMaxHourlySpanAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13571,13 +13554,13 @@ void FetMainForm::dataTimeConstraintsActivitiesMaxHourlySpanAction_triggered()
 void FetMainForm::dataTimeConstraintsMaxHalfDaysBetweenActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13591,13 +13574,13 @@ void FetMainForm::dataTimeConstraintsMaxHalfDaysBetweenActivitiesAction_triggere
 void FetMainForm::dataTimeConstraintsMaxTermsBetweenActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13611,13 +13594,13 @@ void FetMainForm::dataTimeConstraintsMaxTermsBetweenActivitiesAction_triggered()
 void FetMainForm::dataTimeConstraintsMinGapsBetweenActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13631,13 +13614,13 @@ void FetMainForm::dataTimeConstraintsMinGapsBetweenActivitiesAction_triggered()
 void FetMainForm::dataTimeConstraintsMaxGapsBetweenActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13651,13 +13634,13 @@ void FetMainForm::dataTimeConstraintsMaxGapsBetweenActivitiesAction_triggered()
 void FetMainForm::dataTimeConstraintsActivityPreferredTimeSlotsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13671,13 +13654,13 @@ void FetMainForm::dataTimeConstraintsActivityPreferredTimeSlotsAction_triggered(
 void FetMainForm::dataTimeConstraintsActivityPreferredStartingTimesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13691,13 +13674,13 @@ void FetMainForm::dataTimeConstraintsActivityPreferredStartingTimesAction_trigge
 void FetMainForm::dataTimeConstraintsTeacherMaxSpanPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13711,13 +13694,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxSpanPerDayAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxSpanPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13731,13 +13714,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxSpanPerDayAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsSetMaxSpanPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13751,13 +13734,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxSpanPerDayAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsMaxSpanPerDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13771,13 +13754,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxSpanPerDayAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherMinRestingHoursAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13791,13 +13774,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinRestingHoursAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMinRestingHoursAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13811,13 +13794,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinRestingHoursAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsSetMinRestingHoursAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13831,13 +13814,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinRestingHoursAction_triggered(
 void FetMainForm::dataTimeConstraintsStudentsMinRestingHoursAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13852,13 +13835,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinRestingHoursAction_triggered()
 void FetMainForm::dataSpaceConstraintsActivitiesOccupyMaxDifferentRoomsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13873,13 +13856,13 @@ void FetMainForm::dataSpaceConstraintsActivitiesOccupyMaxDifferentRoomsAction_tr
 void FetMainForm::dataSpaceConstraintsActivitiesSameRoomIfConsecutiveAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13894,13 +13877,13 @@ void FetMainForm::dataSpaceConstraintsActivitiesSameRoomIfConsecutiveAction_trig
 void FetMainForm::dataSpaceConstraintsStudentsSetMaxRoomChangesPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13914,13 +13897,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxRoomChangesPerRealDayAction_
 void FetMainForm::dataSpaceConstraintsStudentsMaxRoomChangesPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13934,13 +13917,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMaxRoomChangesPerRealDayAction_tri
 void FetMainForm::dataSpaceConstraintsTeacherMaxRoomChangesPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13954,13 +13937,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxRoomChangesPerRealDayAction_trig
 void FetMainForm::dataSpaceConstraintsTeachersMaxRoomChangesPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13974,13 +13957,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMaxRoomChangesPerRealDayAction_tri
 void FetMainForm::dataSpaceConstraintsStudentsSetMaxBuildingChangesPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -13994,13 +13977,13 @@ void FetMainForm::dataSpaceConstraintsStudentsSetMaxBuildingChangesPerRealDayAct
 void FetMainForm::dataSpaceConstraintsStudentsMaxBuildingChangesPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14014,13 +13997,13 @@ void FetMainForm::dataSpaceConstraintsStudentsMaxBuildingChangesPerRealDayAction
 void FetMainForm::dataSpaceConstraintsTeacherMaxBuildingChangesPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14034,13 +14017,13 @@ void FetMainForm::dataSpaceConstraintsTeacherMaxBuildingChangesPerRealDayAction_
 void FetMainForm::dataSpaceConstraintsTeachersMaxBuildingChangesPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14055,13 +14038,13 @@ void FetMainForm::dataSpaceConstraintsTeachersMaxBuildingChangesPerRealDayAction
 void FetMainForm::dataTimeConstraintsTeacherMaxRealDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14075,13 +14058,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxRealDaysPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxRealDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14095,13 +14078,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxRealDaysPerWeekAction_triggered(
 void FetMainForm::dataTimeConstraintsTeacherMaxAfternoonsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14115,13 +14098,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxAfternoonsPerWeekAction_triggered
 void FetMainForm::dataTimeConstraintsTeachersMaxAfternoonsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14135,13 +14118,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxAfternoonsPerWeekAction_triggere
 void FetMainForm::dataTimeConstraintsTeacherMaxMorningsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14155,13 +14138,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxMorningsPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxMorningsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14176,13 +14159,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxMorningsPerWeekAction_triggered(
 void FetMainForm::dataTimeConstraintsTeacherNoTwoConsecutiveDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14196,13 +14179,13 @@ void FetMainForm::dataTimeConstraintsTeacherNoTwoConsecutiveDaysAction_triggered
 void FetMainForm::dataTimeConstraintsTeachersNoTwoConsecutiveDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14217,13 +14200,13 @@ void FetMainForm::dataTimeConstraintsTeachersNoTwoConsecutiveDaysAction_triggere
 void FetMainForm::dataTimeConstraintsTeacherMaxThreeConsecutiveDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14237,13 +14220,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxThreeConsecutiveDaysAction_trigge
 void FetMainForm::dataTimeConstraintsTeachersMaxThreeConsecutiveDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14258,13 +14241,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxThreeConsecutiveDaysAction_trigg
 void FetMainForm::dataTimeConstraintsStudentsSetMaxThreeConsecutiveDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14278,13 +14261,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxThreeConsecutiveDaysAction_tr
 void FetMainForm::dataTimeConstraintsStudentsMaxThreeConsecutiveDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14299,13 +14282,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxThreeConsecutiveDaysAction_trigg
 void FetMainForm::dataTimeConstraintsTeacherMaxTwoConsecutiveMorningsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14319,13 +14302,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxTwoConsecutiveMorningsAction_trig
 void FetMainForm::dataTimeConstraintsTeachersMaxTwoConsecutiveMorningsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14339,13 +14322,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxTwoConsecutiveMorningsAction_tri
 void FetMainForm::dataTimeConstraintsTeacherMaxTwoConsecutiveAfternoonsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14359,13 +14342,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxTwoConsecutiveAfternoonsAction_tr
 void FetMainForm::dataTimeConstraintsTeachersMaxTwoConsecutiveAfternoonsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14379,13 +14362,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxTwoConsecutiveAfternoonsAction_t
 void FetMainForm::dataTimeConstraintsTeacherMinRealDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14399,13 +14382,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinRealDaysPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherMinMorningsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14419,13 +14402,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinMorningsPerWeekAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMinMorningsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14439,13 +14422,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinMorningsPerWeekAction_triggered(
 void FetMainForm::dataTimeConstraintsTeacherMinAfternoonsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14459,13 +14442,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinAfternoonsPerWeekAction_triggered
 void FetMainForm::dataTimeConstraintsTeachersMinAfternoonsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14479,13 +14462,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinAfternoonsPerWeekAction_triggere
 void FetMainForm::dataTimeConstraintsTeachersMinRealDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14499,13 +14482,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinRealDaysPerWeekAction_triggered(
 void FetMainForm::dataTimeConstraintsTeacherMorningIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14519,13 +14502,13 @@ void FetMainForm::dataTimeConstraintsTeacherMorningIntervalMaxDaysPerWeekAction_
 void FetMainForm::dataTimeConstraintsTeachersMorningIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14539,13 +14522,13 @@ void FetMainForm::dataTimeConstraintsTeachersMorningIntervalMaxDaysPerWeekAction
 void FetMainForm::dataTimeConstraintsTeacherAfternoonIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14559,13 +14542,13 @@ void FetMainForm::dataTimeConstraintsTeacherAfternoonIntervalMaxDaysPerWeekActio
 void FetMainForm::dataTimeConstraintsTeachersAfternoonIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14579,13 +14562,13 @@ void FetMainForm::dataTimeConstraintsTeachersAfternoonIntervalMaxDaysPerWeekActi
 void FetMainForm::dataTimeConstraintsStudentsSetMaxRealDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14599,13 +14582,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxRealDaysPerWeekAction_trigger
 void FetMainForm::dataTimeConstraintsStudentsMaxRealDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14619,13 +14602,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxRealDaysPerWeekAction_triggered(
 void FetMainForm::dataTimeConstraintsStudentsSetMaxMorningsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14639,13 +14622,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxMorningsPerWeekAction_trigger
 void FetMainForm::dataTimeConstraintsStudentsMaxMorningsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14659,13 +14642,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxMorningsPerWeekAction_triggered(
 void FetMainForm::dataTimeConstraintsStudentsSetMaxAfternoonsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14679,13 +14662,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxAfternoonsPerWeekAction_trigg
 void FetMainForm::dataTimeConstraintsStudentsMaxAfternoonsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14699,13 +14682,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxAfternoonsPerWeekAction_triggere
 void FetMainForm::dataTimeConstraintsStudentsSetMinMorningsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14719,13 +14702,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinMorningsPerWeekAction_trigger
 void FetMainForm::dataTimeConstraintsStudentsMinMorningsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14739,13 +14722,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinMorningsPerWeekAction_triggered(
 void FetMainForm::dataTimeConstraintsStudentsSetMinAfternoonsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14759,13 +14742,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinAfternoonsPerWeekAction_trigg
 void FetMainForm::dataTimeConstraintsStudentsMinAfternoonsPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14779,13 +14762,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinAfternoonsPerWeekAction_triggere
 void FetMainForm::dataTimeConstraintsStudentsSetMorningIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14799,13 +14782,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMorningIntervalMaxDaysPerWeekAct
 void FetMainForm::dataTimeConstraintsStudentsMorningIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14819,13 +14802,13 @@ void FetMainForm::dataTimeConstraintsStudentsMorningIntervalMaxDaysPerWeekAction
 void FetMainForm::dataTimeConstraintsStudentsSetAfternoonIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14839,13 +14822,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetAfternoonIntervalMaxDaysPerWeekA
 void FetMainForm::dataTimeConstraintsStudentsAfternoonIntervalMaxDaysPerWeekAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14859,13 +14842,13 @@ void FetMainForm::dataTimeConstraintsStudentsAfternoonIntervalMaxDaysPerWeekActi
 void FetMainForm::dataTimeConstraintsTeachersMaxHoursDailyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14879,13 +14862,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxHoursDailyRealDaysAction_trigger
 void FetMainForm::dataTimeConstraintsTeacherMaxHoursDailyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14899,13 +14882,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxHoursDailyRealDaysAction_triggere
 void FetMainForm::dataTimeConstraintsTeacherMaxActivityTagsPerDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14919,13 +14902,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxActivityTagsPerDayFromSetAction_t
 void FetMainForm::dataTimeConstraintsTeachersMaxActivityTagsPerDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14939,13 +14922,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxActivityTagsPerDayFromSetAction_
 void FetMainForm::dataTimeConstraintsStudentsSetMaxActivityTagsPerDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14959,13 +14942,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxActivityTagsPerDayFromSetActi
 void FetMainForm::dataTimeConstraintsStudentsMaxActivityTagsPerDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14979,13 +14962,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxActivityTagsPerDayFromSetAction_
 void FetMainForm::dataTimeConstraintsTeacherMaxActivityTagsPerRealDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -14999,13 +14982,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxActivityTagsPerRealDayFromSetActi
 void FetMainForm::dataTimeConstraintsTeachersMaxActivityTagsPerRealDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15019,13 +15002,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxActivityTagsPerRealDayFromSetAct
 void FetMainForm::dataTimeConstraintsStudentsSetMaxActivityTagsPerRealDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15039,13 +15022,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxActivityTagsPerRealDayFromSet
 void FetMainForm::dataTimeConstraintsStudentsMaxActivityTagsPerRealDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15059,13 +15042,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxActivityTagsPerRealDayFromSetAct
 void FetMainForm::dataSpaceConstraintsRoomMaxActivityTagsPerDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15079,13 +15062,13 @@ void FetMainForm::dataSpaceConstraintsRoomMaxActivityTagsPerDayFromSetAction_tri
 void FetMainForm::dataSpaceConstraintsRoomMaxActivityTagsPerRealDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15099,13 +15082,13 @@ void FetMainForm::dataSpaceConstraintsRoomMaxActivityTagsPerRealDayFromSetAction
 void FetMainForm::dataSpaceConstraintsRoomMaxActivityTagsPerWeekFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15119,13 +15102,13 @@ void FetMainForm::dataSpaceConstraintsRoomMaxActivityTagsPerWeekFromSetAction_tr
 void FetMainForm::dataSpaceConstraintsRoomsMaxActivityTagsPerDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15139,13 +15122,13 @@ void FetMainForm::dataSpaceConstraintsRoomsMaxActivityTagsPerDayFromSetAction_tr
 void FetMainForm::dataSpaceConstraintsRoomsMaxActivityTagsPerRealDayFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15159,13 +15142,13 @@ void FetMainForm::dataSpaceConstraintsRoomsMaxActivityTagsPerRealDayFromSetActio
 void FetMainForm::dataSpaceConstraintsRoomsMaxActivityTagsPerWeekFromSetAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15179,13 +15162,13 @@ void FetMainForm::dataSpaceConstraintsRoomsMaxActivityTagsPerWeekFromSetAction_t
 void FetMainForm::dataTimeConstraintsTeachersActivityTagMaxHoursDailyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15199,13 +15182,13 @@ void FetMainForm::dataTimeConstraintsTeachersActivityTagMaxHoursDailyRealDaysAct
 void FetMainForm::dataTimeConstraintsTeacherActivityTagMaxHoursDailyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15219,13 +15202,13 @@ void FetMainForm::dataTimeConstraintsTeacherActivityTagMaxHoursDailyRealDaysActi
 void FetMainForm::dataTimeConstraintsTeacherMaxHoursPerAllAfternoonsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15239,13 +15222,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxHoursPerAllAfternoonsAction_trigg
 void FetMainForm::dataTimeConstraintsTeachersMaxHoursPerAllAfternoonsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15259,13 +15242,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxHoursPerAllAfternoonsAction_trig
 void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursPerAllAfternoonsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15279,13 +15262,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursPerAllAfternoonsAction_t
 void FetMainForm::dataTimeConstraintsStudentsMaxHoursPerAllAfternoonsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15299,13 +15282,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxHoursPerAllAfternoonsAction_trig
 void FetMainForm::dataTimeConstraintsTeachersMinHoursPerMorningAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15319,13 +15302,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinHoursPerMorningAction_triggered(
 void FetMainForm::dataTimeConstraintsTeacherMinHoursPerMorningAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15339,13 +15322,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinHoursPerMorningAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMinHoursPerAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15359,13 +15342,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinHoursPerAfternoonAction_triggere
 void FetMainForm::dataTimeConstraintsTeacherMinHoursPerAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15379,13 +15362,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinHoursPerAfternoonAction_triggered
 void FetMainForm::dataTimeConstraintsTeachersMinHoursDailyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15399,13 +15382,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinHoursDailyRealDaysAction_trigger
 void FetMainForm::dataTimeConstraintsTeacherMinHoursDailyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15419,13 +15402,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinHoursDailyRealDaysAction_triggere
 void FetMainForm::dataTimeConstraintsTeacherMaxSpanPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15439,13 +15422,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxSpanPerRealDayAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxSpanPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15459,13 +15442,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxSpanPerRealDayAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsSetMaxSpanPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15479,13 +15462,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxSpanPerRealDayAction_triggere
 void FetMainForm::dataTimeConstraintsStudentsMaxSpanPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15499,13 +15482,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxSpanPerRealDayAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherMinRestingHoursBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15519,13 +15502,13 @@ void FetMainForm::dataTimeConstraintsTeacherMinRestingHoursBetweenMorningAndAfte
 void FetMainForm::dataTimeConstraintsTeachersMinRestingHoursBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15539,13 +15522,13 @@ void FetMainForm::dataTimeConstraintsTeachersMinRestingHoursBetweenMorningAndAft
 void FetMainForm::dataTimeConstraintsStudentsSetMinRestingHoursBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15559,13 +15542,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinRestingHoursBetweenMorningAnd
 void FetMainForm::dataTimeConstraintsStudentsMinRestingHoursBetweenMorningAndAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15579,13 +15562,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinRestingHoursBetweenMorningAndAft
 void FetMainForm::dataTimeConstraintsStudentsSetMaxGapsPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15599,13 +15582,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxGapsPerRealDayAction_triggere
 void FetMainForm::dataTimeConstraintsStudentsMaxGapsPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15619,13 +15602,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxGapsPerRealDayAction_triggered()
 void FetMainForm::dataTimeConstraintsTeachersMaxGapsPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15639,13 +15622,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxGapsPerRealDayAction_triggered()
 void FetMainForm::dataTimeConstraintsTeacherMaxGapsPerRealDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15659,13 +15642,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxGapsPerRealDayAction_triggered()
 void FetMainForm::dataTimeConstraintsStudentsSetMaxGapsPerWeekForRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15679,13 +15662,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxGapsPerWeekForRealDaysAction_
 void FetMainForm::dataTimeConstraintsStudentsMaxGapsPerWeekForRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15699,13 +15682,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxGapsPerWeekForRealDaysAction_tri
 void FetMainForm::dataTimeConstraintsTeachersMaxGapsPerWeekForRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15719,13 +15702,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxGapsPerWeekForRealDaysAction_tri
 void FetMainForm::dataTimeConstraintsTeacherMaxGapsPerWeekForRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15739,13 +15722,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxGapsPerWeekForRealDaysAction_trig
 void FetMainForm::dataTimeConstraintsTeachersMaxZeroGapsPerAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15759,13 +15742,13 @@ void FetMainForm::dataTimeConstraintsTeachersMaxZeroGapsPerAfternoonAction_trigg
 void FetMainForm::dataTimeConstraintsTeacherMaxZeroGapsPerAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15779,13 +15762,13 @@ void FetMainForm::dataTimeConstraintsTeacherMaxZeroGapsPerAfternoonAction_trigge
 void FetMainForm::dataTimeConstraintsTeachersAfternoonsEarlyMaxBeginningsAtSecondHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15799,13 +15782,13 @@ void FetMainForm::dataTimeConstraintsTeachersAfternoonsEarlyMaxBeginningsAtSecon
 void FetMainForm::dataTimeConstraintsTeacherAfternoonsEarlyMaxBeginningsAtSecondHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15819,13 +15802,13 @@ void FetMainForm::dataTimeConstraintsTeacherAfternoonsEarlyMaxBeginningsAtSecond
 void FetMainForm::dataTimeConstraintsStudentsAfternoonsEarlyMaxBeginningsAtSecondHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15839,13 +15822,13 @@ void FetMainForm::dataTimeConstraintsStudentsAfternoonsEarlyMaxBeginningsAtSecon
 void FetMainForm::dataTimeConstraintsStudentsSetAfternoonsEarlyMaxBeginningsAtSecondHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15859,13 +15842,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetAfternoonsEarlyMaxBeginningsAtSe
 void FetMainForm::dataTimeConstraintsTeachersMorningsEarlyMaxBeginningsAtSecondHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15879,13 +15862,13 @@ void FetMainForm::dataTimeConstraintsTeachersMorningsEarlyMaxBeginningsAtSecondH
 void FetMainForm::dataTimeConstraintsTeacherMorningsEarlyMaxBeginningsAtSecondHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15899,13 +15882,13 @@ void FetMainForm::dataTimeConstraintsTeacherMorningsEarlyMaxBeginningsAtSecondHo
 void FetMainForm::dataTimeConstraintsStudentsMorningsEarlyMaxBeginningsAtSecondHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15919,13 +15902,13 @@ void FetMainForm::dataTimeConstraintsStudentsMorningsEarlyMaxBeginningsAtSecondH
 void FetMainForm::dataTimeConstraintsStudentsSetMorningsEarlyMaxBeginningsAtSecondHourAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15939,13 +15922,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMorningsEarlyMaxBeginningsAtSeco
 void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursDailyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15959,13 +15942,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMaxHoursDailyRealDaysAction_trig
 void FetMainForm::dataTimeConstraintsStudentsMaxHoursDailyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15979,13 +15962,13 @@ void FetMainForm::dataTimeConstraintsStudentsMaxHoursDailyRealDaysAction_trigger
 void FetMainForm::dataTimeConstraintsStudentsSetActivityTagMaxHoursDailyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -15999,13 +15982,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetActivityTagMaxHoursDailyRealDays
 void FetMainForm::dataTimeConstraintsStudentsActivityTagMaxHoursDailyRealDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -16019,13 +16002,13 @@ void FetMainForm::dataTimeConstraintsStudentsActivityTagMaxHoursDailyRealDaysAct
 void FetMainForm::dataTimeConstraintsStudentsSetMinHoursPerMorningAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -16039,13 +16022,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinHoursPerMorningAction_trigger
 void FetMainForm::dataTimeConstraintsStudentsMinHoursPerMorningAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -16059,13 +16042,13 @@ void FetMainForm::dataTimeConstraintsStudentsMinHoursPerMorningAction_triggered(
 void FetMainForm::dataTimeConstraintsStudentsSetMinHoursPerAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -16079,13 +16062,13 @@ void FetMainForm::dataTimeConstraintsStudentsSetMinHoursPerAfternoonAction_trigg
 void FetMainForm::dataTimeConstraintsStudentsMinHoursPerAfternoonAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -16125,19 +16108,19 @@ void FetMainForm::helpExamsAlgeriaMoroccoAction_triggered()
 	
 	s+=tr("These tricks and constraints were devised by %1.").arg("Benahmed Abdelkrim");
 	s+=" ";
-	s+=tr("Formerly, they were used under the custom version FET-NSRT (not same room teachers), but on %1 they were incorporated in the official FET.",
+	s+=tr("Formerly, they were used under the custom version Open-Timetable-NSRT (not same room teachers), but on %1 they were incorporated in the official Open-Timetable.",
 	 "'They' refers to some types of constraints. 'not same room teachers' means 'not same room for teachers'. Keep 'NSRT' untranslated"
 	 " - you can write that it is an English abbreviation. %1 is a date.").arg(tr("14 March 2026"));
 	s+="\n\n";
 
-	s+=tr("You can follow the FET forum on these two links: %1 and %2.")
+	s+=tr("You can follow the Open-Timetable forum on these two links: %1 and %2.")
 	 .arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=4448.0")
 	 .arg("https://lalescu.ro/liviu/fet/forum/index.php?topic=6772.0");
 	s+="\n\n";
 	
-	s+=tr("The problem was that each FET room could host a single activity in a certain time slot, while in the exams a room can host two teachers (or three) in a certain time slot."
-	 " So, %1 had the idea to consider a FET building = a real room. There are these FET buildings, and for each real room there correspond two FET rooms (or three), with only slightly"
-	 " different names, and each such two (or three) rooms with similar names are placed in a corresponding FET building.").arg("Benahmed Abdelkrim");
+	s+=tr("The problem was that each Open-Timetable room could host a single activity in a certain time slot, while in the exams a room can host two teachers (or three) in a certain time slot."
+	 " So, %1 had the idea to consider a Open-Timetable building = a real room. There are these Open-Timetable buildings, and for each real room there correspond two Open-Timetable rooms (or three), with only slightly"
+	 " different names, and each such two (or three) rooms with similar names are placed in a corresponding Open-Timetable building.").arg("Benahmed Abdelkrim");
 	s+=" ";
 	s+=tr("Each real room must be occupied by at least a teacher, so you can use the constraints building(s) min one activity in each available slot.");
 	s+=" ";
@@ -16153,10 +16136,10 @@ void FetMainForm::helpExamsAlgeriaMoroccoAction_triggered()
 	s+=tr("Note that there are many conditions to be able to use the constraints mentioned above - they are listed in their respective dialogs.");
 	s+="\n\n";
 	
-	s+=tr("You can find some exam example files in the directory %1 of FET.").arg("examples/exams");
+	s+=tr("You can find some exam example files in the directory %1 of Open-Timetable.").arg("examples/exams");
 	s+="\n\n";
 
-	LongTextMessageBox::largeInformation(this, tr("FET help"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable help"), s);
 }
 
 void FetMainForm::helpAboutFETAction_triggered()
@@ -16189,7 +16172,7 @@ void FetMainForm::helpHomepageAction_triggered()
 	bool tds=QDesktopServices::openUrl(QUrl("https://lalescu.ro/liviu/fet/"));
 
 	if(!tds){
-		QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default internet browser (trying to open the link %1)."
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Could not start the default internet browser (trying to open the link %1)."
 		" Maybe you can try to manually start your browser and open this link.").arg("https://lalescu.ro/liviu/fet/"));
 	}
 }
@@ -16199,7 +16182,7 @@ void FetMainForm::helpContentsAction_triggered()
 	bool tds=QDesktopServices::openUrl(QUrl("https://lalescu.ro/liviu/fet/doc/"));
 
 	if(!tds){
-		QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default internet browser (trying to open the link %1)."
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Could not start the default internet browser (trying to open the link %1)."
 		" Maybe you can try to manually start your browser and open this link.").arg("https://lalescu.ro/liviu/fet/doc/"));
 	}
 }
@@ -16209,7 +16192,7 @@ void FetMainForm::helpForumAction_triggered()
 	bool tds=QDesktopServices::openUrl(QUrl("https://lalescu.ro/liviu/fet/forum/"));
 
 	if(!tds){
-		QMessageBox::warning(this, tr("FET warning"), tr("Could not start the default internet browser (trying to open the link %1)."
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Could not start the default internet browser (trying to open the link %1)."
 		" Maybe you can try to manually start your browser and open this link.").arg("https://lalescu.ro/liviu/fet/forum/"));
 	}
 }
@@ -16219,17 +16202,17 @@ void FetMainForm::helpAddressesAction_triggered()
 	QString s="";
 	s+=tr("In case the Help/Online menus do not function, please write down these addresses and open them in an internet browser:");
 	s+="\n\n";
-	s+=tr("FET homepage: %1", "%1 is FET homepage, begins with https://...").arg("https://lalescu.ro/liviu/fet/");
+	s+=tr("Open-Timetable homepage: %1", "%1 is FET homepage, begins with https://...").arg("https://lalescu.ro/liviu/fet/");
 	s+="\n";
 	s+=tr("Documentation (online help contents): %1", "%1 is web page of FET Doc(umentation), which is the contents of the online help, it begins with https://...").arg("https://lalescu.ro/liviu/fet/doc/");
 	s+="\n";
 	s+=tr("Forum: %1", "%1 is web page of FET forum, begins with https://...").arg("https://lalescu.ro/liviu/fet/forum/");
 	s+="\n\n";
-	s+=tr("Additionally, you may find on the FET homepage other contact information.");
+	s+=tr("Additionally, you may find on the Open-Timetable homepage other contact information.");
 	s+="\n\n";
-	s+=tr("In case these addresses do not function, maybe the FET web page has temporary problems, so try again later. Or maybe the FET web page has changed, so search for the new page on the internet.");
+	s+=tr("In case these addresses do not function, maybe the Open-Timetable web page has temporary problems, so try again later. Or maybe the Open-Timetable web page has changed, so search for the new page on the internet.");
 
-	LongTextMessageBox::largeInformation(this, tr("FET web addresses"), s);
+	LongTextMessageBox::largeInformation(this, tr("Open-Timetable web addresses"), s);
 }
 
 void FetMainForm::helpBlockPlanningAction_triggered()
@@ -16285,13 +16268,13 @@ void FetMainForm::helpInstructionsAction_triggered()
 void FetMainForm::timetableGenerateAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -16303,7 +16286,7 @@ void FetMainForm::timetableGenerateAction_triggered()
 			count++;
 	}
 	if(count<1){
-		QMessageBox::information(this, tr("FET information"), tr("Please input at least one active activity before generating."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please input at least one active activity before generating."));
 		return;
 	}
 	TimetableGenerateForm form(this);
@@ -16316,19 +16299,19 @@ void FetMainForm::timetableGenerateAction_triggered()
 void FetMainForm::timetableGenerateMultipleAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
 
 	if(INPUT_FILENAME_XML.isEmpty()){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Your current data file is unnamed. Please save it under a chosen name before continuing."));
 		return;
 	}
@@ -16340,7 +16323,7 @@ void FetMainForm::timetableGenerateMultipleAction_triggered()
 			count++;
 	}
 	if(count<1){
-		QMessageBox::information(this, tr("FET information"), tr("Please input at least one active activity before generating multiple."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please input at least one active activity before generating multiple."));
 		return;
 	}
 	TimetableGenerateMultipleForm form(this);
@@ -16353,18 +16336,18 @@ void FetMainForm::timetableGenerateMultipleAction_triggered()
 void FetMainForm::timetableViewStudentsDaysHorizontalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -16380,18 +16363,18 @@ void FetMainForm::timetableViewStudentsDaysHorizontalAction_triggered()
 void FetMainForm::timetableViewStudentsDaysVerticalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -16407,18 +16390,18 @@ void FetMainForm::timetableViewStudentsDaysVerticalAction_triggered()
 void FetMainForm::timetableViewStudentsTimeHorizontalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -16434,22 +16417,22 @@ void FetMainForm::timetableViewStudentsTimeHorizontalAction_triggered()
 void FetMainForm::timetableViewTeachersDaysHorizontalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 	if(gt.rules.nInternalTeachers!=gt.rules.teachersList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
 		return;
 	}
 	
@@ -16465,22 +16448,22 @@ void FetMainForm::timetableViewTeachersDaysHorizontalAction_triggered()
 void FetMainForm::timetableViewTeachersDaysVerticalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 	if(gt.rules.nInternalTeachers!=gt.rules.teachersList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
 		return;
 	}
 	
@@ -16496,22 +16479,22 @@ void FetMainForm::timetableViewTeachersDaysVerticalAction_triggered()
 void FetMainForm::timetableViewTeachersTimeHorizontalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 	if(gt.rules.nInternalTeachers!=gt.rules.teachersList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
 		return;
 	}
 	
@@ -16527,13 +16510,13 @@ void FetMainForm::timetableViewTeachersTimeHorizontalAction_triggered()
 void FetMainForm::timetableShowConflictsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
@@ -16548,18 +16531,18 @@ void FetMainForm::timetableShowConflictsAction_triggered()
 void FetMainForm::timetableViewRoomsDaysHorizontalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -16575,18 +16558,18 @@ void FetMainForm::timetableViewRoomsDaysHorizontalAction_triggered()
 void FetMainForm::timetableViewRoomsDaysVerticalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -16602,18 +16585,18 @@ void FetMainForm::timetableViewRoomsDaysVerticalAction_triggered()
 void FetMainForm::timetableViewRoomsTimeHorizontalAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 
@@ -16629,22 +16612,22 @@ void FetMainForm::timetableViewRoomsTimeHorizontalAction_triggered()
 void FetMainForm::timetablePrintAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
 	if(gt.rules.nInternalRooms!=gt.rules.roomsList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some rooms. Please regenerate the timetable and then view it"));
 		return;
 	}
 	if(gt.rules.nInternalTeachers!=gt.rules.teachersList.count()){
-		QMessageBox::warning(this, tr("FET warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Cannot display the timetable, because you added or removed some teachers. Please regenerate the timetable and then view it"));
 		return;
 	}
 	
@@ -16654,7 +16637,7 @@ void FetMainForm::timetablePrintAction_triggered()
 void FetMainForm::statisticsPrintAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -16665,13 +16648,13 @@ void FetMainForm::statisticsPrintAction_triggered()
 void FetMainForm::timetableLockAllActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
@@ -16681,14 +16664,14 @@ void FetMainForm::timetableLockAllActivitiesAction_triggered()
 void FetMainForm::timetableUnlockAllActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		//QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
-		QMessageBox::information(this, tr("FET information"), tr("The timetable is not generated, but anyway FET will proceed now"));
+		//QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The timetable is not generated, but anyway Open-Timetable will proceed now"));
 
 		AdvancedLockUnlockForm::unlockAllWithoutTimetable(this);
 	
@@ -16702,13 +16685,13 @@ void FetMainForm::timetableUnlockAllActivitiesAction_triggered()
 void FetMainForm::timetableLockActivitiesDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
@@ -16718,14 +16701,14 @@ void FetMainForm::timetableLockActivitiesDaysAction_triggered()
 void FetMainForm::timetableUnlockActivitiesDaysAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		//QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
-		QMessageBox::information(this, tr("FET information"), tr("The timetable is not generated, but anyway FET will proceed now"));
+		//QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The timetable is not generated, but anyway Open-Timetable will proceed now"));
 		
 		AdvancedLockUnlockForm::unlockDaysWithoutTimetable(this);
 		
@@ -16739,13 +16722,13 @@ void FetMainForm::timetableUnlockActivitiesDaysAction_triggered()
 void FetMainForm::timetableLockActivitiesEndStudentsDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
@@ -16755,13 +16738,13 @@ void FetMainForm::timetableLockActivitiesEndStudentsDayAction_triggered()
 void FetMainForm::timetableUnlockActivitiesEndStudentsDayAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
@@ -16771,18 +16754,18 @@ void FetMainForm::timetableUnlockActivitiesEndStudentsDayAction_triggered()
 void FetMainForm::timetableLockActivitiesWithASpecifiedActivityTagAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(gt.rules.activityTagsList.count()==0){
-		QMessageBox::information(this, tr("FET information"), tr("You have no activity tags defined in your data."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("You have no activity tags defined in your data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
@@ -16792,19 +16775,19 @@ void FetMainForm::timetableLockActivitiesWithASpecifiedActivityTagAction_trigger
 void FetMainForm::timetableUnlockActivitiesWithASpecifiedActivityTagAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(gt.rules.activityTagsList.count()==0){
-		QMessageBox::information(this, tr("FET information"), tr("You have no activity tags defined in your data."));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("You have no activity tags defined in your data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		//QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
-		QMessageBox::information(this, tr("FET information"), tr("The timetable is not generated, but anyway FET will proceed now"));
+		//QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The timetable is not generated, but anyway Open-Timetable will proceed now"));
 		
 		AdvancedLockUnlockForm::unlockActivityTagWithoutTimetable(this);
 		
@@ -16818,13 +16801,13 @@ void FetMainForm::timetableUnlockActivitiesWithASpecifiedActivityTagAction_trigg
 void FetMainForm::timetableLockActivitiesWithAdvancedFilterAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
 		return;
 	}
 
@@ -16834,14 +16817,14 @@ void FetMainForm::timetableLockActivitiesWithAdvancedFilterAction_triggered()
 void FetMainForm::timetableUnlockActivitiesWithAdvancedFilterAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(!(students_schedule_ready && teachers_schedule_ready && rooms_buildings_schedule_ready)){
-		//QMessageBox::information(this, tr("FET information"), tr("Please generate, firstly"));
-		QMessageBox::information(this, tr("FET information"), tr("The timetable is not generated, but anyway FET will proceed now"));
+		//QMessageBox::information(this, tr("Open-Timetable information"), tr("Please generate, firstly"));
+		QMessageBox::information(this, tr("Open-Timetable information"), tr("The timetable is not generated, but anyway Open-Timetable will proceed now"));
 		
 		AdvancedLockUnlockForm::unlockAdvancedFilterWithoutTimetable(this);
 		
@@ -16855,7 +16838,7 @@ void FetMainForm::timetableUnlockActivitiesWithAdvancedFilterAction_triggered()
 void FetMainForm::languageAction_triggered()
 {
 	QDialog dialog(this);
-	dialog.setWindowTitle(tr("Please select FET language"));
+	dialog.setWindowTitle(tr("Please select Open-Timetable language"));
 	
 	QVBoxLayout* taMainLayout=new QVBoxLayout(&dialog);
 
@@ -16896,13 +16879,13 @@ void FetMainForm::languageAction_triggered()
 	
 	assert(eng>=0);
 	if(j==-1){
-		QMessageBox::warning(this, tr("FET warning"), tr("Invalid current language - making it en_US (US English)"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Invalid current language - making it en_US (US English)"));
 		FET_LANGUAGE="en_US";
 		j=eng;
 	}
 	languagesComboBox->setCurrentIndex(j);
 	
-	QLabel* label=new QLabel(tr("Please select FET language"));
+	QLabel* label=new QLabel(tr("Please select Open-Timetable language"));
 	
 	QHBoxLayout* languagesLayout=new QHBoxLayout();
 	languagesLayout->addWidget(languagesComboBox);
@@ -16955,7 +16938,7 @@ void FetMainForm::languageAction_triggered()
 	}
 
 	if(!found){
-		QMessageBox::warning(this, tr("FET warning"), tr("Invalid language selected - making it en_US (US English)"));
+		QMessageBox::warning(this, tr("Open-Timetable warning"), tr("Invalid language selected - making it en_US (US English)"));
 		FET_LANGUAGE="en_US";
 	}
 	
@@ -16977,8 +16960,8 @@ void FetMainForm::languageAction_triggered()
 	// (لوحة التوليد وغيرها) بدل حصر الترجمة في النافذة الرئيسية.
 	Q_EMIT languageChanged();
 
-	//QMessageBox::information(this, tr("FET information"), tr("Language %1 selected").arg( FET_LANGUAGE+" ("+languagesMap.value(FET_LANGUAGE)+")" )+"\n\n"+
-	// tr("Please exit and restart FET to activate language change"));
+	//QMessageBox::information(this, tr("Open-Timetable information"), tr("Language %1 selected").arg( FET_LANGUAGE+" ("+languagesMap.value(FET_LANGUAGE)+")" )+"\n\n"+
+	// tr("Please exit and restart Open-Timetable to activate language change"));
 }
 
 void FetMainForm::settingsRestoreDefaultsAction_triggered()
@@ -17267,7 +17250,7 @@ void FetMainForm::settingsRestoreDefaultsAction_triggered()
 	s+=tr("78")+QString(". ")+tr("The text of the 'Search in menu' line edit from the main window will be cleared.");
 	s+="\n";
 
-	switch( LongTextMessageBox::largeConfirmation( this, tr("FET confirmation"), s,
+	switch( LongTextMessageBox::largeConfirmation( this, tr("Open-Timetable confirmation"), s,
 	 tr("&Yes"), tr("&No"), QString(), 0 , 1 ) ) {
 	case 0: // Yes
 		break;
@@ -18239,7 +18222,7 @@ void FetMainForm::settingsRestoreDefaultsAction_triggered()
 void FetMainForm::settingsTimetableHtmlLevelAction_triggered()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -18252,7 +18235,7 @@ void FetMainForm::settingsTimetableHtmlLevelAction_triggered()
 void FetMainForm::settingsDataToPrintInTimetablesAction_triggered()
 {
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -18312,13 +18295,13 @@ void FetMainForm::settingsCommandAfterFinishingAction_triggered()
 void FetMainForm::activityPlanningAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -18345,13 +18328,13 @@ void FetMainForm::activityPlanningAction_triggered()
 void FetMainForm::spreadActivitiesAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -18361,7 +18344,7 @@ void FetMainForm::spreadActivitiesAction_triggered()
 		s=tr("You have more than 6 days per week, so probably you won't need this feature. Do you still want to continue?");
 		
 		/*int cfrm=0;
-		switch( QMessageBox::question( this, tr("FET question"),
+		switch( QMessageBox::question( this, tr("Open-Timetable question"),
 		 s,
 		 tr("&Continue"), tr("&Cancel"), 0 , 1 ) ) {
 		case 0: // Yes - continue
@@ -18375,7 +18358,7 @@ void FetMainForm::spreadActivitiesAction_triggered()
 		if(!cfrm){
 			return;
 		}*/
-		QMessageBox::StandardButton cfrm=QMessageBox::question( this, tr("FET question"), s, QMessageBox::Yes | QMessageBox::Cancel);
+		QMessageBox::StandardButton cfrm=QMessageBox::question( this, tr("Open-Timetable question"), s, QMessageBox::Yes | QMessageBox::Cancel);
 		if(cfrm==QMessageBox::Cancel)
 			return;
 	}
@@ -18384,7 +18367,7 @@ void FetMainForm::spreadActivitiesAction_triggered()
 		s=tr("You have more than 6 real days per week, so probably you won't need this feature. Do you still want to continue?");
 		
 		/*int cfrm=0;
-		switch( QMessageBox::question( this, tr("FET question"),
+		switch( QMessageBox::question( this, tr("Open-Timetable question"),
 		 s,
 		 tr("&Continue"), tr("&Cancel"), 0 , 1 ) ) {
 		case 0: // Yes - continue
@@ -18398,7 +18381,7 @@ void FetMainForm::spreadActivitiesAction_triggered()
 		if(!cfrm){
 			return;
 		}*/
-		QMessageBox::StandardButton cfrm=QMessageBox::question( this, tr("FET question"), s, QMessageBox::Yes | QMessageBox::Cancel);
+		QMessageBox::StandardButton cfrm=QMessageBox::question( this, tr("Open-Timetable question"), s, QMessageBox::Yes | QMessageBox::Cancel);
 		if(cfrm==QMessageBox::Cancel)
 			return;
 	}
@@ -18408,7 +18391,7 @@ void FetMainForm::spreadActivitiesAction_triggered()
 		s=tr("You have less than 5 days per week, so probably you won't need this feature. Do you still want to continue?");
 
 		/*int cfrm=0;
-		switch( QMessageBox::question( this, tr("FET question"),
+		switch( QMessageBox::question( this, tr("Open-Timetable question"),
 		 s,
 		 tr("&Continue"), tr("&Cancel"), 0 , 1 ) ) {
 		case 0: // Yes - continue
@@ -18422,7 +18405,7 @@ void FetMainForm::spreadActivitiesAction_triggered()
 		if(!cfrm){
 			return;
 		}*/
-		QMessageBox::StandardButton cfrm=QMessageBox::question( this, tr("FET question"), s, QMessageBox::Yes | QMessageBox::Cancel);
+		QMessageBox::StandardButton cfrm=QMessageBox::question( this, tr("Open-Timetable question"), s, QMessageBox::Yes | QMessageBox::Cancel);
 		if(cfrm==QMessageBox::Cancel)
 			return;
 	}
@@ -18431,7 +18414,7 @@ void FetMainForm::spreadActivitiesAction_triggered()
 		s=tr("You have less than 5 real days per week, so probably you won't need this feature. Do you still want to continue?");
 
 		/*int cfrm=0;
-		switch( QMessageBox::question( this, tr("FET question"),
+		switch( QMessageBox::question( this, tr("Open-Timetable question"),
 		 s,
 		 tr("&Continue"), tr("&Cancel"), 0 , 1 ) ) {
 		case 0: // Yes - continue
@@ -18445,7 +18428,7 @@ void FetMainForm::spreadActivitiesAction_triggered()
 		if(!cfrm){
 			return;
 		}*/
-		QMessageBox::StandardButton cfrm=QMessageBox::question( this, tr("FET question"), s, QMessageBox::Yes | QMessageBox::Cancel);
+		QMessageBox::StandardButton cfrm=QMessageBox::question( this, tr("Open-Timetable question"), s, QMessageBox::Yes | QMessageBox::Cancel);
 		if(cfrm==QMessageBox::Cancel)
 			return;
 	}
@@ -18476,13 +18459,13 @@ void FetMainForm::spreadActivitiesAction_triggered()
 void FetMainForm::statisticsExportToDiskAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -18493,13 +18476,13 @@ void FetMainForm::statisticsExportToDiskAction_triggered()
 void FetMainForm::removeRedundantConstraintsAction_triggered()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
 
 	if(generation_running || generation_running_multi){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Generation in progress. Please stop the generation before this."));
 		return;
 	}
@@ -18544,7 +18527,7 @@ void FetMainForm::selectOutputDirAction_triggered()
 		//if(!test.exists())
 		//	t=false;
 		if(!t){
-			QMessageBox::warning(this, tr("FET warning"), tr("You don't have write permissions in this directory"));
+			QMessageBox::warning(this, tr("Open-Timetable warning"), tr("You don't have write permissions in this directory"));
 			return;
 		}
 		test.close();
@@ -18567,14 +18550,14 @@ void FetMainForm::randomSeedAction_triggered()
 		int tx=dialog.lineEditX->text().toInt();
 		if(!(tx>=1 && tx<MM)){
 			assert(0);
-			//QMessageBox::warning(this, tr("FET warning"), tr("The random seed X component must be at least %1 and at most %2").arg(1).arg(MM-1));
+			//QMessageBox::warning(this, tr("Open-Timetable warning"), tr("The random seed X component must be at least %1 and at most %2").arg(1).arg(MM-1));
 			//return;
 		}
 
 		int ty=dialog.lineEditY->text().toInt();
 		if(!(ty>=1 && ty<MMM)){
 			assert(0);
-			//QMessageBox::warning(this, tr("FET warning"), tr("The random seed Y component must be at least %1 and at most %2").arg(1).arg(MMM-1));
+			//QMessageBox::warning(this, tr("Open-Timetable warning"), tr("The random seed Y component must be at least %1 and at most %2").arg(1).arg(MMM-1));
 			//return;
 		}
 
@@ -18592,7 +18575,7 @@ void FetMainForm::showWarningForSubgroupsWithTheSameActivitiesToggled(bool check
 		s+="\n\n";
 		s+=tr("Are you sure you want to disable it?");
 	
-		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
 	
 		if(b!=QMessageBox::Yes){
 			disconnect(showWarningForSubgroupsWithTheSameActivitiesAction, &QAction::toggled, this, &FetMainForm::showWarningForSubgroupsWithTheSameActivitiesToggled);
@@ -18614,7 +18597,7 @@ void FetMainForm::showWarningForActivitiesNotLockedTimeLockedSpaceVirtualRealRoo
 		s+="\n\n";
 		s+=tr("Are you sure you want to disable it?");
 	
-		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
 	
 		if(b!=QMessageBox::Yes){
 			disconnect(showWarningForActivitiesNotLockedTimeLockedSpaceVirtualRealRoomsAction, &QAction::toggled, this, &FetMainForm::showWarningForActivitiesNotLockedTimeLockedSpaceVirtualRealRoomsToggled);
@@ -18636,7 +18619,7 @@ void FetMainForm::showWarningForMaxHoursDailyWithUnder100WeightToggled(bool chec
 		s+="\n\n";
 		s+=tr("Are you sure you want to disable it?");
 	
-		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
 	
 		if(b!=QMessageBox::Yes){
 			disconnect(showWarningForMaxHoursDailyWithUnder100WeightAction, &QAction::toggled, this, &FetMainForm::showWarningForMaxHoursDailyWithUnder100WeightToggled);
@@ -18657,7 +18640,7 @@ void FetMainForm::enableGroupActivitiesInInitialOrderToggled(bool checked)
 		s+="\n\n";
 		s+=tr("Continue only if you know what you are doing.");
 	
-		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
 	
 		if(b!=QMessageBox::Ok){
 			disconnect(enableGroupActivitiesInInitialOrderAction, &QAction::toggled, this, &FetMainForm::enableGroupActivitiesInInitialOrderToggled);
@@ -18681,7 +18664,7 @@ void FetMainForm::showWarningForGroupActivitiesInInitialOrderToggled(bool checke
 		s+="\n\n";
 		s+=tr("Are you sure you want to disable it?");
 	
-		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("FET warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
+		QMessageBox::StandardButton b=QMessageBox::warning(this, tr("Open-Timetable warning"), s, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes);
 	
 		if(b!=QMessageBox::Yes){
 			disconnect(showWarningForGroupActivitiesInInitialOrderAction, &QAction::toggled, this, &FetMainForm::showWarningForGroupActivitiesInInitialOrderToggled);
@@ -18901,7 +18884,7 @@ void FetMainForm::shortcutSaveAsPushButton_clicked()
 void FetMainForm::humanReadableText()
 {
 	if(!gt.rules.initialized){
-		QMessageBox::information(this, tr("FET information"),
+		QMessageBox::information(this, tr("Open-Timetable information"),
 			tr("Please start a new file or open an existing one before accessing/modifying/saving/exporting the data."));
 		return;
 	}
@@ -18913,7 +18896,7 @@ void FetMainForm::humanReadableText()
 
 void FetMainForm::backupSettings()
 {
-	QString fileName = QFileDialog::getSaveFileName(this, tr("Choose a filename to save the FET settings"),
+	QString fileName = QFileDialog::getSaveFileName(this, tr("Choose a filename to save the Open-Timetable settings"),
 	 QString("untitled.ini"),
 	 tr("INI files", "Instructions for translators: INI is a type of settings file format (using text mode). "
 	 "So this field means files in the INI format")+" (*.ini)"+";;"+tr("All files")+" (*)",
@@ -18922,7 +18905,7 @@ void FetMainForm::backupSettings()
 		return;
 
 	if(QFile::exists(fileName))
-		if(QMessageBox::warning( this, tr("FET"),
+		if(QMessageBox::warning( this, tr("Open-Timetable"),
 		 tr("File %1 exists - are you sure you want to overwrite it?").arg(fileName),
 		 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
 			return;
@@ -18975,12 +18958,12 @@ void FetMainForm::backupSettings()
 	}
 
 	if(pFetMainForm!=nullptr)
-		pFetMainForm->statusBar()->showMessage(tr("FET settings saved to file"), STATUS_BAR_MILLISECONDS);
+		pFetMainForm->statusBar()->showMessage(tr("Open-Timetable settings saved to file"), STATUS_BAR_MILLISECONDS);
 }
 
 void FetMainForm::restoreSettings()
 {
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Choose a file containing FET interface settings"),
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Choose a file containing Open-Timetable interface settings"),
 	 QString(""),
 	 tr("INI files", "Instructions for translators: INI is a type of settings file format (using text mode). "
 	 "So this field means files in the INI format")+" (*.ini)"+";;"+tr("All files")+" (*)");
@@ -18988,7 +18971,7 @@ void FetMainForm::restoreSettings()
 	if(fileName.isEmpty())
 		return;
 	
-	QMessageBox::StandardButton res = QMessageBox::question(this, tr("FET confirmation"), tr("Are you sure you want to restore the FET settings from the "
+	QMessageBox::StandardButton res = QMessageBox::question(this, tr("Open-Timetable confirmation"), tr("Are you sure you want to restore the Open-Timetable settings from the "
 	 "file %1?").arg(fileName), QMessageBox::Yes|QMessageBox::No);
 	if(res==QMessageBox::Yes){
 		QSettings crtfetSettings(COMPANY, PROGRAM);
@@ -19055,7 +19038,7 @@ void FetMainForm::restoreSettings()
 	else if(s==QString("terms"))
 		gt.rules.mode=TERMS;
 	else{
-		QMessageBox::warning(nullptr, FetTranslate::tr("FET warning"), FetTranslate::tr("Incorrect startup mode read from the settings - making"
+		QMessageBox::warning(nullptr, FetTranslate::tr("Open-Timetable warning"), FetTranslate::tr("Incorrect startup mode read from the settings - making"
 		 " it %1.").arg(FetTranslate::tr("Official")));
 		gt.rules.mode=OFFICIAL;
 		//assert(0);
@@ -19067,7 +19050,7 @@ void FetMainForm::restoreSettings()
 		if(!dir.exists(OUTPUT_DIR)){
 			bool t=dir.mkpath(OUTPUT_DIR);
 			if(!t){
-				QMessageBox::warning(nullptr, tr("FET warning"), tr("Output directory %1 does not exist and cannot be"
+				QMessageBox::warning(nullptr, tr("Open-Timetable warning"), tr("Output directory %1 does not exist and cannot be"
 				 " created - output directory will be made the default value %2")
 				 .arg(QDir::toNativeSeparators(OUTPUT_DIR)).arg(QDir::toNativeSeparators(predefDir)));
 				OUTPUT_DIR=predefDir;
@@ -19102,7 +19085,7 @@ void FetMainForm::restoreSettings()
 
 	TIMETABLE_HTML_LEVEL=settings.value("html-level", "2").toInt();
 	if(TIMETABLE_HTML_LEVEL<0 || TIMETABLE_HTML_LEVEL>7){
-		QMessageBox::warning(nullptr, tr("FET warning"), tr("Incorrect HTML level read from the settings - making it %1.").arg(2));
+		QMessageBox::warning(nullptr, tr("Open-Timetable warning"), tr("Incorrect HTML level read from the settings - making it %1.").arg(2));
 		TIMETABLE_HTML_LEVEL=2;
 	}
 	
@@ -20152,19 +20135,19 @@ void FetMainForm::restoreSettings()
 		QString s;
 		s+=tr("Please note that the new settings read from the file will enable the option to check for updates on startup.");
 		s+=" ";
-		s+=tr("This implies that each time you start FET it will get the file %1 from the FET homepage, so the "
+		s+=tr("This implies that each time you start Open-Timetable it will get the file %1 from the Open-Timetable homepage, so the "
 		 "request for this file will be visible on the server, along with your IP address and access time.")
 		 .arg("https://lalescu.ro/liviu/fet/crtversion/crtversion.txt");
 		s+=" ";
-		s+=tr("Also, there will be visible on the server your current FET version, your current Qt version (the C++ toolkit used by FET), "
+		s+=tr("Also, there will be visible on the server your current Open-Timetable version, your current Qt version (the C++ toolkit used by Open-Timetable), "
 			"your operating system name and version, and your processor architecture type.");
 		s+=" ";
-		s+=tr("Thus, it could be deduced if and when you use FET.");
+		s+=tr("Thus, it could be deduced if and when you use Open-Timetable.");
 		
 		s+="\n\n";
-		s+=tr("Do you agree? (If you don't agree, FET will disable this option.)");
+		s+=tr("Do you agree? (If you don't agree, Open-Timetable will disable this option.)");
 
-		QMessageBox::StandardButton b=QMessageBox::question(this, tr("FET question"), s, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+		QMessageBox::StandardButton b=QMessageBox::question(this, tr("Open-Timetable question"), s, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
 		if(b!=QMessageBox::Yes){
 			checkForUpdates=false;
@@ -20196,5 +20179,5 @@ void FetMainForm::restoreSettings()
 	}
 
 	if(pFetMainForm!=nullptr)
-		pFetMainForm->statusBar()->showMessage(tr("FET settings restored from file"), STATUS_BAR_MILLISECONDS);
+		pFetMainForm->statusBar()->showMessage(tr("Open-Timetable settings restored from file"), STATUS_BAR_MILLISECONDS);
 }

@@ -215,7 +215,7 @@ void HumanReadableDataForm::filterChanged()
 	QString s1;
 	
 	if(showFetVersion){
-		s1+=tr("FET version: %1").arg(FET_VERSION);
+		s1+=tr("Open-Timetable version: %1").arg(FET_VERSION);
 		s1+="\n\n";
 	}
 
@@ -512,7 +512,7 @@ void HumanReadableDataForm::saveAs()
 		return;
 
 	if(QFile::exists(fileName))
-		if(QMessageBox::warning( this, tr("FET"),
+		if(QMessageBox::warning( this, tr("Open-Timetable"),
 		 tr("File %1 exists - are you sure you want to overwrite it?").arg(fileName),
 		 QMessageBox::Yes|QMessageBox::No) == QMessageBox::No)
 			return;
@@ -523,7 +523,7 @@ void HumanReadableDataForm::saveAs()
 #else
 	if(!file.open(QIODevice::WriteOnly)){
 #endif
-		QMessageBox::critical(this, tr("FET critical"),
+		QMessageBox::critical(this, tr("Open-Timetable critical"),
 		 tr("Cannot open file %1 for writing. Please check your disk's free space. Saving of %1 aborted.").arg(fileName));
 		return;
 	}
