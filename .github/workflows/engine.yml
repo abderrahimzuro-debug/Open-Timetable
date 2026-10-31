@@ -111,12 +111,14 @@ jobs:
             {
               echo '### Compile errors'
               echo '```'
-              tail -60 "$LOG"
+              grep -n -E 'error:|Error [0-9]|undefined reference|collect2|fatal error|Killed' "$LOG" | head -60 || true
+              echo '--- tail ---'
+              tail -30 "$LOG"
               echo '```'
             } >> "$GITHUB_STEP_SUMMARY"
-            # نُخرج آخر السطور كتعليقات (annotations) حتى تظهر عبر API
-            tail -40 "$LOG" | while IFS= read -r line; do
-              [ -n "$line" ] && echo "::error::${line//$'\r'/}"
+            # أسطر الخطأ الحقيقية فقط كتعليقات (annotations) حتى تظهر عبر API
+            grep -E 'error:|Error [0-9]|undefined reference|collect2|fatal error|Killed' "$LOG" | head -20 | while IFS= read -r line; do
+              echo "::error::${line//$'\r'/}"
             done
           else
             echo "::error::build.log not found"
