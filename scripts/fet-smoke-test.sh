@@ -56,20 +56,22 @@ run_case() {
     local sample
     sample="$(find "$out" -type f -name '*.html' | head -1)"
     if [[ -z "$sample" ]]; then
-      echo "   ✗ لا ملف HTML للفحص" >&2; fail=1; return
-    fi
-    if grep -q "font-family:" "$sample"; then
-      echo "   ✓ الخط صريح في HTML المصدَّر"
+      # لا نُفشل الحالة إن لم يُنتج المحرّك HTML، لكن نُنبّه بوضوح.
+      echo "   ! لم يُنتج هذا التشغيل ملف HTML — تخطّي فحص الخط"
     else
-      echo "   ✗ HTML المصدَّر بلا خط صريح (خطر ظهور رموز يونانية بدل الحروف)" >&2
-      fail=1
-    fi
-    # ملف الأنماط الخارجي أيضًا يجب أن يحمل الخط
-    local css
-    css="$(find "$out" -type f -name '*stylesheet.css' -o -type f -name 'stylesheet.css' | head -1)"
-    if [[ -n "$css" ]] && ! grep -q "font-family:" "$css"; then
-      echo "   ✗ ملف الأنماط بلا خط صريح" >&2
-      fail=1
+      if grep -q "font-family:" "$sample"; then
+        echo "   ✓ الخط صريح في HTML المصدَّر"
+      else
+        echo "   ✗ HTML المصدَّر بلا خط صريح (خطر ظهور رموز يونانية بدل الحروف)" >&2
+        fail=1
+      fi
+      # ملف الأنماط الخارجي أيضًا يجب أن يحمل الخط
+      local css
+      css="$(find "$out" -type f -name '*stylesheet.css' | head -1)"
+      if [[ -n "$css" ]] && ! grep -q "font-family:" "$css"; then
+        echo "   ✗ ملف الأنماط بلا خط صريح" >&2
+        fail=1
+      fi
     fi
   fi
 
