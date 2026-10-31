@@ -54,7 +54,7 @@ run_case() {
   fi
   if [[ "$REQUIRE_HTML_FONT" == "1" ]]; then
     local sample
-    sample="$(find "$out" -type f -name '*.html' | head -1)"
+    sample="$(find "$out" -type f -name '*.html' -print -quit)"
     if [[ -z "$sample" ]]; then
       # لا نُفشل الحالة إن لم يُنتج المحرّك HTML، لكن نُنبّه بوضوح.
       echo "   ! لم يُنتج هذا التشغيل ملف HTML — تخطّي فحص الخط"
@@ -67,7 +67,7 @@ run_case() {
       fi
       # ملف الأنماط الخارجي أيضًا يجب أن يحمل الخط
       local css
-      css="$(find "$out" -type f -name '*stylesheet.css' | head -1)"
+      css="$(find "$out" -type f -name '*stylesheet.css' -print -quit)"
       if [[ -n "$css" ]] && ! grep -q "font-family:" "$css"; then
         echo "   ✗ ملف الأنماط بلا خط صريح" >&2
         fail=1
